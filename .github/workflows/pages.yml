@@ -1,0 +1,54 @@
+name: Deploy frontend to GitHub Pages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: actions/configure-pages@v5
+        id: pages
+      - run: npm ci
+      - name: Build public frontend
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}/
+        run: |
+          node --input-type=module <<'JS'
+          for (const key of ['VITE_API_BASE_URL', 'VITE_SOCKET_URL']) {
+            const url = new URL(process.env[key]);
+            if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash)
+              throw new Error(`${key} must be a public HTTPS URL without credentials`);
+            if (key === 'VITE_API_BASE_URL' && !url.pathname.endsWith('/api/v1'))
+              throw new Error('VITE_API_BASE_URL must end with /api/v1');
+            if (key === 'VITE_SOCKET_URL' && url.pathname !== '/')
+              throw new Error('VITE_SOCKET_URL must be the backend origin');
+          }
+          JS
+          npm run build -w @exam/shared
+          npm run build -w @exam/web
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/web/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

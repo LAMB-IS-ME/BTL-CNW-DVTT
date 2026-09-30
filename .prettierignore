@@ -1,0 +1,6 @@
+node_modules
+dist
+apps/api/src/generated
+package-lock.json
+MASTER_SPEC.md
+ASTRA_MASTER_PROMPT.md

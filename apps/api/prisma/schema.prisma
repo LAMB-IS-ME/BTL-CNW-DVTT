@@ -1,0 +1,358 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+}
+datasource db {
+  provider = "postgresql"
+}
+enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+enum UserStatus {
+  ACTIVE
+  LOCKED
+}
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  ESSAY
+}
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+enum ExamStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+}
+enum ResultStrategy {
+  HIGHEST_SCORE
+  LATEST_ATTEMPT
+}
+enum ResultReleaseMode {
+  IMMEDIATE
+  AFTER_CLOSE
+  MANUAL
+}
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  AUTO_SUBMITTED
+  PENDING_MANUAL_GRADING
+  GRADED
+}
+enum QuestionSourceType {
+  FIXED
+  RANDOM_POOL
+}
+enum QuizRoomStatus {
+  LOBBY
+  LIVE
+  FINISHED
+  CANCELLED
+}
+model User {
+  id String @id @default(uuid()) @db.Uuid
+  email String @unique
+  passwordHash String
+  fullName String
+  studentCode String? @unique
+  role UserRole @default(STUDENT)
+  status UserStatus @default(ACTIVE)
+  lastLoginAt DateTime? @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  classes Class[]
+  memberships ClassMember[]
+  banks QuestionBank[]
+  exams Exam[]
+  attempts ExamAttempt[]
+  grades AttemptAnswer[]
+  quizzes LiveQuiz[]
+  rooms QuizRoom[]
+  participations QuizParticipant[]
+}
+model Class {
+  id String @id @default(uuid()) @db.Uuid
+  teacherId String @db.Uuid
+  teacher User @relation(fields:[teacherId],references:[id])
+  name String
+  code String?
+  description String?
+  archivedAt DateTime? @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  members ClassMember[]
+  exams ExamClass[]
+  @@index([teacherId])
+}
+model ClassMember {
+  classId String @db.Uuid
+  studentId String @db.Uuid
+  class Class @relation(fields:[classId],references:[id],onDelete:Cascade)
+  student User @relation(fields:[studentId],references:[id])
+  joinedAt DateTime @default(now()) @db.Timestamptz
+  @@id([classId,studentId])
+  @@index([studentId])
+}
+model QuestionBank {
+  id String @id @default(uuid()) @db.Uuid
+  ownerTeacherId String @db.Uuid
+  owner User @relation(fields:[ownerTeacherId],references:[id])
+  title String
+  subject String?
+  description String?
+  isArchived Boolean @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  questions Question[]
+  pools ExamQuestionPool[]
+  @@index([ownerTeacherId])
+}
+model Question {
+  id String @id @default(uuid()) @db.Uuid
+  bankId String @db.Uuid
+  bank QuestionBank @relation(fields:[bankId],references:[id])
+  type QuestionType
+  promptMarkdown String
+  explanationMarkdown String?
+  difficulty Difficulty @default(MEDIUM)
+  tags String[]
+  defaultPoints Decimal @default(1) @db.Decimal(10,2)
+  isArchived Boolean @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  options QuestionOption[]
+  assets QuestionAsset[]
+  exams ExamQuestion[]
+  quizzes LiveQuizQuestion[]
+  @@index([bankId,isArchived])
+}
+model QuestionOption {
+  id String @id @default(uuid()) @db.Uuid
+  questionId String @db.Uuid
+  question Question @relation(fields:[questionId],references:[id],onDelete:Cascade)
+  contentMarkdown String
+  orderIndex Int
+  isCorrect Boolean
+  @@unique([questionId,orderIndex])
+}
+model QuestionAsset {
+  id String @id @default(uuid()) @db.Uuid
+  questionId String @db.Uuid
+  question Question @relation(fields:[questionId],references:[id])
+  storagePath String @unique
+  mimeType String
+  originalName String
+  altText String?
+  createdAt DateTime @default(now()) @db.Timestamptz
+  @@index([questionId])
+}
+model Exam {
+  id String @id @default(uuid()) @db.Uuid
+  teacherId String @db.Uuid
+  teacher User @relation(fields:[teacherId],references:[id])
+  title String
+  descriptionMarkdown String?
+  status ExamStatus @default(DRAFT)
+  openAt DateTime @db.Timestamptz
+  closeAt DateTime @db.Timestamptz
+  durationMinutes Int
+  maxAttempts Int @default(1)
+  resultStrategy ResultStrategy @default(HIGHEST_SCORE)
+  resultReleaseMode ResultReleaseMode @default(MANUAL)
+  manualResultsReleasedAt DateTime? @db.Timestamptz
+  shuffleQuestions Boolean @default(false)
+  shuffleOptions Boolean @default(false)
+  showCorrectAnswers Boolean @default(false)
+  showExplanations Boolean @default(false)
+  showDetailedScore Boolean @default(true)
+  passScorePercent Decimal @default(50) @db.Decimal(5,2)
+  publishedAt DateTime? @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  classes ExamClass[]
+  questions ExamQuestion[]
+  pools ExamQuestionPool[]
+  attempts ExamAttempt[]
+  @@index([teacherId,status])
+}
+model ExamClass {
+  examId String @db.Uuid
+  classId String @db.Uuid
+  exam Exam @relation(fields:[examId],references:[id],onDelete:Cascade)
+  class Class @relation(fields:[classId],references:[id])
+  @@id([examId,classId])
+  @@index([classId])
+}
+model ExamQuestion {
+  id String @id @default(uuid()) @db.Uuid
+  examId String @db.Uuid
+  questionId String @db.Uuid
+  exam Exam @relation(fields:[examId],references:[id],onDelete:Cascade)
+  question Question @relation(fields:[questionId],references:[id])
+  orderIndex Int
+  points Decimal @db.Decimal(10,2)
+  @@unique([examId,questionId])
+}
+model ExamQuestionPool {
+  id String @id @default(uuid()) @db.Uuid
+  examId String @db.Uuid
+  questionBankId String @db.Uuid
+  exam Exam @relation(fields:[examId],references:[id],onDelete:Cascade)
+  bank QuestionBank @relation(fields:[questionBankId],references:[id])
+  pickCount Int
+  pointsEach Decimal @db.Decimal(10,2)
+  difficultyFilter Difficulty?
+  tagFilter String[]
+  createdAt DateTime @default(now()) @db.Timestamptz
+  @@index([examId])
+}
+model ExamAttempt {
+  id String @id @default(uuid()) @db.Uuid
+  examId String @db.Uuid
+  studentId String @db.Uuid
+  exam Exam @relation(fields:[examId],references:[id])
+  student User @relation(fields:[studentId],references:[id])
+  attemptNo Int
+  status AttemptStatus @default(IN_PROGRESS)
+  startedAt DateTime @db.Timestamptz
+  expiresAt DateTime @db.Timestamptz
+  submittedAt DateTime? @db.Timestamptz
+  autoSubmitted Boolean @default(false)
+  lastActivityAt DateTime @db.Timestamptz
+  objectiveScore Decimal @default(0) @db.Decimal(10,2)
+  manualScore Decimal @default(0) @db.Decimal(10,2)
+  totalScore Decimal? @db.Decimal(10,2)
+  maxScore Decimal @db.Decimal(10,2)
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  questions AttemptQuestion[]
+  @@unique([examId,studentId,attemptNo])
+  @@index([status,expiresAt])
+}
+model AttemptQuestion {
+  id String @id @default(uuid()) @db.Uuid
+  attemptId String @db.Uuid
+  attempt ExamAttempt @relation(fields:[attemptId],references:[id])
+  originalQuestionId String @db.Uuid
+  sourceType QuestionSourceType
+  orderIndex Int
+  points Decimal @db.Decimal(10,2)
+  snapshotJson Json
+  createdAt DateTime @default(now()) @db.Timestamptz
+  answer AttemptAnswer?
+  @@unique([attemptId,orderIndex])
+  @@unique([attemptId,originalQuestionId])
+}
+model AttemptAnswer {
+  id String @id @default(uuid()) @db.Uuid
+  attemptQuestionId String @unique @db.Uuid
+  question AttemptQuestion @relation(fields:[attemptQuestionId],references:[id])
+  answerJson Json?
+  answerText String?
+  savedAt DateTime @default(now()) @db.Timestamptz
+  autoScore Decimal? @db.Decimal(10,2)
+  manualScore Decimal? @db.Decimal(10,2)
+  feedback String?
+  gradedBy String? @db.Uuid
+  grader User? @relation(fields:[gradedBy],references:[id])
+  gradedAt DateTime? @db.Timestamptz
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+}
+model LiveQuiz {
+  id String @id @default(uuid()) @db.Uuid
+  teacherId String @db.Uuid
+  teacher User @relation(fields:[teacherId],references:[id])
+  title String
+  descriptionMarkdown String?
+  isArchived Boolean @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  questions LiveQuizQuestion[]
+  rooms QuizRoom[]
+  @@index([teacherId])
+}
+model LiveQuizQuestion {
+  id String @id @default(uuid()) @db.Uuid
+  quizId String @db.Uuid
+  questionId String @db.Uuid
+  quiz LiveQuiz @relation(fields:[quizId],references:[id],onDelete:Cascade)
+  question Question @relation(fields:[questionId],references:[id])
+  orderIndex Int
+  timeLimitSeconds Int
+  basePoints Int
+  @@unique([quizId,orderIndex])
+}
+model QuizRoom {
+  id String @id @default(uuid()) @db.Uuid
+  quizId String @db.Uuid
+  teacherId String @db.Uuid
+  quiz LiveQuiz @relation(fields:[quizId],references:[id])
+  teacher User @relation(fields:[teacherId],references:[id])
+  code String @unique
+  status QuizRoomStatus @default(LOBBY)
+  currentQuestionIndex Int?
+  createdAt DateTime @default(now()) @db.Timestamptz
+  startedAt DateTime? @db.Timestamptz
+  endedAt DateTime? @db.Timestamptz
+  questionOpenedAt DateTime? @db.Timestamptz
+  questionClosesAt DateTime? @db.Timestamptz
+  revealedAt DateTime? @db.Timestamptz
+  participants QuizParticipant[]
+  questions LiveRoomQuestion[]
+  @@index([status,questionClosesAt])
+}
+model QuizParticipant {
+  id String @id @default(uuid()) @db.Uuid
+  roomId String @db.Uuid
+  studentId String @db.Uuid
+  room QuizRoom @relation(fields:[roomId],references:[id])
+  student User @relation(fields:[studentId],references:[id])
+  score Int @default(0)
+  joinedAt DateTime @default(now()) @db.Timestamptz
+  lastSeenAt DateTime @default(now()) @db.Timestamptz
+  isConnected Boolean @default(true)
+  finishedAt DateTime? @db.Timestamptz
+  answers QuizAnswer[]
+  @@unique([roomId,studentId])
+}
+model LiveRoomQuestion {
+  id String @id @default(uuid()) @db.Uuid
+  roomId String @db.Uuid
+  room QuizRoom @relation(fields:[roomId],references:[id])
+  sourceQuizQuestionId String @db.Uuid
+  orderIndex Int
+  timeLimitSeconds Int
+  basePoints Int
+  snapshotJson Json
+  answers QuizAnswer[]
+  @@unique([roomId,orderIndex])
+}
+model QuizAnswer {
+  id String @id @default(uuid()) @db.Uuid
+  roomQuestionId String @db.Uuid
+  participantId String @db.Uuid
+  question LiveRoomQuestion @relation(fields:[roomQuestionId],references:[id])
+  participant QuizParticipant @relation(fields:[participantId],references:[id])
+  answerJson Json
+  answeredAt DateTime @db.Timestamptz
+  responseTimeMs Int
+  isCorrect Boolean
+  pointsAwarded Int
+  @@unique([roomQuestionId,participantId])
+}
+model Session {
+  sid String @id
+  sess Json
+  expire DateTime @db.Timestamp(6)
+  @@index([expire])
+  @@map("session")
+}

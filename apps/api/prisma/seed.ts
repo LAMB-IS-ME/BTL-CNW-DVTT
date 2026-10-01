@@ -7,6 +7,7 @@ import {
   saveAnswer,
   submitAttempt,
 } from "../src/modules/attempts/service.js";
+import { AppError } from "../src/utils/errors.js";
 import { snapshotSchema } from "../src/modules/attempts/logic.js";
 const id = (n: number) =>
   `00000000-0000-4000-8000-${n.toString().padStart(12, "0")}`;
@@ -213,25 +214,7 @@ export async function seedDemo(db: Db) {
       },
     },
   });
-  if (
-    (await db.examAttempt.count({
-      where: { examId: id(402), studentId: users[4]!.id },
-    })) === 0
-  ) {
-    const a = await startAttempt(db, id(402), users[4]!.id);
-    const questions = await db.attemptQuestion.findMany({
-      where: { attemptId: a.id },
-    });
-    for (const q of questions) {
-      const snap = snapshotSchema.parse(q.snapshotJson);
-      await saveAnswer(db, a.id, q.id, users[4]!.id, {
-        selectedOptionIds: snap.options
-          .filter((o) => o.isCorrect)
-          .map((o) => o.id),
-      });
-    }
-    await submitAttempt(db, a.id, users[4]!.id);
-  }
+  const demoAttempt = await completeDemoAttempt(db, id(402), users[4]!.id);
   return {
     users: 15,
     classes: 2,
@@ -239,7 +222,63 @@ export async function seedDemo(db: Db) {
     questions: 24,
     exams: 3,
     quizzes: 1,
+    demoAttempt,
   };
+}
+// Each step commits independently so an interrupted seed can resume. Never
+// extend a deadline or overwrite saved answers to manufacture a perfect result.
+export async function completeDemoAttempt(
+  db: Db,
+  examId: string,
+  studentId: string,
+) {
+  const existing = await db.examAttempt.findFirst({
+    where: { examId, studentId },
+    orderBy: { attemptNo: "desc" },
+  });
+  const attempt = existing || (await startAttempt(db, examId, studentId));
+  if (attempt.status === "IN_PROGRESS") {
+    const questions = await db.attemptQuestion.findMany({
+      where: { attemptId: attempt.id },
+      include: { answer: true },
+      orderBy: { orderIndex: "asc" },
+    });
+    for (const q of questions) {
+      if (new Date(attempt.expiresAt) <= new Date()) break;
+      if (q.answer) continue;
+      const snap = snapshotSchema.parse(q.snapshotJson);
+      try {
+        await saveAnswer(db, attempt.id, q.id, studentId, {
+          selectedOptionIds: snap.options
+            .filter((o) => o.isCorrect)
+            .map((o) => o.id),
+        });
+      } catch (error) {
+        // The deadline/job can finalize between the read and this save.
+        if (
+          error instanceof AppError &&
+          ["ATTEMPT_EXPIRED", "ATTEMPT_ALREADY_SUBMITTED"].includes(error.code)
+        )
+          break;
+        throw error;
+      }
+    }
+    const current = await db.examAttempt.findUniqueOrThrow({
+      where: { id: attempt.id },
+    });
+    if (current.status === "IN_PROGRESS")
+      await submitAttempt(db, attempt.id, studentId);
+  }
+  return db.examAttempt.findUniqueOrThrow({
+    where: { id: attempt.id },
+    select: {
+      id: true,
+      attemptNo: true,
+      status: true,
+      autoSubmitted: true,
+      totalScore: true,
+    },
+  });
 }
 if (
   process.argv[1] &&

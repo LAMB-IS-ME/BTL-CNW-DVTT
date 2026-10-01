@@ -47,7 +47,17 @@ it("shows login validation and required accessible fields", async () => {
   fireEvent.submit(
     screen.getByRole("button", { name: "Đăng nhập" }).closest("form")!,
   );
-  expect(await screen.findByText(/10 characters/)).toBeTruthy();
+  expect(await screen.findByText("Vui lòng nhập email.")).toBeTruthy();
+  expect(await screen.findByText("Vui lòng nhập mật khẩu.")).toBeTruthy();
+  expect(screen.getByLabelText("Mật khẩu", { exact: true })).toBeTruthy();
+  expect(
+    screen.getByRole("heading", { name: "Đăng nhập vào ExamSpace" }),
+  ).toBeTruthy();
+  expect(
+    screen.getByText(
+      "Quản lý bài thi, làm bài và theo dõi kết quả trên một nền tảng.",
+    ),
+  ).toBeTruthy();
 });
 it("renders every monitoring state with text independent of color", () => {
   render(

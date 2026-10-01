@@ -34,19 +34,29 @@ export async function materializeSources(
     400,
     "QUESTION_ARCHIVED",
   );
-  const candidates = await Promise.all(
-    exam.pools.map((p) =>
-      tx.question.findMany({
+  // Fetch the union once: all queries in an interactive transaction share
+  // one connection, so Promise.all here only queues work on the same pg client.
+  const available = exam.pools.length
+    ? await tx.question.findMany({
         where: {
-          bankId: p.questionBankId,
           isArchived: false,
           bank: { isArchived: false },
-          ...(p.difficultyFilter ? { difficulty: p.difficultyFilter } : {}),
-          ...(p.tagFilter.length ? { tags: { hasEvery: p.tagFilter } } : {}),
+          OR: exam.pools.map((p) => ({
+            bankId: p.questionBankId,
+            ...(p.difficultyFilter ? { difficulty: p.difficultyFilter } : {}),
+            ...(p.tagFilter.length ? { tags: { hasEvery: p.tagFilter } } : {}),
+          })),
         },
         include: { options: { orderBy: { orderIndex: "asc" } } },
         orderBy: { id: "asc" },
-      }),
+      })
+    : [];
+  const candidates = exam.pools.map((p) =>
+    available.filter(
+      (q) =>
+        q.bankId === p.questionBankId &&
+        (!p.difficultyFilter || q.difficulty === p.difficultyFilter) &&
+        p.tagFilter.every((tag) => q.tags.includes(tag)),
     ),
   );
   const ids = selectPools(

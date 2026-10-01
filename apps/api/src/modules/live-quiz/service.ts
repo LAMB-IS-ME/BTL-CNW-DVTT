@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 import { randomInt } from "node:crypto";
-import type { Db } from "../../db/client.js";
+import { transactionOptions, type Db } from "../../db/client.js";
 import type { Tx } from "../exams/service.js";
 import type { UserDto, QuizState } from "@exam/shared";
 import { check, AppError } from "../../utils/errors.js";
@@ -168,74 +168,69 @@ export async function leaveRoom(db: Db, roomId: string, studentId: string) {
   quizEvents.emit("changed", roomId, "left");
 }
 export async function startRoom(db: Db, roomId: string, actor: UserDto) {
-  await db.$transaction(
-    async (tx) => {
-      await lockRoom(tx, roomId);
-      const ref = await tx.quizRoom.findUnique({
-        where: { id: roomId },
-        select: { quizId: true },
-      });
-      check(ref, 404, "QUIZ_ROOM_NOT_FOUND");
-      await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${ref.quizId}::uuid FOR UPDATE`;
-      const r = await tx.quizRoom.findUnique({
-        where: { id: roomId },
-        include: {
-          quiz: {
-            include: {
-              questions: {
-                include: {
-                  question: {
-                    include: { options: { orderBy: { orderIndex: "asc" } } },
-                  },
+  await db.$transaction(async (tx) => {
+    await lockRoom(tx, roomId);
+    const ref = await tx.quizRoom.findUnique({
+      where: { id: roomId },
+      select: { quizId: true },
+    });
+    check(ref, 404, "QUIZ_ROOM_NOT_FOUND");
+    await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${ref.quizId}::uuid FOR UPDATE`;
+    const r = await tx.quizRoom.findUnique({
+      where: { id: roomId },
+      include: {
+        quiz: {
+          include: {
+            questions: {
+              include: {
+                question: {
+                  include: { options: { orderBy: { orderIndex: "asc" } } },
                 },
-                orderBy: { orderIndex: "asc" },
               },
+              orderBy: { orderIndex: "asc" },
             },
           },
-          _count: { select: { participants: true } },
         },
-      });
-      check(
-        r && r.teacherId === actor.id && actor.role === "TEACHER",
-        403,
-        "FORBIDDEN",
-      );
-      check(r.status === "LOBBY", 409, "QUIZ_ALREADY_STARTED");
-      check(r._count.participants > 0, 409, "QUIZ_NO_PARTICIPANTS");
-      const qs = r.quiz.questions;
-      check(
-        qs.length > 0 &&
-          qs.every(
-            (q) => q.question.type !== "ESSAY" && !q.question.isArchived,
-          ),
-        400,
-        "QUIZ_INVALID_QUESTIONS",
-      );
-      await tx.liveRoomQuestion.createMany({
-        data: qs.map((q, orderIndex) => ({
-          roomId,
-          sourceQuizQuestionId: q.id,
-          orderIndex,
-          timeLimitSeconds: q.timeLimitSeconds,
-          basePoints: q.basePoints,
-          snapshotJson: makeSnapshot(q.question, false),
-        })),
-      });
-      const now = new Date();
-      await tx.quizRoom.update({
-        where: { id: roomId },
-        data: {
-          status: "LIVE",
-          startedAt: now,
-          currentQuestionIndex: 0,
-          questionOpenedAt: now,
-          questionClosesAt: new Date(+now + qs[0]!.timeLimitSeconds * 1000),
-          revealedAt: null,
-        },
-      });
-    },
-    { timeout: 15000 },
-  );
+        _count: { select: { participants: true } },
+      },
+    });
+    check(
+      r && r.teacherId === actor.id && actor.role === "TEACHER",
+      403,
+      "FORBIDDEN",
+    );
+    check(r.status === "LOBBY", 409, "QUIZ_ALREADY_STARTED");
+    check(r._count.participants > 0, 409, "QUIZ_NO_PARTICIPANTS");
+    const qs = r.quiz.questions;
+    check(
+      qs.length > 0 &&
+        qs.every((q) => q.question.type !== "ESSAY" && !q.question.isArchived),
+      400,
+      "QUIZ_INVALID_QUESTIONS",
+    );
+    await tx.liveRoomQuestion.createMany({
+      data: qs.map((q, orderIndex) => ({
+        roomId,
+        sourceQuizQuestionId: q.id,
+        orderIndex,
+        timeLimitSeconds: q.timeLimitSeconds,
+        basePoints: q.basePoints,
+        snapshotJson: makeSnapshot(q.question, false),
+      })),
+    });
+    const now = new Date();
+    await tx.quizRoom.update({
+      where: { id: roomId },
+      data: {
+        status: "LIVE",
+        startedAt: now,
+        currentQuestionIndex: 0,
+        questionOpenedAt: now,
+        questionClosesAt: new Date(+now + qs[0]!.timeLimitSeconds * 1000),
+        revealedAt: null,
+      },
+    });
+  }, transactionOptions);
   quizEvents.emit("changed", roomId, "started");
   return roomState(db, roomId, actor);
 }

@@ -111,6 +111,8 @@ Seed tạo 1 admin, 2 teacher, 12 student, 2 lớp, 2 ngân hàng, 24 câu (6 m�
 
 Production seed bị chặn trừ khi ALLOW_PRODUCTION_SEED=true. Nếu cần demo cloud, đặt DEMO_PASSWORD riêng trước seed lần đầu và tắt flag sau đó; E2E của repo chỉ dùng test DB/password development. Không seed tài khoản mặc định vào hệ thống đang phục vụ người dùng thật. v1 không có password reset UI; DEMO_PASSWORD không cập nhật account đã tồn tại.
 
+Seed phục hồi lượt demo đang IN_PROGRESS sau lỗi giữa chừng, giữ đáp án đã lưu và deadline gốc; lượt đã nộp không submit lại. Không cần reset database. Xem [báo cáo timeout/seed Supabase](SEED_RECOVERY.md) để biết cấu hình transaction và kiểm chứng chạy lại.
+
 ## Render backend
 
 Tạo Web Service từ repository, root directory để trống (root monorepo). Có thể dùng [render.yaml](../render.yaml) qua New Blueprint, hoặc nhập thủ công:

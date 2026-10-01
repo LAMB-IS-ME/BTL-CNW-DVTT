@@ -65,6 +65,8 @@ flowchart TB
 
 Migration integrity thêm CHECK số điểm/thời hạn hợp lệ, unique partial `(examId, studentId) WHERE status = 'IN_PROGRESS'`, bật RLS trên tất cả bảng ứng dụng. SQL bổ sung này phải giữ trong migrations vì Prisma schema không diễn đạt đầy đủ. Giao dịch start lock Exam; save/submit/grade lock Attempt; Quiz lock Room rồi Quiz nếu cần. Admin dùng advisory transaction lock để serialize thay đổi role/status và kiểm tra lại acting admin.
 
+Interactive transactions dùng cấu hình chung maxWait 5 giây/timeout 15 giây. Start batch-create snapshot; finalize batch-upsert autoScore và tái sử dụng trạng thái đã đọc dưới row lock để giảm round trips trên Supabase. Không thay isolation level/unique constraints. Chi tiết và regression: [SEED_RECOVERY](SEED_RECOVERY.md).
+
 ## 6. ER Diagram
 
 ```mermaid

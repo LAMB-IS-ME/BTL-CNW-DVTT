@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { Prisma } from "../../generated/prisma/client.js";
 import { EventEmitter } from "node:events";
 import type { Db } from "../../db/client.js";
 import type { Tx } from "../exams/service.js";
@@ -57,7 +59,13 @@ export async function finalizeTx(tx: Tx, id: string, auto = false) {
   await lockAttempt(tx, id);
   const a = await readAttempt(tx, id);
   check(a, 404, "NOT_FOUND");
+  return finalizeLockedTx(tx, a, auto);
+}
+// The caller must hold the attempt row lock before loading this state.
+async function finalizeLockedTx(tx: Tx, a: FullAttempt, auto: boolean) {
   if (a.status !== "IN_PROGRESS") return a;
+  const scores: Prisma.Sql[] = [];
+  const gradedAt = new Date();
   let objectiveScore = 0,
     hasEssay = false;
   for (const q of a.questions) {
@@ -68,14 +76,21 @@ export async function finalizeTx(tx: Tx, id: string, auto = false) {
     const score = gradeObjective(snap, selected, Number(q.points));
     if (score === null) hasEssay = true;
     else objectiveScore += score;
-    await tx.attemptAnswer.upsert({
-      where: { attemptQuestionId: q.id },
-      create: { attemptQuestionId: q.id, autoScore: score },
-      update: { autoScore: score },
-    });
+    scores.push(
+      Prisma.sql`(${randomUUID()}::uuid, ${q.id}::uuid, ${score}::numeric, ${gradedAt})`,
+    );
   }
-  await tx.examAttempt.update({
-    where: { id },
+  // One parameterized batch preserves saved answers/feedback and avoids one
+  // upsert round trip per question (up to 500 questions per attempt).
+  if (scores.length)
+    await tx.$executeRaw(Prisma.sql`
+    INSERT INTO "AttemptAnswer" (id, "attemptQuestionId", "autoScore", "updatedAt")
+    VALUES ${Prisma.join(scores)}
+    ON CONFLICT ("attemptQuestionId") DO UPDATE
+      SET "autoScore" = EXCLUDED."autoScore", "updatedAt" = EXCLUDED."updatedAt"
+  `);
+  return tx.examAttempt.update({
+    where: { id: a.id },
     data: {
       status: hasEssay ? "PENDING_MANUAL_GRADING" : "GRADED",
       autoSubmitted: auto,
@@ -84,70 +99,68 @@ export async function finalizeTx(tx: Tx, id: string, auto = false) {
       manualScore: 0,
       totalScore: hasEssay ? null : objectiveScore,
     },
+    include: attemptInclude,
   });
-  return (await readAttempt(tx, id))!;
 }
 export async function startAttempt(db: Db, examId: string, studentId: string) {
-  const a = await db.$transaction(
-    async (tx) => {
-      await lockExam(tx, examId);
-      const exam = await tx.exam.findUnique({
-        where: { id: examId },
-        include: examInclude,
-      });
-      check(exam, 404, "NOT_FOUND");
-      const user = await tx.user.findUnique({ where: { id: studentId } });
-      check(
-        user?.role === "STUDENT" && user.status === "ACTIVE",
-        403,
-        "FORBIDDEN",
-      );
-      const member = await tx.classMember.count({
-        where: { studentId, class: { exams: { some: { examId } } } },
-      });
-      check(member > 0, 403, "EXAM_NOT_ASSIGNED");
-      const previous = await tx.examAttempt.findMany({
-        where: { examId, studentId },
-        orderBy: { attemptNo: "desc" },
-      });
-      const active = previous.find((a) => a.status === "IN_PROGRESS");
-      const now = new Date();
-      if (active) {
-        if (active.expiresAt > now) return (await readAttempt(tx, active.id))!;
-        await finalizeTx(tx, active.id, true);
-      }
-      try {
-        eligibility(exam, true, previous.length, now);
-      } catch (error) {
-        if (error instanceof AppError) return { failure: error };
-        throw error;
-      }
-      let selected = await materializeSources(tx, exam);
-      if (exam.shuffleQuestions) selected = shuffle(selected);
-      const a = await tx.examAttempt.create({
-        data: {
-          examId,
-          studentId,
-          attemptNo: (previous[0]?.attemptNo || 0) + 1,
-          startedAt: now,
-          expiresAt: expiresAt(now, exam.durationMinutes, exam.closeAt),
-          lastActivityAt: now,
-          maxScore: selected.reduce((n, q) => n + q.points, 0),
-          questions: {
-            create: selected.map((s, orderIndex) => ({
-              originalQuestionId: s.question.id,
-              sourceType: s.sourceType,
-              orderIndex,
-              points: s.points,
-              snapshotJson: makeSnapshot(s.question, exam.shuffleOptions),
-            })),
-          },
-        },
-      });
-      return (await readAttempt(tx, a.id))!;
-    },
-    { timeout: 15000 },
-  );
+  const a = await db.$transaction(async (tx) => {
+    await lockExam(tx, examId);
+    const exam = await tx.exam.findUnique({
+      where: { id: examId },
+      include: examInclude,
+    });
+    check(exam, 404, "NOT_FOUND");
+    const user = await tx.user.findUnique({ where: { id: studentId } });
+    check(
+      user?.role === "STUDENT" && user.status === "ACTIVE",
+      403,
+      "FORBIDDEN",
+    );
+    const member = await tx.classMember.count({
+      where: { studentId, class: { exams: { some: { examId } } } },
+    });
+    check(member > 0, 403, "EXAM_NOT_ASSIGNED");
+    const previous = await tx.examAttempt.findMany({
+      where: { examId, studentId },
+      orderBy: { attemptNo: "desc" },
+    });
+    const active = previous.find((a) => a.status === "IN_PROGRESS");
+    const now = new Date();
+    if (active) {
+      if (active.expiresAt > now) return (await readAttempt(tx, active.id))!;
+      await finalizeTx(tx, active.id, true);
+    }
+    try {
+      eligibility(exam, true, previous.length, now);
+    } catch (error) {
+      if (error instanceof AppError) return { failure: error };
+      throw error;
+    }
+    let selected = await materializeSources(tx, exam);
+    if (exam.shuffleQuestions) selected = shuffle(selected);
+    const a = await tx.examAttempt.create({
+      data: {
+        examId,
+        studentId,
+        attemptNo: (previous[0]?.attemptNo || 0) + 1,
+        startedAt: now,
+        expiresAt: expiresAt(now, exam.durationMinutes, exam.closeAt),
+        lastActivityAt: now,
+        maxScore: selected.reduce((n, q) => n + q.points, 0),
+      },
+    });
+    await tx.attemptQuestion.createMany({
+      data: selected.map((s, orderIndex) => ({
+        attemptId: a.id,
+        originalQuestionId: s.question.id,
+        sourceType: s.sourceType,
+        orderIndex,
+        points: s.points,
+        snapshotJson: makeSnapshot(s.question, exam.shuffleOptions),
+      })),
+    });
+    return (await readAttempt(tx, a.id))!;
+  });
   examEvents.emit("changed", examId);
   if ("failure" in a) throw a.failure;
   return attemptDto(a);
@@ -158,7 +171,7 @@ export async function getAttempt(db: Db, id: string, studentId: string) {
     const a = await readAttempt(tx, id);
     check(a && a.studentId === studentId, 404, "NOT_FOUND");
     return a.status === "IN_PROGRESS" && a.expiresAt <= new Date()
-      ? finalizeTx(tx, id, true)
+      ? finalizeLockedTx(tx, a, true)
       : a;
   });
   examEvents.emit("changed", a.examId);
@@ -177,7 +190,7 @@ export async function saveAnswer(
     check(a && a.studentId === studentId, 404, "NOT_FOUND");
     check(a.status === "IN_PROGRESS", 409, "ATTEMPT_ALREADY_SUBMITTED");
     if (a.expiresAt <= new Date()) {
-      await finalizeTx(tx, id, true);
+      await finalizeLockedTx(tx, a, true);
       return { expired: true, examId: a.examId };
     }
     const q = a.questions.find((q) => q.id === questionId);
@@ -218,7 +231,7 @@ export async function submitAttempt(db: Db, id: string, studentId: string) {
     await lockAttempt(tx, id);
     const a = await readAttempt(tx, id);
     check(a && a.studentId === studentId, 404, "NOT_FOUND");
-    return finalizeTx(tx, id, a.expiresAt <= new Date());
+    return finalizeLockedTx(tx, a, a.expiresAt <= new Date());
   });
   examEvents.emit("changed", a.examId);
   examEvents.emit("submitted", {

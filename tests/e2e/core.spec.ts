@@ -4,7 +4,7 @@ const origin = "http://localhost:5173",
 async function login(page: Page, email: string) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill(email);
-  await page.getByLabel("Mật khẩu (ít nhất 10 ký tự)").fill("DevOnly!2026");
+  await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
 }

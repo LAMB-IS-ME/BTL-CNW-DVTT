@@ -99,10 +99,10 @@ try {
   const response = await page.goto(`${origin}/project/teacher/exams`);
   expect(response.status()).toBe(404);
   await expect(
-    page.getByRole("heading", { name: "Chào mừng trở lại", exact: true }),
+    page.getByRole("heading", { name: "Đăng nhập vào ExamSpace", exact: true }),
   ).toBeVisible();
   await page.getByLabel("Email", { exact: true }).fill("teacher1@exam.local");
-  await page.getByLabel("Mật khẩu (ít nhất 10 ký tự)").fill("DevOnly!2026");
+  await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
   await page.goto(`${origin}/project/teacher/exams`);

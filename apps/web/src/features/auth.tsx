@@ -10,7 +10,7 @@ import {
   type Role,
 } from "@exam/shared";
 import { z } from "zod";
-import { api } from "../lib/api";
+import { api, ApiFailure } from "../lib/api";
 import { ErrorBox, Field, Loading } from "../components/ui";
 const AuthContext = createContext<{ user: UserDto | null; loading: boolean }>({
   user: null,
@@ -55,9 +55,16 @@ export function AuthForm({ register = false }: { register?: boolean }) {
   return (
     <div className="auth card">
       <p className="eyebrow">EXAMSPACE</p>
-      <h1>{register ? "Tạo tài khoản sinh viên" : "Chào mừng trở lại"}</h1>
-      <p>Không gian học tập, kiểm tra và kết nối.</p>
+      <h1>
+        {register ? "Tạo tài khoản sinh viên" : "Đăng nhập vào ExamSpace"}
+      </h1>
+      <p>
+        {register
+          ? "Không gian học tập, kiểm tra và kết nối."
+          : "Quản lý bài thi, làm bài và theo dõi kết quả trên một nền tảng."}
+      </p>
       <form
+        noValidate
         onSubmit={form.handleSubmit(async (data) => {
           try {
             setError(undefined);
@@ -74,7 +81,11 @@ export function AuthForm({ register = false }: { register?: boolean }) {
               nav(`/${r.user.role.toLowerCase()}`);
             }
           } catch (e) {
-            setError(e);
+            setError(
+              e instanceof ApiFailure
+                ? e
+                : new Error("Không thể kết nối máy chủ. Vui lòng thử lại."),
+            );
           }
         })}
       >
@@ -99,7 +110,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
             autoComplete="email"
           />
         </Field>
-        <Field label="Mật khẩu (ít nhất 10 ký tự)">
+        <Field label={register ? "Mật khẩu (ít nhất 10 ký tự)" : "Mật khẩu"}>
           <input
             type="password"
             {...form.register("password")}
@@ -107,7 +118,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
           />
         </Field>
         {Object.values(form.formState.errors).map((e, i) => (
-          <p className="error" key={i}>
+          <p role="alert" className="error" key={i}>
             {e.message}
           </p>
         ))}

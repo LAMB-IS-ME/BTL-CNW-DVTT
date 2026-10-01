@@ -8,13 +8,38 @@ export const questionTypes = [
   "ESSAY",
 ] as const;
 export const idSchema = z.string().uuid();
+const emailSchema = z
+  .string({ error: "Vui lòng nhập email." })
+  .trim()
+  .min(1, "Vui lòng nhập email.")
+  .pipe(z.email({ error: "Email không hợp lệ." }))
+  .transform((value) => value.toLowerCase());
+const loginPasswordSchema = z
+  .string({ error: "Vui lòng nhập mật khẩu." })
+  .min(1, "Vui lòng nhập mật khẩu.")
+  .max(128, "Mật khẩu không được vượt quá 128 ký tự.");
+// Password policy applies when setting a new password, not when verifying one.
+export const newPasswordSchema = loginPasswordSchema.min(
+  10,
+  "Mật khẩu phải có ít nhất 10 ký tự.",
+);
 export const loginSchema = z.object({
-  email: z.email().trim().toLowerCase(),
-  password: z.string().min(10).max(128),
+  email: emailSchema,
+  password: loginPasswordSchema,
 });
 export const registerSchema = loginSchema.extend({
-  fullName: z.string().trim().min(2).max(120),
-  studentCode: z.string().trim().min(1).max(40).optional(),
+  password: newPasswordSchema,
+  fullName: z
+    .string({ error: "Vui lòng nhập họ và tên." })
+    .trim()
+    .min(2, "Họ và tên phải có ít nhất 2 ký tự.")
+    .max(120, "Họ và tên không được vượt quá 120 ký tự."),
+  studentCode: z
+    .string({ error: "Mã sinh viên không hợp lệ." })
+    .trim()
+    .min(1, "Vui lòng nhập mã sinh viên hoặc để trống.")
+    .max(40, "Mã sinh viên không được vượt quá 40 ký tự.")
+    .optional(),
 });
 export type UserDto = {
   id: string;

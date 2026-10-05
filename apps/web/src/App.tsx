@@ -1,7 +1,9 @@
 import { lazy, Suspense, useState } from "react";
 import { Loading, ErrorBox } from "./components/ui";
 import {
-  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
   Routes,
   Route,
   Link,
@@ -14,6 +16,8 @@ import {
 } from "@tanstack/react-query";
 import { AuthProvider, AuthForm, Guard, useAuth } from "./features/auth";
 import { api } from "./lib/api";
+import "./styles/question-bank.css";
+import { BankSidebar } from "./features/question-bank/shell";
 const QuizList = lazy(() =>
   import("./features/quiz").then((m) => ({ default: m.QuizList })),
 );
@@ -60,7 +64,19 @@ const CatalogDetail = lazy(() =>
   import("./features/catalog").then((m) => ({ default: m.CatalogDetail })),
 );
 const QuestionEditor = lazy(() =>
-  import("./features/catalog").then((m) => ({ default: m.QuestionEditor })),
+  import("./features/question-bank/editor").then((m) => ({
+    default: m.QuestionEditor,
+  })),
+);
+const BankList = lazy(() =>
+  import("./features/question-bank/banks").then((m) => ({
+    default: m.BankList,
+  })),
+);
+const BankDetail = lazy(() =>
+  import("./features/question-bank/banks").then((m) => ({
+    default: m.BankDetail,
+  })),
 );
 const AdminUsers = lazy(() =>
   import("./features/admin").then((m) => ({ default: m.AdminUsers })),
@@ -73,11 +89,16 @@ const queryClient = new QueryClient({
 });
 function Shell() {
   const { user } = useAuth();
+  const location = useLocation();
+  const pilot =
+    user?.role === "TEACHER" &&
+    /^\/teacher\/(question-banks|questions)(\/|$)/.test(location.pathname);
   const [error, setError] = useState<unknown>();
   const nav = useNavigate(),
     cache = useQueryClient();
   return (
-    <>
+    <div className={pilot ? "qb-shell" : undefined}>
+      {pilot && <BankSidebar />}
       <header>
         <Link className="brand" to="/">
           ▦ ExamSpace
@@ -243,7 +264,7 @@ function Shell() {
               path="/teacher/question-banks"
               element={
                 <Guard role="TEACHER">
-                  <CatalogList bank />
+                  <BankList />
                 </Guard>
               }
             />
@@ -251,7 +272,7 @@ function Shell() {
               path="/teacher/question-banks/:id"
               element={
                 <Guard role="TEACHER">
-                  <CatalogDetail bank />
+                  <BankDetail />
                 </Guard>
               }
             />
@@ -424,17 +445,26 @@ function Shell() {
         </Suspense>
       </main>
       <footer>ExamSpace · Online Examination & Live Quiz</footer>
-    </>
+    </div>
   );
 }
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+const router = createBrowserRouter(
+  [
+    {
+      path: "*",
+      element: (
         <AuthProvider>
           <Shell />
         </AuthProvider>
-      </BrowserRouter>
+      ),
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 }

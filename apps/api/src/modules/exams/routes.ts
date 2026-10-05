@@ -1,3 +1,4 @@
+import { lockCatalog } from "../question-banks/lock.js";
 import { Router } from "express";
 import { z } from "zod";
 import { examSchema } from "@exam/shared";
@@ -16,6 +17,7 @@ export function examRoutes(db: Db) {
   ) =>
     db.$transaction(async (tx) => {
       await lockExam(tx, id);
+      await lockCatalog(tx, teacherId);
       const e = await ownExam(tx, id, teacherId);
       check(e.status !== "ARCHIVED", 409, "EXAM_ARCHIVED");
       check(
@@ -41,13 +43,11 @@ export function examRoutes(db: Db) {
     });
   });
   r.post("/exams", async (req, res) =>
-    res
-      .status(201)
-      .json({
-        data: await db.exam.create({
-          data: { ...examSchema.parse(req.body), teacherId: req.user.id },
-        }),
+    res.status(201).json({
+      data: await db.exam.create({
+        data: { ...examSchema.parse(req.body), teacherId: req.user.id },
       }),
+    }),
   );
   r.get("/exams/:id", async (req, res) =>
     res.json({ data: await ownExam(db, param(req), req.user.id) }),

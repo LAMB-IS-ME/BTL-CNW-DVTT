@@ -1,3 +1,4 @@
+import { lockCatalog } from "../question-banks/lock.js";
 import type { Db } from "../../db/client.js";
 import type { Prisma } from "../../generated/prisma/client.js";
 import { check } from "../../utils/errors.js";
@@ -28,9 +29,22 @@ export async function materializeSources(
   exam: Awaited<ReturnType<typeof ownExam>>,
   random = true,
 ) {
-  const fixed = exam.questions;
+  await lockCatalog(tx, exam.teacherId);
+  // Re-read sources after taking the lock: ownExam may have read them before
+  // an archive transaction committed. Exam configuration is already locked.
+  const sources = await tx.question.findMany({
+    where: { id: { in: exam.questions.map((q) => q.questionId) } },
+    include: { bank: true, options: { orderBy: { orderIndex: "asc" } } },
+  });
+  const fixed = exam.questions.map((f) => ({
+    ...f,
+    question: sources.find((q) => q.id === f.questionId)!,
+  }));
   check(
-    fixed.every((f) => !f.question.isArchived),
+    fixed.every(
+      (f) =>
+        f.question && !f.question.isArchived && !f.question.bank.isArchived,
+    ),
     400,
     "QUESTION_ARCHIVED",
   );
@@ -47,7 +61,7 @@ export async function materializeSources(
             ...(p.tagFilter.length ? { tags: { hasEvery: p.tagFilter } } : {}),
           })),
         },
-        include: { options: { orderBy: { orderIndex: "asc" } } },
+        include: { bank: true, options: { orderBy: { orderIndex: "asc" } } },
         orderBy: { id: "asc" },
       })
     : [];

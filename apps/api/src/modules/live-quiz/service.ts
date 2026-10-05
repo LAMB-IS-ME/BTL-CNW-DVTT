@@ -1,3 +1,4 @@
+import { lockCatalog } from "../question-banks/lock.js";
 import { EventEmitter } from "node:events";
 import { randomInt } from "node:crypto";
 import { transactionOptions, type Db } from "../../db/client.js";
@@ -176,6 +177,7 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
     });
     check(ref, 404, "QUIZ_ROOM_NOT_FOUND");
     await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${ref.quizId}::uuid FOR UPDATE`;
+    await lockCatalog(tx, actor.id);
     const r = await tx.quizRoom.findUnique({
       where: { id: roomId },
       include: {
@@ -184,7 +186,10 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
             questions: {
               include: {
                 question: {
-                  include: { options: { orderBy: { orderIndex: "asc" } } },
+                  include: {
+                    bank: true,
+                    options: { orderBy: { orderIndex: "asc" } },
+                  },
                 },
               },
               orderBy: { orderIndex: "asc" },
@@ -204,7 +209,12 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
     const qs = r.quiz.questions;
     check(
       qs.length > 0 &&
-        qs.every((q) => q.question.type !== "ESSAY" && !q.question.isArchived),
+        qs.every(
+          (q) =>
+            q.question.type !== "ESSAY" &&
+            !q.question.isArchived &&
+            !q.question.bank.isArchived,
+        ),
       400,
       "QUIZ_INVALID_QUESTIONS",
     );

@@ -1,3 +1,4 @@
+import { lockCatalog } from "../question-banks/lock.js";
 import { Router } from "express";
 import { z } from "zod";
 import { rateLimit } from "express-rate-limit";
@@ -39,13 +40,11 @@ export function quizRoutes(db: Db) {
     });
   });
   r.post("/quizzes", async (req, res) =>
-    res
-      .status(201)
-      .json({
-        data: await db.liveQuiz.create({
-          data: { ...schema.parse(req.body), teacherId: req.user.id },
-        }),
+    res.status(201).json({
+      data: await db.liveQuiz.create({
+        data: { ...schema.parse(req.body), teacherId: req.user.id },
       }),
+    }),
   );
   r.get("/quizzes/:id", async (req, res) =>
     res.json({ data: await own(param(req), req.user.id) }),
@@ -84,6 +83,7 @@ export function quizRoutes(db: Db) {
       .parse(req.body);
     await db.$transaction(async (tx) => {
       await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${param(req)}::uuid FOR UPDATE`;
+      await lockCatalog(tx, req.user.id);
       check(
         (await tx.question.count({
           where: {

@@ -1,0 +1,14 @@
+{
+  "method": "WCAG sRGB formula, static token pairs; not a full WCAG audit",
+  "ratios": {
+    "text/white": 15.07,
+    "secondary/white": 6.72,
+    "muted/background": 4.91,
+    "primary/white": 6.9,
+    "success": 6.76,
+    "warning": 6.61,
+    "danger": 5.98,
+    "control/white": 3.19,
+    "info": 8.59
+  }
+}

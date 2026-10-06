@@ -16,8 +16,15 @@ import {
 } from "@tanstack/react-query";
 import { AuthProvider, AuthForm, Guard, useAuth } from "./features/auth";
 import { api } from "./lib/api";
+import "./styles/pilot-tokens.css";
 import "./styles/question-bank.css";
-import { BankSidebar } from "./features/question-bank/shell";
+import "./styles/teacher-dashboard.css";
+import { ApplicationSidebar } from "./components/ApplicationSidebar";
+const TeacherDashboard = lazy(() =>
+  import("./features/teacher-dashboard").then((m) => ({
+    default: m.TeacherDashboard,
+  })),
+);
 const QuizList = lazy(() =>
   import("./features/quiz").then((m) => ({ default: m.QuizList })),
 );
@@ -92,14 +99,30 @@ function Shell() {
   const location = useLocation();
   const pilot =
     user?.role === "TEACHER" &&
-    /^\/teacher\/(question-banks|questions)(\/|$)/.test(location.pathname);
+    (location.pathname === "/teacher" ||
+      /^\/teacher\/(question-banks|questions)(\/|$)/.test(location.pathname));
   const [error, setError] = useState<unknown>();
   const nav = useNavigate(),
     cache = useQueryClient();
   return (
     <div className={pilot ? "qb-shell" : undefined}>
-      {pilot && <BankSidebar />}
+      {pilot && (
+        <>
+          <a className="qb-skip-link" href="#main-content">
+            Đến nội dung chính
+          </a>
+          <ApplicationSidebar />
+        </>
+      )}
       <header>
+        {pilot && (
+          <span className="qb-topbar-context">
+            Không gian giảng dạy <span>/</span>{" "}
+            {location.pathname === "/teacher"
+              ? "Tổng quan"
+              : "Thư viện câu hỏi"}
+          </span>
+        )}
         <Link className="brand" to="/">
           ▦ ExamSpace
         </Link>
@@ -128,7 +151,17 @@ function Shell() {
                   <Link to="/student/quiz/join">Live Quiz</Link>
                 </>
               )}
-              <span>{user.fullName}</span>
+              <span className={pilot ? "qb-user" : undefined}>
+                {pilot && (
+                  <span className="qb-avatar" aria-hidden="true">
+                    {user.fullName.split(" ").at(-1)?.slice(0, 1)}
+                  </span>
+                )}
+                <span>
+                  {user.fullName}
+                  {pilot && <small>Giảng viên</small>}
+                </span>
+              </span>
               <button
                 className="secondary"
                 onClick={async () => {
@@ -149,7 +182,7 @@ function Shell() {
           )}
         </nav>
       </header>
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <ErrorBox error={error} />
         <Suspense fallback={<Loading />}>
           <Routes>
@@ -205,34 +238,7 @@ function Shell() {
               path="/teacher"
               element={
                 <Guard role="TEACHER">
-                  <>
-                    <h1>Không gian giảng viên</h1>
-                    <div className="grid">
-                      {[
-                        ["classes", "Lớp học", "Quản lý danh sách sinh viên"],
-                        [
-                          "question-banks",
-                          "Ngân hàng câu hỏi",
-                          "Soạn câu hỏi và tài nguyên",
-                        ],
-                        ["exams", "Bài thi", "Cấu hình, giám sát và chấm bài"],
-                        [
-                          "quizzes",
-                          "Live Quiz",
-                          "Hoạt động tương tác trên lớp",
-                        ],
-                      ].map(([path, title, desc]) => (
-                        <Link
-                          className="card"
-                          key={path}
-                          to={`/teacher/${path}`}
-                        >
-                          <h2>{title}</h2>
-                          <p>{desc} →</p>
-                        </Link>
-                      ))}
-                    </div>
-                  </>
+                  <TeacherDashboard />
                 </Guard>
               }
             />

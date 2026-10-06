@@ -45,7 +45,7 @@ const Preview = memo(function Preview({ value }: { value: QuestionInput }) {
   return (
     <>
       <div className="qb-preview-label">
-        <span>BẢN XEM TRƯỚC</span>
+        <span>Bản xem trước</span>
         <span>{Number(value.defaultPoints) || 0} điểm</span>
       </div>
       {value.promptMarkdown ? (
@@ -308,48 +308,50 @@ function QuestionForm({
           <h1>{question ? "Chỉnh sửa câu hỏi" : "Tạo câu hỏi"}</h1>
           <p>Soạn nội dung và kiểm tra bản xem trước trước khi lưu.</p>
         </div>
-        <Status archived={readOnly} />
-      </div>
-      {question && !bank.isArchived && (
-        <div className="qb-editor-lifecycle">
-          <ConfirmAction
-            label={archived ? "Khôi phục câu hỏi" : "Lưu trữ câu hỏi"}
-            title={archived ? "Khôi phục câu hỏi?" : "Lưu trữ câu hỏi?"}
-            disabled={busy || dirty}
-            danger={!archived}
-            onConfirm={async () => {
-              await api(
-                `/teacher/questions/${question.id}${archived ? "/restore" : ""}`,
-                archived ? "POST" : "DELETE",
-              );
-              setArchived(!archived);
-              await cache.invalidateQueries({
-                queryKey: ["qb-question", question.id],
-              });
-              await refresh();
-              setNotice(
-                archived
-                  ? "Đã khôi phục câu hỏi."
-                  : "Đã lưu trữ câu hỏi. Lịch sử bài làm được giữ nguyên.",
-              );
-            }}
-          >
-            <p className="qb-confirm-prompt">
-              {d.promptMarkdown.slice(0, 180)}
-            </p>
-            <p>
-              {archived
-                ? "Đưa câu hỏi trở lại danh sách đang dùng."
-                : "Ẩn khỏi danh sách đang dùng. Có thể khôi phục; không xóa lịch sử bài thi."}
-            </p>
-          </ConfirmAction>
-          {dirty && (
-            <span className="qb-help">
-              Lưu hoặc hủy thay đổi trước khi lưu trữ.
-            </span>
+        <div className="qb-editor-heading-actions">
+          <Status archived={readOnly} />
+          {question && !bank.isArchived && (
+            <div className="qb-editor-lifecycle">
+              <ConfirmAction
+                label={archived ? "Khôi phục câu hỏi" : "Lưu trữ câu hỏi"}
+                title={archived ? "Khôi phục câu hỏi?" : "Lưu trữ câu hỏi?"}
+                disabled={busy || dirty}
+                danger={!archived}
+                onConfirm={async () => {
+                  await api(
+                    `/teacher/questions/${question.id}${archived ? "/restore" : ""}`,
+                    archived ? "POST" : "DELETE",
+                  );
+                  setArchived(!archived);
+                  await cache.invalidateQueries({
+                    queryKey: ["qb-question", question.id],
+                  });
+                  await refresh();
+                  setNotice(
+                    archived
+                      ? "Đã khôi phục câu hỏi."
+                      : "Đã lưu trữ câu hỏi. Lịch sử bài làm được giữ nguyên.",
+                  );
+                }}
+              >
+                <p className="qb-confirm-prompt">
+                  {d.promptMarkdown.slice(0, 180)}
+                </p>
+                <p>
+                  {archived
+                    ? "Đưa câu hỏi trở lại danh sách đang dùng."
+                    : "Ẩn khỏi danh sách đang dùng. Có thể khôi phục; không xóa lịch sử bài thi."}
+                </p>
+              </ConfirmAction>
+              {dirty && (
+                <span className="qb-help">
+                  Lưu hoặc hủy thay đổi trước khi lưu trữ.
+                </span>
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
       {readOnly && (
         <div className="qb-warning">
           {bank.isArchived

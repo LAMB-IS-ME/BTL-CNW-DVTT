@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-06",
+  "checkpoint": "5fa11bd",
+  "branch": "ux/education-saas-redesign-pilot",
+  "scope": "Visual polish only; no route, RBAC, backend, API, schema, dependency or business handler changes.",
+  "results": {
+    "lint": {
+      "passed": 1,
+      "failed": 0
+    },
+    "typecheck": {
+      "passed": 1,
+      "failed": 0
+    },
+    "build": {
+      "passed": 1,
+      "failed": 0
+    },
+    "unit_frontend": {
+      "unique_passed": 27,
+      "unresolved_failures": 0,
+      "initial_run": {
+        "passed": 26,
+        "failed": 1
+      },
+      "targeted_retry": {
+        "file": "apps/api/src/foundation.test.ts",
+        "passed": 3,
+        "failed": 0
+      },
+      "retry_reason": "Supertest health test could not bind local HTTP port inside sandbox (server.address() was null); reran only foundation file with local port access. Two tests overlap initial passing results."
+    },
+    "targeted_ui": {
+      "passed": 6,
+      "failed": 0,
+      "duration_seconds": 54.5
+    },
+    "full_chromium": {
+      "passed": 14,
+      "failed": 0,
+      "question_bank_subset": 11,
+      "core_subset": 3,
+      "last_run": {
+        "status": "passed",
+        "failedTests": []
+      },
+      "summary": "  14 passed (2.3m)"
+    },
+    "integration": {
+      "executed_this_round": false,
+      "reason": "No backend or business logic change; previous 29/29 PASS retained as prior evidence, not a new run."
+    }
+  },
+  "height_comparison_same_demo_questions": [
+    {
+      "screen": "question-bank-detail",
+      "device": "desktop",
+      "v1_height": 1807,
+      "v2_height": 1619,
+      "reduction_percent": 10.4
+    },
+    {
+      "screen": "question-bank-editor",
+      "device": "desktop",
+      "v1_height": 2243,
+      "v2_height": 2060,
+      "reduction_percent": 8.2
+    },
+    {
+      "screen": "question-bank-detail",
+      "device": "tablet",
+      "v1_height": 3596,
+      "v2_height": 2594,
+      "reduction_percent": 27.9
+    },
+    {
+      "screen": "question-bank-editor",
+      "device": "tablet",
+      "v1_height": 2247,
+      "v2_height": 2104,
+      "reduction_percent": 6.4
+    },
+    {
+      "screen": "question-bank-detail",
+      "device": "mobile",
+      "v1_height": 3996,
+      "v2_height": 3017,
+      "reduction_percent": 24.5
+    },
+    {
+      "screen": "question-bank-editor",
+      "device": "mobile",
+      "v1_height": 2532,
+      "v2_height": 2365,
+      "reduction_percent": 6.6
+    }
+  ],
+  "runtime_sha256": {
+    "apps/web/src/App.tsx": "152201d73463b14f6f4bbe607f37934d2c6808b3854e29f1957395b1ca85107b",
+    "apps/web/src/features/question-bank/banks.tsx": "ed3055307782e0db308c7968a5993fd829df0366d426871f3a0f8e395214e1c4",
+    "apps/web/src/features/question-bank/editor.tsx": "9faf3454394426932dac706bcba8945f5ed99a0d7865aa005612155ee63e3533",
+    "apps/web/src/features/question-bank/ui.tsx": "91ff2e1a48e595bf8d338f539237e128c3040b5481ab4bc3dcf4468ac7af9cfd",
+    "apps/web/src/styles/question-bank.css": "daedbfffad105c325bd6a1068bbf16c9c3afe09ecf2c3f85be36d731587a9441",
+    "apps/web/src/components/ApplicationSidebar.tsx": "7dc0080e14ee8bd5e919382d990ec00a1d7df95ade02de6826e8e2f458a5432c",
+    "apps/web/src/components/Icon.tsx": "af90804ed6203a1e4311cb2e0395b815cce9893dcaf9991ba5b2ca126c83d3f3",
+    "apps/web/src/features/teacher-dashboard.tsx": "fc93862d7e4ba25d161c02cda0f1fe7b6cc5b937022a575d6d5bbedcafd75bbd",
+    "apps/web/src/styles/pilot-tokens.css": "412207e75c150656facce7195f73cb050f629342d3c2c15a9a4a6751d52891a7",
+    "apps/web/src/styles/teacher-dashboard.css": "970e25a7b32aefecd916e2ca11974d040014fc33ef8991e73fd486f973740380",
+    "playwright.ui.config.ts": "d09bc4e2e66f1f84164599d9d1f1bee61937d8b2b9c88097370842f5cc4d5ddc",
+    "tests/ui/feedback.spec.ts": "b8768a4bb24a59a2bedd8119e1b66f8315cd16674b9ad35294805b418f1751cb",
+    "tests/ui/inventory.spec.ts": "041771017960651c9a70511f2878472391846eb4b93a5fd2e2c5f45073cea28a"
+  },
+  "cleanup": {
+    "source_test_runtime_changed": false,
+    "untracked_before": 197,
+    "removed_intermediate_capture_files": 178,
+    "removed_superseded_docs": 4,
+    "raw_directories_ignored": [
+      "docs/screenshots/ui-redesign/before/",
+      "docs/screenshots/ui-redesign/after/",
+      "docs/screenshots/ui-redesign/after-v2/"
+    ],
+    "v2_capture_history": {
+      "pngs_inspected": 38,
+      "manifest_capture_records": 29,
+      "document_overflow_failures": 0
+    },
+    "browser_results_reused": true,
+    "final_verification": {
+      "date": "2026-10-06",
+      "lint_exit_code": 0,
+      "typecheck_exit_code": 0,
+      "build_exit_code": 0,
+      "diff_check_exit_code": 0,
+      "runtime_files_hash_verified": 13,
+      "approved_evidence_hash_verified": 3,
+      "retained_document_links": "all resolve",
+      "untracked_after_cleanup_before_stage": 16,
+      "browser_tests_rerun": false,
+      "reason": "All source, UI automation and config hashes match approved V2. Cleanup only changes docs, ignore rules and retained artifacts. Previous cleanup gate logs were lost on interruption, so lint/typecheck/build were rerun and completed successfully."
+    }
+  },
+  "final_evidence": [
+    {
+      "path": "docs/screenshots/ui-redesign/question-bank-sticky-focus-mobile.png",
+      "width": 390,
+      "height": 900,
+      "sha256": "855c1dac0272de0dc9dca3931c41620134af1266bd04774a176cfbe003e4bc40"
+    },
+    {
+      "path": "docs/screenshots/ui-redesign/review-board-v2-desktop.png",
+      "width": 4496,
+      "height": 3445,
+      "sha256": "245b502bf9fcec5131b8dd49db1992452d455d7062e10f93bba8397e91412173"
+    },
+    {
+      "path": "docs/screenshots/ui-redesign/review-board-v2-mobile.png",
+      "width": 2564,
+      "height": 3137,
+      "sha256": "c04143efbc1ec1f61e05d92fabfd9f6881ec5cc860977609a725bec4842da86a"
+    }
+  ],
+  "review_board_composition": "Native 1:1 screenshot pixels, labels and gutters only; pixel equality checked when generated. Approved V2 boards unchanged by cleanup."
+}

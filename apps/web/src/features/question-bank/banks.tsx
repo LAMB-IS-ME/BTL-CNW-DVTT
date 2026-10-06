@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { QuestionDto } from "@exam/shared";
 import { api } from "../../lib/api";
+import { Icon } from "../../components/Icon";
 import { Field } from "./ui";
 import {
   ConfirmAction,
@@ -247,6 +248,24 @@ export function BankList() {
         </p>
       )}
       <section className="qb-surface" aria-label="Danh sách ngân hàng">
+        <div className="qb-section-title qb-library-heading">
+          <div className="qb-library-title">
+            <span className="qb-book-icon">
+              <Icon name="book" />
+            </span>
+            <div>
+              <h2>Thư viện câu hỏi</h2>
+              <p className="qb-row-subtitle">
+                Sắp xếp theo môn học, sẵn sàng cho mỗi bài thi.
+              </p>
+            </div>
+          </div>
+          <span className="qb-muted">
+            {q.data && !f.settling
+              ? `${q.data.total} ngân hàng phù hợp`
+              : "Đang cập nhật…"}
+          </span>
+        </div>
         <div className="qb-toolbar">
           <Field label="Tìm ngân hàng">
             <input
@@ -311,10 +330,22 @@ export function BankList() {
                   {q.data.items.map((b) => (
                     <tr key={b.id}>
                       <td>
-                        <strong className="qb-row-title">{b.title}</strong>
-                        <span className="qb-row-subtitle">
-                          {b.subject || "Chưa phân môn học"}
-                        </span>
+                        <div className="qb-bank-identity">
+                          <span
+                            className={`qb-book-icon ${b.isArchived ? "archived" : ""}`}
+                          >
+                            <Icon
+                              name={b.isArchived ? "archive" : "book"}
+                              size={22}
+                            />
+                          </span>
+                          <div>
+                            <strong className="qb-row-title">{b.title}</strong>
+                            <span className="qb-row-subtitle">
+                              {b.subject || "Chưa phân môn học"}
+                            </span>
+                          </div>
+                        </div>
                       </td>
                       <td data-label="Câu đang dùng">
                         {b._count?.questions || 0}
@@ -359,7 +390,7 @@ export function BankList() {
           !q.error && (
             <div className="qb-empty">
               <span className="qb-empty-symbol" aria-hidden="true">
-                ▤
+                <Icon name="book" size={26} />
               </span>
               <h2>
                 {f.params.size
@@ -553,17 +584,19 @@ export function BankDetail() {
                           </span>
                         )}
                       </td>
-                      <td>
+                      <td className="qb-question-meta">
                         <span>{typeLabels[v.type]}</span>
                         <span className="qb-row-subtitle">
                           {difficultyLabels[v.difficulty]}
                         </span>
                       </td>
-                      <td data-label="Điểm">{Number(v.defaultPoints)}</td>
-                      <td>
+                      <td className="qb-question-points" data-label="Điểm">
+                        {Number(v.defaultPoints)}
+                      </td>
+                      <td className="qb-question-status">
                         <Status archived={v.isArchived} />
                       </td>
-                      <td>
+                      <td className="qb-question-actions">
                         <div className="qb-row-actions">
                           <Link
                             className="qb-edit-link"
@@ -620,7 +653,7 @@ export function BankDetail() {
           !list.error && (
             <div className="qb-empty">
               <span className="qb-empty-symbol" aria-hidden="true">
-                ≡
+                <Icon name="exam" size={26} />
               </span>
               <h2>
                 {f.params.size

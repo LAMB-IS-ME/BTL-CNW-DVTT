@@ -8,3 +8,8 @@ playwright-report/
 test-results/
 apps/api/src/generated/
 *.log
+
+# Reproducible UI captures; approved review boards and final evidence stay tracked.
+/docs/screenshots/ui-redesign/before/
+/docs/screenshots/ui-redesign/after/
+/docs/screenshots/ui-redesign/after-v2/

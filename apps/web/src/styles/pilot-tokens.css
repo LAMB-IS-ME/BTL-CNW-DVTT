@@ -1,0 +1,38 @@
+/* Activated only by the Dashboard / Question Bank pilot boundary. */
+.qb-shell {
+  --qb-bg: #f7f8fc;
+  --qb-surface: #fff;
+  --qb-elevated: #fff;
+  --qb-ink: #20253d;
+  --qb-secondary: #515c72;
+  --qb-muted: #626d82;
+  --qb-border: #e4e7ef;
+  --qb-control-border: #8491a6;
+  --qb-accent: #4b47c9;
+  --qb-accent-hover: #3935a8;
+  --qb-accent-soft: #efedff;
+  --qb-navy: #20253d;
+  --qb-success: #166534;
+  --qb-warning: #854d0e;
+  --qb-danger: #b42318;
+  --qb-info: #3730a3;
+  --qb-space-1: 4px;
+  --qb-space-2: 8px;
+  --qb-space-3: 12px;
+  --qb-space-4: 16px;
+  --qb-space-6: 24px;
+  --qb-space-8: 32px;
+  --qb-space-12: 48px;
+  --qb-radius-control: 10px;
+  --qb-radius-small: 12px;
+  --qb-radius-card: 18px;
+  --qb-radius-hero: 24px;
+  --qb-shadow-surface: 0 2px 8px #20253d04;
+  --qb-shadow-float: 0 8px 24px #20253d0d;
+  --qb-shadow-dialog: 0 24px 80px #20253d26;
+  --qb-motion: 140ms;
+  --qb-title-size: 32px;
+  --qb-section-size: 20px;
+  --qb-body-size: 14px;
+  --qb-meta-size: 12px;
+}

@@ -31,9 +31,11 @@ export function useDebounced(value: string, delay = 300) {
 export function ErrorNotice({
   error,
   retry,
+  fallbackMessage = "Không thể hoàn tất yêu cầu. Kiểm tra kết nối và thử lại; nội dung đang soạn được giữ nguyên.",
 }: {
   error: unknown;
   retry?: () => void;
+  fallbackMessage?: string;
 }) {
   if (!error) return null;
   const message =
@@ -41,7 +43,7 @@ export function ErrorNotice({
     error.status < 500 &&
     !/^[A-Z_]+$/.test(error.message)
       ? error.message
-      : "Không thể hoàn tất yêu cầu. Kiểm tra kết nối và thử lại; nội dung đang soạn được giữ nguyên.";
+      : fallbackMessage;
   return (
     <div className="qb-error" role="alert">
       <p>{message}</p>

@@ -1,4 +1,6 @@
 const shapes = {
+  sidebarClose: "M3 3h18v18H3zM9 3v18m7-12-3 3 3 3",
+  sidebarOpen: "M3 3h18v18H3zM9 3v18m4-12 3 3-3 3",
   overview: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",
   people:
     "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0",

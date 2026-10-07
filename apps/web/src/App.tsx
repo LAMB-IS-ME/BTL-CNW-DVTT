@@ -19,6 +19,8 @@ import { api } from "./lib/api";
 import "./styles/pilot-tokens.css";
 import "./styles/question-bank.css";
 import "./styles/teacher-dashboard.css";
+import "./styles/teacher-shell.css";
+import { Icon } from "./components/Icon";
 import { ApplicationSidebar } from "./components/ApplicationSidebar";
 const TeacherDashboard = lazy(() =>
   import("./features/teacher-dashboard").then((m) => ({
@@ -97,15 +99,45 @@ const queryClient = new QueryClient({
 function Shell() {
   const { user } = useAuth();
   const location = useLocation();
+  const examManagement =
+    /^\/teacher\/exams(?:\/(?:new|[^/]+\/(?:edit|preview)))?\/?$/.test(
+      location.pathname,
+    );
   const pilot =
     user?.role === "TEACHER" &&
     (location.pathname === "/teacher" ||
+      examManagement ||
       /^\/teacher\/(question-banks|questions)(\/|$)/.test(location.pathname));
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("examspace.teacher.sidebar") === "collapsed";
+    } catch {
+      return false;
+    }
+  });
+  const toggleSidebar = () => {
+    const next = !sidebarCollapsed;
+    setSidebarCollapsed(next);
+    try {
+      localStorage.setItem(
+        "examspace.teacher.sidebar",
+        next ? "collapsed" : "open",
+      );
+    } catch {
+      /* Storage can be blocked; the in-memory preference still works. */
+    }
+  };
   const [error, setError] = useState<unknown>();
   const nav = useNavigate(),
     cache = useQueryClient();
   return (
-    <div className={pilot ? "qb-shell" : undefined}>
+    <div
+      className={
+        pilot
+          ? `qb-shell${examManagement ? " exam-folio-shell" : ""}${sidebarCollapsed ? " qb-sidebar-collapsed" : ""}`
+          : undefined
+      }
+    >
       {pilot && (
         <>
           <a className="qb-skip-link" href="#main-content">
@@ -116,12 +148,35 @@ function Shell() {
       )}
       <header>
         {pilot && (
-          <span className="qb-topbar-context">
-            Không gian giảng dạy <span>/</span>{" "}
-            {location.pathname === "/teacher"
-              ? "Tổng quan"
-              : "Thư viện câu hỏi"}
-          </span>
+          <div className="qb-shell-tools">
+            <button
+              type="button"
+              className="qb-sidebar-toggle secondary"
+              aria-label={
+                sidebarCollapsed
+                  ? "Mở thanh điều hướng"
+                  : "Thu gọn thanh điều hướng"
+              }
+              title={
+                sidebarCollapsed
+                  ? "Mở thanh điều hướng"
+                  : "Thu gọn thanh điều hướng"
+              }
+              aria-controls="teacher-navigation"
+              aria-expanded={!sidebarCollapsed}
+              onClick={toggleSidebar}
+            >
+              <Icon name={sidebarCollapsed ? "sidebarOpen" : "sidebarClose"} />
+            </button>
+            <span className="qb-topbar-context">
+              Không gian giảng dạy <span>/</span>{" "}
+              {location.pathname === "/teacher"
+                ? "Tổng quan"
+                : examManagement
+                  ? "Bài thi"
+                  : "Thư viện câu hỏi"}
+            </span>
+          </div>
         )}
         <Link className="brand" to="/">
           ▦ ExamSpace

@@ -135,9 +135,10 @@ test("Pilot shell: current route, keyboard, touch targets, sticky controls and r
   // Shared CSS/components must not restyle routes outside the approved pilot.
   for (const path of [
     "/teacher/classes",
-    "/teacher/exams",
     "/teacher/quizzes",
-    "/teacher/exams/new",
+    "/teacher/exams/00000000-0000-4000-8000-000000000401/monitor",
+    "/teacher/exams/00000000-0000-4000-8000-000000000401/grading",
+    "/teacher/exams/00000000-0000-4000-8000-000000000401/results",
   ]) {
     await page.goto(path);
     await expect(page.locator(".qb-shell")).toHaveCount(0);

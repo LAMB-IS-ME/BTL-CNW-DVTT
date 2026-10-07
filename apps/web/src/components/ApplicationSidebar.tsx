@@ -10,7 +10,7 @@ const paths = [
 export function ApplicationSidebar() {
   const { pathname } = useLocation();
   return (
-    <aside className="qb-sidebar">
+    <aside className="qb-sidebar" id="teacher-navigation">
       <Link className="qb-brand" to="/teacher">
         <span className="qb-brand-mark" aria-hidden="true">
           <Icon name="book" size={21} />

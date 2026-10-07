@@ -13,3 +13,14 @@ apps/api/src/generated/
 /docs/screenshots/ui-redesign/before/
 /docs/screenshots/ui-redesign/after/
 /docs/screenshots/ui-redesign/after-v2/
+
+# Reproducible Exam captures and manifests. Keep only the approved final boards.
+/docs/screenshots/exam-redesign/**/*.png
+/docs/screenshots/exam-redesign/**/*.json
+/docs/screenshots/exam-folio-prototype/**/*.png
+/docs/screenshots/exam-folio-prototype/**/*.json
+/docs/screenshots/exam-folio-final/**/*.png
+/docs/screenshots/exam-folio-final/**/*.json
+!/docs/screenshots/exam-folio-final/review-board-desktop.png
+!/docs/screenshots/exam-folio-final/review-board-mobile.png
+!/docs/screenshots/exam-folio-final/sidebar-open-vs-collapsed.png

@@ -20,6 +20,7 @@ import "./styles/pilot-tokens.css";
 import "./styles/question-bank.css";
 import "./styles/teacher-dashboard.css";
 import "./styles/teacher-shell.css";
+import "./styles/student-focus.css";
 import { Icon } from "./components/Icon";
 import { ApplicationSidebar } from "./components/ApplicationSidebar";
 const TeacherDashboard = lazy(() =>
@@ -99,6 +100,13 @@ const queryClient = new QueryClient({
 function Shell() {
   const { user } = useAuth();
   const location = useLocation();
+  const studentCatalog =
+    user?.role === "STUDENT" &&
+    /^\/student(?:\/exams)?\/?$/.test(location.pathname);
+  const studentFocus =
+    user?.role === "STUDENT" &&
+    (studentCatalog ||
+      /^\/student\/(?:exams|attempts)\/[^/]+\/?$/.test(location.pathname));
   const examManagement =
     /^\/teacher\/exams(?:\/(?:new|[^/]+\/(?:edit|preview)))?\/?$/.test(
       location.pathname,
@@ -135,7 +143,9 @@ function Shell() {
       className={
         pilot
           ? `qb-shell${examManagement ? " exam-folio-shell" : ""}${sidebarCollapsed ? " qb-sidebar-collapsed" : ""}`
-          : undefined
+          : studentFocus
+            ? "focus-shell"
+            : undefined
       }
     >
       {pilot && (
@@ -146,97 +156,134 @@ function Shell() {
           <ApplicationSidebar />
         </>
       )}
-      <header>
-        {pilot && (
-          <div className="qb-shell-tools">
-            <button
-              type="button"
-              className="qb-sidebar-toggle secondary"
-              aria-label={
-                sidebarCollapsed
-                  ? "Mở thanh điều hướng"
-                  : "Thu gọn thanh điều hướng"
-              }
-              title={
-                sidebarCollapsed
-                  ? "Mở thanh điều hướng"
-                  : "Thu gọn thanh điều hướng"
-              }
-              aria-controls="teacher-navigation"
-              aria-expanded={!sidebarCollapsed}
-              onClick={toggleSidebar}
-            >
-              <Icon name={sidebarCollapsed ? "sidebarOpen" : "sidebarClose"} />
-            </button>
-            <span className="qb-topbar-context">
-              Không gian giảng dạy <span>/</span>{" "}
-              {location.pathname === "/teacher"
-                ? "Tổng quan"
-                : examManagement
-                  ? "Bài thi"
-                  : "Thư viện câu hỏi"}
-            </span>
-          </div>
-        )}
-        <Link className="brand" to="/">
-          ▦ ExamSpace
-        </Link>
-        <nav>
-          {user ? (
-            <>
-              <Link to={`/${user.role.toLowerCase()}`}>Tổng quan</Link>
-              {user.role === "ADMIN" && (
-                <>
-                  <Link to="/admin/users">Tài khoản</Link>
-                  <Link to="/admin/classes">Lớp học</Link>
-                </>
-              )}
-              {user.role === "TEACHER" && (
-                <>
-                  <Link to="/teacher/classes">Lớp học</Link>
-                  <Link to="/teacher/question-banks">Câu hỏi</Link>
-                  <Link to="/teacher/exams">Bài thi</Link>
-                  <Link to="/teacher/quizzes">Live Quiz</Link>
-                </>
-              )}
-              {user.role === "STUDENT" && (
-                <>
-                  <Link to="/student/exams">Bài thi</Link>
-                  <Link to="/student/results">Kết quả</Link>
-                  <Link to="/student/quiz/join">Live Quiz</Link>
-                </>
-              )}
-              <span className={pilot ? "qb-user" : undefined}>
-                {pilot && (
-                  <span className="qb-avatar" aria-hidden="true">
-                    {user.fullName.split(" ").at(-1)?.slice(0, 1)}
-                  </span>
-                )}
-                <span>
-                  {user.fullName}
-                  {pilot && <small>Giảng viên</small>}
-                </span>
-              </span>
+      {studentFocus ? (
+        <>
+          <a className="focus-skip" href="#main-content">
+            Đến nội dung bài thi
+          </a>
+          <header className="focus-topbar">
+            <Link className="brand" to="/student/exams">
+              ▦ ExamSpace
+            </Link>
+            {studentCatalog ? (
+              <nav aria-label="Không gian học tập">
+                <Link to="/student/results">Kết quả</Link>
+                <Link to="/student/quiz/join">Live Quiz</Link>
+                <button
+                  className="secondary"
+                  onClick={async () => {
+                    try {
+                      await api("/auth/logout", "POST");
+                      cache.clear();
+                      nav("/login");
+                    } catch (e) {
+                      setError(e);
+                    }
+                  }}
+                >
+                  Đăng xuất
+                </button>
+              </nav>
+            ) : (
+              <Link to="/student/exams">← Danh sách bài thi</Link>
+            )}
+          </header>
+        </>
+      ) : (
+        <header>
+          {pilot && (
+            <div className="qb-shell-tools">
               <button
-                className="secondary"
-                onClick={async () => {
-                  try {
-                    await api("/auth/logout", "POST");
-                    cache.clear();
-                    nav("/login");
-                  } catch (e) {
-                    setError(e);
-                  }
-                }}
+                type="button"
+                className="qb-sidebar-toggle secondary"
+                aria-label={
+                  sidebarCollapsed
+                    ? "Mở thanh điều hướng"
+                    : "Thu gọn thanh điều hướng"
+                }
+                title={
+                  sidebarCollapsed
+                    ? "Mở thanh điều hướng"
+                    : "Thu gọn thanh điều hướng"
+                }
+                aria-controls="teacher-navigation"
+                aria-expanded={!sidebarCollapsed}
+                onClick={toggleSidebar}
               >
-                Đăng xuất
+                <Icon
+                  name={sidebarCollapsed ? "sidebarOpen" : "sidebarClose"}
+                />
               </button>
-            </>
-          ) : (
-            <Link to="/login">Đăng nhập</Link>
+              <span className="qb-topbar-context">
+                Không gian giảng dạy <span>/</span>{" "}
+                {location.pathname === "/teacher"
+                  ? "Tổng quan"
+                  : examManagement
+                    ? "Bài thi"
+                    : "Thư viện câu hỏi"}
+              </span>
+            </div>
           )}
-        </nav>
-      </header>
+          <Link className="brand" to="/">
+            ▦ ExamSpace
+          </Link>
+          <nav>
+            {user ? (
+              <>
+                <Link to={`/${user.role.toLowerCase()}`}>Tổng quan</Link>
+                {user.role === "ADMIN" && (
+                  <>
+                    <Link to="/admin/users">Tài khoản</Link>
+                    <Link to="/admin/classes">Lớp học</Link>
+                  </>
+                )}
+                {user.role === "TEACHER" && (
+                  <>
+                    <Link to="/teacher/classes">Lớp học</Link>
+                    <Link to="/teacher/question-banks">Câu hỏi</Link>
+                    <Link to="/teacher/exams">Bài thi</Link>
+                    <Link to="/teacher/quizzes">Live Quiz</Link>
+                  </>
+                )}
+                {user.role === "STUDENT" && (
+                  <>
+                    <Link to="/student/exams">Bài thi</Link>
+                    <Link to="/student/results">Kết quả</Link>
+                    <Link to="/student/quiz/join">Live Quiz</Link>
+                  </>
+                )}
+                <span className={pilot ? "qb-user" : undefined}>
+                  {pilot && (
+                    <span className="qb-avatar" aria-hidden="true">
+                      {user.fullName.split(" ").at(-1)?.slice(0, 1)}
+                    </span>
+                  )}
+                  <span>
+                    {user.fullName}
+                    {pilot && <small>Giảng viên</small>}
+                  </span>
+                </span>
+                <button
+                  className="secondary"
+                  onClick={async () => {
+                    try {
+                      await api("/auth/logout", "POST");
+                      cache.clear();
+                      nav("/login");
+                    } catch (e) {
+                      setError(e);
+                    }
+                  }}
+                >
+                  Đăng xuất
+                </button>
+              </>
+            ) : (
+              <Link to="/login">Đăng nhập</Link>
+            )}
+          </nav>
+        </header>
+      )}
       <main id="main-content" tabIndex={-1}>
         <ErrorBox error={error} />
         <Suspense fallback={<Loading />}>
@@ -505,7 +552,9 @@ function Shell() {
           </Routes>
         </Suspense>
       </main>
-      <footer>ExamSpace · Online Examination & Live Quiz</footer>
+      {!studentFocus && (
+        <footer>ExamSpace · Online Examination & Live Quiz</footer>
+      )}
     </div>
   );
 }

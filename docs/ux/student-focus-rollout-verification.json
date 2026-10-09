@@ -1,0 +1,501 @@
+{
+  "date": "2026-10-08",
+  "branch": "ux/education-saas-redesign-pilot",
+  "head": "f22be07eaf6953ae5966366d3ca779df8473c9c3",
+  "database": "isolated loopback PostgreSQL: examspace_focus_test, port 55432",
+  "baseline": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "unitFrontend": 11,
+    "integration": 4,
+    "studentChromium": 7
+  },
+  "reproducedProductRegressions": [
+    "Unsaved SPA leave loses RAM answer",
+    "Delayed reconnect GET overwrites newer saved answer",
+    "Sequential navigation leaves current index outside viewport",
+    "Back navigation reuses empty initial cached snapshot",
+    "Terminal save rejection + failed status GET reports saved with pending edits",
+    "Locked-state result link text used the same green as its background (found by visual inspection, fixed with scoped CSS)"
+  ],
+  "harnessCorrections": [
+    "Canceled reload does not emit a load event",
+    "Explicitly scroll session header outside viewport before compact timer assertion",
+    "Deadline string is HH:MM:SS",
+    "Expired fixture preserves expiresAt > startedAt"
+  ],
+  "viewports": {
+    "1440": {
+      "height": 410,
+      "activeVisible": true,
+      "width": 1440,
+      "navigationMs": 193,
+      "code": {
+        "region": "auto",
+        "child": "visible",
+        "scrollLeft": 250,
+        "client": 768,
+        "content": 3116
+      },
+      "dock": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 44
+      }
+    },
+    "1024": {
+      "height": 410,
+      "activeVisible": true,
+      "width": 1024,
+      "navigationMs": 139,
+      "code": {
+        "region": "auto",
+        "child": "visible",
+        "scrollLeft": 250,
+        "client": 672,
+        "content": 3116
+      },
+      "dock": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 44
+      }
+    },
+    "820": {
+      "height": 240,
+      "activeVisible": true,
+      "width": 820,
+      "navigationMs": 216,
+      "code": {
+        "region": "auto",
+        "child": "visible",
+        "scrollLeft": 250,
+        "client": 712,
+        "content": 3116
+      },
+      "dock": {
+        "x": 0,
+        "y": 0,
+        "width": 820,
+        "height": 44
+      }
+    },
+    "390": {
+      "height": 240,
+      "activeVisible": true,
+      "width": 390,
+      "navigationMs": 168,
+      "code": {
+        "region": "auto",
+        "child": "visible",
+        "scrollLeft": 250,
+        "client": 350,
+        "content": 3116
+      },
+      "dock": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 44
+      }
+    },
+    "320": {
+      "height": 54,
+      "activeVisible": true,
+      "width": 320,
+      "navigationMs": 67,
+      "code": {
+        "region": "auto",
+        "child": "visible",
+        "scrollLeft": 250,
+        "client": 280,
+        "content": 3116
+      },
+      "dock": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 44
+      }
+    }
+  },
+  "verifiedSourceHashes": {
+    "apps/web/src/App.tsx": "7904c958fcb2b7fddd73f4d505b8a2c1be556f09ca38c17da666727f7558b37e",
+    "apps/web/src/features/attempts.tsx": "313d9ea161c6f80c5fe59f52b0e049529bfde11fece0eceafe30a0a361c92817",
+    "apps/web/src/features/student-exam-state.ts": "bfdf51eda13bb097e9f78e58c4c9265c0e155102a7cb0e842a9c5450789ebdb5",
+    "apps/web/src/features/student-exam-state.test.ts": "9cdc8e9bb33e4bdd34fa6499811481f030114ddf56e2792c18fcae8dc5229f07",
+    "apps/web/src/styles/student-focus.css": "bea738bab279c28d26997bd18cb059ca165f7e9351c8c6ad6e6050d98312a765",
+    "tests/ui/student-focus.spec.ts": "c82fbc59c93790332e087318725214b2ab8c65db7fcdb2e2fb17006d274d93a9",
+    "tests/ui/student-focus-fixtures.ts": "79460ab646a9aaf3190be821277d2ae0cb6d66fa08daae3378ee4e4edc1a808f",
+    "tests/ui/student-focus-rollout.spec.ts": "da3545475c09660e51d827c37fa132a1a99c3dbb7d70b8139f3052ea92c96a14",
+    "tests/ui/student-focus-boards.py": "bcede3dfa13e8b11ff7f024c6fb5aba07f2e83506032e1252dc9e8537704b54f"
+  },
+  "sharedRendererUnchanged": true,
+  "noCommit": true,
+  "noPush": true,
+  "finalChecks": {
+    "lint": {
+      "command": "npm run lint",
+      "status": "PASS"
+    },
+    "typecheck": {
+      "command": "npm run typecheck",
+      "status": "PASS"
+    },
+    "build": {
+      "command": "npm run build",
+      "status": "PASS"
+    },
+    "unitFrontend": {
+      "command": "npx vitest run apps/web/src/features/critical.test.tsx apps/web/src/features/student-exam-state.test.ts apps/web/src/lib/timer.test.ts apps/web/src/lib/api.test.ts apps/web/src/components/Markdown.test.tsx apps/api/src/modules/attempts/logic.test.ts",
+      "status": "PASS",
+      "files": 6,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "integration": {
+      "command": "TEST_DATABASE_URL=postgresql://focus_test@127.0.0.1:55432/examspace_focus_test npx vitest run --config vitest.integration.config.ts apps/api/test/attempts.integration.test.ts apps/api/test/exams.integration.test.ts",
+      "status": "PASS",
+      "files": 2,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "chromium": {
+      "command": "FOCUS_SCREENSHOT_DIR=/tmp/focus-rollout FOCUS_ROLLOUT_DIR=/tmp/focus-rollout EXAM_SCREENSHOT_DIR=/tmp/focus-rollout-teacher TEST_DATABASE_URL=postgresql://focus_test@127.0.0.1:55432/examspace_focus_test npx playwright test --config playwright.ui.config.ts tests/ui/student-focus.spec.ts tests/ui/student-focus-rollout.spec.ts tests/ui/teacher-sidebar.spec.ts",
+      "status": "PASS",
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "studentPrototype": 7,
+      "studentRollout": 14,
+      "teacherSidebar": 4,
+      "timing": "Full 25-test run passed before final Student anchor-button color correction; targeted locked-state test passed again after correction. Lint/typecheck/build rerun after final CSS."
+    },
+    "diffWhitespace": {
+      "command": "git diff --check",
+      "status": "PASS"
+    },
+    "liveQuiz": {
+      "status": "NOT_RUN_NOT_AFFECTED",
+      "reason": "Shared AnswerControl remains byte-for-byte equal to HEAD. Markdown, socket, timer and Live Quiz source were not changed; Student-only memo wrapper and scoped CSS."
+    },
+    "lockedActionContrast": {
+      "command": "FOCUS_ROLLOUT_DIR=/tmp/focus-rollout TEST_DATABASE_URL=postgresql://focus_test@127.0.0.1:55432/examspace_focus_test npx playwright test --config playwright.ui.config.ts tests/ui/student-focus-rollout.spec.ts --grep \"server expiry rejection\"",
+      "status": "PASS",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "minimumContrastRatio": 4.5,
+      "reason": "Final visual inspection found anchor-button text using the same green as its background; added Student-scoped foreground color and verified recovery + action contrast. Main board states are unaffected."
+    }
+  },
+  "prototypeFlowGeometry_desktop": [
+    {
+      "name": "entry",
+      "overflow": false,
+      "headerHeight": 64
+    },
+    {
+      "name": "question",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "selected",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "multiple",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "essay",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "rich-content",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "navigation",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "confirmation",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 215.1875
+    },
+    {
+      "name": "submitted",
+      "overflow": false,
+      "headerHeight": 64
+    }
+  ],
+  "prototypeFlowGeometry_tablet": [
+    {
+      "name": "entry",
+      "overflow": false,
+      "headerHeight": 64
+    },
+    {
+      "name": "question",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 229.1875
+    },
+    {
+      "name": "selected",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 229.1875
+    },
+    {
+      "name": "multiple",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 229.1875
+    },
+    {
+      "name": "essay",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 229.1875
+    },
+    {
+      "name": "rich-content",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 229.1875
+    },
+    {
+      "name": "navigation",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 434.375
+    },
+    {
+      "name": "confirmation",
+      "overflow": false,
+      "headerHeight": 64,
+      "questionTop": 205.1875
+    },
+    {
+      "name": "submitted",
+      "overflow": false,
+      "headerHeight": 64
+    }
+  ],
+  "prototypeFlowGeometry_mobile": [
+    {
+      "name": "entry",
+      "overflow": false,
+      "headerHeight": 56
+    },
+    {
+      "name": "question",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 240.6875
+    },
+    {
+      "name": "selected",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 240.6875
+    },
+    {
+      "name": "multiple",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 240.6875
+    },
+    {
+      "name": "essay",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 240.6875
+    },
+    {
+      "name": "rich-content",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 240.6875
+    },
+    {
+      "name": "navigation",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 533.875
+    },
+    {
+      "name": "confirmation",
+      "overflow": false,
+      "headerHeight": 56,
+      "questionTop": 77.6875
+    },
+    {
+      "name": "submitted",
+      "overflow": false,
+      "headerHeight": 56
+    }
+  ],
+  "richContent": {
+    "viewport": 390,
+    "imageWidth": 350,
+    "imageAspectRatio": 0.25,
+    "imageSurvivesTimerTick": true,
+    "code": {
+      "clientWidth": 350,
+      "scrollWidth": 999,
+      "scrollLeft": 250,
+      "nestedOverflowX": "visible"
+    },
+    "pageOverflow": false
+  },
+  "boards": {
+    "docs/screenshots/student-focus-rollout/review-board-mobile.png": {
+      "sha256": "1d5a4ea04bae69dc130034993872216abb57cdd0440b24450b6ba6fae8711b18",
+      "size": [
+        1680,
+        2987
+      ],
+      "inspected": true
+    },
+    "docs/screenshots/student-focus-rollout/review-board-desktop.png": {
+      "sha256": "98a9d41864f88a174834a44338b375914f2d66f3aa5292eddb1419b5b7c4f6b8",
+      "size": [
+        2952,
+        3384
+      ],
+      "inspected": true
+    }
+  },
+  "preservedPrototypeBoards": {
+    "docs/screenshots/student-focus-prototype/review-board-mobile.png": "bd7cd22c50c09b1545612be55f22fe2c3ce54e61cb41f4f2e0cc046753a4e237",
+    "docs/screenshots/student-focus-prototype/review-board-desktop.png": "e8ba113450df50adfcc3bf17527a7162838971d2cb1cc449c9c4a22d476b30c1"
+  },
+  "screenshotsCommand": "FOCUS_BOARD_PHASE=rollout FOCUS_SCREENSHOT_DIR=/tmp/focus-rollout python3 tests/ui/student-focus-boards.py",
+  "warnings": [
+    "Pre-existing Vite chunk-size warning (shared Markdown bundle)",
+    "Pre-existing pg concurrent-query deprecation warning",
+    "NO_COLOR/FORCE_COLOR environment warning"
+  ],
+  "remainingRisks": [
+    "Pending edits remain in RAM; forced close, confirmed unload, OS/browser crash or mobile process termination can lose unsent changes. Native beforeunload cancellation verified in Chromium only.",
+    "Offline edits not received before the deadline cannot be included in the locked server submission. UI explicitly reports unsaved changes in the current session."
+  ],
+  "finalCleanup": {
+    "date": "2026-10-09",
+    "approval": "Full rollout approved; one Student-only commit authorized after verification; no push/deploy/PR.",
+    "removedRawCaptures": [
+      "list-desktop.png",
+      "unsaved-desktop.png",
+      "locked-desktop.png",
+      "rich-timer-1440.png",
+      "rich-timer-320.png"
+    ],
+    "removedRawLogs": "logSummaries field removed; aggregated verification retained",
+    "approvedBoardHashes": {
+      "docs/screenshots/student-focus-prototype/review-board-mobile.png": "bd7cd22c50c09b1545612be55f22fe2c3ce54e61cb41f4f2e0cc046753a4e237",
+      "docs/screenshots/student-focus-prototype/review-board-desktop.png": "e8ba113450df50adfcc3bf17527a7162838971d2cb1cc449c9c4a22d476b30c1",
+      "docs/screenshots/student-focus-rollout/review-board-mobile.png": "1d5a4ea04bae69dc130034993872216abb57cdd0440b24450b6ba6fae8711b18",
+      "docs/screenshots/student-focus-rollout/review-board-desktop.png": "98a9d41864f88a174834a44338b375914f2d66f3aa5292eddb1419b5b7c4f6b8"
+    },
+    "wordingChange": "Error-only helper: Thay đổi chưa được lưu. Original autosave description retained after successful save.",
+    "approvedBoards": "Preserved byte-for-byte as approved snapshots; mobile save-error panel predates the final wording clarification.",
+    "checks": {
+      "lint": {
+        "command": "npm run lint",
+        "status": "PASS"
+      },
+      "typecheck": {
+        "command": "npm run typecheck",
+        "status": "PASS"
+      },
+      "build": {
+        "command": "npm run build",
+        "status": "PASS"
+      },
+      "unitFrontend": {
+        "command": "npx vitest run apps/web/src/features/critical.test.tsx apps/web/src/features/student-exam-state.test.ts apps/web/src/lib/timer.test.ts apps/web/src/lib/api.test.ts apps/web/src/components/Markdown.test.tsx apps/api/src/modules/attempts/logic.test.ts",
+        "passed": 15,
+        "failed": 0,
+        "skipped": 0
+      },
+      "integration": {
+        "command": "TEST_DATABASE_URL=postgresql://focus_test@127.0.0.1:55432/examspace_focus_test npx vitest run --config vitest.integration.config.ts apps/api/test/attempts.integration.test.ts apps/api/test/exams.integration.test.ts",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "chromium": {
+        "command": "FOCUS_SCREENSHOT_DIR=/tmp/student-final/captures FOCUS_ROLLOUT_DIR=/tmp/student-final/captures EXAM_SCREENSHOT_DIR=/tmp/student-final/teacher TEST_DATABASE_URL=postgresql://focus_test@127.0.0.1:55432/examspace_focus_test npx playwright test --config playwright.ui.config.ts tests/ui/student-focus.spec.ts tests/ui/student-focus-rollout.spec.ts tests/ui/teacher-sidebar.spec.ts",
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "student": 21,
+        "teacherCompatibility": 4
+      },
+      "wordingRegression": "PASS: error helper explicit, successful save restores autosave description; latest 390px capture inspected",
+      "boardScriptSyntax": "PASS"
+    },
+    "scopeAudit": {
+      "files": 17,
+      "source": 4,
+      "testsAndAutomation": 5,
+      "reportsAndEvidence": 4,
+      "approvedBoards": "All four hashes unchanged",
+      "sharedAnswerControlUnchanged": true,
+      "nonStudentHeaderJsxUnchangedIgnoringFormatting": true,
+      "documentationLinks": "15 local Markdown links valid",
+      "secrets": "No credential-pattern matches; no .env, production keys, DB files, raw captures, archives or logs in manifest. Existing local demo seed login remains in test helper only."
+    },
+    "verifiedSourceHashes": {
+      "apps/web/src/App.tsx": "7904c958fcb2b7fddd73f4d505b8a2c1be556f09ca38c17da666727f7558b37e",
+      "apps/web/src/features/attempts.tsx": "e11624624d4807b59ab5f44fbfc34849e7e76701731636198dafdb4c95fe0379",
+      "apps/web/src/features/student-exam-state.ts": "bfdf51eda13bb097e9f78e58c4c9265c0e155102a7cb0e842a9c5450789ebdb5",
+      "apps/web/src/features/student-exam-state.test.ts": "9cdc8e9bb33e4bdd34fa6499811481f030114ddf56e2792c18fcae8dc5229f07",
+      "apps/web/src/styles/student-focus.css": "bea738bab279c28d26997bd18cb059ca165f7e9351c8c6ad6e6050d98312a765",
+      "tests/ui/student-focus.spec.ts": "9ecbdd16c8bb3bb42d96729ae372a48f09e50e32110e1f000fb641ae97b6c30c",
+      "tests/ui/student-focus-fixtures.ts": "79460ab646a9aaf3190be821277d2ae0cb6d66fa08daae3378ee4e4edc1a808f",
+      "tests/ui/student-focus-rollout.spec.ts": "da3545475c09660e51d827c37fa132a1a99c3dbb7d70b8139f3052ea92c96a14",
+      "tests/ui/student-focus-boards.py": "3400187f35972d4c141e682d569321887a680dbe08c0d8f39172a30bad63bac1"
+    },
+    "commitManifest": [
+      "apps/web/src/App.tsx",
+      "apps/web/src/features/attempts.tsx",
+      "apps/web/src/features/student-exam-state.test.ts",
+      "apps/web/src/features/student-exam-state.ts",
+      "apps/web/src/styles/student-focus.css",
+      "docs/screenshots/student-focus-prototype/review-board-desktop.png",
+      "docs/screenshots/student-focus-prototype/review-board-mobile.png",
+      "docs/screenshots/student-focus-rollout/review-board-desktop.png",
+      "docs/screenshots/student-focus-rollout/review-board-mobile.png",
+      "docs/ux/STUDENT_FOCUS_PROTOTYPE_REPORT.md",
+      "docs/ux/STUDENT_FOCUS_ROLLOUT_REPORT.md",
+      "docs/ux/student-focus-rollout-verification.json",
+      "docs/ux/student-focus-verification.json",
+      "tests/ui/student-focus-boards.py",
+      "tests/ui/student-focus-fixtures.ts",
+      "tests/ui/student-focus-rollout.spec.ts",
+      "tests/ui/student-focus.spec.ts"
+    ]
+  }
+}

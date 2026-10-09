@@ -1,0 +1,282 @@
+{
+  "date": "2026-10-08",
+  "phase": "Student Focus Desk thin-slice prototype; awaiting visual review",
+  "branch": "ux/education-saas-redesign-pilot",
+  "head": "f22be07eaf6953ae5966366d3ca779df8473c9c3",
+  "baseline": {
+    "source": "Prior verified runs recorded in this conversation; temporary logs were lost when the environment restarted. Baseline was not rerun.",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "unitTests": 11,
+    "integrationTests": 4,
+    "chromiumResponsiveTests": 3
+  },
+  "finalChecks": [
+    {
+      "command": "npm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "result": "PASS"
+    },
+    {
+      "command": "npx vitest run apps/web/src/features/critical.test.tsx apps/web/src/lib/timer.test.ts apps/web/src/lib/api.test.ts apps/web/src/components/Markdown.test.tsx apps/api/src/modules/attempts/logic.test.ts",
+      "result": "PASS",
+      "files": 5,
+      "tests": 11
+    },
+    {
+      "command": "npx vitest run --config vitest.integration.config.ts apps/api/test/attempts.integration.test.ts apps/api/test/exams.integration.test.ts",
+      "result": "PASS",
+      "files": 2,
+      "tests": 4
+    },
+    {
+      "command": "npx playwright test --config playwright.ui.config.ts tests/ui/student-focus.spec.ts",
+      "result": "PASS",
+      "tests": 7
+    }
+  ],
+  "teacherCompatibility": {
+    "tests": 4,
+    "result": "PASS",
+    "source": "Prior run in this same phase",
+    "rerunAfterResume": false,
+    "reason": "App/shared shell unchanged since that verification; latest CSS scoped to focus-shell and prompt memoization used only in Student."
+  },
+  "beforeGeometry": {
+    "source": "Recorded browser measurements from this conversation before the environment restart",
+    "desktop": {
+      "width": 1440,
+      "headerHeight": 83,
+      "questionTop": 243.296875
+    },
+    "tablet": {
+      "width": 820,
+      "headerHeight": 121,
+      "questionTop": 270.703125
+    },
+    "mobile": {
+      "width": 390,
+      "headerHeight": 175,
+      "questionTop": 814.15625
+    }
+  },
+  "finalGeometry": {
+    "desktop": [
+      {
+        "name": "entry",
+        "overflow": false,
+        "headerHeight": 64
+      },
+      {
+        "name": "question",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "selected",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "multiple",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "essay",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "rich-content",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "navigation",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "confirmation",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 215.1875
+      },
+      {
+        "name": "submitted",
+        "overflow": false,
+        "headerHeight": 64
+      }
+    ],
+    "tablet": [
+      {
+        "name": "entry",
+        "overflow": false,
+        "headerHeight": 64
+      },
+      {
+        "name": "question",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 229.1875
+      },
+      {
+        "name": "selected",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 229.1875
+      },
+      {
+        "name": "multiple",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 229.1875
+      },
+      {
+        "name": "essay",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 229.1875
+      },
+      {
+        "name": "rich-content",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 229.1875
+      },
+      {
+        "name": "navigation",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 434.375
+      },
+      {
+        "name": "confirmation",
+        "overflow": false,
+        "headerHeight": 64,
+        "questionTop": 205.1875
+      },
+      {
+        "name": "submitted",
+        "overflow": false,
+        "headerHeight": 64
+      }
+    ],
+    "mobile": [
+      {
+        "name": "entry",
+        "overflow": false,
+        "headerHeight": 56
+      },
+      {
+        "name": "question",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 240.6875
+      },
+      {
+        "name": "selected",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 240.6875
+      },
+      {
+        "name": "multiple",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 240.6875
+      },
+      {
+        "name": "essay",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 240.6875
+      },
+      {
+        "name": "rich-content",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 240.6875
+      },
+      {
+        "name": "navigation",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 533.875
+      },
+      {
+        "name": "confirmation",
+        "overflow": false,
+        "headerHeight": 56,
+        "questionTop": 77.6875
+      },
+      {
+        "name": "submitted",
+        "overflow": false,
+        "headerHeight": 56
+      }
+    ]
+  },
+  "richContent": {
+    "viewport": 390,
+    "imageWidth": 350,
+    "imageAspectRatio": 0.25,
+    "imageSurvivesTimerTick": true,
+    "code": {
+      "clientWidth": 350,
+      "scrollWidth": 999,
+      "scrollLeft": 250,
+      "nestedOverflowX": "visible"
+    },
+    "pageOverflow": false
+  },
+  "imageRemountRegression": {
+    "beforeFix": "FAIL: image node detached across a timer tick",
+    "afterFix": "PASS: original image node remains attached; code scroll position survives timer tick",
+    "fix": "memo(Markdown) at Student prompt boundary; shared renderer unchanged"
+  },
+  "boards": {
+    "review-board-mobile.png": {
+      "sha256": "bd7cd22c50c09b1545612be55f22fe2c3ce54e61cb41f4f2e0cc046753a4e237",
+      "inspectedAfterResume": true,
+      "regeneratedAfterResume": false,
+      "reason": "Latest code/image changes do not affect the states shown on these boards."
+    },
+    "review-board-desktop.png": {
+      "sha256": "e8ba113450df50adfcc3bf17527a7162838971d2cb1cc449c9c4a22d476b30c1",
+      "inspectedAfterResume": true,
+      "regeneratedAfterResume": false,
+      "reason": "Latest code/image changes do not affect the states shown on these boards."
+    }
+  },
+  "verifiedSourceHashes": {
+    "apps/web/src/App.tsx": "7c0685e384a4fa190aee7b6a1c4e85cc99c60c4f12f2af0ac1b08b8edc3d2bde",
+    "apps/web/src/features/attempts.tsx": "b41ac487de6124f5c258e7893fcb523b5d2fd46a40f96732954ac6db2a656daa",
+    "apps/web/src/styles/student-focus.css": "79f503abd421020efb6691309ef7cc29dd58dc8cbd9562ed2ab323e6b7632740",
+    "tests/ui/student-focus.spec.ts": "466f92f09f8db09134638609a7fa36ef7003b6bdf4dbcf6d5388b301a2818a9a",
+    "tests/ui/student-focus-boards.py": "c72e10666b6f13912774b35258b599a4acebe076c40327a07e87b0d8d36b20e9"
+  },
+  "warnings": [
+    "Existing Vite chunk-size warning",
+    "Existing pg concurrent-query deprecation warning",
+    "NO_COLOR/FORCE_COLOR environment warning"
+  ],
+  "noCommit": true,
+  "noPush": true,
+  "database": "isolated loopback examspace_focus_test"
+}

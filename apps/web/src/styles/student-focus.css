@@ -1,0 +1,719 @@
+/* Focus Desk: Student exam list, entry and attempt routes only. */
+.focus-shell {
+  --focus-paper: #fffefa;
+  --focus-ink: #252c2a;
+  --focus-muted: #535e59;
+  --focus-rule: #d7d9d1;
+  --focus-green: #24574e;
+  min-height: 100vh;
+  color: var(--focus-ink);
+  background: var(--focus-paper);
+}
+.focus-shell :focus-visible {
+  outline: 3px solid #245ea6;
+  outline-offset: 3px;
+}
+.focus-shell button,
+.focus-shell .button {
+  min-height: 44px;
+  border-radius: 4px;
+  background: var(--focus-green);
+  font-size: 14px;
+}
+.focus-shell button:hover,
+.focus-shell .button:hover {
+  background: #19443c;
+}
+.focus-shell button.secondary {
+  background: transparent;
+  color: var(--focus-ink);
+  border: 1px solid #7b857c;
+}
+.focus-shell button.secondary:hover {
+  background: #edf2eb;
+}
+.focus-shell a {
+  color: var(--focus-green);
+}
+.focus-shell a.button {
+  color: var(--focus-paper);
+}
+.focus-shell > .focus-topbar {
+  min-height: 64px;
+  padding: 8px max(24px, calc((100vw - 1120px) / 2));
+  flex-direction: row;
+  align-items: center;
+  background: var(--focus-paper);
+  border-bottom: 1px solid var(--focus-rule);
+}
+.focus-topbar .brand {
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.focus-topbar a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 13px;
+  text-underline-offset: 4px;
+}
+.focus-shell > main {
+  max-width: 1120px;
+  padding: 0 24px 64px;
+  min-height: 0;
+}
+.focus-skip {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 30;
+  padding: 12px;
+  background: white;
+}
+.focus-skip:focus {
+  top: 8px;
+}
+.focus-session {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--focus-rule);
+}
+.focus-context {
+  font-size: 12px;
+  color: var(--focus-muted);
+  margin: 0 0 8px;
+}
+.focus-session h1 {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 600;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.focus-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.focus-clock > span {
+  font-size: 12px;
+  color: var(--focus-muted);
+}
+.focus-clock strong {
+  font:
+    500 23px/1.4 ui-monospace,
+    monospace;
+  color: var(--focus-ink);
+}
+.focus-clock strong.warning {
+  color: #825b19;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.focus-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  column-gap: 64px;
+  align-items: start;
+  padding-top: 40px;
+}
+.focus-question {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  min-width: 0;
+}
+.focus-question-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.focus-question-heading h2 {
+  font-size: 15px;
+  line-height: 24px;
+  margin: 0;
+  font-weight: 650;
+}
+.focus-question-heading h2 span {
+  color: var(--focus-muted);
+  font-weight: 400;
+}
+.focus-question-heading > span {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--focus-muted);
+}
+.focus-prompt {
+  font-size: 21px;
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+.focus-prompt .markdown {
+  line-height: inherit;
+}
+.focus-prompt .markdown > :first-child {
+  margin-top: 0;
+}
+.focus-prompt .markdown p {
+  line-height: inherit;
+}
+.focus-prompt .markdown h1,
+.focus-prompt .markdown h2 {
+  font-size: 24px;
+  line-height: 1.4;
+}
+.focus-shell .markdown pre {
+  max-width: 100%;
+  font-size: 14px;
+  border-radius: 2px;
+}
+.focus-shell .markdown pre code {
+  /* The pre owns horizontal scrolling; avoid a second Highlight.js surface. */
+  overflow: visible;
+  padding: 0;
+  background: transparent;
+}
+.focus-shell .markdown table {
+  display: block;
+  overflow-x: auto;
+  font-size: 16px;
+}
+.focus-shell .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+.focus-shell .markdown img {
+  height: auto;
+}
+.focus-answers {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.focus-answers legend {
+  padding: 0;
+  font-size: 13px;
+  color: var(--focus-muted);
+  margin-bottom: 12px;
+}
+.focus-shell .choice {
+  min-height: 64px;
+  padding: 14px 16px;
+  gap: 14px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--focus-rule);
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  align-items: flex-start;
+}
+.focus-shell .choice:first-child {
+  border-top: 1px solid var(--focus-rule);
+}
+.focus-shell .choice:hover {
+  background: #f4f5ef;
+}
+.focus-shell .choice:has(input:checked) {
+  background: #edf2eb;
+  border-left-color: var(--focus-green);
+}
+.focus-shell .choice:has(input:disabled) {
+  cursor: default;
+  opacity: 0.65;
+}
+.focus-shell .choice input {
+  margin-top: 5px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--focus-green);
+}
+.focus-shell .choice .markdown {
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.focus-shell .choice .markdown p {
+  margin: 0;
+  line-height: inherit;
+}
+.focus-shell .field {
+  margin: 0;
+  gap: 12px;
+}
+.focus-shell .field > span {
+  font-size: 13px;
+  color: var(--focus-muted);
+  font-weight: 400;
+}
+.focus-shell textarea {
+  min-height: 340px;
+  resize: vertical;
+  padding: 20px;
+  border: 1px solid #7b857c;
+  border-radius: 4px;
+  font-size: 17px;
+  line-height: 1.8;
+  background: #fffefa;
+  color: var(--focus-ink);
+}
+.focus-paging {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--focus-rule);
+  padding-top: 20px;
+  margin-top: 36px;
+  gap: 16px;
+}
+.focus-paging button.secondary {
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+  min-width: 90px;
+}
+.focus-paging button.secondary:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  background: transparent;
+}
+.focus-save {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+  color: var(--focus-muted);
+  font-size: 12px;
+}
+.focus-save p {
+  margin: 0;
+}
+.focus-save [data-error="true"] {
+  color: #a1372d;
+  font-weight: 600;
+}
+.focus-shell .error {
+  border-radius: 2px;
+  border-left: 3px solid #a1372d;
+}
+.focus-index {
+  grid-column: 2;
+  grid-row: 1;
+  border-left: 1px solid var(--focus-rule);
+  padding-left: 24px;
+}
+.focus-index h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+.focus-progress {
+  font-size: 13px;
+  color: var(--focus-muted);
+  margin: 0 0 20px;
+}
+.focus-index-toggle {
+  display: none;
+}
+.focus-index-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  gap: 5px;
+  max-height: 410px;
+  overflow-y: auto;
+  padding: 5px;
+  margin: -5px;
+}
+.focus-index-grid button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--focus-muted);
+  border: 0;
+  border-bottom: 1px solid var(--focus-rule);
+  border-radius: 0;
+  background: transparent;
+}
+.focus-index-grid button:hover {
+  background: #edf2eb;
+}
+.focus-index-grid button[aria-current] {
+  border: 1px solid var(--focus-green);
+  color: var(--focus-green);
+  font-weight: 700;
+}
+.focus-index-grid button[data-answered="true"]::after {
+  content: "✓";
+  font-size: 11px;
+}
+.focus-index-legend {
+  font-size: 12px;
+  color: var(--focus-muted);
+  margin: 16px 0 0;
+}
+.focus-submit {
+  grid-column: 2;
+  padding: 24px 0 0 24px;
+}
+.focus-submit > button {
+  width: 100%;
+}
+.focus-submit > p {
+  font-size: 12px;
+  color: var(--focus-muted);
+  margin: 12px 0 0;
+}
+.focus-dialog {
+  width: min(460px, calc(100vw - 32px));
+  border: 1px solid #7b857c;
+  border-radius: 8px;
+  padding: 28px;
+  margin: auto;
+  background: var(--focus-paper);
+  color: var(--focus-ink);
+}
+.focus-dialog::backdrop {
+  background: #252c2a70;
+}
+.focus-dialog h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.focus-dialog .actions {
+  justify-content: flex-end;
+  margin: 24px 0 0;
+}
+.focus-entry {
+  max-width: 760px;
+  margin: 64px auto 0;
+}
+.focus-entry h1 {
+  font-size: 34px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 12px 0 24px;
+}
+.focus-entry > .markdown {
+  max-width: 650px;
+  font-size: 17px;
+  color: var(--focus-muted);
+}
+.focus-entry-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 56px;
+  border-block: 1px solid var(--focus-rule);
+  padding: 24px 0;
+  margin: 32px 0;
+}
+.focus-entry-facts dt {
+  font-size: 13px;
+  color: var(--focus-muted);
+  margin-bottom: 8px;
+}
+.focus-entry-facts dd {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 500;
+}
+.focus-entry-note {
+  font-size: 14px;
+  color: var(--focus-muted);
+  max-width: 580px;
+  margin-bottom: 24px;
+}
+.focus-entry-history {
+  border-top: 1px solid var(--focus-rule);
+  margin-top: 48px;
+  padding-top: 24px;
+}
+.focus-entry-history h2 {
+  font-size: 16px;
+}
+.focus-entry-history p {
+  font-size: 14px;
+  color: var(--focus-muted);
+}
+.focus-entry-history a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+@media (max-width: 1000px) {
+  .focus-shell > main {
+    max-width: 760px;
+  }
+  .focus-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 0;
+  }
+  .focus-index {
+    grid-column: 1;
+    grid-row: 1;
+    border: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--focus-rule);
+  }
+  .focus-index h2 {
+    display: none;
+  }
+  .focus-index-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+  .focus-shell .focus-index-toggle {
+    background: transparent;
+    color: var(--focus-ink);
+    padding: 16px 0;
+    border-radius: 0;
+    text-align: left;
+  }
+  .focus-shell .focus-index-toggle:hover {
+    background: #f4f5ef;
+  }
+  .focus-index-toggle > span:last-child {
+    font-weight: 400;
+    color: var(--focus-muted);
+    font-size: 12px;
+  }
+  .focus-index-body {
+    padding: 8px 0 20px;
+  }
+  .focus-index:not(.is-open) .focus-index-body {
+    display: none;
+  }
+  .focus-index-grid {
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    max-height: 240px;
+  }
+  .focus-index-body .focus-progress {
+    display: none;
+  }
+  .focus-question {
+    grid-column: 1;
+    grid-row: 2;
+    padding-top: 32px;
+  }
+  .focus-submit {
+    grid-column: 1;
+    grid-row: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--focus-rule);
+    margin-top: 24px;
+  }
+  .focus-submit > button {
+    width: auto;
+    flex-shrink: 0;
+    order: 2;
+  }
+  .focus-submit > p {
+    margin: 0;
+    max-width: 380px;
+  }
+}
+@media (max-width: 560px) {
+  .focus-shell > .focus-topbar {
+    min-height: 56px;
+    padding: 4px 16px;
+    gap: 12px;
+  }
+  .focus-topbar .brand {
+    font-size: 16px;
+  }
+  .focus-topbar a {
+    font-size: 12px;
+  }
+  .focus-shell > main {
+    padding: 0 20px 40px;
+  }
+  .focus-session {
+    padding: 20px 0;
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .focus-session h1 {
+    font-size: 16px;
+  }
+  .focus-context {
+    margin-bottom: 4px;
+  }
+  .focus-clock {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .focus-clock strong {
+    font-size: 20px;
+  }
+  .focus-index-toggle {
+    font-size: 13px !important;
+  }
+  .focus-question {
+    padding-top: 28px;
+  }
+  .focus-question-heading {
+    margin-bottom: 18px;
+  }
+  .focus-prompt {
+    font-size: 19px;
+    margin-bottom: 24px;
+  }
+  .focus-shell .choice {
+    padding: 16px 8px;
+    gap: 12px;
+  }
+  .focus-shell textarea {
+    min-height: 360px;
+    font-size: 16px;
+    padding: 16px;
+  }
+  .focus-paging {
+    margin-top: 28px;
+    padding-top: 16px;
+  }
+  .focus-save {
+    font-size: 12px;
+  }
+  .focus-submit {
+    gap: 20px;
+  }
+  .focus-entry {
+    margin-top: 36px;
+  }
+  .focus-entry h1 {
+    font-size: 28px;
+  }
+  .focus-entry > .markdown {
+    font-size: 16px;
+  }
+  .focus-entry-facts {
+    gap: 24px 40px;
+    margin: 24px 0;
+  }
+  .focus-entry-facts > div:last-child {
+    width: 100%;
+  }
+  .focus-entry-history {
+    margin-top: 36px;
+  }
+  .focus-dialog {
+    padding: 24px;
+  }
+}
+
+/* Rollout states use the same paper, rules and typography as the approved desk. */
+.focus-topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  align-items: center;
+}
+.focus-topbar:has(nav) {
+  flex-wrap: wrap;
+}
+.focus-catalog {
+  max-width: 900px;
+}
+.focus-exam-list {
+  border-top: 1px solid var(--focus-rule);
+  margin-top: 32px;
+}
+.focus-exam-list article {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--focus-rule);
+}
+.focus-exam-list h2 {
+  font-size: 21px;
+  margin: 8px 0 12px;
+  overflow-wrap: anywhere;
+}
+.focus-exam-list h2 a {
+  color: var(--focus-ink);
+}
+.focus-exam-list article > p:not(.focus-context) {
+  font-size: 14px;
+  color: var(--focus-muted);
+  margin: 8px 0;
+}
+.focus-exam-open {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+}
+.focus-empty {
+  border-block: 1px solid var(--focus-rule);
+  padding: 32px 0;
+}
+.focus-entry h1,
+.focus-entry .markdown {
+  overflow-wrap: anywhere;
+}
+.focus-compact-clock {
+  position: fixed;
+  z-index: 15;
+  inset: 0 0 auto;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 max(20px, calc((100vw - 1072px) / 2));
+  border-bottom: 1px solid var(--focus-rule);
+  background: var(--focus-paper);
+  font-size: 12px;
+  color: var(--focus-muted);
+  pointer-events: none;
+}
+.focus-compact-clock strong {
+  margin-left: 8px;
+  font:
+    500 16px/1.4 ui-monospace,
+    monospace;
+  color: var(--focus-ink);
+}
+.focus-compact-clock strong.warning {
+  color: #825b19;
+  text-decoration: underline;
+}
+.focus-shell :is(button, input, textarea, a, h2) {
+  scroll-margin-top: 60px;
+}
+.focus-dialog {
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+@media (max-width: 560px) {
+  .focus-topbar nav {
+    gap: 4px 16px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .focus-dialog .actions {
+    flex-wrap: wrap;
+  }
+}

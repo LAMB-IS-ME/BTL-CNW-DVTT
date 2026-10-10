@@ -1,0 +1,696 @@
+/* Thin slice: only Grading / Teacher Results / Student Results content.
+   Shared shell, approved Folio and Focus Desk keep their existing selectors. */
+.record-page {
+  --record-ink: #252c2a;
+  --record-secondary: #535e59;
+  --record-rule: #d7d9d1;
+  --record-sheet: #fffefa;
+  --record-action: #24574e;
+  color: var(--record-ink);
+  font-size: 15px;
+  line-height: 1.6;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.record-page h1 {
+  font-size: 30px;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.record-page h2 {
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 600;
+  margin: 0;
+}
+.record-page h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.record-page a {
+  color: var(--record-action);
+  text-underline-offset: 4px;
+}
+.record-page :focus-visible {
+  outline: 3px solid #245ea6;
+  outline-offset: 3px;
+}
+.record-page button {
+  border-radius: 4px;
+  min-height: 44px;
+  box-shadow: none;
+  background: var(--record-action);
+  color: #fff;
+}
+.record-page button.secondary {
+  background: transparent;
+  color: var(--record-action);
+  border: 1px solid #7b857c;
+}
+.record-page button:disabled {
+  cursor: wait;
+}
+.record-page input,
+.record-page textarea {
+  border: 1px solid #7b857c;
+  border-radius: 6px;
+  background: var(--record-sheet);
+  color: var(--record-ink);
+  font-size: 16px;
+  min-height: 44px;
+}
+.record-page textarea {
+  width: 100%;
+  resize: vertical;
+}
+.record-page .field {
+  margin: 0 0 12px;
+}
+.record-page .field > span {
+  font-size: 14px;
+  font-weight: 600;
+}
+.record-breadcrumb {
+  font-size: 13px;
+  color: var(--record-secondary);
+  gap: 10px;
+  margin: 0 0 20px;
+}
+.record-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--record-ink);
+}
+.record-heading > div:first-child {
+  min-width: 0;
+}
+.record-heading > a {
+  flex-shrink: 0;
+  padding-top: 32px;
+}
+.record-context {
+  color: var(--record-action);
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+.record-meta {
+  color: var(--record-secondary);
+  font-size: 13px;
+}
+.record-rule-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 24px 0 16px;
+}
+.record-rule-heading > span {
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.record-index {
+  font-variant-numeric: tabular-nums;
+  color: var(--record-secondary);
+  font-size: 13px;
+}
+.record-state {
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.record-waiting {
+  color: #825b19;
+}
+.marking-submission {
+  border-top: 1px solid var(--record-rule);
+}
+.marking-submission > summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 12px;
+  cursor: pointer;
+  list-style: none;
+}
+.marking-submission > summary::-webkit-details-marker {
+  display: none;
+}
+.marking-submission > summary::after {
+  content: "+";
+  font-size: 22px;
+  margin-left: 12px;
+}
+.marking-submission[open] > summary::after {
+  content: "−";
+}
+.marking-submission[open] > summary {
+  border-left: 3px solid var(--record-action);
+  background: #edf2eb;
+  padding-left: 9px;
+}
+.marking-student {
+  flex: 1;
+}
+.marking-student strong {
+  font-size: 17px;
+  font-weight: 600;
+}
+.marking-student small {
+  display: block;
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.marking-submission-body {
+  padding: 0 24px 24px;
+  background: var(--record-sheet);
+}
+.marking-submission-body > .record-meta {
+  padding-top: 16px;
+  margin: 0;
+}
+.marking-question {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 248px;
+  gap: 40px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--record-rule);
+}
+.marking-reading {
+  min-width: 0;
+  max-width: 72ch;
+}
+.record-question-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 16px;
+}
+.record-question-title span {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--record-secondary);
+}
+.marking-prompt {
+  margin-bottom: 28px;
+}
+.marking-reading h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--record-secondary);
+  border-top: 1px solid var(--record-rule);
+  padding-top: 20px;
+}
+.record-answer {
+  white-space: pre-wrap;
+  font-size: 17px;
+  line-height: 1.85;
+}
+.marking-score {
+  border-left: 1px solid var(--record-rule);
+  padding-left: 24px;
+  min-width: 0;
+}
+.marking-score fieldset {
+  min-width: 0;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.marking-score legend {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.marking-score input {
+  max-width: 140px;
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+.marking-score .record-meta {
+  margin-top: 0;
+}
+.marking-save-state {
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.record-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.record-release {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid var(--record-rule);
+  padding: 20px 0;
+}
+.record-release strong {
+  font-size: 14px;
+}
+.record-release p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--record-secondary);
+}
+.record-release > button {
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--record-action);
+  border: 1px solid #7b857c;
+}
+.record-notice:empty {
+  display: none;
+}
+.record-notice {
+  font-size: 14px;
+}
+.record-counts {
+  margin: -6px 0 20px;
+}
+.record-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.record-table {
+  min-width: 760px;
+  background: var(--record-sheet);
+}
+.record-table caption {
+  text-align: left;
+}
+.record-table th,
+.record-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid var(--record-rule);
+  vertical-align: middle;
+}
+.record-table thead th {
+  color: var(--record-secondary);
+  background: #edf0e9;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+}
+.record-table tbody th {
+  text-transform: none;
+  color: var(--record-ink);
+  font-size: 15px;
+  width: 32%;
+}
+.record-table tbody th strong {
+  font-weight: 550;
+}
+.record-table small {
+  display: block;
+  color: var(--record-secondary);
+  font-size: 12px;
+  font-weight: 400;
+}
+.record-table td {
+  font-variant-numeric: tabular-nums;
+}
+.record-table .record-numeric {
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 600;
+}
+.record-numeric span {
+  color: var(--record-secondary);
+  font-size: 13px;
+  font-weight: 400;
+}
+.record-table button {
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 8px 12px;
+}
+.record-scroll-hint {
+  display: none;
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.record-analysis {
+  margin-top: 32px;
+  border-top: 2px solid var(--record-ink);
+  padding: 16px 0;
+}
+.record-analysis > summary {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 8px 0;
+}
+.record-statistics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  margin: 24px 0 32px;
+}
+.record-statistics dt {
+  font-size: 13px;
+  color: var(--record-secondary);
+}
+.record-statistics dd {
+  font-variant-numeric: tabular-nums;
+  font-size: 22px;
+  margin: 6px 0 0;
+}
+.record-distribution {
+  margin-bottom: 32px;
+  max-width: 780px;
+}
+.record-question-stat {
+  border-bottom: 1px solid var(--record-rule);
+  padding: 16px 0;
+}
+.student-record {
+  max-width: 840px;
+  margin: 0 auto;
+}
+.record-intro {
+  color: var(--record-secondary);
+  margin: 16px 0 32px;
+}
+.student-result-link {
+  display: grid;
+  grid-template-columns: 32px 1fr 24px;
+  gap: 16px;
+  align-items: baseline;
+  border-top: 1px solid var(--record-rule);
+  padding: 24px 0;
+  text-decoration: none;
+  font-size: 18px;
+}
+.student-result-link:hover {
+  text-decoration: underline;
+}
+.student-attempt {
+  border-bottom: 1px solid var(--record-rule);
+  padding: 28px 0;
+}
+.student-attempt-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.student-result-state {
+  color: var(--record-action);
+  font-size: 16px;
+}
+.student-score-line {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 18px 0;
+  border-top: 1px solid var(--record-rule);
+  border-bottom: 1px solid var(--record-rule);
+  margin-top: 24px;
+}
+.student-score-line strong {
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.student-score-line strong span {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--record-secondary);
+}
+.student-score-line > span {
+  font-size: 14px;
+  color: var(--record-secondary);
+}
+.student-score-line > span:last-child {
+  margin-left: auto;
+}
+.student-question-record {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--record-rule);
+}
+.student-question-record:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.student-question-record > h3 {
+  margin: 0 0 16px;
+}
+.student-question-record .choice {
+  border: 0;
+  border-bottom: 1px solid var(--record-rule);
+  border-radius: 0;
+  padding: 12px;
+  background: transparent;
+}
+.student-feedback {
+  border-left: 3px solid var(--record-action);
+  padding-left: 16px;
+  white-space: pre-wrap;
+}
+.record-page .markdown {
+  min-width: 0;
+}
+.record-page .markdown pre,
+.record-page .markdown .katex-display {
+  max-width: 100%;
+  overflow: auto;
+}
+.record-page .markdown pre code {
+  overflow: visible;
+  padding: 0;
+}
+.record-page .markdown table {
+  display: block;
+  overflow-x: auto;
+}
+.record-page .empty {
+  background: transparent;
+  border-radius: 0;
+  padding: 32px 0;
+  text-align: left;
+}
+.record-page .confirm-dialog {
+  max-width: min(500px, calc(100vw - 32px));
+}
+.record-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+@media (max-width: 1000px) {
+  .record-heading {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .record-heading > a {
+    padding-top: 0;
+  }
+  .record-tools {
+    justify-content: flex-start;
+  }
+  .marking-question {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .marking-score {
+    border-left: 0;
+    border-top: 1px solid var(--record-rule);
+    padding: 24px 0 0;
+  }
+  .marking-score textarea {
+    max-width: 640px;
+  }
+  .record-scroll-hint {
+    display: block;
+  }
+}
+@media (max-width: 600px) {
+  .record-page {
+    font-size: 16px;
+  }
+  .record-page h1 {
+    font-size: 26px;
+  }
+  .record-rule-heading {
+    display: block;
+  }
+  .record-rule-heading > span {
+    display: block;
+    margin-top: 4px;
+  }
+  .marking-submission > summary {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .marking-student {
+    flex-basis: calc(100% - 42px);
+  }
+  .marking-submission > summary > .record-state {
+    margin-left: 30px;
+    flex: 1;
+  }
+  .marking-submission > summary::after {
+    margin-left: 0;
+  }
+  .marking-submission-body {
+    padding: 0 12px 16px;
+  }
+  .record-question-title {
+    align-items: flex-start;
+  }
+  .record-answer {
+    font-size: 16px;
+  }
+  .record-release {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .record-statistics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .student-result-link {
+    font-size: 17px;
+    gap: 10px;
+  }
+  .student-attempt-heading {
+    align-items: flex-start;
+  }
+  .student-score-line {
+    gap: 12px;
+  }
+  .record-page .actions {
+    gap: 10px;
+  }
+}
+.marking-score-context {
+  display: none;
+}
+.record-mobile-results {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .marking-score-context {
+    display: block;
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--record-secondary);
+  }
+}
+@media (max-width: 600px) {
+  .record-table-scroll,
+  .record-scroll-hint {
+    display: none;
+  }
+  .record-mobile-results {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .record-mobile-results li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 14px 16px;
+    border-top: 1px solid var(--record-rule);
+    padding: 20px 0;
+  }
+  .record-mobile-identity strong {
+    display: block;
+    font-weight: 600;
+  }
+  .record-mobile-identity small {
+    display: block;
+    font-size: 12px;
+    color: var(--record-secondary);
+  }
+  .record-mobile-score {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .record-mobile-score > span {
+    display: block;
+    font-size: 12px;
+    color: var(--record-secondary);
+  }
+  .record-mobile-score strong {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .record-mobile-score small {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--record-secondary);
+  }
+  .record-mobile-results .record-meta {
+    font-size: 12px;
+    margin: 4px 0 0;
+  }
+}
+
+/* Rollout controls retain the approved record compositions. */
+.record-pager {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+.record-pager > span {
+  flex: 1;
+  min-width: 80px;
+  font-size: 0.875rem;
+}
+.record-retry {
+  margin: 12px 0;
+}
+.record-draft-summary {
+  border-left: 3px solid #876323;
+  padding: 8px 12px;
+  color: #58441f;
+  background: #faf6ed;
+}
+.grading-leave {
+  max-width: min(520px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  margin: auto;
+  box-sizing: border-box;
+  border: 1px solid #cdd3ce;
+  border-radius: 8px;
+  padding: 24px;
+  color: #252c2a;
+  background: #fffefa;
+}
+.grading-leave::backdrop {
+  background: rgb(20 30 25 / 45%);
+}
+.grading-leave .record-tools {
+  flex-wrap: wrap;
+}
+.grading-leave h2 {
+  margin-top: 0;
+}
+@media (max-width: 400px) {
+  .record-pager {
+    gap: 8px;
+  }
+  .record-pager > span {
+    order: -1;
+    flex-basis: 100%;
+  }
+}

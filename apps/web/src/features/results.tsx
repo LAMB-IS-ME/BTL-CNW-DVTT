@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type {
   MonitorSnapshot,
@@ -11,6 +11,19 @@ import { api } from "../lib/api";
 import { connectSocket } from "../lib/socket";
 import { ErrorBox, Loading, Field, Empty } from "../components/ui";
 import { Markdown } from "../components/Markdown";
+import {
+  AttemptState,
+  strategyLabel,
+  useResultExam,
+} from "./result-presentation";
+import {
+  type GradeDraft,
+  type GradeValues,
+  isGradeDirty,
+  acknowledgeGrade,
+} from "./grading-draft";
+import { GradingLeave } from "./grading-leave";
+import { useRecordPage, RecordPager, RecordRetry } from "./record-pagination";
 const labels: Record<PresenceStatus, string> = {
   NOT_STARTED: "Chưa bắt đầu",
   IN_PROGRESS: "Đang thi",
@@ -113,11 +126,13 @@ export function ExamMonitor() {
 type GradeAttempt = {
   id: string;
   attemptNo: number;
+  submittedAt: string | null;
   status: string;
   student: { fullName: string; studentCode: string | null };
   questions: {
     id: string;
     points: string;
+    orderIndex: number;
     snapshotJson: Snapshot;
     answer: {
       id: string;
@@ -129,142 +144,372 @@ type GradeAttempt = {
 };
 export function Grading() {
   const { id } = useParams();
-  const q = useQuery({
-    queryKey: ["grading", id],
-    queryFn: () =>
-      api<GradeAttempt[]>(`/teacher/exams/${id}/grading?pageSize=100`),
-  });
+  return <GradingWorkspace key={id} id={id!} />;
+}
+function GradingWorkspace({ id }: { id: string }) {
+  const exam = useResultExam(id);
+  const cache = useQueryClient();
+  const paging = useRecordPage<GradeAttempt>(
+    ["grading", id],
+    `/teacher/exams/${id}/grading`,
+  );
+  const q = paging.query;
+  const [drafts, setDrafts] = useState<Record<string, GradeDraft>>({});
+  const current = useRef(drafts);
+  function update(answerId: string, draft: GradeDraft) {
+    current.current = { ...current.current, [answerId]: draft };
+    setDrafts(current.current);
+  }
+  function draftFor(
+    answer: GradeAttempt["questions"][number]["answer"],
+  ): GradeDraft {
+    const values = {
+      score: answer?.manualScore ?? "",
+      feedback: answer?.feedback ?? "",
+    };
+    return (
+      (answer && current.current[answer.id]) || {
+        values,
+        persisted: values,
+        state: "idle",
+      }
+    );
+  }
+  async function save(
+    answer: NonNullable<GradeAttempt["questions"][number]["answer"]>,
+  ) {
+    const draft = draftFor(answer);
+    if (draft.state === "saving") return;
+    const sent = { ...draft.values };
+    update(answer.id, { ...draft, state: "saving", error: undefined });
+    try {
+      await api(`/teacher/answers/${answer.id}/grade`, "PUT", {
+        score: Number(sent.score),
+        feedback: sent.feedback,
+      });
+      update(answer.id, acknowledgeGrade(current.current[answer.id]!, sent));
+      await Promise.all([
+        cache.invalidateQueries({ queryKey: ["grading", id] }),
+        cache.invalidateQueries({ queryKey: ["results", id] }),
+        cache.invalidateQueries({ queryKey: ["analytics", id] }),
+        cache.invalidateQueries({ queryKey: ["student-results", id] }),
+      ]);
+    } catch (error) {
+      update(answer.id, {
+        ...current.current[answer.id]!,
+        state: "failed",
+        error,
+      });
+    }
+  }
+  const dirty = Object.values(drafts).filter(isGradeDirty).length;
+  const saving = Object.values(drafts).some((d) => d.state === "saving");
   return (
-    <>
-      <h1>Chấm tự luận</h1>
-      <ErrorBox error={q.error} />
+    <div className="record-page marking-desk">
+      <GradingLeave dirty={dirty > 0} saving={saving} />
+      <nav className="record-breadcrumb" aria-label="Đường dẫn chấm bài">
+        <Link to="/teacher/exams">Bài thi</Link>
+        <span aria-hidden="true">/</span>
+        <span>Chấm tự luận</span>
+      </nav>
+      <div className="record-heading">
+        <div>
+          <p className="record-context">Chấm tự luận</p>
+          <h1>{exam.data?.title || "Chấm tự luận"}</h1>
+        </div>
+        <Link to={`/teacher/exams/${id}/results`}>Kết quả & công bố →</Link>
+      </div>
+      <RecordRetry
+        error={exam.error}
+        busy={exam.isFetching}
+        retry={exam.refetch}
+      />
+      <RecordRetry error={q.error} busy={q.isFetching} retry={q.refetch} />
+      {!!dirty && (
+        <p className="record-draft-summary" role="status">
+          {dirty} câu có thay đổi chưa lưu. Bản nháp được giữ khi chuyển trang
+          danh sách; hãy lưu từng câu trước khi rời chấm bài.
+        </p>
+      )}
+      <RecordPager
+        page={paging.page}
+        setPage={paging.setPage}
+        hasNext={paging.hasNext}
+        nextError={paging.next.error}
+        checking={paging.next.isFetching}
+        retry={paging.next.refetch}
+      />
+      <div className="record-rule-heading">
+        <h2>Bài đã nộp</h2>
+        <span>Mở bài để đọc và chấm từng câu tự luận</span>
+      </div>
       {q.isPending ? (
         <Loading />
       ) : (
-        q.data?.map((a) => (
-          <section className="card" key={a.id}>
-            <h2>
-              {a.student.fullName} · Lượt {a.attemptNo}
-            </h2>
-            <p>{a.status}</p>
-            {a.questions
-              .filter((q) => q.snapshotJson.type === "ESSAY")
-              .map((q) => (
-                <EssayGrade
-                  key={q.id}
-                  question={q}
-                  refresh={() => qRefetch()}
-                />
-              ))}
-          </section>
-        ))
+        q.data && (
+          <>
+            {!q.data.length && <Empty>Chưa có bài đã nộp để chấm.</Empty>}
+            {q.data.map((a, i) => (
+              <details className="marking-submission" key={a.id} open={i === 0}>
+                <summary>
+                  <span className="record-index" aria-hidden="true">
+                    {String((paging.page - 1) * 20 + i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="marking-student">
+                    <strong>{a.student.fullName}</strong>
+                    <small>
+                      {a.student.studentCode || "Chưa có mã sinh viên"} · Lượt{" "}
+                      {a.attemptNo}
+                    </small>
+                  </span>
+                  <AttemptState status={a.status} />
+                </summary>
+                <div className="marking-submission-body">
+                  {a.submittedAt && (
+                    <p className="record-meta">
+                      Nộp lúc {new Date(a.submittedAt).toLocaleString("vi-VN")}
+                    </p>
+                  )}
+                  {a.questions.filter((q) => q.snapshotJson.type === "ESSAY")
+                    .length === 0 && (
+                    <Empty>Bài này không có câu tự luận.</Empty>
+                  )}
+                  {[...a.questions]
+                    .sort((a, b) => a.orderIndex - b.orderIndex)
+                    .map(
+                      (question) =>
+                        question.snapshotJson.type === "ESSAY" && (
+                          <EssayGrade
+                            key={question.id}
+                            question={question}
+                            studentContext={`${a.student.fullName} · Lượt ${a.attemptNo}`}
+                            index={question.orderIndex + 1}
+                            draft={draftFor(question.answer)}
+                            change={(values) => {
+                              if (question.answer)
+                                update(question.answer.id, {
+                                  ...draftFor(question.answer),
+                                  values,
+                                  error: undefined,
+                                  state: "idle",
+                                });
+                            }}
+                            save={() =>
+                              question.answer
+                                ? save(question.answer)
+                                : Promise.resolve()
+                            }
+                          />
+                        ),
+                    )}
+                </div>
+              </details>
+            ))}
+          </>
+        )
       )}
-      <Link to={`/teacher/exams/${id}/results`}>Kết quả & công bố →</Link>
-    </>
+    </div>
   );
-  async function qRefetch() {
-    await q.refetch();
-  }
 }
 function EssayGrade({
   question: q,
-  refresh,
+  index,
+  studentContext,
+  draft,
+  change,
+  save,
 }: {
   question: GradeAttempt["questions"][number];
-  refresh: () => Promise<void>;
+  index: number;
+  studentContext: string;
+  draft: GradeDraft;
+  change: (values: GradeValues) => void;
+  save: () => Promise<void>;
 }) {
-  const [error, setError] = useState<unknown>(),
-    [saved, setSaved] = useState(false);
+  const dirty = isGradeDirty(draft);
+  const state = draft.state;
   return (
     <form
-      className="card"
-      onSubmit={async (e) => {
+      className="marking-question"
+      onSubmit={(e) => {
         e.preventDefault();
-        try {
-          const d = new FormData(e.currentTarget);
-          await api(`/teacher/answers/${q.answer?.id}/grade`, "PUT", {
-            score: Number(d.get("score")),
-            feedback: d.get("feedback"),
-          });
-          setSaved(true);
-          await refresh();
-        } catch (e) {
-          setError(e);
-        }
+        if (e.currentTarget.checkValidity()) void save();
       }}
     >
-      <Markdown>{q.snapshotJson.promptMarkdown}</Markdown>
-      <h3>Bài làm</h3>
-      <p style={{ whiteSpace: "pre-wrap" }}>
-        {q.answer?.answerText || "(Chưa trả lời)"}
-      </p>
-      <Field label={`Điểm (0–${q.points})`}>
-        <input
-          type="number"
-          min="0"
-          max={q.points}
-          step="0.01"
-          name="score"
-          defaultValue={q.answer?.manualScore || ""}
-          required
-        />
-      </Field>
-      <Field label="Nhận xét">
-        <textarea name="feedback" defaultValue={q.answer?.feedback || ""} />
-      </Field>
-      <ErrorBox error={error} />
-      <button>Lưu điểm</button>
-      {saved && <p role="status">Đã lưu điểm</p>}
+      <div className="marking-reading">
+        <h3 className="record-question-title">
+          Câu {index} <span>Tự luận · {q.points} điểm</span>
+        </h3>
+        <div className="marking-prompt">
+          <Markdown>{q.snapshotJson.promptMarkdown}</Markdown>
+        </div>
+        <h4>Bài làm của sinh viên</h4>
+        <p className="record-answer">
+          {q.answer?.answerText || "(Chưa trả lời)"}
+        </p>
+      </div>
+      <div className="marking-score">
+        <p className="marking-score-context">
+          {studentContext} · Câu {index}
+        </p>
+        <fieldset disabled={state === "saving" || !q.answer}>
+          <legend>Điểm & nhận xét</legend>
+          <Field label={`Điểm (0–${q.points})`}>
+            <input
+              type="number"
+              min="0"
+              max={q.points}
+              step="0.01"
+              name="score"
+              value={draft.values.score}
+              onChange={(e) =>
+                change({
+                  ...draft.values,
+                  score: e.target.value,
+                  invalid: e.target.validity.badInput,
+                })
+              }
+              required
+              aria-describedby={`score-help-${q.id}`}
+            />
+          </Field>
+          <p id={`score-help-${q.id}`} className="record-meta">
+            Tối đa {q.points} điểm · Bước nhập 0,01
+          </p>
+          <Field label="Nhận xét">
+            <textarea
+              name="feedback"
+              rows={5}
+              maxLength={10000}
+              value={draft.values.feedback}
+              onChange={(e) =>
+                change({ ...draft.values, feedback: e.target.value })
+              }
+            />
+          </Field>
+          <button type="submit">
+            {state === "saving" ? "Đang lưu…" : "Lưu điểm"}
+          </button>
+        </fieldset>
+        <p className="marking-save-state" role="status">
+          {state === "saved" && !dirty
+            ? "Đã lưu điểm"
+            : state === "saving"
+              ? "Đang lưu điểm…"
+              : dirty && state !== "failed"
+                ? "Có thay đổi chưa lưu"
+                : state === "failed"
+                  ? "Chưa lưu được. Vui lòng thử lại."
+                  : q.answer?.manualScore != null
+                    ? "Điểm đã lưu · Có thể chỉnh sửa"
+                    : "Chưa chấm câu này"}
+        </p>
+        <ErrorBox error={draft.error} />
+        {!q.answer && <p role="alert">Không có dữ liệu đáp án để chấm.</p>}
+      </div>
     </form>
   );
 }
 export function StudentResults() {
   const { id } = useParams();
+  const location = useLocation();
+  const back =
+    (location.state as { resultsPage?: string } | null)?.resultsPage ||
+    "/student/results";
   const q = useQuery({
+    staleTime: 0,
     queryKey: ["student-results", id],
     queryFn: () => api<StudentResult>(`/student/exams/${id}/results`),
     enabled: !!id,
   });
-  const list = useQuery({
-    queryKey: ["student-exams"],
-    queryFn: () => api<{ id: string; title: string }[]>("/student/exams"),
-    enabled: !id,
-  });
+  const paging = useRecordPage<{ id: string; title: string }>(
+    ["student-result-exams"],
+    "/student/exams",
+    !id,
+  );
+  const list = paging.query;
   if (!id)
     return (
-      <>
+      <div className="record-page student-record">
+        <p className="record-context">Hồ sơ học tập</p>
         <h1>Kết quả của tôi</h1>
-        <ErrorBox error={list.error} />
+        <p className="record-intro">
+          Chọn bài thi để xem trạng thái chấm và kết quả từng lượt.
+        </p>
+        <RecordRetry
+          error={list.error}
+          busy={list.isFetching}
+          retry={list.refetch}
+        />
+        <RecordPager
+          page={paging.page}
+          setPage={paging.setPage}
+          hasNext={paging.hasNext}
+          nextError={paging.next.error}
+          checking={paging.next.isFetching}
+          retry={paging.next.refetch}
+        />
         {list.isPending ? (
           <Loading />
+        ) : list.data?.length === 0 ? (
+          <Empty>Chưa có bài thi trong danh sách kết quả.</Empty>
         ) : (
-          list.data?.map((e) => (
+          list.data?.map((e, i) => (
             <Link
-              className="card"
-              style={{ display: "block" }}
+              className="student-result-link"
               key={e.id}
               to={`/student/results/${e.id}`}
+              state={{ resultsPage: location.pathname + location.search }}
             >
-              {e.title} →
+              <span className="record-index" aria-hidden="true">
+                {String((paging.page - 1) * 20 + i + 1).padStart(2, "0")}
+              </span>
+              <span>{e.title}</span>
+              <span aria-hidden="true">→</span>
             </Link>
           ))
         )}
-      </>
+      </div>
     );
-  if (q.isPending) return <Loading />;
-  if (!q.data) return <ErrorBox error={q.error} />;
+  if (q.isPending)
+    return (
+      <div className="record-page student-record">
+        <Loading />
+      </div>
+    );
+  if (!q.data || q.isError)
+    return (
+      <div className="record-page student-record">
+        <Link to={back}>← Kết quả của tôi</Link>
+        <RecordRetry error={q.error} busy={q.isFetching} retry={q.refetch} />
+      </div>
+    );
   return (
-    <>
-      <h1>{q.data.title}</h1>
-      <p>Chiến lược: {q.data.resultStrategy}</p>
+    <div className="record-page student-record">
+      <nav className="record-breadcrumb" aria-label="Đường dẫn kết quả">
+        <Link to={back}>Kết quả của tôi</Link>
+        <span aria-hidden="true">/</span>
+        <span>Chi tiết</span>
+      </nav>
+      <div className="record-heading">
+        <div>
+          <p className="record-context">Kết quả bài thi</p>
+          <h1>{q.data.title}</h1>
+          <p className="record-meta">{strategyLabel(q.data.resultStrategy)}</p>
+        </div>
+      </div>
       {!q.data.attempts.length && <Empty>Chưa có lượt thi.</Empty>}
       {q.data.attempts.map((a) => (
-        <article className="card" key={a.id}>
-          <h2>
-            Lượt {a.attemptNo}{" "}
-            {q.data.finalAttemptId === a.id ? "· Kết quả được tính" : ""}
-          </h2>
-          <p>
+        <article className="student-attempt" key={a.id}>
+          <div className="student-attempt-heading">
+            <h2>Lượt {a.attemptNo}</h2>
+            <span className="record-meta">
+              {q.data.finalAttemptId === a.id
+                ? "Lượt được chọn tính kết quả"
+                : "Lịch sử lượt thi"}
+            </span>
+          </div>
+          <p className="student-result-state">
             {a.status === "IN_PROGRESS"
               ? "Đang làm bài"
               : a.status === "PENDING_MANUAL_GRADING"
@@ -273,13 +518,23 @@ export function StudentResults() {
                   ? "Đã chấm"
                   : "Đã nộp · Kết quả chưa công bố"}
           </p>
+          {a.submittedAt && (
+            <p className="record-meta">
+              Nộp lúc {new Date(a.submittedAt).toLocaleString("vi-VN")}
+            </p>
+          )}
           {a.visible && (
             <>
-              <strong className="score">
-                {a.totalScore}/{a.maxScore} · {a.percentage?.toFixed(1)}%
-              </strong>
+              <div className="student-score-line">
+                <span>Tổng điểm</span>
+                <strong>
+                  {a.totalScore}
+                  <span> / {a.maxScore}</span>
+                </strong>
+                <span>{a.percentage?.toFixed(1)}%</span>
+              </div>
               {a.questions?.map((q, i) => (
-                <section className="card" key={q.id}>
+                <section className="student-question-record" key={q.id}>
                   <h3>
                     Câu {i + 1}{" "}
                     {q.score !== undefined
@@ -288,7 +543,7 @@ export function StudentResults() {
                   </h3>
                   <Markdown>{q.promptMarkdown}</Markdown>
                   {q.type === "ESSAY" ? (
-                    <p style={{ whiteSpace: "pre-wrap" }}>
+                    <p className="record-answer">
                       {q.answerText || "(Chưa trả lời)"}
                     </p>
                   ) : (
@@ -308,13 +563,19 @@ export function StudentResults() {
                       <Markdown>{q.explanationMarkdown}</Markdown>
                     </>
                   )}
-                  {q.feedback && <p>Nhận xét: {q.feedback}</p>}
+                  {q.feedback && (
+                    <p className="student-feedback">
+                      <strong>Nhận xét của giảng viên</strong>
+                      <br />
+                      {q.feedback}
+                    </p>
+                  )}
                 </section>
               ))}
             </>
           )}
         </article>
       ))}
-    </>
+    </div>
   );
 }

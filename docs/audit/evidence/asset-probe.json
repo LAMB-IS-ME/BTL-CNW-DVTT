@@ -1,0 +1,9 @@
+{
+  "provenance": "current continuation; real application/API/DB with audit-only local Supabase HTTP double supporting DELETE",
+  "published": true,
+  "deleteStatus": 204,
+  "startSucceeded": true,
+  "snapshotStillReferencesDeletedAsset": true,
+  "studentAssetStatus": 404,
+  "result": "CONFIRMED"
+}

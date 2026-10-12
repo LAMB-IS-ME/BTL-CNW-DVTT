@@ -1,0 +1,14 @@
+[
+  {
+    "file": "docs/audit/EXAMSPACE_SYSTEM_AUDIT.md",
+    "beforeSha256": "1c10db8ae823aba892536481908e5fcbcdb230d4c075108a0825539bacecf16d",
+    "afterSha256": "80f2b62046113b09ee6fd0fa5a64efa08742e5f96f81d17bc660fd8e59f52380",
+    "change": "Only local machine path replaced by portable placeholder; historical findings/results unchanged; original preserved locally."
+  },
+  {
+    "file": "docs/audit/evidence/dependency-paths.txt",
+    "beforeSha256": "06038e9697b50c972619e40a9888b51798b4d6bb9c35f8c3dbab103f2461d245",
+    "afterSha256": "a4de2faa0315ba80a022f5084dba68c24158018530a805897cf1e5d9b9e48c72",
+    "change": "Local machine path replaced by portable placeholder; redundant EOF blank line removed for git diff --check. Historical dependency versions unchanged; original preserved locally."
+  }
+]

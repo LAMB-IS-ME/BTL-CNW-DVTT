@@ -1,0 +1,222 @@
+[
+  {
+    "name": "NODE_ENV",
+    "side": "backend",
+    "required": "optional; production required for deployment",
+    "purpose": "Enables production validation",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "PORT",
+    "side": "backend",
+    "required": "optional/platform",
+    "purpose": "HTTP + Socket.IO listen port",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "DATABASE_URL",
+    "side": "backend",
+    "required": "required",
+    "purpose": "Prisma/pg business and session DB connection",
+    "scope": "runtime/seed",
+    "secret": true,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "DIRECT_URL",
+    "side": "backend",
+    "required": "optional locally; required when runtime URL unsuitable for CLI",
+    "purpose": "Prisma migration connection, preferred over DATABASE_URL",
+    "scope": "runtime/seed",
+    "secret": true,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "SESSION_SECRET",
+    "side": "backend",
+    "required": "required >=32 characters",
+    "purpose": "Signs session cookie; stable across restarts",
+    "scope": "runtime/seed",
+    "secret": true,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "CLIENT_ORIGIN",
+    "side": "backend",
+    "required": "required in production",
+    "purpose": "Exact origin allowlist for CORS, CSRF and Socket.IO",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "SESSION_COOKIE_NAME",
+    "side": "backend",
+    "required": "optional",
+    "purpose": "Cookie name",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "SESSION_MAX_AGE_MS",
+    "side": "backend",
+    "required": "optional",
+    "purpose": "Session cookie maximum age, default 8 hours",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "COOKIE_SECURE",
+    "side": "backend",
+    "required": "true required in production",
+    "purpose": "Secure cookie transport",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "COOKIE_SAME_SITE",
+    "side": "backend",
+    "required": "topology-dependent",
+    "purpose": "lax for same-site; none + Secure for cross-site",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "TRUST_PROXY",
+    "side": "backend",
+    "required": "topology-dependent",
+    "purpose": "Trusted proxy hop count; 1 in Render blueprint",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "SUPABASE_URL",
+    "side": "backend",
+    "required": "required for images",
+    "purpose": "Storage project endpoint",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "SUPABASE_SERVICE_ROLE_KEY",
+    "side": "backend",
+    "required": "required for images",
+    "purpose": "Privileged server-only Storage credential",
+    "scope": "runtime/seed",
+    "secret": true,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "SUPABASE_STORAGE_BUCKET",
+    "side": "backend",
+    "required": "optional",
+    "purpose": "Private bucket name; default question-assets",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "ALLOW_PRODUCTION_SEED",
+    "side": "backend",
+    "required": "optional default false",
+    "purpose": "Explicit production seed gate",
+    "scope": "runtime/seed",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "DEMO_PASSWORD",
+    "side": "backend",
+    "required": "optional dev; required for safe deployed demo provisioning",
+    "purpose": "First-time seed account password; rerun does not rotate",
+    "scope": "runtime/seed",
+    "secret": true,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "VITE_API_BASE_URL",
+    "side": "frontend",
+    "required": "required for target topology",
+    "purpose": "Public HTTPS API URL ending /api/v1",
+    "scope": "build-time",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "VITE_SOCKET_URL",
+    "side": "frontend",
+    "required": "required for target topology",
+    "purpose": "Public HTTPS API origin",
+    "scope": "build-time",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "VITE_BASE_PATH",
+    "side": "frontend",
+    "required": "required for target topology",
+    "purpose": "SPA asset/router base; repository subpath or /",
+    "scope": "build-time",
+    "secret": false,
+    "examplePresent": true,
+    "deploymentBlocker": true
+  },
+  {
+    "name": "NODE_VERSION",
+    "side": "hosting",
+    "required": "configured in render.yaml",
+    "purpose": "Node runtime pin",
+    "scope": "build/runtime",
+    "secret": false,
+    "examplePresent": false,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "TEST_DATABASE_URL",
+    "side": "tooling",
+    "required": "required for integration/browser tests",
+    "purpose": "Dedicated loopback DB name containing test",
+    "scope": "test only",
+    "secret": true,
+    "examplePresent": false,
+    "deploymentBlocker": false
+  },
+  {
+    "name": "DOTENV_CONFIG_PATH",
+    "side": "tooling",
+    "required": "audit uses /dev/null",
+    "purpose": "Prevent loading local project credentials during audit",
+    "scope": "test only",
+    "secret": false,
+    "examplePresent": false,
+    "deploymentBlocker": false
+  }
+]

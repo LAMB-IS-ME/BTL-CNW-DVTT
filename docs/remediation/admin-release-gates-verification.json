@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "phase": "ADMIN P1 + RELEASE-GATE REMEDIATION",
+  "date": "2026-10-12",
+  "timezone": "Asia/Bangkok",
+  "status": "COMPLETE_FOR_USER_REVIEW",
+  "releaseReady": false,
+  "baseline": {
+    "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+    "initialUntracked": [
+      "docs/audit/",
+      "docs/screenshots/system-audit/"
+    ]
+  },
+  "environment": {
+    "node": "22.23.2",
+    "npm": "10.9.8",
+    "postgres": "16.15",
+    "ciPostgres": "17",
+    "database": "examspace_remediation_test",
+    "host": "127.0.0.1",
+    "port": 55439,
+    "isolated": true,
+    "productionCredentialsUsed": false,
+    "hostedCiExecuted": false,
+    "testSourceHashMatchesWorkingTree": true,
+    "testPostgresStopped": true
+  },
+  "admin": {
+    "rootCause": "Prisma P2010 deserializing PostgreSQL void from pg_advisory_xact_lock",
+    "fix": "Shared transaction helper casts result ::text",
+    "key": 904201,
+    "taggedTemplateRawQuery": true,
+    "transactionBoundaryPreserved": true,
+    "actorRecheckPreserved": true,
+    "lockObservedInPgLocks": true,
+    "independentConnectionBlockedWhileHeld": true,
+    "commitAndRollbackReleaseVerified": true,
+    "concurrentRoleStatusAndRevokedActorVerified": true,
+    "sessionAndSocketRegression": "PASS",
+    "uiRetryErrorClearingAndDatabasePersistence": "PASS",
+    "schemaChanges": false
+  },
+  "dependencies": {
+    "originalEntries": 7,
+    "originalDistinctAdvisories": 3,
+    "resolved": {
+      "concurrently": "10.0.6",
+      "shell-quote": "1.12.0",
+      "source-map-js": "1.2.2",
+      "katex": "0.18.9"
+    },
+    "katexOverride": "0.18.9",
+    "katexConsumers": [
+      "rehype-katex@7.0.1",
+      "remark-math@6.0.0 -> micromark-extension-math@3.1.0"
+    ],
+    "remainingVulnerabilities": 0,
+    "fullAuditExit": 0,
+    "productionAuditExit": 0,
+    "ciAuditCommand": "npm audit --audit-level=low",
+    "ciAuditExit": 0,
+    "cleanInstallLocations": [
+      "isolated source copy",
+      "actual workspace"
+    ],
+    "overrideCompatibility": "renderToString consumer APIs, inline/block/math HTML, inherited vs own trust, Markdown security, unit/build/browser",
+    "auditPolicyChanged": false,
+    "advisories": [
+      "GHSA-pqg4-j6r4-53mv",
+      "GHSA-68fv-2mgg-jv7q",
+      "GHSA-238p-pmpm-9mq7"
+    ]
+  },
+  "tests": [
+    {
+      "suite": "clean-install",
+      "command": "npm ci",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "workspace-clean-install",
+      "command": "npm ci",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "migrations",
+      "command": "npm run db:migrate",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "seed",
+      "command": "npm run db:seed",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "lint",
+      "command": "npm run lint",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "typecheck",
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "unit-frontend",
+      "command": "npm test",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json",
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "integration",
+      "command": "npm run test:integration",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json",
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "build",
+      "command": "npm run build",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    },
+    {
+      "suite": "tracked-e2e-plus-admin",
+      "command": "npm run test:e2e",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "admin-db-reload-final",
+      "command": "npx playwright test tests/e2e/admin.spec.ts",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "grading-live-compatibility",
+      "command": "LIVE_QUIZ_WIDTHS=1440 npx playwright test --config playwright.ui.config.ts tests/ui/grading-results-rollout.spec.ts tests/ui/live-quiz.spec.ts --grep 'dirty route navigation|saving grading invalidates|reload, close|pending save|two essays|a completed save|real three-context|rejected join|keyboard, timer'",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "local-bundle-smoke",
+      "command": "npm run test:deployment",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "evidence/verification-summary.json"
+    }
+  ],
+  "findings": [
+    {
+      "id": "ADMIN-001",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SEC-001",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "QA-001",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "ADMIN-RETRY-STATE",
+      "status": "RESOLVED"
+    },
+    {
+      "id": "SYS-001",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "SYS-002",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "ASSET-001",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "AUTH-001",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "DOC-001",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "REL-001",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "HOSTED-VERIFICATION",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "VISUAL-REDESIGN",
+      "status": "NOT IN SCOPE"
+    },
+    {
+      "id": "BTL-DELIVERY",
+      "status": "NOT IN SCOPE"
+    }
+  ],
+  "limitations": [
+    "No hosted CI runner execution; local PostgreSQL16.15 vs CI17",
+    "No hosted TLS/cross-site cookies/Storage/WSS/backup restore",
+    "No full Firefox/WebKit/visual board/load/soak rerun",
+    "Existing chunk-size warnings and pg concurrent-query deprecation remain",
+    "Pinned KaTeX override crosses plugin pre-1.0 declared range; scoped API and browser compatibility verified"
+  ],
+  "historicalArtifacts": {
+    "filesChecked": 85,
+    "modified": []
+  },
+  "safety": {
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "merged": false,
+    "prCreated": false,
+    "staged": false,
+    "resetCheckoutDiscard": false
+  },
+  "executionEvents": [
+    {
+      "type": "expected-red",
+      "details": "Admin500/P2010, grading ambiguous locator and obsolete score layout, KaTeX inherited trust (2 fail/4 pass), Admin stale error after successful retry"
+    },
+    {
+      "type": "test-harness",
+      "details": "Create-role exact accessible label mismatch and new test TypeScript optional indexing corrected"
+    },
+    {
+      "type": "environment",
+      "details": "Local socket/DNS restrictions handled with authorized escalation; PostgreSQL libpq path configured; initial dependency-symlink fonts403 removed by standalone clean install; interrupted browser server cleanup"
+    },
+    {
+      "type": "rerun",
+      "details": "Explicit reruns after fixes; one interrupted browser run exit130. No automatic Playwright retries or weakened assertions."
+    }
+  ],
+  "provenance": "Approved pre-cleanup remediation snapshot; see final-cleanup-verification.json for fresh pre-commit gates."
+}

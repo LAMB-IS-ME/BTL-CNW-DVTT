@@ -6,6 +6,7 @@ import { allow, userSelect } from "../../middleware/auth.js";
 import { hashPassword } from "../auth/password.js";
 import { pagination } from "../../utils/pagination.js";
 import { check, param } from "../../utils/errors.js";
+import { lockAdminMutations } from "./lock.js";
 export function adminRoutes(db: Db) {
   const r = Router();
   r.use(allow("ADMIN"));
@@ -48,7 +49,7 @@ export function adminRoutes(db: Db) {
       .parse(req.body);
     check(param(req) !== req.user.id, 409, "CANNOT_MODIFY_SELF");
     const user = await db.$transaction(async (tx) => {
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(904201)`;
+      await lockAdminMutations(tx);
       const actor = await tx.user.findUnique({ where: { id: req.user.id } });
       check(
         actor?.role === "ADMIN" && actor.status === "ACTIVE",
@@ -70,7 +71,7 @@ export function adminRoutes(db: Db) {
     const id = param(req);
     check(id !== req.user.id, 409, "CANNOT_MODIFY_SELF");
     const updated = await db.$transaction(async (tx) => {
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(904201)`;
+      await lockAdminMutations(tx);
       const actor = await tx.user.findUnique({ where: { id: req.user.id } });
       check(
         actor?.role === "ADMIN" && actor.status === "ACTIVE",

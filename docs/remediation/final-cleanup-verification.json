@@ -1,0 +1,141 @@
+{
+  "phase": "FINAL CLEANUP + VERIFICATION + COMMIT",
+  "recordType": "Fresh pre-commit verification; resulting commit hash is available from Git history",
+  "baselineHead": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "branch": "ux/education-saas-redesign-pilot",
+  "approvedImplementationUnchanged": true,
+  "sourceManifestSha256": "a70a5fc9b8438f7879cdb03cabcefc54dd4d028d759f7119a645dc59bb44b4df",
+  "lockfileSha256": "1488849267a4cfd1e7e7c9cc39dfcad514190170efd3c410abc461499e6c50f0",
+  "tests": [
+    {
+      "suite": "cleanup-install",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": null,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "47ca4521e09bc16c4209ff5e3449b7d7f6ce29047dfe5db936f7b600cb47d2e2",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-static",
+      "command": "npm run db:generate && npm run lint && npm run typecheck && npm test && npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "16dd5da6011b9a343b33f7d683c0f3c2d5aaec27b04d4dcf76b7f3a6a15803c4",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-integration",
+      "command": "npm run test:integration",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "7b30b9ad6b9efaa5760d9a782bdb8f539996c04dee1eb81417b6fafea0328cbf",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-e2e",
+      "command": "npm run test:e2e",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "5f7bda2e9a6a92e3b8128a090c422889730d866e755bc898747a551603e32e14",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-compat",
+      "command": "LIVE_QUIZ_WIDTHS=1440 npx playwright test --config playwright.ui.config.ts tests/ui/grading-results-rollout.spec.ts tests/ui/live-quiz.spec.ts --grep 'dirty route navigation|saving grading invalidates|reload, close|pending save|two essays|a completed save|real three-context|rejected join|keyboard, timer'",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "7223ebb49918b802f760792582ab59495fb6010af9eec6a0b1ae543c068b7f63",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-smoke",
+      "command": "npm run test:deployment",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": null,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "485632a03fb027d9f74b7e132264e5e5c72499c2ddb922991da102ee95e0ff0a",
+      "rawLogIncludedInCommit": false
+    },
+    {
+      "suite": "cleanup-security",
+      "command": "npm ls concurrently shell-quote source-map-js katex && npm audit && npm audit --omit=dev && npm audit --audit-level=low",
+      "status": "PASS",
+      "exitCode": 0,
+      "passed": null,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0,
+      "rawLogSha256": "a47bb1a45e0598f9e8391608801c0570e91ddf5fbb9e4e458e9d7973bd2dc05d",
+      "rawLogIncludedInCommit": false
+    }
+  ],
+  "scopeFileCount": 54,
+  "commitMessage": "fix: resolve admin account mutations and release gates",
+  "commitAuthorized": true,
+  "rawArtifactsPreservedOutsideCommit": 31,
+  "removedFiles": [],
+  "releaseReady": false,
+  "remainingFindings": [
+    "SYS-001",
+    "SYS-002",
+    "ASSET-001",
+    "AUTH-001",
+    "DOC-001",
+    "REL-001",
+    "HOSTED-VERIFICATION",
+    "BTL-DELIVERY"
+  ],
+  "security": {
+    "concurrently": "10.0.6",
+    "shell-quote": "1.12.0",
+    "source-map-js": "1.2.2",
+    "katex": "0.18.9",
+    "fullAuditVulnerabilities": 0,
+    "prodAuditVulnerabilities": 0,
+    "ciAuditExitCode": 0,
+    "threshold": "low",
+    "policyChanged": false
+  },
+  "historicalPreservation": {
+    "byteIdentical": 83,
+    "normalizationRecord": "evidence/portability-normalization.json",
+    "historicalFailConclusionsUnchanged": true,
+    "portablePathAndEofNormalizations": 2
+  },
+  "noPush": true,
+  "noDeploy": true,
+  "noMerge": true,
+  "noPR": true,
+  "candidateChecks": {
+    "secretPatternMatches": [],
+    "machinePaths": [],
+    "missingRepoRelativeLinks": [],
+    "allJsonValid": true,
+    "sourceHashesMatchTestedCopy": true,
+    "scopeAllowlist": "evidence/commit-scope.json"
+  },
+  "testPostgresStopped": true
+}

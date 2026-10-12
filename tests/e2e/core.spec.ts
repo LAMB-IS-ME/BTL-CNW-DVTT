@@ -121,11 +121,17 @@ test("Exam: login, start, autosave, refresh, realtime monitor, submit, essay gra
   await expect(tp.getByText("Đã nộp", { exact: true })).toBeVisible();
   await tp.goto(`/teacher/exams/${exam.id}/grading`);
   await tp.getByLabel("Điểm (0–3)").fill("2.5");
-  await tp.getByLabel("Nhận xét").fill("Lập luận tốt, cần thêm ví dụ.");
+  await tp
+    .getByRole("textbox", { name: "Nhận xét", exact: true })
+    .fill("Lập luận tốt, cần thêm ví dụ.");
   await tp.getByRole("button", { name: "Lưu điểm", exact: true }).click();
   await expect(tp.getByText("Đã lưu điểm", { exact: true })).toBeVisible();
   await sp.reload();
-  await expect(sp.getByText("4.5/5 · 90.0%")).toBeVisible();
+  await expect(sp.getByText("4.5 / 5", { exact: true })).toBeVisible();
+  await expect(sp.getByText("90.0%", { exact: true })).toBeVisible();
+  await expect(
+    sp.getByText("Lập luận tốt, cần thêm ví dụ.", { exact: false }),
+  ).toBeVisible();
   await sp.screenshot({
     path:
       "docs/screenshots/" +

@@ -115,6 +115,7 @@ export function AdminUsers() {
                             role: e.target.value,
                           });
                           await q.refetch();
+                          setError(undefined);
                         } catch (e) {
                           setError(e);
                         }

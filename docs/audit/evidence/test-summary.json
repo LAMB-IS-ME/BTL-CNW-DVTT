@@ -1,0 +1,149 @@
+{
+  "baseline": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "countsPolicy": "Do not aggregate different overlapping suites/probes into one total. An audit assertion PASS can confirm a product failure.",
+  "tests": [
+    {
+      "suite": "lint/typecheck/unit",
+      "result": "PASS",
+      "unitCount": 53,
+      "provenance": "prior-turn transcript, unchanged baseline; raw scratch logs lost",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "evidenceStatus": "FINAL transcript; raw scratch logs lost; not rerun"
+    },
+    {
+      "suite": "integration",
+      "passed": 33,
+      "failed": 0,
+      "provenance": "persisted log + command record",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "tracked-e2e",
+      "passed": 13,
+      "failed": 1,
+      "provenance": "persisted log",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "diagnostic": "tests/e2e/core.spec.ts:124 getByLabel('Nhận xét') matched feedback textarea and dialog aria-labelledby grading-leave-title (Điểm và nhận xét chưa lưu).",
+      "evidenceStatus": "FINAL: tracked suite remains FAIL"
+    },
+    {
+      "suite": "build/deployment-smoke",
+      "result": "PASS",
+      "provenance": "persisted logs",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "local production cookie probe",
+      "result": "PASS",
+      "provenance": "evidence/production-probe.json; simulated proxy HTTPS, not real TLS",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "restart recovery",
+      "result": "PASS_WITH_LIMITATION",
+      "provenance": "evidence/restart.json; stale participant isConnected after crash",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "Live Quiz chromium lifecycle",
+      "passed": 7,
+      "failed": 0,
+      "provenance": "persisted live-lifecycle.log final retry; initial 7 setup failures were missing DEMO_PASSWORD",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "seconds": 163.55
+    },
+    {
+      "suite": "separate core grading browser",
+      "passed": 1,
+      "provenance": "prior-turn final log visible in transcript; raw scratch lost",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "seconds": 8.4
+    },
+    {
+      "suite": "Admin create / Teacher author / Student four-type answer / grading / MANUAL release",
+      "result": "PASS_CORE_WITH_ADMIN_MUTATION_FAILURE",
+      "provenance": "prior-turn assertions and final log in transcript; Admin failure persisted separately",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "assertions": [
+        "Admin created Teacher and Student accounts",
+        "Membership upsert twice creates one member",
+        "Four question types; stable saved question IDs/deadline and no answer keys",
+        "Objective score6 plus essay1.5 =7.5/8",
+        "MANUAL result hidden before release and correct feedback after",
+        "Foreign teacher404, Student Admin API403, Admin Teacher API403"
+      ]
+    },
+    {
+      "suite": "representative geometry + role switch",
+      "result": "PASS",
+      "screens": 10,
+      "widths": [
+        1440,
+        1024,
+        820,
+        390,
+        320
+      ],
+      "provenance": "prior-turn final log + image inspection in transcript; geometry file/screenshots lost before checkpoint",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "evidenceStatus": "FINAL transcript; 50 geometry observations; no surviving original per-screen files"
+    },
+    {
+      "suite": "remaining audit reproductions",
+      "executionPeriod": "current final continuation",
+      "result": "COMPLETED",
+      "finalPassedAcrossRuns": 3,
+      "initialRun": {
+        "passed": 2,
+        "failed": 1,
+        "failureType": "audit heading locator"
+      },
+      "retry": {
+        "scope": "pagination only",
+        "passed": 1,
+        "failed": 0,
+        "seconds": 8.0
+      },
+      "productOutcome": "CONFIRMED failures, not product PASS",
+      "evidence": [
+        "remainder-run.json",
+        "pagination-probe.json",
+        "asset-probe.json",
+        "admin-browser-probe.json"
+      ]
+    },
+    {
+      "suite": "migration/seed to restore lost scratch fixture",
+      "executionPeriod": "current final continuation",
+      "result": "PASS",
+      "scope": "loopback examspace_audit_test only; setup, not a rerun of integration"
+    },
+    {
+      "suite": "expired-session browser observation",
+      "executionPeriod": "earlier continuation of same audit",
+      "result": "CONFIRMED UX FAILURE",
+      "evidenceStatus": "Completed observation and source inspection; transcript only, screenshot lost",
+      "serverAuthorization": "401 correctly enforced",
+      "finding": "AUTH-001"
+    }
+  ],
+  "historicalOnly": [
+    "Firefox/WebKit UI rollout verification",
+    "ACK-drop hardening from approved earlier phase reports"
+  ],
+  "notTested": [
+    "hosted Storage/real TLS/cross-site browser cookies",
+    "staging/production deployment",
+    "cloud WSS/restart",
+    "load/soak/multi-instance",
+    "backup restore",
+    "full screen reader certification"
+  ],
+  "incompleteCurrentTests": [],
+  "supersededHarnessEvents": [
+    "Initial Live Quiz login setup missing DEMO_PASSWORD; final7PASS evidence used",
+    "Prior remainder run ambiguous heading and provider lacking DELETE; no product conclusions drawn from setup failure",
+    "Final pagination first run wrong h1, corrected in audit tooling only; focused retry1PASS"
+  ],
+  "ignoredLocalLogs": "Existing .log files are ignored by Git; sanitized summaries/JSON are the handoff evidence and do not depend on those logs."
+}

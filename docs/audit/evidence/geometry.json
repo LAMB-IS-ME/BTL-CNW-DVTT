@@ -1,0 +1,34 @@
+{
+  "status": "PASS_OBSERVED",
+  "provenance": "Earlier completed audit in same conversation/baseline; final output observed in transcript. Original detailed JSON/screenshots lost with /tmp. This is a reconstructed summary, not a rerun or reconstructed raw measurements.",
+  "screens": [
+    "Admin overview",
+    "Admin users",
+    "Teacher Dashboard",
+    "Question Bank detail",
+    "Exam Builder",
+    "Grading",
+    "Teacher Results",
+    "Student Exam entry",
+    "Student Results",
+    "Live Quiz join"
+  ],
+  "widths": [
+    1440,
+    1024,
+    820,
+    390,
+    320
+  ],
+  "measurementCount": 50,
+  "observedFailures": {
+    "documentHorizontalOverflow": 0,
+    "unlabelledFormControls": 0,
+    "buttonsBelow24Pixels": 0
+  },
+  "scopeLimits": "Representative states only; internal Admin table scroll remains; not full WCAG or screen-reader verification. Active exam covered separately by core browser/previous Focus reports.",
+  "currentScreenshots": [
+    "../../screenshots/system-audit/admin-lock-error-1440.png",
+    "../../screenshots/system-audit/admin-lock-error-320.png"
+  ]
+}

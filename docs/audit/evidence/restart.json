@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "kill": "SIGKILL",
+  "sessionSurvived": true,
+  "savedAnswerSurvived": true,
+  "attemptAutoFinalized": true,
+  "score": 1,
+  "quizAutoFinished": true,
+  "staleConnectedAfterCrash": true,
+  "limits": "Single local instance; generated fixtures; expiry shortened on isolated DB; no cloud/soak/multi-instance test"
+}

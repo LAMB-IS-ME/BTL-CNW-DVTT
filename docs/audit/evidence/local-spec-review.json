@@ -1,0 +1,88 @@
+[
+  {
+    "path": "MASTER_SPEC.md",
+    "sha256": "62c3c699fa41ca119b9ffeb58235e2413de70451624df3babc9d623ece2d888f",
+    "targetedSecretPatternMatches": [],
+    "reviewLines": [
+      {
+        "line": 1050,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 1425,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 1427,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 1976,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 1987,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2114,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2121,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2137,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2157,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2218,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2529,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2674,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 2707,
+        "kind": "password/demo/credential discussion"
+      }
+    ],
+    "tracked": false,
+    "manualReview": "Environment examples have empty secrets; demo/logging/security and handoff sections reviewed; no actual secrets/private user dataset found in bounded review",
+    "handoff": "Propose reviewed tracked requirements/provenance in remediation; ASTRA may remain internal; no exclude/stage change",
+    "limitations": "Not full-history or entropy-based secret certification; design requirements are not current acceptance evidence"
+  },
+  {
+    "path": "ASTRA_MASTER_PROMPT.md",
+    "sha256": "22c23358ba3891d576f62e6848e9c5d81225180cdafc24dad933c8587ea71852",
+    "targetedSecretPatternMatches": [],
+    "reviewLines": [
+      {
+        "line": 266,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 330,
+        "kind": "password/demo/credential discussion"
+      },
+      {
+        "line": 424,
+        "kind": "password/demo/credential discussion"
+      }
+    ],
+    "tracked": false,
+    "manualReview": "Environment examples have empty secrets; demo/logging/security and handoff sections reviewed; no actual secrets/private user dataset found in bounded review",
+    "handoff": "Propose reviewed tracked requirements/provenance in remediation; ASTRA may remain internal; no exclude/stage change",
+    "limitations": "Not full-history or entropy-based secret certification; design requirements are not current acceptance evidence"
+  }
+]

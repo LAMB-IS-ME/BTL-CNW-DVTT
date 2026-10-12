@@ -1,0 +1,49 @@
+{
+  "provenance": "current continuation; actual loopback API and Chromium; synthetic fixture",
+  "counts": {
+    "classes": 22,
+    "exams": 22,
+    "banks": 102
+  },
+  "api": {
+    "classes": [
+      20,
+      2
+    ],
+    "exams": [
+      20,
+      2
+    ],
+    "banks": [
+      100,
+      2
+    ],
+    "adminClasses": [
+      20,
+      20
+    ]
+  },
+  "classList": {
+    "rendered": 20,
+    "olderClassVisible": 0
+  },
+  "cache": {
+    "afterSpaNavigation": 20,
+    "afterReload": 22
+  },
+  "bankPicker": {
+    "selectableBanks": 100,
+    "placeholder": 1,
+    "validBanksNotOffered": 2
+  },
+  "examList": {
+    "rendered": 20,
+    "olderExamLinks": 0,
+    "paginationControls": 0
+  },
+  "adminClassList": {
+    "rendered": 20,
+    "apiSecondPageRecords": 20
+  },
+  "result": "CONFIRMED"
+}

@@ -1,0 +1,138 @@
+{
+  "provenance": "Approved remediation evidence BEFORE final cleanup; summaries extracted from preserved local logs, not new executions. Raw logs excluded from commit.",
+  "tests": [
+    {
+      "suite": "clean-install",
+      "command": "npm ci",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "npm-ci-final.txt"
+    },
+    {
+      "suite": "workspace-clean-install",
+      "command": "npm ci",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "npm-ci-workspace.txt"
+    },
+    {
+      "suite": "migrations",
+      "command": "npm run db:migrate",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "migrate.txt"
+    },
+    {
+      "suite": "seed",
+      "command": "npm run db:seed",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "seed.txt"
+    },
+    {
+      "suite": "lint",
+      "command": "npm run lint",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "lint-workspace-final.txt"
+    },
+    {
+      "suite": "typecheck",
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "typecheck-workspace-final.txt"
+    },
+    {
+      "suite": "unit-frontend",
+      "command": "npm test",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "unit-complete.txt",
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "integration",
+      "command": "npm run test:integration",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "integration.txt",
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "build",
+      "command": "npm run build",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "build-final.txt"
+    },
+    {
+      "suite": "tracked-e2e-plus-admin",
+      "command": "npm run test:e2e",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "e2e-final.txt",
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "admin-db-reload-final",
+      "command": "npx playwright test tests/e2e/admin.spec.ts",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "admin-final-db.txt",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "grading-live-compatibility",
+      "command": "LIVE_QUIZ_WIDTHS=1440 npx playwright test --config playwright.ui.config.ts tests/ui/grading-results-rollout.spec.ts tests/ui/live-quiz.spec.ts --grep 'dirty route navigation|saving grading invalidates|reload, close|pending save|two essays|a completed save|real three-context|rejected join|keyboard, timer'",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "grading-live-compat.txt",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "automaticRetries": 0
+    },
+    {
+      "suite": "local-bundle-smoke",
+      "command": "npm run test:deployment",
+      "result": "PASS",
+      "exitCode": 0,
+      "evidence": "deployment-smoke.txt"
+    }
+  ],
+  "rawEvidenceHashes": {
+    "lint-workspace-final.txt": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+    "math-before-consumers.txt": "20be48b3f49ba3482b51a6bc60c6e3a4470a5626ab42e5bbbe03fda7be4aa031",
+    "migrate.txt": "8c67c392c885ec9998655707638658552713667f30309ba9467a4d4331bcc102",
+    "admin-final-db.txt": "16176aa1c06a1c134e7cebf1e721e68204773e0b215327954c44c53781e5f3ff",
+    "npm-ci-workspace.txt": "1e45650cd85999db69189d449831ef60bcfe9296952db945b4a26cece047307f",
+    "unit-complete.txt": "8501ee7ce521b616ad151822895622edd3754955aa8ec60727ea03d2d26efa70",
+    "deployment-smoke.txt": "278492b0056a256aec372a4779efe74327b42b7d8712ba788f1ffb569eebe3c8",
+    "integration.txt": "2b2de4cd6dcc1920d631daabb1e012c67d6935b2e5528a455d14b29485419b7c",
+    "grading-live-compat.txt": "0b2fbe071beda3ba78684c9e397c8488c37e9ca181d0ef26453e0f9fcba5726a",
+    "typecheck-final.txt": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+    "math-final.txt": "38d0f25dc044fbd1ea9ea5330246ce5233781e18f9416138b195d25e1fa6b4ad",
+    "unit-final.txt": "e14c34c5a6d9dbe3a2030cbb26309e1aa7ae5eff41d832d40648d11784521f7e",
+    "e2e-final.txt": "472cd27ce6c5fcd0da91c3c571cf735897bd59f25c83a58c922d0a1e153a79f4",
+    "db-generate.txt": "6cc7e8e07dfb826d8b275f0975c697721fd7aa6a31d42063730cec92e6844410",
+    "seed.txt": "1f87ac833273935fb47635fa89469d12ebe5c042f0c5ebcc82e2ca8726915ff5",
+    "admin-after.txt": "44274f88300af0d82e962352b3fb410d274d0fd98afb50295fc4927751efd9c6",
+    "lint-final.txt": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+    "build-final.txt": "802af23a868a5fb65686b8596244ad3de14548183c93516aa0fa1e3c7e582f58",
+    "typecheck-workspace-final.txt": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+    "npm-ci-final.txt": "1e45650cd85999db69189d449831ef60bcfe9296952db945b4a26cece047307f"
+  }
+}

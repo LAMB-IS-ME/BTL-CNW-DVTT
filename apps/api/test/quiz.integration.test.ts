@@ -168,3 +168,81 @@ it("rejects essay questions in live quiz builder", async () => {
     ).body.error.code,
   ).toBe("QUIZ_INVALID_QUESTIONS");
 });
+
+it("keeps ownership, join eligibility and progression guards on the real transport", async () => {
+  const f = await examFixture(ctx);
+  const foreign = await account(ctx, "TEACHER");
+  const late = await account(ctx, "STUDENT");
+  const quiz = await f.teacher.agent
+    .post("/api/v1/teacher/quizzes")
+    .set(f.teacher.headers)
+    .send({ title: "Live Quiz ownership audit" });
+  const configured = await f.teacher.agent
+    .put(`/api/v1/teacher/quizzes/${quiz.body.data.id}/questions`)
+    .set(f.teacher.headers)
+    .send({
+      questions: [
+        { questionId: f.question.id, timeLimitSeconds: 30, basePoints: 1000 },
+      ],
+    });
+  expect(configured.status).toBe(200);
+  const room = await f.teacher.agent
+    .post(`/api/v1/teacher/quizzes/${quiz.body.data.id}/rooms`)
+    .set(f.teacher.headers);
+  const roomId = room.body.data.id;
+  const host = await connect(f.teacher.cookie);
+  const student = await connect(f.student.cookie);
+  const stranger = await connect(foreign.cookie);
+  const lateStudent = await connect(late.cookie);
+  expect(await host.emitWithAck("quiz:host:start", { roomId })).toMatchObject({
+    error: { code: "QUIZ_NO_PARTICIPANTS" },
+  });
+  expect(
+    await stranger.emitWithAck("quiz:room:join", { roomId }),
+  ).toHaveProperty("error");
+  expect(
+    await stranger.emitWithAck("quiz:host:start", { roomId }),
+  ).toHaveProperty("error");
+  expect(
+    (await foreign.agent.get(`/api/v1/teacher/quiz-rooms/${roomId}`)).status,
+  ).toBe(403);
+  await host.emitWithAck("quiz:room:join", { roomId });
+  await student.emitWithAck("quiz:room:join", { roomId });
+  const repeat = await student.emitWithAck("quiz:room:join", { roomId });
+  if ("error" in repeat) throw new Error(repeat.error.message);
+  expect(repeat.data.participants).toHaveLength(1);
+  const started = await host.emitWithAck("quiz:host:start", { roomId });
+  if ("error" in started) throw new Error(started.error.message);
+  expect(await host.emitWithAck("quiz:host:start", { roomId })).toMatchObject({
+    error: { code: "QUIZ_ALREADY_STARTED" },
+  });
+  expect(await host.emitWithAck("quiz:host:next", { roomId })).toMatchObject({
+    error: { code: "QUIZ_QUESTION_NOT_CLOSED" },
+  });
+  expect(
+    await lateStudent.emitWithAck("quiz:room:join", { roomId }),
+  ).toMatchObject({ error: { code: "QUIZ_ROOM_NOT_JOINABLE" } });
+  expect(
+    await lateStudent.emitWithAck("quiz:answer", {
+      roomId,
+      questionId: started.data.question!.id,
+      selectedOptionIds: [f.question.options[0]!.id],
+    }),
+  ).toMatchObject({ error: { code: "QUIZ_NOT_JOINED" } });
+  expect(
+    await stranger.emitWithAck("quiz:host:next", { roomId }),
+  ).toHaveProperty("error");
+  const answered = await student.emitWithAck("quiz:answer", {
+    roomId,
+    questionId: started.data.question!.id,
+    selectedOptionIds: [f.question.options[0]!.id],
+  });
+  expect(answered).toHaveProperty("data.accepted", true);
+  const final = await student.emitWithAck("quiz:room:join", { roomId });
+  if ("error" in final) throw new Error(final.error.message);
+  expect(final.data.status).toBe("FINISHED");
+  expect(final.data.ownAnswer).toEqual([f.question.options[0]!.id]);
+  expect(
+    await lateStudent.emitWithAck("quiz:room:join", { roomId }),
+  ).toMatchObject({ error: { code: "QUIZ_ROOM_NOT_JOINABLE" } });
+});

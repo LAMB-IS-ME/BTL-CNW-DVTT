@@ -1,0 +1,1527 @@
+{
+  "phase": "Live Quiz UX audit and thin-slice visual prototype",
+  "status": "COMPLETE_AWAITING_USER_VISUAL_APPROVAL",
+  "generatedAt": "2026-10-11T06:22:21.899604+00:00",
+  "fullRollout": {
+    "started": false,
+    "reason": "Latest user brief section 0 requires explicit visual-direction approval; none received.",
+    "designSkillsResearchedInstalledOrInvoked": []
+  },
+  "git": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "e236cb87221f2596aed424b833f281d6e34be66b",
+    "initialWorkingTree": "clean",
+    "modifiedTrackedFiles": [
+      "apps/api/test/quiz.integration.test.ts",
+      "apps/web/src/features/quiz.tsx"
+    ],
+    "untrackedFiles": [
+      "apps/web/src/features/quiz.test.tsx",
+      "apps/web/src/styles/live-quiz.css",
+      "docs/screenshots/live-quiz-prototype/board-manifest.json",
+      "docs/screenshots/live-quiz-prototype/evidence-states.png",
+      "docs/screenshots/live-quiz-prototype/review-board-desktop.png",
+      "docs/screenshots/live-quiz-prototype/review-board-mobile.png",
+      "docs/ux/LIVE_QUIZ_PROTOTYPE_REPORT.md",
+      "docs/ux/live-quiz-prototype-verification.json",
+      "playwright.live-quiz.config.ts",
+      "tests/ui/live-quiz-boards.py",
+      "tests/ui/live-quiz-compat.spec.ts",
+      "tests/ui/live-quiz-fixtures.ts",
+      "tests/ui/live-quiz.spec.ts"
+    ],
+    "diffCheck": "PASS",
+    "commitPushDeployMergePRPerformed": false
+  },
+  "scope": {
+    "runtimeFiles": [
+      "apps/web/src/features/quiz.tsx",
+      "apps/web/src/styles/live-quiz.css"
+    ],
+    "builderByteForByteUnchanged": true,
+    "ownAnswerSynchronizationEffectChanged": false,
+    "backendRuntimeProtocolSchemaScoringTimerChanged": false,
+    "sharedComponentsGlobalStylesApprovedModulesDependenciesChanged": false
+  },
+  "testResults": {
+    "baseline": {
+      "unit": {
+        "passed": 38,
+        "files": 16
+      },
+      "quizIntegration": {
+        "passed": 2
+      },
+      "chromiumLifecycle": {
+        "passed": 3
+      },
+      "chromiumDefectEvidence": {
+        "passed": 1
+      },
+      "staticGates": "PASS in prior run; original logs lost with temporary runtime, not reconstructed"
+    },
+    "final": {
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "unit": {
+        "passed": 41,
+        "files": 17
+      },
+      "integration": {
+        "passed": 11,
+        "files": 3
+      },
+      "browsers": {
+        "chromium": 5,
+        "firefox": 5,
+        "webkit": 5
+      },
+      "compatibilityChromium": 1,
+      "uniqueBrowserCases": 16,
+      "failedInFinalBatches": 0,
+      "skippedInFinalBatches": 0,
+      "retriesInFinalBatches": 0
+    }
+  },
+  "logEvidence": [
+    {
+      "path": "external-artifacts/live-quiz-audit/baseline-unit.log",
+      "sha256": "44c132bcd72be781a9e3c0cb749c42383ea7db0ac3a9e560dd038745aad25048",
+      "result": "PASS",
+      "passedCases": 38
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/baseline-integration.log",
+      "sha256": "5902dcc8d5da266097ba2bcad20d8e0b11fe83bc1276cb082a1a0511c2cf2fe6",
+      "result": "PASS",
+      "passedCases": 2
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/baseline-browser-2.log",
+      "sha256": "917c02245d13d75bcfc289e7a459d2562fd9bc07f5af8a472add86a34eae3a4d",
+      "result": "PASS",
+      "passedCases": 3
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/baseline-join.log",
+      "sha256": "0d8abcb1198dc5ceeb61feb44e65e2958cb2925a0604c2885a5a3244028949a7",
+      "result": "EXPECTED_DEFECT_CONFIRMED",
+      "passedCases": 1
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/baseline-risks.log",
+      "sha256": "086144f81a284ac183564ddf5cd62113284863816d2b292b90b9cde82064bbb3",
+      "result": "EXPECTED_RED",
+      "passedCases": null
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/late-join-regression-red.log",
+      "sha256": "ae79abd4675db4fa73f7b545f5a09093b3d6b913f0a24b12d6cd891a22e5c225",
+      "result": "EXPECTED_RED",
+      "passedCases": null
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-lint.log",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "result": "PASS",
+      "passedCases": null
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-typecheck.log",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "result": "PASS",
+      "passedCases": null
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-build.log",
+      "sha256": "479fbae41e4bb22c49f13aa4ce4980bd7be5f86ec8e9f6a635b608098c0884b5",
+      "result": "PASS",
+      "passedCases": null
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-unit.log",
+      "sha256": "64cafa869d24ced9a4048a091213d7894f9fef650f1f137a69400df93ee208f9",
+      "result": "PASS",
+      "passedCases": 41
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-integration.log",
+      "sha256": "97a9f8a2625dbd39684233617206c0230375ff318bf0b26cf1a08bc3cb034343",
+      "result": "PASS",
+      "passedCases": 11
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/verified-chromium.log",
+      "sha256": "9eebcdc0c07a016d1a68ac8e1f20460ce5d70c315bbb751df8604ba3c612d1c4",
+      "result": "PASS",
+      "passedCases": 5
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/verified-firefox.log",
+      "sha256": "b58c73678c03e2ac61aa8bab28aa4c259e806690ed9d04ff09533d131e4cd819",
+      "result": "PASS",
+      "passedCases": 5
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/verified-webkit-local-libs.log",
+      "sha256": "754744fc76cc0a965ee6aa7c15b6ae1f643d47d91124f5624243f77368acecf8",
+      "result": "PASS",
+      "passedCases": 5
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-compatibility.log",
+      "sha256": "70cb5a5c71e0799206780d270eea94eb25543387dbdb07ccb09c6c005b7f7be3",
+      "result": "PASS",
+      "passedCases": 1
+    },
+    {
+      "path": "external-artifacts/live-quiz-audit/final-chromium-join-capture.log",
+      "sha256": "6f62c2c0b01f2293c6118dece85b9885c9e49029c09559641fecc1f154221003",
+      "result": "PASS_RECAPTURE_NOT_ADDITIONAL_CASE",
+      "passedCases": 1
+    }
+  ],
+  "earlierFailures": [
+    {
+      "cause": "Fixture used localized True/False option labels rejected by existing API",
+      "action": "Corrected fixture to existing literal True/False contract"
+    },
+    {
+      "cause": "Original connection UI claimed room membership before join ack",
+      "action": "Reproduced red; only acknowledged joins now enable room controls"
+    },
+    {
+      "cause": "Delayed old join ack after disconnect could enable connection",
+      "action": "Reproduced red; added connection-generation and cleanup guard"
+    },
+    {
+      "cause": "Firefox offline emulation retained established WebSocket",
+      "result": "1 failed, 1 interrupted, 3 not run in initial batch",
+      "action": "Close both real forwarded socket ends and block polling during fault; real Socket.IO recovery then passed"
+    },
+    {
+      "cause": "WebKit missing shared libraries",
+      "result": "5 launch failures in initial batch",
+      "action": "Extract libraries under scratch storage; optional launcher uses unchanged official MiniBrowser binary; final 5/5 passed"
+    }
+  ],
+  "runtime": {
+    "database": "Isolated synthetic PostgreSQL 16 loopback test database",
+    "productionUsed": false,
+    "socketTransport": "Real server and three independent authenticated browser contexts. Forwarding fault harness relays real frames; no fabricated snapshots/acks.",
+    "mockedTests": "Only frontend unit tests mock Socket.IO callbacks.",
+    "webkit": "Temporary extracted shared libraries and launcher, optional LIVE_QUIZ_WEBKIT_EXECUTABLE config. No system or application dependency changes."
+  },
+  "lifecycleEvidence": [
+    {
+      "browser": "chromium",
+      "width": 1440,
+      "source": "external-artifacts/live-quiz-audit/after/chromium/1440/evidence.json",
+      "sha256": "ce78b8e150060273d361bb6409d432533c11eb1560de7fe5d5e349b7799164b8",
+      "roomId": "0abe7e20-1832-469c-8d5c-4641bedd14cb",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "9d162bbe-03b5-4917-935a-554215691e0a",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4475,
+          "rank": 1
+        },
+        {
+          "id": "b81a9fbf-e906-41b0-b3ec-4fc384df5a85",
+          "fullName": "Trần Thị Hương",
+          "score": 1499,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "width": 820,
+      "source": "external-artifacts/live-quiz-audit/after/chromium/820/evidence.json",
+      "sha256": "4170c05c6057cdc01f7d855782b3c20b7fd4a3d4670df51cac3d412f5b1c093c",
+      "roomId": "277cef53-9a3c-44ea-b970-2ea869743fc7",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "92bf5543-c0d3-4aa6-b116-c9f30cd6d09c",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4473,
+          "rank": 1
+        },
+        {
+          "id": "96e401f1-96c2-425e-9a59-f1646abf7396",
+          "fullName": "Trần Thị Hương",
+          "score": 1499,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "chromium",
+      "width": 390,
+      "source": "external-artifacts/live-quiz-audit/after/chromium/390/evidence.json",
+      "sha256": "88da588758b9035201bd14073f37d1d50c84c50b232f8f99b1b39c0d1b9d4ebd",
+      "roomId": "4168ebfe-71e2-48c7-947f-f66db5abf8d4",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "50667030-d4e3-4a1f-ad09-f00f4cc32281",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4475,
+          "rank": 1
+        },
+        {
+          "id": "133a7014-f47a-4a27-aef2-f39fb410a55f",
+          "fullName": "Trần Thị Hương",
+          "score": 1499,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "width": 1440,
+      "source": "external-artifacts/live-quiz-audit/after/firefox/1440/evidence.json",
+      "sha256": "a3b0e76e77ffe8a04c768fae4b7bb8deb3e756ce7baf850976b184a108146742",
+      "roomId": "c883d5f9-31d0-4956-98d8-9945fafaa1c9",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "c1bfa1c7-9f66-4fc9-82e8-4c444a093f62",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4467,
+          "rank": 1
+        },
+        {
+          "id": "13e71fb9-7bec-4fe6-85cf-7f27cbcf8841",
+          "fullName": "Trần Thị Hương",
+          "score": 1498,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "width": 820,
+      "source": "external-artifacts/live-quiz-audit/after/firefox/820/evidence.json",
+      "sha256": "50a6d4dd9945246509c964097642a37c67a8a11c0e8097b20f9fbfd8b1a8b825",
+      "roomId": "535ed8df-20a5-43f4-a7df-800d7ee72262",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "cc5b70fc-0b55-4ddb-891d-6879dd58ec21",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4466,
+          "rank": 1
+        },
+        {
+          "id": "05c796da-46b6-4061-ad85-e4990b4cb3ba",
+          "fullName": "Trần Thị Hương",
+          "score": 1498,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "firefox",
+      "width": 390,
+      "source": "external-artifacts/live-quiz-audit/after/firefox/390/evidence.json",
+      "sha256": "e9dc5303a4968a00d13eaf07b22c863121e08cbb32bcafbcc14b7ffe8634bd73",
+      "roomId": "1b7f5bf0-0495-4981-b0e8-8252bbc268bd",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "9e404d66-3b89-47ab-859f-fd78c5ec0591",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4465,
+          "rank": 1
+        },
+        {
+          "id": "823a1266-49bf-4a79-ad45-91f29386fe90",
+          "fullName": "Trần Thị Hương",
+          "score": 1498,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "width": 1440,
+      "source": "external-artifacts/live-quiz-audit/after/webkit/1440/evidence.json",
+      "sha256": "de8db2c3d1a758ec647507ef68fcf2fd4bac452eee52e878f4e41a04ab3b60c4",
+      "roomId": "499eb1b2-f60e-43c1-b41b-99b5931702a7",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "628f9d33-8c50-41c5-8ebc-61e2e2c388e3",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4466,
+          "rank": 1
+        },
+        {
+          "id": "1314e5a7-3b11-4a9d-aaf9-d71ab88f5a9b",
+          "fullName": "Trần Thị Hương",
+          "score": 1498,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "width": 820,
+      "source": "external-artifacts/live-quiz-audit/after/webkit/820/evidence.json",
+      "sha256": "8780ca3e426878c7beae2e1d039586abcf4fb87ef0db99831d58d86422654fcd",
+      "roomId": "0ba6dbe9-fe83-4a8c-9688-7981e6af61f0",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "bd384936-6fc6-44dd-932d-0eae495d5025",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4467,
+          "rank": 1
+        },
+        {
+          "id": "cf9cec98-8a26-495e-be95-1f83a8854385",
+          "fullName": "Trần Thị Hương",
+          "score": 1498,
+          "rank": 2
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "width": 390,
+      "source": "external-artifacts/live-quiz-audit/after/webkit/390/evidence.json",
+      "sha256": "86c29447d29b1bb4a20530e81fda139e4b7cf9d8c044c3ba6ceef6be99ce2a8c",
+      "roomId": "b8922369-0ee6-4910-ab20-6d04d7917683",
+      "captures": [
+        {
+          "name": "teacher-entry",
+          "overflow": 0
+        },
+        {
+          "name": "student-join",
+          "overflow": 0
+        },
+        {
+          "name": "student-invalid-code",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-lobby",
+          "overflow": 0
+        },
+        {
+          "name": "student-waiting",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-active",
+          "overflow": 0
+        },
+        {
+          "name": "student-question",
+          "overflow": 0
+        },
+        {
+          "name": "student-selected",
+          "overflow": 0
+        },
+        {
+          "name": "student-submitted",
+          "overflow": 0
+        },
+        {
+          "name": "student-disconnected",
+          "overflow": 0
+        },
+        {
+          "name": "student-reconnected",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-leaderboard",
+          "overflow": 0
+        },
+        {
+          "name": "student-deadline",
+          "overflow": 0
+        },
+        {
+          "name": "teacher-finished",
+          "overflow": 0
+        },
+        {
+          "name": "student-finished",
+          "overflow": 0
+        }
+      ],
+      "pageErrors": [],
+      "finalStatus": "FINISHED",
+      "questionTotal": 3,
+      "participantCount": 2,
+      "leaderboard": [
+        {
+          "id": "e1313a3c-d31a-4c5c-9fed-d8805e2e4588",
+          "fullName": "Nguyễn Hoàng Anh",
+          "score": 4473,
+          "rank": 1
+        },
+        {
+          "id": "bae2ef72-fdd8-435f-8245-bf30cb843f54",
+          "fullName": "Trần Thị Hương",
+          "score": 1499,
+          "rank": 2
+        }
+      ]
+    }
+  ],
+  "accessibility": {
+    "chromium": {
+      "metrics": [
+        {
+          "width": 1440,
+          "targets": [
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 46,
+              "width": 140.1875
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 820,
+          "targets": [
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 46,
+              "width": 140.1875
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 390,
+          "targets": [
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 46,
+              "width": 326
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 320,
+          "targets": [
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 60,
+              "width": 256
+            },
+            {
+              "height": 46,
+              "width": 256
+            }
+          ],
+          "timerErrorSeconds": 0
+        }
+      ],
+      "colors": {
+        "fg": "rgb(255, 255, 255)",
+        "bg": "rgb(36, 87, 78)"
+      },
+      "contrast": 8.24077735628291,
+      "keyboard": true,
+      "promptRetained": true
+    },
+    "firefox": {
+      "metrics": [
+        {
+          "width": 1440,
+          "targets": [
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 46,
+              "width": 140.18333435058594
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 820,
+          "targets": [
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 46,
+              "width": 140.18333435058594
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 390,
+          "targets": [
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 46,
+              "width": 326
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 320,
+          "targets": [
+            {
+              "height": 81.19999694824219,
+              "width": 256
+            },
+            {
+              "height": 81.20001220703125,
+              "width": 256
+            },
+            {
+              "height": 81.19999694824219,
+              "width": 256
+            },
+            {
+              "height": 60,
+              "width": 256
+            },
+            {
+              "height": 46,
+              "width": 256
+            }
+          ],
+          "timerErrorSeconds": 0
+        }
+      ],
+      "colors": {
+        "fg": "rgb(255, 255, 255)",
+        "bg": "rgb(36, 87, 78)"
+      },
+      "contrast": 8.24077735628291,
+      "keyboard": true,
+      "promptRetained": true
+    },
+    "webkit": {
+      "metrics": [
+        {
+          "width": 1440,
+          "targets": [
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 60,
+              "width": 796
+            },
+            {
+              "height": 46,
+              "width": 140.1875
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 820,
+          "targets": [
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 60,
+              "width": 712
+            },
+            {
+              "height": 46,
+              "width": 140.1875
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 390,
+          "targets": [
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 60,
+              "width": 326
+            },
+            {
+              "height": 46,
+              "width": 326
+            }
+          ],
+          "timerErrorSeconds": 0
+        },
+        {
+          "width": 320,
+          "targets": [
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 81.1875,
+              "width": 256
+            },
+            {
+              "height": 60,
+              "width": 256
+            },
+            {
+              "height": 46,
+              "width": 256
+            }
+          ],
+          "timerErrorSeconds": 0
+        }
+      ],
+      "colors": {
+        "fg": "rgb(255, 255, 255)",
+        "bg": "rgb(36, 87, 78)"
+      },
+      "contrast": 8.24077735628291,
+      "keyboard": true,
+      "promptRetained": true
+    }
+  },
+  "paletteContrast": {
+    "inkOnSheet": {
+      "foreground": "#252c2a",
+      "background": "#fffefa",
+      "ratio": 14.133105608502637
+    },
+    "secondaryOnSheet": {
+      "foreground": "#535e59",
+      "background": "#fffefa",
+      "ratio": 6.684306572995462
+    },
+    "greenOnSheet": {
+      "foreground": "#24574e",
+      "background": "#fffefa",
+      "ratio": 8.165884355128915
+    },
+    "controlBoundaryOnSheet": {
+      "foreground": "#7b857c",
+      "background": "#fffefa",
+      "ratio": 3.7915823437373937
+    }
+  },
+  "compatibility": {
+    "teacherExamStylesUnchanged": true,
+    "studentCatalogStylesUnchanged": true,
+    "libraryItems": 3
+  },
+  "boards": [
+    {
+      "path": "docs/screenshots/live-quiz-prototype/evidence-states.png",
+      "sha256": "eeb6337bc417d43ed583466b32c2ccefe216a988fedaddc6442b2d525a0a99a1",
+      "size": [
+        2092,
+        2364
+      ],
+      "visuallyInspected": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-desktop.png",
+      "sha256": "f78b5578348320ea8084493aaa19a907865e5fe1fee7e3f164105b43b12f99e0",
+      "size": [
+        2396,
+        2922
+      ],
+      "visuallyInspected": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-mobile.png",
+      "sha256": "ec24088254fda742a8d253cdcc510c635794c3e11f579ed5121d73de74dd7565",
+      "size": [
+        1290,
+        1916
+      ],
+      "visuallyInspected": true
+    }
+  ],
+  "boardManifest": {
+    "path": "docs/screenshots/live-quiz-prototype/board-manifest.json",
+    "sha256": "694d00c18fcf7562fa16851f19e73fea2011a9b5abdfc78ebca7d1b3ba54eda0"
+  },
+  "files": [
+    {
+      "path": "apps/api/test/quiz.integration.test.ts",
+      "sha256": "f5ec9a4f3ca56bf5f283b6b0f1f7bb9b6a98541b370f440af34803efc4713a36",
+      "bytes": 9637
+    },
+    {
+      "path": "apps/web/src/features/quiz.test.tsx",
+      "sha256": "6573af9badb70aa3aae9a4c5adfc4b0725c4804f8aa6dac5323c4522c265311b",
+      "bytes": 3835
+    },
+    {
+      "path": "apps/web/src/features/quiz.tsx",
+      "sha256": "d55e4c32f02eac9710bba2446da246a37d85b1e3cd40b0ed8492a25028240fb3",
+      "bytes": 26186
+    },
+    {
+      "path": "apps/web/src/styles/live-quiz.css",
+      "sha256": "3474084d32c654794e5d04e0612c8b9b54586a2657d9974dfc2bffec1b699032",
+      "bytes": 10935
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/board-manifest.json",
+      "sha256": "694d00c18fcf7562fa16851f19e73fea2011a9b5abdfc78ebca7d1b3ba54eda0",
+      "bytes": 6078
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/evidence-states.png",
+      "sha256": "eeb6337bc417d43ed583466b32c2ccefe216a988fedaddc6442b2d525a0a99a1",
+      "bytes": 396209
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-desktop.png",
+      "sha256": "f78b5578348320ea8084493aaa19a907865e5fe1fee7e3f164105b43b12f99e0",
+      "bytes": 409936
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-mobile.png",
+      "sha256": "ec24088254fda742a8d253cdcc510c635794c3e11f579ed5121d73de74dd7565",
+      "bytes": 248085
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_PROTOTYPE_REPORT.md",
+      "sha256": "d166c5b418be1bae617956774859f7e691d4bae84e3930cce7db596c7c681510",
+      "bytes": 20246
+    },
+    {
+      "path": "playwright.live-quiz.config.ts",
+      "sha256": "7dce9f837892ae58045c094afd51856295e56cbaa7f049740b38b05a40fc2474",
+      "bytes": 555
+    },
+    {
+      "path": "tests/ui/live-quiz-boards.py",
+      "sha256": "7a3527a04a03279ef6547083a7b2e1b31d2a99099de9392d66efc5a158709f33",
+      "bytes": 4776
+    },
+    {
+      "path": "tests/ui/live-quiz-compat.spec.ts",
+      "sha256": "a5288927be6e4b98b054515fa516ce8fafde99a9ab3e63ee600085e8a24727a5",
+      "bytes": 4144
+    },
+    {
+      "path": "tests/ui/live-quiz-fixtures.ts",
+      "sha256": "c26038c972304d3bfba32421b586d2ac7a55af1616f3abbed5b0f235b8a1b270",
+      "bytes": 4069
+    },
+    {
+      "path": "tests/ui/live-quiz.spec.ts",
+      "sha256": "39c3a242b060ebb0bcda1b425f8e6e300751acb5f21da03d064a313a95105081",
+      "bytes": 18038
+    }
+  ],
+  "hashNote": "This verification JSON excludes its own hash. Raw scratch storage captures/logs are ephemeral; durable aggregate measurements and board provenance are retained here.",
+  "limitations": [
+    "1024px not covered in prototype; 320px active/a11y only. Full lifecycle covered at 1440/820/390.",
+    "No full screen-reader audit or WCAG certification.",
+    "No snapshot sequence/version; potential async out-of-order broadcasts are a source-level risk, not a reproduced corruption.",
+    "No fault injection between DB commit and answer ack or late answer ack after question transition.",
+    "No API restart, multi-instance or large-participant soak/load test.",
+    "Existing build chunk-size warning and pg query-concurrency deprecation remain.",
+    "Full rollout, builder/list pagination and comprehensive empty/error permutations await direction approval."
+  ],
+  "cleanupProvenance": "Historical record. external-artifacts/ paths are logical identifiers for uncommitted scratch artifacts, no longer available locally. Original sha256 values refer to pre-cleanup records; current metadata integrity is recorded in live-quiz-final-verification.json. Approved PNG bytes are unchanged."
+}

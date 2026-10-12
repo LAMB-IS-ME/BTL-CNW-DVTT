@@ -1,0 +1,469 @@
+{
+  "captureRoot": "external-artifacts/live-quiz-polish",
+  "pixelPolicy": "Crop and compose actual screenshots only. No UI retouching or fabricated states.",
+  "items": [
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/teacher-active-surface.png",
+      "sha256": "f3196c5e58aa03839568b08ea1eea5f6c12851786e0a8dc33c6c15b6a9ec3c15",
+      "label": "01 Teacher / Điều phối phiên",
+      "sourceSize": [
+        1136,
+        667
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        667
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/student-question-surface.png",
+      "sha256": "9269172180b591411c0ca9f481a06f94a99ace885fab213139f9ba24e3298221",
+      "label": "02 Student / Câu hỏi và đáp án",
+      "sourceSize": [
+        840,
+        844
+      ],
+      "crop": null,
+      "displaySize": [
+        840,
+        844
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/teacher-leaderboard-surface.png",
+      "sha256": "cf9afe9e0fc7006e38c70506ea8c56a8fc6f4c3048f647d65fc7f1cc5942f95f",
+      "label": "03 Teacher / Reveal và chuyển câu",
+      "sourceSize": [
+        1136,
+        1204
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        1204
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/student-finished-surface.png",
+      "sha256": "aa1bab2525ee7bdf05ad8e556dee5c66de11c740b3e300c14eb5852893b893d5",
+      "label": "04 Student / Kết quả",
+      "sourceSize": [
+        840,
+        1349
+      ],
+      "crop": [
+        0,
+        0,
+        840,
+        595
+      ],
+      "displaySize": [
+        840,
+        595
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-question-surface.png",
+      "sha256": "6cc51143fe0714d8810fd909918808b3678ed223e9966ef329629e301403931b",
+      "label": "01 Câu hỏi",
+      "sourceSize": [
+        358,
+        890
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        890
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-selected-surface.png",
+      "sha256": "d48336ba1324c123e245ae4d8a3f5f9677d4e9745a65327459a2a9bcf5317054",
+      "label": "02 Đã chọn",
+      "sourceSize": [
+        358,
+        890
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        890
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-submitted-surface.png",
+      "sha256": "f625641937f66483ecb70960fcc0d401e139606fe8fed4ce6a16ef5f7277e179",
+      "label": "03 Đã nhận câu trả lời",
+      "sourceSize": [
+        358,
+        882
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        882
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/teacher-leaderboard-surface.png",
+      "sha256": "abce79dc040dd4193713c2b3af442af59c703155acb6f07ebeff5138f34bd036",
+      "label": "04 Teacher / Chuyển câu",
+      "sourceSize": [
+        358,
+        1792
+      ],
+      "crop": [
+        0,
+        0,
+        358,
+        425
+      ],
+      "displaySize": [
+        358,
+        425
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-leaderboard-surface.png",
+      "sha256": "6787fdc81bff2f98f41b4390fbf950a3f34e821c291108fa262dfd1b06bdbb3a",
+      "label": "05 Xếp hạng sau câu",
+      "sourceSize": [
+        358,
+        1465
+      ],
+      "crop": [
+        0,
+        1136,
+        358,
+        1465
+      ],
+      "displaySize": [
+        358,
+        329
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-finished-surface.png",
+      "sha256": "391cd4533e3d94738f31023b9dcbd0fdbd1238847397fb0a7872c8c2f29dcc8a",
+      "label": "06 Kết quả cuối cùng",
+      "sourceSize": [
+        358,
+        1331
+      ],
+      "crop": [
+        0,
+        0,
+        358,
+        593
+      ],
+      "displaySize": [
+        358,
+        593
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/1440/teacher-active-surface.png",
+      "sha256": "0832c1c84cbd460b46e88e12bce78878293ee34fcc85c590e916c1a9b4015181",
+      "label": "BEFORE / Teacher active",
+      "sourceSize": [
+        1136,
+        629
+      ],
+      "crop": null,
+      "displaySize": [
+        1000,
+        554
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/teacher-active-surface.png",
+      "sha256": "f3196c5e58aa03839568b08ea1eea5f6c12851786e0a8dc33c6c15b6a9ec3c15",
+      "label": "AFTER / Teacher active",
+      "sourceSize": [
+        1136,
+        667
+      ],
+      "crop": null,
+      "displaySize": [
+        1000,
+        587
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/1440/student-question-surface.png",
+      "sha256": "4e4af809cf1fc87559adc1f61d0f1bedbbbe4479ffeb88e7392beaa27d1bbe1b",
+      "label": "BEFORE / Student active",
+      "sourceSize": [
+        840,
+        760
+      ],
+      "crop": [
+        0,
+        164,
+        840,
+        760
+      ],
+      "displaySize": [
+        840,
+        596
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/student-question-surface.png",
+      "sha256": "9269172180b591411c0ca9f481a06f94a99ace885fab213139f9ba24e3298221",
+      "label": "AFTER / Student active",
+      "sourceSize": [
+        840,
+        844
+      ],
+      "crop": [
+        0,
+        159,
+        840,
+        844
+      ],
+      "displaySize": [
+        840,
+        685
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/1440/student-submitted-surface.png",
+      "sha256": "b10071e8b7d16d23190eea71c4f9256d6b7444994e8e69812c341f013d7a3564",
+      "label": "BEFORE / Student submitted",
+      "sourceSize": [
+        840,
+        764
+      ],
+      "crop": [
+        0,
+        164,
+        840,
+        764
+      ],
+      "displaySize": [
+        840,
+        600
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/student-submitted-surface.png",
+      "sha256": "b7e8e576bf805b3436b1fa8d453a5eb85b229f204fb618fa7d2eb38424404b15",
+      "label": "AFTER / Student submitted",
+      "sourceSize": [
+        840,
+        850
+      ],
+      "crop": [
+        0,
+        159,
+        840,
+        850
+      ],
+      "displaySize": [
+        840,
+        691
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/1440/teacher-leaderboard-surface.png",
+      "sha256": "ac0be9705e9bfb72cf3e20061898d5f8222bea28f806d31c0074ac507f22139d",
+      "label": "BEFORE / Teacher reveal",
+      "sourceSize": [
+        1136,
+        1104
+      ],
+      "crop": null,
+      "displaySize": [
+        1000,
+        972
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/teacher-leaderboard-surface.png",
+      "sha256": "cf9afe9e0fc7006e38c70506ea8c56a8fc6f4c3048f647d65fc7f1cc5942f95f",
+      "label": "AFTER / Teacher reveal",
+      "sourceSize": [
+        1136,
+        1204
+      ],
+      "crop": null,
+      "displaySize": [
+        1000,
+        1060
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/1440/student-finished-surface.png",
+      "sha256": "216e7dbe366ad8c5f406c114b8b9f2d31ea3d6934069df46c3da65290a56e9b7",
+      "label": "BEFORE / Leaderboard",
+      "sourceSize": [
+        840,
+        1218
+      ],
+      "crop": [
+        0,
+        164,
+        840,
+        539
+      ],
+      "displaySize": [
+        840,
+        375
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/1440/student-finished-surface.png",
+      "sha256": "aa1bab2525ee7bdf05ad8e556dee5c66de11c740b3e300c14eb5852893b893d5",
+      "label": "AFTER / Leaderboard",
+      "sourceSize": [
+        840,
+        1349
+      ],
+      "crop": [
+        0,
+        159,
+        840,
+        595
+      ],
+      "displaySize": [
+        840,
+        436
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/390/student-question-surface.png",
+      "sha256": "d07016e8fee88b50ecbc834e840bf24dd8c9cd71dbb846f8047939213185f51d",
+      "label": "before",
+      "sourceSize": [
+        358,
+        796
+      ],
+      "crop": [
+        0,
+        147,
+        358,
+        796
+      ],
+      "displaySize": [
+        358,
+        649
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-question-surface.png",
+      "sha256": "6cc51143fe0714d8810fd909918808b3678ed223e9966ef329629e301403931b",
+      "label": "after",
+      "sourceSize": [
+        358,
+        890
+      ],
+      "crop": [
+        0,
+        158,
+        358,
+        890
+      ],
+      "displaySize": [
+        358,
+        732
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/390/student-finished-surface.png",
+      "sha256": "57e74f0a5d051a6698abe3bd1da16da39782c2faf26870331b3ff1f1122fd32e",
+      "label": "before",
+      "sourceSize": [
+        358,
+        1187
+      ],
+      "crop": [
+        0,
+        147,
+        358,
+        519
+      ],
+      "displaySize": [
+        358,
+        372
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/390/student-finished-surface.png",
+      "sha256": "391cd4533e3d94738f31023b9dcbd0fdbd1238847397fb0a7872c8c2f29dcc8a",
+      "label": "after",
+      "sourceSize": [
+        358,
+        1331
+      ],
+      "crop": [
+        0,
+        158,
+        358,
+        593
+      ],
+      "displaySize": [
+        358,
+        435
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/before/chromium/hardening/join-timeout-surface.png",
+      "sha256": "8ffadfbbdd2e6f18a49841d9b04e36a6fb8ffda64da71e0b8733dddf91808fcf",
+      "label": "BEFORE / Timeout",
+      "sourceSize": [
+        358,
+        790
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        790
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/hardening/join-pending-surface.png",
+      "sha256": "2d99f2d6cc33a49490355e7131c25a598064abcc8a99b2267731e7585d220b9a",
+      "label": "AFTER / Pending",
+      "sourceSize": [
+        358,
+        672
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        672
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/hardening/join-timeout-surface.png",
+      "sha256": "bfe739d02c566f75a0ab5c89fb7a68b00a2d0440aa1c6f45da9d3af4a7d41c01",
+      "label": "AFTER / Failed + retry",
+      "sourceSize": [
+        358,
+        716
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        716
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-polish/after/chromium/hardening/join-recovered-surface.png",
+      "sha256": "ec562bc2213a13258d9bbdf7b8dd4a7fb0d8ed8cc3f98e09a05b81e7f78551af",
+      "label": "AFTER / Joined",
+      "sourceSize": [
+        358,
+        608
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        608
+      ]
+    }
+  ],
+  "cleanupProvenance": "Historical record. external-artifacts/ paths are logical identifiers for uncommitted scratch artifacts, no longer available locally. Original sha256 values refer to pre-cleanup records; current metadata integrity is recorded in live-quiz-final-verification.json. Approved PNG bytes are unchanged."
+}

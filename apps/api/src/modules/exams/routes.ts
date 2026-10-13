@@ -5,7 +5,7 @@ import { examSchema } from "@exam/shared";
 import type { Db } from "../../db/client.js";
 import { allow } from "../../middleware/auth.js";
 import { check, param } from "../../utils/errors.js";
-import { pagination } from "../../utils/pagination.js";
+import { pagination, pageData } from "../../utils/pagination.js";
 import { ownExam, lockExam, materializeSources, type Tx } from "./service.js";
 export function examRoutes(db: Db) {
   const r = Router();
@@ -30,16 +30,23 @@ export function examRoutes(db: Db) {
     });
   r.get("/exams", async (req, res) => {
     const p = pagination(req.query);
+    const status = z
+      .enum(["DRAFT", "PUBLISHED", "ARCHIVED"])
+      .optional()
+      .parse(req.query.status);
+    const where = {
+      teacherId: req.user.id,
+      title: { contains: p.search, mode: "insensitive" as const },
+      status,
+    };
+    const items = await db.exam.findMany({
+      where,
+      skip: p.skip,
+      take: p.take,
+      orderBy: [{ createdAt: "desc" }, { id: "asc" }],
+    });
     res.json({
-      data: await db.exam.findMany({
-        where: {
-          teacherId: req.user.id,
-          title: { contains: p.search, mode: "insensitive" },
-        },
-        skip: p.skip,
-        take: p.take,
-        orderBy: { createdAt: "desc" },
-      }),
+      data: await pageData(req.query, items, () => db.exam.count({ where })),
     });
   });
   r.post("/exams", async (req, res) =>

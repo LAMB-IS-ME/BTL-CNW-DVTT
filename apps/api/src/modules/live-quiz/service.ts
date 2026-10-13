@@ -1,3 +1,4 @@
+import { validateSourceAssets } from "../storage/references.js";
 import { lockCatalog } from "../question-banks/lock.js";
 import { EventEmitter } from "node:events";
 import { randomInt } from "node:crypto";
@@ -207,6 +208,10 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
     check(r.status === "LOBBY", 409, "QUIZ_ALREADY_STARTED");
     check(r._count.participants > 0, 409, "QUIZ_NO_PARTICIPANTS");
     const qs = r.quiz.questions;
+    await validateSourceAssets(
+      tx,
+      qs.map((q) => q.question),
+    );
     check(
       qs.length > 0 &&
         qs.every(

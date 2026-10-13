@@ -1,0 +1,34 @@
+{
+  "provenance": "Recovered from tool-output transcript immediately before interruption; raw /tmp full-browser log was lost. Product source unchanged on resume; current hashes recorded separately. Not a completed single invocation.",
+  "observed_pass": 14,
+  "remaining_unconfirmed": 6,
+  "passed_batches": {
+    "admin.spec.ts": 3,
+    "core.spec.ts": 3,
+    "data-integrity.spec.ts": 3,
+    "question-bank.spec.ts": 5
+  },
+  "remaining_titles": [
+    "List/detail failures retry",
+    "Dirty editor protects sidebar navigation",
+    "Responsive real controls 1440px",
+    "Responsive real controls 820px",
+    "Responsive real controls 390px",
+    "Pilot evidence: desktop screenshots and warm local performance samples"
+  ],
+  "reuse": [
+    "unit-final.txt:65/65",
+    "integration-final.txt:54/54 before expanded asset verification",
+    "lint-final.txt",
+    "typecheck-final.txt",
+    "build-final.txt",
+    "all phase screenshots, geometry, request-counts"
+  ],
+  "lost_environment": {
+    "temporary_postgres": true,
+    "scratch_source": true,
+    "browser_processes": true
+  },
+  "new_code_after_resume": "Asset test assertions expanded for storage bytes/orphan inventory plus two integration cases; no product changes.",
+  "rawLogDisposition": "Named raw logs remain local-only; committed evidence-summary.json preserves result lines and SHA-256 provenance."
+}

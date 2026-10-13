@@ -1,3 +1,4 @@
+import { validateSourceAssets } from "../storage/references.js";
 import { lockCatalog } from "../question-banks/lock.js";
 import type { Db } from "../../db/client.js";
 import type { Prisma } from "../../generated/prisma/client.js";
@@ -65,6 +66,8 @@ export async function materializeSources(
         orderBy: { id: "asc" },
       })
     : [];
+  // Validate every eligible pool candidate, not only the random draw.
+  await validateSourceAssets(tx, [...sources, ...available]);
   const candidates = exam.pools.map((p) =>
     available.filter(
       (q) =>

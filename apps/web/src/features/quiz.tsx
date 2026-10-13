@@ -1,3 +1,4 @@
+import { BankPicker } from "./catalog-pagination";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -159,13 +160,6 @@ function QuizForm({ initial }: { initial?: Quiz }) {
     [page, setPage] = useState(1),
     [error, setError] = useState<unknown>(),
     [notice, setNotice] = useState("");
-  const banks = useQuery({
-    queryKey: ["banks-picker"],
-    queryFn: () =>
-      api<{ id: string; title: string }[]>(
-        "/teacher/question-banks?pageSize=100",
-      ),
-  });
   const qs = useQuery({
     queryKey: ["quiz-questions", bank, page],
     queryFn: () =>
@@ -194,7 +188,7 @@ function QuizForm({ initial }: { initial?: Quiz }) {
   return (
     <div className="lq lq-builder">
       <h1>{initial ? "Chỉnh sửa" : "Tạo"} Live Quiz</h1>
-      <ErrorBox error={error || banks.error || qs.error} />
+      <ErrorBox error={error || qs.error} />
       <p role="status">{notice}</p>
       <section className="card">
         <Field label="Tên Quiz">
@@ -206,22 +200,13 @@ function QuizForm({ initial }: { initial?: Quiz }) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </Field>
-        <Field label="Ngân hàng">
-          <select
-            value={bank}
-            onChange={(e) => {
-              setBank(e.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="">Chọn ngân hàng</option>
-            {banks.data?.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.title}
-              </option>
-            ))}
-          </select>
-        </Field>
+        <BankPicker
+          value={bank}
+          onChange={(id) => {
+            setBank(id);
+            setPage(1);
+          }}
+        />
         {qs.data?.items
           .filter((q) => q.type !== "ESSAY")
           .map((q) => (

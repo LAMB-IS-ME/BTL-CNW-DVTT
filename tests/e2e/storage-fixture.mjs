@@ -24,6 +24,20 @@ createServer(async (req, res) => {
     });
     return json(200, { Key: path.slice("/storage/v1/object/".length) });
   }
+  if (
+    req.method === "DELETE" &&
+    path === "/storage/v1/object/question-assets"
+  ) {
+    const parts = [];
+    for await (const part of req) parts.push(part);
+    const { prefixes } = JSON.parse(Buffer.concat(parts).toString());
+    for (const prefix of prefixes)
+      files.delete(`/storage/v1/object/question-assets/${prefix}`);
+    return json(
+      200,
+      prefixes.map((name) => ({ name })),
+    );
+  }
   if (req.method === "GET" && path.startsWith("/storage/v1/object/sign/")) {
     const file = files.get(path.replace("/object/sign/", "/object/"));
     if (!file) return json(404, { error: "not found" });

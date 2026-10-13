@@ -1,0 +1,313 @@
+{
+  "phase": "EXAMSPACE — DATA INTEGRITY + CROSS-MODULE REMEDIATION",
+  "date": "2026-10-13",
+  "timezone": "Asia/Bangkok",
+  "status": "APPROVED_LOCAL_COMMIT_CHECKPOINT",
+  "baseline": {
+    "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "a830497c72998639bba27b5d8d23c952709720ab",
+    "trackedChangesAtStart": 0,
+    "stagedChangesAtStart": 0,
+    "historicalUntrackedCount": 31
+  },
+  "findings": [
+    "ASSET-001",
+    "SYS-001",
+    "SYS-002"
+  ],
+  "affectedModules": [
+    "Storage",
+    "Question Bank write validation",
+    "Exam publish/start",
+    "Live Quiz start",
+    "Teacher Classes",
+    "Teacher student discovery",
+    "Teacher Exams",
+    "Exam Builder class/bank/pool selectors",
+    "Quiz bank selector",
+    "Admin Classes",
+    "Admin Users stable sort"
+  ],
+  "tests": [
+    {
+      "command": "npm run lint",
+      "status": "PASS",
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/lint-resume",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/typecheck-resume",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "npm run build",
+      "status": "PASS",
+      "reused": true,
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/build-final",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "npm test",
+      "status": "PASS",
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "reused": true,
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/unit-final",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "npm run test:integration + targeted resumed asset batch",
+      "status": "PASS",
+      "passed": 56,
+      "failed": 0,
+      "skipped": 0,
+      "composition": {
+        "unchangedCasesReused": 46,
+        "latestAssetCasesRerun": 10
+      },
+      "evidence": [
+        "data-integrity-evidence/evidence-summary.json#/batches/integration-final",
+        "data-integrity-evidence/evidence-summary.json#/batches/asset-resume"
+      ],
+      "resumedCommand": "TEST_DATABASE_URL=<isolated-asset-db> DOTENV_CONFIG_PATH=/dev/null npx vitest run --config vitest.integration.config.ts apps/api/test/asset-integrity.integration.test.ts --reporter=verbose",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "npm run test:e2e + remaining six cases after interruption",
+      "status": "PASS",
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "partitioned": true,
+      "composition": {
+        "priorConfirmedFromToolTranscript": 14,
+        "resumedCases": 6
+      },
+      "evidence": [
+        "data-integrity-evidence/browser-recovered-progress.json",
+        "data-integrity-evidence/evidence-summary.json#/batches/browser-remaining"
+      ],
+      "resumedCommand": "TEST_DATABASE_URL=<isolated-browser-db> DOTENV_CONFIG_PATH=/dev/null npx playwright test tests/e2e/question-bank.spec.ts --grep 'List/detail failures retry|Dirty editor protects|Responsive real controls|Pilot evidence:'",
+      "reusedDuringFinalCleanup": true
+    },
+    {
+      "command": "TEST_DATABASE_URL=<isolated-browser-db> DOTENV_CONFIG_PATH=/dev/null DEMO_PASSWORD=<synthetic-seed-password> LIVE_QUIZ_WIDTHS=1440 GRADING_SCREENSHOT_DIR=<scratch-output> LIVE_QUIZ_SCREENSHOT_DIR=<scratch-output> npx playwright test --config playwright.ui.config.ts tests/ui/grading-results-rollout.spec.ts tests/ui/live-quiz.spec.ts",
+      "status": "PASS",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "singleBatch": true,
+      "composition": {
+        "gradingResults": 16,
+        "liveQuiz": 3
+      },
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/compatibility-final",
+      "duration": "1.9m",
+      "reusedDuringFinalCleanup": true
+    }
+  ],
+  "before": {
+    "assetRegressionExpectedFailures": 3,
+    "assetDeleteActual": 204,
+    "assetDeleteExpected": 409,
+    "missingReferenceWriteActual": 200,
+    "missingReferenceWriteExpected": 400,
+    "builder": {
+      "classes": 22,
+      "spa": 20,
+      "reload": 22
+    },
+    "evidence": [
+      "data-integrity-evidence/evidence-summary.json#/batches/asset-before",
+      "data-integrity-evidence/browser-before.json",
+      "../audit/evidence/asset-probe.json",
+      "../audit/evidence/pagination-probe.json"
+    ]
+  },
+  "after": {
+    "builderPageSize": 20,
+    "builderTotal": 22,
+    "bankPagesVisited": 6,
+    "distinctBankIds": 101,
+    "catalogRequestsInBrowserScenario": 16,
+    "responsiveViewports": [
+      1440,
+      1024,
+      820,
+      390,
+      320
+    ],
+    "screenshots": "../screenshots/data-integrity/",
+    "geometry": "../screenshots/data-integrity/geometry.json",
+    "requestCounts": "../screenshots/data-integrity/request-counts.json"
+  },
+  "storage": {
+    "productionAccess": false,
+    "provider": "isolated SDK stateful double and loopback HTTP double",
+    "protectedDeleteStatus": 409,
+    "invalidReferenceStatus": 400,
+    "failureOrdering": [
+      "catalog lock + ownership + reference check",
+      "delete metadata and commit",
+      "remote object remove"
+    ],
+    "remoteFailureStatus": 502,
+    "retryAfterMetadataDeletionStatus": 404,
+    "orphanRisk": true,
+    "orphanDiscovery": "Compare stable private bucket object-path inventory with live QuestionAsset.storagePath, with upload grace period and protected-reference review before any separately authorized cleanup. No collector implemented.",
+    "atomicAcrossDbAndStorage": false
+  },
+  "releaseReady": false,
+  "outOfScope": [
+    "AUTH-001 expired-session UX",
+    "REL-001 stale connected flag after crash",
+    "multi-instance Socket.IO",
+    "production deployment",
+    "MASTER_SPEC tracking",
+    "report/slides/video",
+    "server restart limitations",
+    "hosted Storage verification",
+    "staging deployment verification",
+    "full screen-reader testing",
+    "large-class load testing",
+    "Builder route-leave guard"
+  ],
+  "gitSafety": {
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pr": false,
+    "stage": false,
+    "resetCheckoutDiscardClean": false,
+    "historicalArtifactsPreserved": true,
+    "meaning": "Pre-commit checkpoint: one local commit authorized after selective stage audit; no push/deploy/merge/PR.",
+    "localCommitAuthorized": true
+  },
+  "remainingVerification": [],
+  "recovery": {
+    "temporaryEnvironmentLost": true,
+    "historicalHashesMatch": 31,
+    "productSourceChangesAfterResume": 0,
+    "testFileExpanded": "apps/api/test/asset-integrity.integration.test.ts",
+    "pendingBlocker": null,
+    "passedBrowserReused": 14,
+    "browserCasesToFinish": 0,
+    "latestContinuation": {
+      "allCompatibilityResultsAlreadyPersisted": true,
+      "rerunRequired": false,
+      "temporaryEnvironmentLostAgain": true,
+      "sourceHashesMatched": 169,
+      "matchingTemporaryProcesses": 0,
+      "isolatedPostgresPortListening": false
+    }
+  },
+  "failureHistory": [
+    {
+      "type": "expected before-fix regression failures",
+      "count": 3,
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/asset-before"
+    },
+    {
+      "type": "compatibility fixture setup failure: required DEMO_PASSWORD absent; no product assertions reached",
+      "count": 19,
+      "resolved": true,
+      "resolution": "Configured synthetic fixture password; reran unchanged full 19-case compatibility batch successfully.",
+      "evidence": "data-integrity-evidence/evidence-summary.json#/batches/compatibility-harness-before"
+    }
+  ],
+  "finalBlockers": [],
+  "verificationSummary": {
+    "unitFrontend": {
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "reuse": true
+    },
+    "integration": {
+      "passed": 56,
+      "failed": 0,
+      "skipped": 0,
+      "partitioned": true
+    },
+    "browserE2E": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "partitioned": true
+    },
+    "compatibility": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "singleBatch": true
+    },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "responsiveAffectedScreens": "PASS at 1440/1024/820/390/320",
+    "scope": "Targeted phase only, not global release readiness"
+  },
+  "sourceHashes": "data-integrity-evidence/source-final-hashes.json",
+  "evidenceHygiene": "data-integrity-evidence/evidence-hygiene.json",
+  "approvedReviewGitCheckpoint": {
+    "evidence": "data-integrity-evidence/commit-scope.json",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "a830497c72998639bba27b5d8d23c952709720ab",
+    "counts": {
+      "trackedModified": 13,
+      "newSourceAndTests": 7,
+      "newArtifacts": 48,
+      "historicalUntracked": 31,
+      "totalUntracked": 86
+    },
+    "diffCheck": "PASS",
+    "stagedFiles": [],
+    "trackedModified": [
+      "apps/api/src/modules/admin/routes.ts",
+      "apps/api/src/modules/classes/routes.ts",
+      "apps/api/src/modules/exams/routes.ts",
+      "apps/api/src/modules/exams/service.ts",
+      "apps/api/src/modules/live-quiz/service.ts",
+      "apps/api/src/modules/question-banks/routes.ts",
+      "apps/api/src/modules/storage/routes.ts",
+      "apps/api/src/utils/pagination.ts",
+      "apps/web/src/features/admin.tsx",
+      "apps/web/src/features/catalog.tsx",
+      "apps/web/src/features/exams.tsx",
+      "apps/web/src/features/quiz.tsx",
+      "tests/e2e/storage-fixture.mjs"
+    ],
+    "newSourceAndTests": [
+      "apps/api/src/modules/storage/references.ts",
+      "apps/api/test/asset-integrity.integration.test.ts",
+      "apps/api/test/pagination-integrity.integration.test.ts",
+      "apps/web/src/features/catalog-pagination.test.tsx",
+      "apps/web/src/features/catalog-pagination.tsx",
+      "apps/web/src/styles/catalog-pagination.css",
+      "tests/e2e/data-integrity.spec.ts"
+    ]
+  },
+  "commitScope": "data-integrity-evidence/commit-scope.json",
+  "cleanup": {
+    "productOrTestChanges": 0,
+    "sourceHashesMatched": 169,
+    "dependencyManifestsMatched": 5,
+    "historicalHashesMatched": 31,
+    "testEvidenceReused": true,
+    "selectedFiles": 54,
+    "localOnlyPhaseArtifacts": 16,
+    "historicalArtifactsExcluded": 31,
+    "noFilesDeleted": true,
+    "documentationAndSecurityAudit": "PASS: selective staged content, links in committed file set, bounded secret scan and credential-context review; see evidence-hygiene.json."
+  },
+  "findingDisposition": {
+    "ASSET-001": "RESOLVED_IN_APPROVED_SCOPE",
+    "SYS-001": "RESOLVED_IN_APPROVED_SCOPE",
+    "SYS-002": "RESOLVED_IN_APPROVED_SCOPE"
+  }
+}

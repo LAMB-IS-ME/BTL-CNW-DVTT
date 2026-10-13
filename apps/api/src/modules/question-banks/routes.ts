@@ -1,3 +1,4 @@
+import { validateAssets } from "../storage/references.js";
 import { Router } from "express";
 import { z } from "zod";
 import { questionSchema, questionTypes } from "@exam/shared";
@@ -168,6 +169,7 @@ export function bankRoutes(db: Db) {
         await lockCatalog(tx, req.user.id);
         const b = await own(tx, param(req), req.user.id);
         check(!b.isArchived, 409, "BANK_ARCHIVED");
+        await validateAssets(tx, { ...data, options });
         return tx.question.create({
           data: {
             ...data,
@@ -193,6 +195,7 @@ export function bankRoutes(db: Db) {
         await lockCatalog(tx, req.user.id);
         const q = await ownQuestion(tx, param(req, "questionId"), req.user.id);
         check(!q.isArchived && !q.bank.isArchived, 409, "QUESTION_ARCHIVED");
+        await validateAssets(tx, { ...data, options }, q.id);
         return tx.question.update({
           where: { id: q.id },
           data: {

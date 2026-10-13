@@ -1,0 +1,221 @@
+{
+  "date": "2026-10-13",
+  "provenance": "Approved execution evidence condensed during final cleanup. No test rerun in cleanup; source/test/config SHA-256 checkpoint matches. Static exit status is from verified tool execution, not inferred solely from silent logs.",
+  "verifiedResults": {
+    "unitFrontend": {
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0,
+      "reuse": true
+    },
+    "integration": {
+      "passed": 56,
+      "failed": 0,
+      "skipped": 0,
+      "partitioned": true
+    },
+    "browserE2E": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "partitioned": true
+    },
+    "compatibility": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "singleBatch": true
+    },
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "responsiveAffectedScreens": "PASS at 1440/1024/820/390/320",
+    "scope": "Targeted phase only, not global release readiness"
+  },
+  "batches": {
+    "asset-before": {
+      "localOnlySource": "asset-before.txt",
+      "sha256": "1fe3b34eb3998f0489200404b27e99d194cdd4ac5d4049477f0557302468b642",
+      "selectedResultLines": [
+        "Test Files  1 failed (1)",
+        "Tests  3 failed (3)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit.",
+      "interpretation": "Expected 3 before-fix failures: protected delete returned 204; missing/foreign reference accepted 200; publish/delete race allowed 204."
+    },
+    "asset-resume": {
+      "localOnlySource": "asset-resume.txt",
+      "sha256": "1c76a657ef3e95e09f2434a907ddbac3e28b9787c46688d4dfc3d6806dd7131c",
+      "selectedResultLines": [
+        "✓ apps/api/test/asset-integrity.integration.test.ts > protects a published image before first attempt and keeps the student's historical image after edits/archive 782ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > rejects dangling or foreign asset references on question writes 526ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > serializes deletion with reference writes and publish 234ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > removes unused draft assets, rejects unauthorized deletion, and reports remote failure without restoring a referenceable identity 401ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > guards prompt, options and explanation, including random pool candidates before any attempt 321ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > delete racing a new reference can only delete an unused asset or preserve a valid reference 243ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > preserves Live Quiz images before and after room snapshot and rejects legacy dangling sources at start 577ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > retains legacy cross-question references and never calls Storage when metadata transaction fails 246ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > rejects invalid assets at publish and Quiz start before writing published state or room snapshots 250ms",
+        "✓ apps/api/test/asset-integrity.integration.test.ts > concurrent Student start and direct deletion retain the exact snapshot reference and storage bytes 240ms",
+        "Test Files  1 passed (1)",
+        "Tests  10 passed (10)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "browser-before": {
+      "localOnlySource": "browser-before.txt",
+      "sha256": "be66d50b84a395ce39ec4d32221fcbbdae7fdc21eb20d0270a25dd1080a099bf",
+      "selectedResultLines": [
+        "✓  1 tests/e2e/data-integrity.spec.ts:12:1 › Classes → Builder: page boundaries, SPA cache and reload (2.8s)",
+        "1 passed (6.3s)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "browser-remaining": {
+      "localOnlySource": "browser-remaining.txt",
+      "sha256": "5868102aa6990a84f64854bd8a941e428990395282cdd69e8ce79565f70ede95",
+      "selectedResultLines": [
+        "✓  1 tests/e2e/question-bank.spec.ts:518:1 › List/detail failures retry; archive and restore errors preserve state and dialogs allow retry (12.2s)",
+        "✓  2 tests/e2e/question-bank.spec.ts:581:1 › Dirty editor protects sidebar navigation and reload; saved editor has no false warning (5.2s)",
+        "✓  3 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs (5.1s)",
+        "✓  4 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs (5.4s)",
+        "✓  5 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs (5.3s)",
+        "✓  6 tests/e2e/question-bank.spec.ts:714:1 › Pilot evidence: desktop screenshots and warm local performance samples (17.7s)",
+        "6 passed (56.1s)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "build-final": {
+      "localOnlySource": "build-final.txt",
+      "sha256": "38f00ff31d180539363fbd0d0fa400e181e0a74ee30b84c658265b5ee9241744",
+      "selectedResultLines": [
+        "ESM ⚡️ Build success in 36ms",
+        "✓ 1286 modules transformed.",
+        "✓ built in 354ms"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "compatibility-final": {
+      "localOnlySource": "compatibility-final.txt",
+      "sha256": "79266be73308daeb92cffe2b3afc9acb47a7415c4a01efcfc725af5c885ba68a",
+      "selectedResultLines": [
+        "✓   1 tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft (4.3s)",
+        "✓   2 tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register (4.4s)",
+        "✓   3 tests/ui/grading-results-rollout.spec.ts:57:3 › all 1 grading submissions are reachable without losing drafts (2.4s)",
+        "✓   4 tests/ui/grading-results-rollout.spec.ts:57:3 › all 20 grading submissions are reachable without losing drafts (3.2s)",
+        "✓   5 tests/ui/grading-results-rollout.spec.ts:57:3 › all 21 grading submissions are reachable without losing drafts (3.8s)",
+        "✓   6 tests/ui/grading-results-rollout.spec.ts:57:3 › all 30 grading submissions are reachable without losing drafts (4.1s)",
+        "✓   7 tests/ui/grading-results-rollout.spec.ts:57:3 › all 100 grading submissions are reachable without losing drafts (7.5s)",
+        "✓   8 tests/ui/grading-results-rollout.spec.ts:57:3 › all 105 grading submissions are reachable without losing drafts (8.0s)",
+        "✓   9 tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves (3.6s)",
+        "✓  10 tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts (7.4s)",
+        "✓  11 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 0 isolated records and preserves return page (2.1s)",
+        "✓  12 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 1 isolated records and preserves return page (2.3s)",
+        "✓  13 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 20 isolated records and preserves return page (2.6s)",
+        "✓  14 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 25 isolated records and preserves return page (3.0s)",
+        "✓  15 tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region (3.3s)",
+        "✓  16 tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains (6.3s)",
+        "✓  17 tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results (28.5s)",
+        "✓  18 tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership (10.1s)",
+        "✓  19 tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths (3.5s)",
+        "19 passed (1.9m)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "compatibility-harness-before": {
+      "localOnlySource": "compatibility-harness-before.txt",
+      "sha256": "3e94cab56aaf4cde4f1f240550151928c54e46758702b8471928cda135ce3781",
+      "selectedResultLines": [
+        "19 failed"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit.",
+      "interpretation": "19 fixture setup failures: DEMO_PASSWORD missing. Resolved by configuration only; compatibility-final passed 19 unchanged cases."
+    },
+    "integration-final": {
+      "localOnlySource": "integration-final.txt",
+      "sha256": "3b2846ee1b26f69759e96f6fbb5eb80051ecc5cd564e07f2b2a91b2fc8b0689f",
+      "selectedResultLines": [
+        "Test Files  15 passed (15)",
+        "Tests  54 passed (54)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "lint-final": {
+      "localOnlySource": "lint-final.txt",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "selectedResultLines": [
+        "> lint",
+        "> eslint ."
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "lint-resume": {
+      "localOnlySource": "lint-resume.txt",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "selectedResultLines": [
+        "> lint",
+        "> eslint ."
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "migrate-resume": {
+      "localOnlySource": "migrate-resume.txt",
+      "sha256": "ef79531c8be7f01efc60d390eee16417f51f532dbd06f908262d05fa00433ddf",
+      "selectedResultLines": [],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "typecheck-final": {
+      "localOnlySource": "typecheck-final.txt",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "selectedResultLines": [
+        "> typecheck",
+        "> npm run typecheck --workspaces --if-present && tsc -p tsconfig.tests.json",
+        "> @exam/shared@1.0.0 typecheck",
+        "> tsc --noEmit",
+        "> @exam/api@1.0.0 typecheck",
+        "> tsc --noEmit",
+        "> @exam/web@1.0.0 typecheck",
+        "> tsc --noEmit"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "typecheck-resume": {
+      "localOnlySource": "typecheck-resume.txt",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "selectedResultLines": [
+        "> typecheck",
+        "> npm run typecheck --workspaces --if-present && tsc -p tsconfig.tests.json",
+        "> @exam/shared@1.0.0 typecheck",
+        "> tsc --noEmit",
+        "> @exam/api@1.0.0 typecheck",
+        "> tsc --noEmit",
+        "> @exam/web@1.0.0 typecheck",
+        "> tsc --noEmit"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    },
+    "unit-final": {
+      "localOnlySource": "unit-final.txt",
+      "sha256": "0907f9a01bde4e2db125b894837e1005ce8ca27bbc9f57247b6d323107bafed5",
+      "selectedResultLines": [
+        "Test Files  18 passed (18)",
+        "Tests  65 passed (65)"
+      ],
+      "note": "Extracted result lines, not a new execution; full raw log is retained locally and excluded from commit."
+    }
+  },
+  "dependencySecurity": {
+    "baselineGate": "0 vulnerabilities in previously approved security gate; no fresh advisory lookup",
+    "localOnlySource": "docs/remediation/evidence/security-gate.txt",
+    "sha256": "6d8c5c8f3d7684adb070417bd608d01ae90aa3dc26a65af03ffda4955f38d9a3",
+    "manifestsUnchangedFromBaseline": {
+      "package.json": "2163ecab2f8cd0f46cf36084daaacf3617004efbfc7ae1b33c80efea50551ec9",
+      "package-lock.json": "1488849267a4cfd1e7e7c9cc39dfcad514190170efd3c410abc461499e6c50f0",
+      "apps/api/package.json": "fc09aa1e72d1c47c91e2fea81382c0489ec57f118fc23373c8950601246dbf08",
+      "apps/web/package.json": "7c82d5684c3a7ddba4342506c74a6eae1a6d9a348308ba9651ebc086913a5786",
+      "packages/shared/package.json": "6cb4005b355fe54e85d421d575058606703fd999131eb27194719022ae0b46d5"
+    }
+  },
+  "sourceCheckpoint": "source-final-hashes.json",
+  "browserTranscriptRecovery": "browser-recovered-progress.json"
+}

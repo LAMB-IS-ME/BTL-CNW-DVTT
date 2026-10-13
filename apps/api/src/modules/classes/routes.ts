@@ -3,7 +3,8 @@ import { z } from "zod";
 import type { Db } from "../../db/client.js";
 import { allow, userSelect } from "../../middleware/auth.js";
 import { check, param } from "../../utils/errors.js";
-import { pagination } from "../../utils/pagination.js";
+import type { Prisma } from "../../generated/prisma/client.js";
+import { pagination, pageData } from "../../utils/pagination.js";
 const schema = z.object({
   name: z.string().trim().min(1).max(150),
   code: z.string().max(40).nullable().optional(),
@@ -19,43 +20,57 @@ export function classRoutes(db: Db) {
   };
   r.get("/students", async (req, res) => {
     const p = pagination(req.query);
+    const where: Prisma.UserWhereInput = {
+      role: "STUDENT",
+      status: "ACTIVE",
+      OR: ["email", "fullName", "studentCode"].map((field) => ({
+        [field]: { contains: p.search, mode: "insensitive" },
+      })),
+    };
+    const items = await db.user.findMany({
+      where,
+      select: userSelect,
+      skip: p.skip,
+      take: p.take,
+      orderBy: [{ fullName: "asc" }, { id: "asc" }],
+    });
     res.json({
-      data: await db.user.findMany({
-        where: {
-          role: "STUDENT",
-          status: "ACTIVE",
-          OR: [
-            { email: { contains: p.search, mode: "insensitive" } },
-            { fullName: { contains: p.search, mode: "insensitive" } },
-            { studentCode: { contains: p.search, mode: "insensitive" } },
-          ],
-        },
-        select: userSelect,
-        skip: p.skip,
-        take: p.take,
-      }),
+      data: await pageData(req.query, items, () => db.user.count({ where })),
     });
   });
   r.get("/classes", async (req, res) => {
     const p = pagination(req.query);
+    const status = z
+      .enum(["active", "archived", "all"])
+      .optional()
+      .parse(req.query.status);
+    const where: Prisma.ClassWhereInput = {
+      teacherId: req.user.id,
+      OR: [
+        { name: { contains: p.search, mode: "insensitive" } },
+        { code: { contains: p.search, mode: "insensitive" } },
+      ],
+      ...(status && status !== "all"
+        ? { archivedAt: status === "active" ? null : { not: null } }
+        : {}),
+    };
+    const items = await db.class.findMany({
+      where,
+      include: { _count: { select: { members: true } } },
+      skip: p.skip,
+      take: p.take,
+      orderBy: [{ createdAt: "desc" }, { id: "asc" }],
+    });
     res.json({
-      data: await db.class.findMany({
-        where: { teacherId: req.user.id },
-        include: { _count: { select: { members: true } } },
-        skip: p.skip,
-        take: p.take,
-        orderBy: { createdAt: "desc" },
-      }),
+      data: await pageData(req.query, items, () => db.class.count({ where })),
     });
   });
   r.post("/classes", async (req, res) =>
-    res
-      .status(201)
-      .json({
-        data: await db.class.create({
-          data: { ...schema.parse(req.body), teacherId: req.user.id },
-        }),
+    res.status(201).json({
+      data: await db.class.create({
+        data: { ...schema.parse(req.body), teacherId: req.user.id },
       }),
+    }),
   );
   r.get("/classes/:id", async (req, res) => {
     await own(param(req), req.user.id);
@@ -96,15 +111,13 @@ export function classRoutes(db: Db) {
       400,
       "INVALID_STUDENT",
     );
-    res
-      .status(201)
-      .json({
-        data: await db.classMember.upsert({
-          where: { classId_studentId: { classId: c.id, studentId } },
-          create: { classId: c.id, studentId },
-          update: {},
-        }),
-      });
+    res.status(201).json({
+      data: await db.classMember.upsert({
+        where: { classId_studentId: { classId: c.id, studentId } },
+        create: { classId: c.id, studentId },
+        update: {},
+      }),
+    });
   });
   r.delete("/classes/:id/students/:studentId", async (req, res) => {
     await own(param(req), req.user.id);

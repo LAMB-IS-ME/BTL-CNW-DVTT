@@ -4,7 +4,7 @@ import { registerSchema, roles } from "@exam/shared";
 import type { Db } from "../../db/client.js";
 import { allow, userSelect } from "../../middleware/auth.js";
 import { hashPassword } from "../auth/password.js";
-import { pagination } from "../../utils/pagination.js";
+import { pagination, pageData } from "../../utils/pagination.js";
 import { check, param } from "../../utils/errors.js";
 import { lockAdminMutations } from "./lock.js";
 export function adminRoutes(db: Db) {
@@ -27,7 +27,7 @@ export function adminRoutes(db: Db) {
         select: userSelect,
         skip: p.skip,
         take: p.take,
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ createdAt: "desc" }, { id: "asc" }],
       }),
       db.user.count({ where }),
     ]);
@@ -111,15 +111,21 @@ export function adminRoutes(db: Db) {
   });
   r.get("/classes", async (req, res) => {
     const p = pagination(req.query);
+    const where = {
+      name: { contains: p.search, mode: "insensitive" as const },
+    };
+    const items = await db.class.findMany({
+      where,
+      skip: p.skip,
+      take: p.take,
+      orderBy: [{ createdAt: "desc" }, { id: "asc" }],
+      include: {
+        teacher: { select: userSelect },
+        _count: { select: { members: true } },
+      },
+    });
     res.json({
-      data: await db.class.findMany({
-        skip: p.skip,
-        take: p.take,
-        include: {
-          teacher: { select: userSelect },
-          _count: { select: { members: true } },
-        },
-      }),
+      data: await pageData(req.query, items, () => db.class.count({ where })),
     });
   });
   r.get("/stats", async (_req, res) => {

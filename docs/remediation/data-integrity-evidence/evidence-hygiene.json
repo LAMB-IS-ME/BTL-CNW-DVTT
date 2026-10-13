@@ -1,0 +1,24 @@
+{
+  "checkpoint": "Selective pre-commit audit",
+  "scope": "All 54 selected full file contents; PNGs preserved by hashes from approved screenshot evidence. Bounded secret-pattern scan plus manual credential-context review, not universal secret certification.",
+  "selectedFiles": 54,
+  "matches": [],
+  "syntheticExceptions": [
+    "Isolated provider double token in asset integration test",
+    "Unusable synthetic password hashes in pagination/browser fixtures",
+    "Existing demo-only seed password used by E2E login; no production password"
+  ],
+  "documentationLinksChecked": 19,
+  "missingDocumentationLinks": [],
+  "freshCloneLinkCheck": "All Markdown targets resolve within baseline tracked + selected file set; local-only artifacts are provenance entries, not required links.",
+  "historicalHashesMatched": 31,
+  "sourceHashesMatched": 169,
+  "dependencyManifestsMatched": 5,
+  "rawLogsSelected": 0,
+  "rawBrowserSessionsSelected": 0,
+  "databaseDumpsSelected": 0,
+  "productionDataUsed": false,
+  "duplicatePngs": 0,
+  "sourceChangesDuringCleanup": 0,
+  "stagedAudit": "PASS: 54 exact selected paths, full staged content matches reviewed files, no accidental deletions, no raw logs, secret-pattern scan passed, historical/local-only files excluded."
+}

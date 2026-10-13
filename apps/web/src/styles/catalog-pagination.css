@@ -1,0 +1,44 @@
+.catalog-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 16px 0;
+}
+.catalog-pager button {
+  min-height: 44px;
+}
+.catalog-pager span {
+  overflow-wrap: anywhere;
+}
+.catalog-controls,
+.catalog-selector {
+  min-width: 0;
+}
+.catalog-controls input,
+.catalog-selector select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.catalog-selector {
+  margin-bottom: 16px;
+}
+.catalog-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  list-style: none;
+}
+.catalog-selection li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.catalog-selection button {
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

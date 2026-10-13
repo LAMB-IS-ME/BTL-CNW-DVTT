@@ -1,3 +1,4 @@
+import { lockCatalog } from "../question-banks/lock.js";
 import { snapshotSchema } from "../attempts/logic.js";
 import { resultVisible } from "../results/logic.js";
 import { Router } from "express";
@@ -142,26 +143,50 @@ export function storageRoutes(db: Db, config: Config) {
     "/teacher/questions/:questionId/assets/:assetId",
     allow("TEACHER"),
     async (req, res) => {
-      const q = await ownQuestion(db, param(req, "questionId"), req.user.id);
-      const a = await db.questionAsset.findFirst({
-        where: { id: param(req, "assetId"), questionId: q.id },
+      // Resolve the provider before changing metadata (missing configuration
+      // must leave the asset available for a normal retry).
+      const a = await db.$transaction(async (tx) => {
+        await lockCatalog(tx, req.user.id);
+        const q = await ownQuestion(tx, param(req, "questionId"), req.user.id);
+        const asset = await tx.questionAsset.findFirst({
+          where: { id: param(req, "assetId"), questionId: q.id },
+        });
+        check(asset, 404, "NOT_FOUND");
+        const uses = await tx.attemptQuestion.count({
+          where: { originalQuestionId: q.id },
+        });
+        const live = await tx.liveRoomQuestion.count({
+          where: { snapshotJson: { path: ["id"], equals: q.id } },
+        });
+        // Include legacy cross-question references too; new writes enforce
+        // question ownership, but existing content must never lose its object.
+        const token = `%asset:${asset.id}%`;
+        const [reference] = await tx.$queryRaw<{ referenced: boolean }[]>`
+          SELECT EXISTS (
+            SELECT 1 FROM "Question" WHERE "promptMarkdown" ILIKE ${token} OR "explanationMarkdown" ILIKE ${token}
+            UNION ALL SELECT 1 FROM "QuestionOption" WHERE "contentMarkdown" ILIKE ${token}
+            UNION ALL SELECT 1 FROM "AttemptQuestion" WHERE "snapshotJson"::text ILIKE ${token}
+            UNION ALL SELECT 1 FROM "LiveRoomQuestion" WHERE "snapshotJson"::text ILIKE ${token}
+          ) AS referenced`;
+        check(
+          !reference?.referenced && !uses && !live,
+          409,
+          "ASSET_REFERENCED",
+          "Ảnh đang được nội dung câu hỏi hoặc bản chụp bài thi/Quiz sử dụng nên không thể xóa. Gỡ tham chiếu và lưu câu hỏi trước; ảnh trong lịch sử vẫn được giữ.",
+        );
+        bucket();
+        // Commit removal of the referenceable identity BEFORE remote deletion.
+        // A failed DB commit cannot destroy storage. Concurrent saves must now
+        // fail validation; a remote failure can only leave an unreferenced object.
+        return tx.questionAsset.delete({ where: { id: asset.id } });
       });
-      check(a, 404, "NOT_FOUND");
-      const uses = await db.attemptQuestion.count({
-        where: { originalQuestionId: q.id },
-      });
-      const live = await db.liveRoomQuestion.count({
-        where: { snapshotJson: { path: ["id"], equals: q.id } },
-      });
-      check(
-        !uses && !live,
-        409,
-        "ASSET_REFERENCED",
-        "Ảnh thuộc đề đã snapshot nên phải giữ lịch sử.",
-      );
       const result = await bucket().remove([a.storagePath]);
-      check(!result.error, 502, "STORAGE_DELETE_FAILED");
-      await db.questionAsset.delete({ where: { id: a.id } });
+      check(
+        !result.error,
+        502,
+        "STORAGE_DELETE_FAILED",
+        "Đã gỡ ảnh không sử dụng khỏi danh mục nhưng chưa xác nhận xóa tệp lưu trữ. Không có nội dung bài thi bị ảnh hưởng; cần kiểm tra dọn tệp lưu trữ.",
+      );
       res.status(204).end();
     },
   );

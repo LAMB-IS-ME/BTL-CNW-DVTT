@@ -1,6 +1,11 @@
+import {
+  useCatalogPage,
+  CatalogControls,
+  CatalogPager,
+} from "./catalog-pagination";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { UserDto, QuestionDto } from "@exam/shared";
 import { api } from "../lib/api";
 import {
@@ -26,10 +31,9 @@ type Catalog = {
 export function CatalogList({ bank = false }: { bank?: boolean }) {
   const path = bank ? "question-banks" : "classes";
   const [error, setError] = useState<unknown>();
-  const q = useQuery({
-    queryKey: [path],
-    queryFn: () => api<Catalog[]>(`/teacher/${path}`),
-  });
+  const cache = useQueryClient();
+  const paging = useCatalogPage<Catalog>(path, `/teacher/${path}`, true);
+  const q = paging.query;
   return (
     <>
       <h1>{bank ? "Ngân hàng câu hỏi" : "Lớp học của tôi"}</h1>
@@ -45,7 +49,8 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
               Object.fromEntries(new FormData(f)),
             );
             f.reset();
-            await q.refetch();
+            await cache.invalidateQueries({ queryKey: [path] });
+            setError(undefined);
           } catch (e) {
             setError(e);
           }
@@ -62,12 +67,16 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
         </Field>
         <button>Tạo {bank ? "ngân hàng" : "lớp học"}</button>
       </form>
-      <ErrorBox error={error || q.error} />
+      <CatalogControls
+        paging={paging}
+        label={bank ? "Tìm ngân hàng" : "Tìm lớp"}
+      />
+      <ErrorBox error={error} />
       {q.isPending ? (
         <Loading />
       ) : (
         <div className="grid">
-          {q.data?.map((c) => (
+          {paging.items.map((c) => (
             <Link className="card" key={c.id} to={`/teacher/${path}/${c.id}`}>
               <h2>{c.title || c.name}</h2>
               <p>{c.description}</p>
@@ -79,11 +88,20 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
           ))}
         </div>
       )}
+      <CatalogPager paging={paging} />
     </>
   );
 }
 export function CatalogDetail({ bank = false }: { bank?: boolean }) {
   const { id } = useParams();
+  const cache = useQueryClient();
+  const students = useCatalogPage<UserDto>(
+    "students",
+    "/teacher/students",
+    false,
+    "",
+    !bank,
+  );
   const path = bank ? "question-banks" : "classes";
   const [error, setError] = useState<unknown>(),
     [search, setSearch] = useState(""),
@@ -93,6 +111,7 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
     queryFn: () => api<Catalog>(`/teacher/${path}/${id}`),
   });
   const list = useQuery<{ items: QuestionDto[]; total: number } | UserDto[]>({
+    enabled: bank,
     queryKey: [path, id, "items", search, page],
     queryFn: () =>
       bank
@@ -120,7 +139,7 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
               "PATCH",
               Object.fromEntries(new FormData(e.currentTarget)),
             );
-            await q.refetch();
+            await cache.invalidateQueries({ queryKey: [path] });
           } catch (e) {
             setError(e);
           }
@@ -140,28 +159,30 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
         <ConfirmButton
           onConfirm={async () => {
             await api(`/teacher/${path}/${id}`, "DELETE");
-            await q.refetch();
+            await cache.invalidateQueries({ queryKey: [path] });
           }}
         >
           Lưu trữ
         </ConfirmButton>
       </form>
-      <div className="actions">
-        <input
-          aria-label="Tìm kiếm"
-          placeholder={bank ? "Tìm câu hỏi" : "Tìm sinh viên để thêm"}
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
-          }}
-        />
-        {bank && (
-          <Link className="button" to={`/teacher/question-banks/${id}/new`}>
-            Thêm câu hỏi
-          </Link>
-        )}
-      </div>
+      {bank && (
+        <div className="actions">
+          <input
+            aria-label="Tìm kiếm"
+            placeholder={bank ? "Tìm câu hỏi" : "Tìm sinh viên để thêm"}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
+          />
+          {bank && (
+            <Link className="button" to={`/teacher/question-banks/${id}/new`}>
+              Thêm câu hỏi
+            </Link>
+          )}
+        </div>
+      )}
       <ErrorBox error={list.error} />
       {bank ? (
         list.data &&
@@ -186,31 +207,32 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
       ) : (
         <>
           <h2>Thêm sinh viên</h2>
+          <CatalogControls paging={students} label="Tìm sinh viên để thêm" />
           <div className="grid">
-            {Array.isArray(list.data) &&
-              list.data.map((u) => (
-                <div className="card" key={u.id}>
-                  <p>
-                    {u.fullName} · {u.email}
-                  </p>
-                  <button
-                    disabled={c.members?.some((m) => m.student.id === u.id)}
-                    onClick={async () => {
-                      try {
-                        await api(`/teacher/classes/${id}/students`, "POST", {
-                          studentId: u.id,
-                        });
-                        await q.refetch();
-                      } catch (e) {
-                        setError(e);
-                      }
-                    }}
-                  >
-                    Thêm vào lớp
-                  </button>
-                </div>
-              ))}
+            {students.items.map((u) => (
+              <div className="card" key={u.id}>
+                <p>
+                  {u.fullName} · {u.email}
+                </p>
+                <button
+                  disabled={c.members?.some((m) => m.student.id === u.id)}
+                  onClick={async () => {
+                    try {
+                      await api(`/teacher/classes/${id}/students`, "POST", {
+                        studentId: u.id,
+                      });
+                      await cache.invalidateQueries({ queryKey: [path] });
+                    } catch (e) {
+                      setError(e);
+                    }
+                  }}
+                >
+                  Thêm vào lớp
+                </button>
+              </div>
+            ))}
           </div>
+          <CatalogPager paging={students} />
           <h2>Danh sách lớp ({c.members?.length})</h2>
           {c.members?.map(({ student: u }) => (
             <div className="card actions" key={u.id}>
@@ -223,7 +245,7 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
                     `/teacher/classes/${id}/students/${u.id}`,
                     "DELETE",
                   );
-                  await q.refetch();
+                  await cache.invalidateQueries({ queryKey: [path] });
                 }}
               >
                 Xóa khỏi lớp

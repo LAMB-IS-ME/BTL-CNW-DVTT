@@ -1,6 +1,13 @@
+import {
+  useCatalogPage,
+  CatalogControls,
+  CatalogPager,
+  BankPicker,
+} from "./catalog-pagination";
+import { useAuth } from "./auth";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useQueries } from "@tanstack/react-query";
 import type { ExamDto, ExamInput, QuestionDto } from "@exam/shared";
 import { api } from "../lib/api";
 import {
@@ -37,10 +44,12 @@ function ExamStatus({ status }: { status: ExamDto["status"] }) {
   );
 }
 export function TeacherExams() {
-  const q = useQuery({
-    queryKey: ["teacher-exams"],
-    queryFn: () => api<ExamDto[]>("/teacher/exams"),
-  });
+  const paging = useCatalogPage<ExamDto>(
+    "teacher-exams",
+    "/teacher/exams",
+    true,
+  );
+  const q = paging.query;
   return (
     <div className="exam-page">
       <nav className="qb-breadcrumb" aria-label="Đường dẫn">
@@ -61,6 +70,7 @@ export function TeacherExams() {
           <Icon name="plus" size={16} /> Tạo bài thi
         </Link>
       </div>
+      <CatalogControls paging={paging} label="Tìm bài thi" />
       <ErrorNotice
         error={q.error}
         retry={() => void q.refetch()}
@@ -77,10 +87,10 @@ export function TeacherExams() {
                 <p>Quản lý đề và lịch thi của bạn.</p>
               </div>
               <span className="exam-muted">
-                {q.data?.length} bài thi đang hiển thị
+                {paging.items.length} bài thi đang hiển thị
               </span>
             </div>
-            {!q.data?.length && (
+            {!paging.items.length && (
               <div className="qb-empty">
                 <Icon name="exam" size={32} />
                 <h2>Chuẩn bị bài thi đầu tiên</h2>
@@ -93,10 +103,10 @@ export function TeacherExams() {
                 </Link>
               </div>
             )}
-            {q.data?.map((e, index) => (
+            {paging.items.map((e, index) => (
               <article className="exam-list-row" key={e.id}>
                 <span className="exam-list-index" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
+                  {String((paging.page - 1) * 20 + index + 1).padStart(2, "0")}
                 </span>
                 <div className="exam-list-identity">
                   <ExamStatus status={e.status} />
@@ -147,6 +157,7 @@ export function TeacherExams() {
           </section>
         )
       )}
+      <CatalogPager paging={paging} />
     </div>
   );
 }
@@ -212,19 +223,32 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
     [error, setError] = useState<unknown>(),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
-  const cs = useQuery({
-    queryKey: ["classes"],
-    queryFn: () =>
-      api<{ id: string; name: string; archivedAt: string | null }[]>(
-        "/teacher/classes?pageSize=100",
-      ),
+  const classPaging = useCatalogPage<{
+    id: string;
+    name: string;
+    archivedAt: string | null;
+  }>("classes", "/teacher/classes", false, "active");
+  const cs = classPaging.query;
+  const { user } = useAuth();
+  const selectedClasses = useQueries({
+    queries: classes.map((id) => ({
+      queryKey: ["classes", "selected", user?.id, id],
+      queryFn: () =>
+        api<{ id: string; name: string; archivedAt: string | null }>(
+          `/teacher/classes/${id}`,
+        ),
+      staleTime: 0,
+    })),
   });
-  const bs = useQuery({
-    queryKey: ["banks-picker"],
-    queryFn: () =>
-      api<{ id: string; title: string; isArchived: boolean }[]>(
-        "/teacher/question-banks?pageSize=100",
-      ),
+  const poolBanks = useQueries({
+    queries: [
+      ...new Set(pools.map((p) => p.questionBankId).filter(Boolean)),
+    ].map((id) => ({
+      queryKey: ["qb-banks", "selected", user?.id, id],
+      queryFn: () =>
+        api<{ id: string; title: string }>(`/teacher/question-banks/${id}`),
+      staleTime: 0,
+    })),
   });
   const qs = useQuery({
     queryKey: ["bank-questions", bank, page, search],
@@ -313,7 +337,10 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
     exam?.status === "PUBLISHED",
   ];
   const classNames = classes.map(
-    (id) => cs.data?.find((c) => c.id === id)?.name || "Lớp đã giao",
+    (id) =>
+      selectedClasses.find((q) => q.data?.id === id)?.data?.name ||
+      classPaging.items.find((c) => c.id === id)?.name ||
+      `Lớp đã giao (${id})`,
   );
   const formatTime = (value: string) =>
     new Date(value).toLocaleString("vi-VN", {
@@ -394,10 +421,12 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
       </nav>
       <ErrorNotice error={error} />
       <ErrorNotice
-        error={cs.error || bs.error || qs.error}
+        error={
+          cs.error || selectedClasses.find((q) => q.error)?.error || qs.error
+        }
         retry={() => {
           void cs.refetch();
-          void bs.refetch();
+          selectedClasses.forEach((q) => void q.refetch());
           if (bank) void qs.refetch();
         }}
       />
@@ -480,33 +509,50 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
                         · {classes.length} đã chọn
                       </span>
                     </h3>
-                    {cs.isPending && <Skeleton label="Đang tải lớp học…" />}
-                    {cs.data && !cs.data.some((c) => !c.archivedAt) && (
+                    <CatalogControls paging={classPaging} label="Tìm lớp" />
+                    {cs.data && !classPaging.items.length && (
                       <p className="exam-muted">
-                        Chưa có lớp đang hoạt động. Tạo lớp trong mục Lớp học để
-                        giao bài thi.
+                        Không có lớp phù hợp. Thử từ khóa khác hoặc tạo lớp
+                        trong mục Lớp học.
                       </p>
                     )}
                     <div className="exam-class-list">
-                      {cs.data
-                        ?.filter((c) => !c.archivedAt)
-                        .map((c) => (
-                          <label className="choice" key={c.id}>
-                            <input
-                              type="checkbox"
-                              checked={classes.includes(c.id)}
-                              onChange={(e) =>
-                                setClasses(
-                                  e.target.checked
-                                    ? [...classes, c.id]
-                                    : classes.filter((id) => id !== c.id),
-                                )
-                              }
-                            />
-                            {c.name}
-                          </label>
-                        ))}
+                      {classPaging.items.map((c) => (
+                        <label className="choice" key={c.id}>
+                          <input
+                            type="checkbox"
+                            checked={classes.includes(c.id)}
+                            onChange={(e) =>
+                              setClasses(
+                                e.target.checked
+                                  ? [...classes, c.id]
+                                  : classes.filter((id) => id !== c.id),
+                              )
+                            }
+                          />
+                          {c.name}
+                        </label>
+                      ))}
                     </div>
+                    <CatalogPager paging={classPaging} />
+                    <ul className="catalog-selection" aria-label="Lớp đã chọn">
+                      {classes.map((id, index) => (
+                        <li key={id}>
+                          <button
+                            type="button"
+                            className="secondary"
+                            onClick={() =>
+                              setClasses(classes.filter((v) => v !== id))
+                            }
+                          >
+                            Bỏ {classNames[index]}
+                            {selectedClasses[index]?.data?.archivedAt
+                              ? " · Đã lưu trữ"
+                              : ""}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                   <div className="exam-schedule-window">
                     <p className="exam-context">Khung thời gian</p>
@@ -602,24 +648,13 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
                     <div className="exam-question-source">
                       <p className="exam-context">Nguồn / Ngân hàng câu hỏi</p>
                       <h3>Thư viện câu hỏi</h3>
-                      <Field label="Ngân hàng">
-                        <select
-                          value={bank}
-                          onChange={(e) => {
-                            setBank(e.target.value);
-                            setPage(1);
-                          }}
-                        >
-                          <option value="">Chọn ngân hàng</option>
-                          {bs.data
-                            ?.filter((b) => !b.isArchived)
-                            .map((b) => (
-                              <option key={b.id} value={b.id}>
-                                {b.title}
-                              </option>
-                            ))}
-                        </select>
-                      </Field>
+                      <BankPicker
+                        value={bank}
+                        onChange={(id) => {
+                          setBank(id);
+                          setPage(1);
+                        }}
+                      />
                       <Field label="Tìm câu hỏi">
                         <input
                           aria-label="Tìm câu hỏi"
@@ -774,26 +809,17 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
                         <span className="exam-muted">/ Quy tắc lấy câu</span>
                       </h3>
                       <div className="exam-pool-fields">
-                        <Field label="Ngân hàng pool">
-                          <select
-                            value={p.questionBankId}
-                            onChange={(e) =>
-                              setPools(
-                                pools.map((a, j) =>
-                                  j === i
-                                    ? { ...a, questionBankId: e.target.value }
-                                    : a,
-                                ),
-                              )
-                            }
-                          >
-                            {bs.data?.map((b) => (
-                              <option key={b.id} value={b.id}>
-                                {b.title}
-                              </option>
-                            ))}
-                          </select>
-                        </Field>
+                        <BankPicker
+                          label="Ngân hàng pool"
+                          value={p.questionBankId}
+                          onChange={(id) =>
+                            setPools(
+                              pools.map((a, j) =>
+                                j === i ? { ...a, questionBankId: id } : a,
+                              ),
+                            )
+                          }
+                        />
                         <Field label="Số câu">
                           <input
                             type="number"
@@ -891,12 +917,11 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
                   ))}
                   <button
                     className="secondary"
-                    disabled={!bs.data?.length}
                     onClick={() =>
                       setPools([
                         ...pools,
                         {
-                          questionBankId: bs.data![0]!.id,
+                          questionBankId: bank,
                           pickCount: 1,
                           pointsEach: 1,
                           tagFilter: [],
@@ -1160,8 +1185,8 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
                   {pools.map((p, i) => (
                     <p key={i}>
                       <strong>Nhóm {i + 1}</strong> ·{" "}
-                      {bs.data?.find((b) => b.id === p.questionBankId)?.title ||
-                        "Ngân hàng đã chọn"}
+                      {poolBanks.find((q) => q.data?.id === p.questionBankId)
+                        ?.data?.title || "Ngân hàng đã chọn"}
                       <br /> {p.pickCount} câu · {p.pointsEach} điểm/câu ·{" "}
                       {p.difficultyFilter
                         ? difficultyLabels[p.difficultyFilter]

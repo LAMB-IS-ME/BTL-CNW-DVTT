@@ -1,3 +1,8 @@
+import {
+  useCatalogPage,
+  CatalogControls,
+  CatalogPager,
+} from "./catalog-pagination";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { UserDto } from "@exam/shared";
@@ -149,35 +154,43 @@ export function AdminUsers() {
     </>
   );
 }
+function AdminClasses() {
+  const paging = useCatalogPage<{
+    id: string;
+    name: string;
+    teacher: UserDto;
+    _count: { members: number };
+  }>("admin-classes", "/admin/classes", true);
+  return (
+    <>
+      <h1>Tổng quan lớp học</h1>
+      <CatalogControls paging={paging} label="Tìm lớp" />
+      {paging.items.map((c) => (
+        <div className="card" key={c.id}>
+          <h2>{c.name}</h2>
+          <p>
+            {c.teacher.fullName} · {c._count.members} sinh viên
+          </p>
+        </div>
+      ))}
+      <CatalogPager paging={paging} />
+    </>
+  );
+}
 export function AdminOverview({ classes = false }: { classes?: boolean }) {
+  return classes ? <AdminClasses /> : <AdminStats />;
+}
+function AdminStats() {
   const q = useQuery({
-    queryKey: ["admin", classes],
-    queryFn: () =>
-      api<
-        | Record<string, number>
-        | {
-            id: string;
-            name: string;
-            teacher: UserDto;
-            _count: { members: number };
-          }[]
-      >(classes ? "/admin/classes" : "/admin/stats"),
+    queryKey: ["admin", false],
+    queryFn: () => api<Record<string, number>>("/admin/stats"),
   });
   return (
     <>
-      <h1>{classes ? "Tổng quan lớp học" : "Tổng quan hệ thống"}</h1>
+      <h1>Tổng quan hệ thống</h1>
       <ErrorBox error={q.error} />
       {q.isPending ? (
         <Loading />
-      ) : Array.isArray(q.data) ? (
-        q.data.map((c) => (
-          <div className="card" key={c.id}>
-            <h2>{c.name}</h2>
-            <p>
-              {c.teacher.fullName} · {c._count.members} sinh viên
-            </p>
-          </div>
-        ))
       ) : (
         <div className="grid">
           {Object.entries(q.data || {}).map(([k, v]) => (

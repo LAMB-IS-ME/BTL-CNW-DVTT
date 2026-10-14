@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-14",
+  "head": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d",
+  "originalRuntimeExecution": "PASS in original clone before interruption; see verification.json",
+  "originalCompleteness": "PARTIAL: absent MASTER_SPEC; 2 broken links",
+  "preparedRuntimeExecution": "PASS in prepared clone before interruption; final changes since then documentation only",
+  "finalPreparedStaticStatus": "PASS",
+  "reconstructedClones": {
+    "original": "<review-scratch>/original",
+    "prepared": "<review-scratch>/prepared",
+    "purpose": "Static comparison only, no installation/test rerun",
+    "independentGitClone": true,
+    "nodeModulesCopied": false,
+    "localEnvCopied": false,
+    "originalTrackedCount": 368,
+    "originalHead": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d",
+    "preparedHead": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d"
+  },
+  "originalLinks": {
+    "checkedLocalLinks": 240,
+    "brokenTargets": [
+      {
+        "file": "README.md",
+        "target": "MASTER_SPEC.md"
+      },
+      {
+        "file": "docs/SRS.md",
+        "target": "../MASTER_SPEC.md"
+      }
+    ],
+    "unresolvedAnchors": [],
+    "externalUrls": "Not an availability crawl; hosting official sources reviewed in same phase"
+  },
+  "preparedLinks": {
+    "checkedLocalLinks": 278,
+    "brokenTargets": [],
+    "unresolvedAnchors": [],
+    "externalUrls": "Not an availability crawl; hosting official sources reviewed in same phase"
+  },
+  "runtimeFilesCompared": 177,
+  "runtimeMismatches": [],
+  "spec": {
+    "originalRootAbsent": true,
+    "candidatePath": "docs/spec/MASTER_SPEC_BASELINE.md",
+    "rootSha256": "62c3c699fa41ca119b9ffeb58235e2413de70451624df3babc9d623ece2d888f",
+    "candidateSha256": "62c3c699fa41ca119b9ffeb58235e2413de70451624df3babc9d623ece2d888f",
+    "byteIdentical": true,
+    "candidateNotIgnored": true,
+    "preservedIgnoredCopies": [
+      "MASTER_SPEC.md",
+      "docs/spec/MASTER_SPEC.md"
+    ]
+  },
+  "overlay": {
+    "README.md": "f09070c72683c9409afb1591dbff0c2ccb158f6ca4cfca1938ca37b57eac1d80",
+    "apps/api/.env.example": "493d8c902ec3b8ca91fde06bdfe4bbd5e507461bf86d9c04796c114258c06c9a",
+    "apps/web/.env.example": "9d0fc1dfbda01ed07f47cf952a53ee9997f2b8561a6d7d6c0c7dd7d548ef241d",
+    "docs/DEPLOYMENT.md": "63cfd0ea4c65a29f37a5f6abaac64247815f3265710684f7d4708743f4dce027",
+    "docs/SRS.md": "2f15a4fa576f06fb1286ef422e2bf6ce6e828576c2de479d5461bf182ec08baa",
+    "docs/deployment/DEPLOYMENT_PLAN.md": "36d047650eb86563f28a57b042999d5258def6b5d9e4191fd31d619ed536fcd8",
+    "docs/deployment/DEPLOYMENT_READINESS_REPORT.md": "fd80f2efa2d53aab95cdd8e7fd4008bf733de748ebe4a990eef7f2a3d23139f2",
+    "docs/deployment/ENVIRONMENT_MATRIX.md": "91425d700867161e5f0166d4c9477fe896a495735a65f0a81ffad0960f6600e5",
+    "docs/deployment/FRESH_CLONE_SETUP_REPORT.md": "773356328933102ae6f5156b0323b6d7eb6c41f0c2742e6bcb889d06fba48972",
+    "docs/deployment/evidence/env-probe.json": "c92d275e5d30a7f4b67ba3d8a2fd1706ffec59eddd70562925ea94d1a3474388",
+    "docs/deployment/evidence/git-baseline.json": "944478eb43da50c24b740b5e9fbd83384d56762080a34f0ebad1cff6d2f90b7f",
+    "docs/deployment/evidence/production-probe.json": "32521b9a7e3daf80923d6f0f68f42d43cef3d7f716998bee071a8bc16c148338",
+    "docs/deployment/evidence/seed-counts.json": "0dd7790d85f7a0941639872344357b3cacd0d16adf274a1732bf2e1a9fcfcebb",
+    "docs/deployment/evidence/seed-rerun.json": "352fcf031573d1ae9a04a98148304b257556e2d6827347522eab0c0fb584e107",
+    "docs/deployment/evidence/verification.json": "08b84aa0b2def8187d25335adf42e6bade1b16eb94799f329ce7b4a05b85677c",
+    "docs/spec/MASTER_SPEC_BASELINE.md": "62c3c699fa41ca119b9ffeb58235e2413de70451624df3babc9d623ece2d888f",
+    "docs/spec/SPEC_RECONCILIATION.md": "1255316ff87f1dbeec586593106896b331739a02bbfa1b1a1a2f2926bcf721c2",
+    "tests/deployment/production-readiness.mjs": "234520c40ace11583a81fd70a46f69b358514cfb99e5cafeb406cac87f7cb8db"
+  },
+  "overlayStatus": "UNCOMMITTED, explicit file overlay; not a commit-based fresh-clone PASS",
+  "ignoredAndHistoricalFilesNotCopied": true,
+  "snapshotMeaning": "Approved preparation checkpoint before the authorized local commit; historical statuses/hashes are not post-commit assertions.",
+  "cleanupEvidence": "commit-cleanup.json"
+}

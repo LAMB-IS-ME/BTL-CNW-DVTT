@@ -77,7 +77,7 @@ Seed: 1 admin, 2 teacher, 12 student, 2 lớp, 2 banks, 24 câu đủ 4 loại, 
 
 Integration/E2E cần TEST_DATABASE_URL trỏ DB riêng tên chứa `test`, đã migrate/seed. Cần `pdftotext` (poppler-utils) và `npx playwright install --with-deps chromium`. Deployment smoke cần build trước. Không chạy tests vào production DB. Lệnh chuẩn bị DB và CI được mô tả ở [DEPLOYMENT](docs/DEPLOYMENT.md#verification-commands).
 
-Kết quả kiểm chứng gần nhất:22 unit/frontend +17 integration (có socket; một Storage provider-boundary test) +3 E2E pass. Lint/typecheck/build pass; npm audit 0 vulnerabilities. Deployment smoke và audit từng checkbox được ghi ở [VERIFICATION](docs/VERIFICATION.md). Storage external, Render và published Pages URL còn cần tài khoản thật để kiểm chứng; không có mock trong runtime Core.
+Kết quả kiểm tra mới và giới hạn được ghi trong [Deployment readiness](docs/deployment/DEPLOYMENT_READINESS_REPORT.md) và [Fresh-clone setup](docs/deployment/FRESH_CLONE_SETUP_REPORT.md). [VERIFICATION](docs/VERIFICATION.md) là evidence lịch sử, không phải kết luận hiện tại. Hosted HTTPS/WSS, Supabase Storage và URL public vẫn cần kiểm chứng riêng; chưa tuyên bố release-ready.
 
 ## Ảnh giao diện thực
 
@@ -88,6 +88,8 @@ Chụp từ Playwright với API/PostgreSQL thật; fixture E2E có tên tự si
 ![Live Quiz kết quả cuối cùng](docs/screenshots/quiz-final.png)
 
 ## Deployment
+
+Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem [hai phương án và chi phí dự kiến](docs/deployment/DEPLOYMENT_PLAN.md), [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) và [đối chiếu đặc tả](docs/spec/SPEC_RECONCILIATION.md). Các bước cloud dưới đây chỉ thực hiện khi được cho phép ở phase sau.
 
 1. **Supabase:** tạo project, lấy DB URLs, chạy migrations; tạo private Storage bucket, giữ service key ở backend.
 2. **Render:** dùng render.yaml hoặc Web Service root monorepo; nhập env, deploy API, kiểm tra health/login/WSS. Free instance có thể sleep; dùng một instance luôn chạy cho thi realtime ổn định.
@@ -103,6 +105,6 @@ Chưa deploy lên tài khoản cloud. Các bước cần tài khoản, custom do
 - [DEPLOYMENT — local, Supabase, Render, Pages](docs/DEPLOYMENT.md)
 - [VERIFICATION — kết quả và từng checkbox DoD](docs/VERIFICATION.md)
 - [Implementation checklist theo phase](docs/IMPLEMENTATION_CHECKLIST.md)
-- [MASTER_SPEC — source of truth](MASTER_SPEC.md)
+- [MASTER_SPEC — baseline nghiệp vụ](docs/spec/MASTER_SPEC_BASELINE.md)
 
 V1 chạy một API instance; chưa có horizontal scaling/load benchmark. Đề bị khóa cấu hình sau attempt đầu. API downtime không kéo dài deadline, đáp án chưa lưu có thể mất khi quá hạn. Chi tiết tradeoffs và các kiểm chứng external chưa thực hiện nằm trong SDD/VERIFICATION.

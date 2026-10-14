@@ -1,0 +1,2 @@
+# Preserve the audited spec byte-for-byte, including Markdown hard breaks.
+docs/spec/MASTER_SPEC_BASELINE.md whitespace=-blank-at-eol

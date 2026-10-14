@@ -2,7 +2,7 @@
 
 ## 1. Giới thiệu
 
-ExamSpace là website thi trực tuyến và Live Quiz cho bài tập lớn Công nghệ Web và Dịch vụ trực tuyến. Tài liệu mô tả Core đã triển khai trong `apps/api`, `apps/web`, `packages/shared`; nguồn phạm vi là [MASTER_SPEC](../MASTER_SPEC.md). Đối chiếu nghiệm thu nằm ở [VERIFICATION](VERIFICATION.md).
+ExamSpace là website thi trực tuyến và Live Quiz cho bài tập lớn Công nghệ Web và Dịch vụ trực tuyến. Tài liệu mô tả Core đã triển khai trong `apps/api`, `apps/web`, `packages/shared`; nguồn phạm vi là [MASTER_SPEC](spec/MASTER_SPEC_BASELINE.md). Đối chiếu nghiệm thu lịch sử nằm ở [VERIFICATION](VERIFICATION.md); xem [đối chiếu baseline](spec/SPEC_RECONCILIATION.md) và [kiểm tra fresh clone hiện tại](deployment/DEPLOYMENT_READINESS_REPORT.md).
 
 ## 2. Mục đích
 

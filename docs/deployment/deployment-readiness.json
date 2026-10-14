@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "phase": "DEPLOYMENT PREPARATION + FRESH-CLONE READINESS",
+  "status": "COMPLETE_FOR_USER_REVIEW",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+  "branch": "ux/education-saas-redesign-pilot",
+  "head": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d",
+  "productionReady": false,
+  "releaseReadyClaim": false,
+  "handoffCommitted": false,
+  "baseline": {
+    "trackedFiles": 368,
+    "trackedModifications": 0,
+    "stagedChanges": 0,
+    "historicalUntrackedArtifacts": 85,
+    "evidence": "evidence/git-baseline.json"
+  },
+  "environments": {
+    "originalFreshClone": {
+      "source": "Committed local Git only",
+      "runtime": "PASS",
+      "documentationCompleteness": "PARTIAL",
+      "missing": [
+        "MASTER_SPEC.md"
+      ],
+      "brokenLocalLinks": 2,
+      "originalScratchAvailableAfterResume": false
+    },
+    "preparedFreshClone": {
+      "source": "Independent local Git clone plus explicit uncommitted documentation/template/test overlay",
+      "runtimeChecksBeforeInterruption": "PASS",
+      "finalDocumentationComparison": "PASS",
+      "sourceRuntimeChanged": false,
+      "gitOnlyReproductionOfFix": "PENDING_USER_REVIEW_AND_LATER_AUTHORIZED_COMMIT"
+    },
+    "localProductionTls": {
+      "status": "PASS",
+      "nodeEnv": "production",
+      "scope": "Same-site, cross-origin localhost TLS/WSS with ephemeral self-signed certificate",
+      "assertionGroups": 8,
+      "httpSessionSurvived": [
+        "SIGTERM",
+        "SIGKILL"
+      ],
+      "evidence": "evidence/production-probe.json"
+    },
+    "hostedStaging": {
+      "status": "NOT_TESTED",
+      "provisioned": false,
+      "limitations": [
+        "Public certificate/HTTPS redirects",
+        "Cross-site browser cookie policies",
+        "Hosted WSS/restarts/rolling overlap",
+        "Supabase Storage permissions and roundtrip",
+        "Remote PostgreSQL TLS/roles/pool limits",
+        "CDN/cache/domain",
+        "Backup restore/load/soak"
+      ]
+    },
+    "reconstructedReviewClones": {
+      "purpose": "File/hash/documentation comparison after scratch loss",
+      "original": "<review-scratch>/original",
+      "prepared": "<review-scratch>/prepared",
+      "installOrRuntimeTestsRerun": false,
+      "evidence": "evidence/fresh-clone-comparison.json"
+    }
+  },
+  "verification": {
+    "provenance": "Same-phase results executed before interruption, preserved summaries and transcript; no historical remediation PASS substituted",
+    "resumeReruns": false,
+    "install": "PASS",
+    "dependencyTree": "PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "migrations": "PASS",
+    "seed": "PASS",
+    "seedRerunFingerprintUnchanged": true,
+    "unitTestsPassed": 78,
+    "integrationTestsPassed": 62,
+    "browserTestsPassed": 20,
+    "productionBundleSmoke": "PASS_LOCAL_HTTP_NODE_ENV_TEST",
+    "productionRuntimeProbe": "PASS_LOCAL_TLS_NODE_ENV_PRODUCTION",
+    "npmAuditLowGate": "PASS",
+    "vulnerabilitiesAtExecution": 0,
+    "evidence": "evidence/verification.json"
+  },
+  "spec": {
+    "canonicalPreparedPath": "docs/spec/MASTER_SPEC_BASELINE.md",
+    "byteIdenticalToLocalOriginal": true,
+    "notIgnored": true,
+    "rootAndExcludeUnchanged": true,
+    "preservedEarlierIgnoredCopy": "docs/spec/MASTER_SPEC.md",
+    "businessRequirementsRewritten": false
+  },
+  "environmentMatrix": {
+    "path": "ENVIRONMENT_MATRIX.md",
+    "sourceReferenceCoverage": "PASS",
+    "actualSecretsIncluded": false,
+    "securityPolicyChanged": false
+  },
+  "ci": {
+    "workflowSourceAudited": true,
+    "localEquivalentCommandsPassed": true,
+    "localPostgresql": "16.15",
+    "workflowPostgresql": "17",
+    "hostedActionsRun": "NOT_TESTED",
+    "triggersChanged": false,
+    "auditThresholdLowered": false,
+    "newTlsProbeInWorkflow": false
+  },
+  "hosting": {
+    "preferredProposal": "GitHub Pages frontend + always-on single Render Web Service + Supabase PostgreSQL/private Storage",
+    "alternative": "Render Static Site frontend + same backend/database/storage",
+    "budgetEstimateUsdPerMonth": {
+      "alwaysOnBackendPlusFreeSupabase": 7,
+      "alwaysOnBackendPlusOneProMicroSupabase": 32
+    },
+    "estimateExcludes": [
+      "Domain",
+      "Taxes",
+      "Usage overages",
+      "Extra projects/add-ons"
+    ],
+    "officialSourcesReviewedDate": "2026-10-14",
+    "userChoiceMade": false,
+    "details": "DEPLOYMENT_PLAN.md"
+  },
+  "btl": {
+    "source": "READY_LOCAL",
+    "schemaMigrations": "READY_LOCAL",
+    "seedDemoRoles": "READY_LOCAL",
+    "envSetupDocs": "READY_PREPARED",
+    "userGuide": "PARTIAL",
+    "srsSddArchitecture": "PARTIAL",
+    "apiDocs": "PARTIAL",
+    "deployment": "PLAN_READY_HOSTED_NOT_TESTED",
+    "courseReport": "MISSING_FINAL_DELIVERABLE",
+    "slides": "MISSING",
+    "video": "MISSING_ARTIFACT_REQUIREMENT_UNCLEAR",
+    "officialRubric": "UNCLEAR"
+  },
+  "remainingFindings": [
+    {
+      "id": "DOC-DEP-01",
+      "classification": "HANDOFF_BLOCKER_AT_HEAD",
+      "status": "FIX_PREPARED_UNCOMMITTED",
+      "detail": "Canonical spec and links need user review; original HEAD still lacks spec"
+    },
+    {
+      "id": "DEP-EXT-01",
+      "classification": "HOSTED_ACCEPTANCE_GAP",
+      "status": "NOT_TESTED",
+      "detail": "No staging authorized/provisioned"
+    },
+    {
+      "id": "DEP-CFG-01",
+      "classification": "OPERATOR_CONFIGURATION_RISK",
+      "status": "DOCUMENTED",
+      "detail": "Verify NODE_ENV, both DB targets, seed flag and non-default demo password before any separately authorized cloud setup"
+    },
+    {
+      "id": "DEP-OPS-01",
+      "classification": "SINGLE_INSTANCE_LIMITATION",
+      "status": "DOCUMENTED",
+      "detail": "Persistent process/no sleep; verify rolling overlap and maintenance window"
+    },
+    {
+      "id": "DEP-CI-01",
+      "classification": "VALIDATION_GAP",
+      "status": "NOT_TESTED",
+      "detail": "Hosted CI and PostgreSQL 17 not run"
+    },
+    {
+      "id": "BTL-01",
+      "classification": "HANDOFF_DELIVERABLES",
+      "status": "PARTIAL",
+      "detail": "Final course report/slides/user guide and official rubric outstanding"
+    },
+    {
+      "id": "EVID-01",
+      "classification": "EVIDENCE_RETENTION",
+      "status": "DOCUMENTED",
+      "detail": "Original scratch/raw logs absent at resume; existing summaries/transcript retained; no reexecution claims"
+    }
+  ],
+  "finalChecks": {
+    "historicalArtifactsPreserved": 85,
+    "historicalHashMismatches": 0,
+    "trackedRuntimeChanges": 0,
+    "documentationLinks": "PASS_PREPARED",
+    "secretScan": "PASS_SCOPED",
+    "diffCheck": "PASS",
+    "evidence": "evidence/final-review.json",
+    "secretScanEvidence": "evidence/security-scan.json"
+  },
+  "changes": {
+    "trackedDocumentationAndExampleFiles": 5,
+    "runtimeFiles": 0,
+    "schemaChanges": 0,
+    "dependencyChanges": 0,
+    "addedTest": "tests/deployment/production-readiness.mjs",
+    "newFilesListedIn": "evidence/final-review.json",
+    "newUntrackedPhaseFiles": 17,
+    "preservedAdditionalIgnoredPhaseCopy": "docs/spec/MASTER_SPEC.md"
+  },
+  "safety": {
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "merged": false,
+    "pullRequestCreated": false,
+    "productionDatabaseOrStorageMutated": false,
+    "resetCheckoutDiscardClean": false
+  },
+  "reports": [
+    "DEPLOYMENT_READINESS_REPORT.md",
+    "FRESH_CLONE_SETUP_REPORT.md",
+    "DEPLOYMENT_PLAN.md",
+    "ENVIRONMENT_MATRIX.md"
+  ],
+  "nextStep": "User approved exactly one local cleanup commit; verify NEW HEAD in an independent local clone, report actual commit and stop. No push or staging deployment.",
+  "snapshotMeaning": "Approved preparation checkpoint before the authorized local commit; historical statuses/hashes are not post-commit assertions.",
+  "cleanupEvidence": "evidence/commit-cleanup.json"
+}

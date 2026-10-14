@@ -1,6 +1,6 @@
 # Triển khai ExamSpace
 
-Repository sẵn sàng chạy local với PostgreSQL và cấu hình target Supabase, Render, GitHub Pages. Không có secret cloud trong source. Các kiểm chứng local nằm ở [VERIFICATION](VERIFICATION.md); chưa có lần deploy cloud hoặc roundtrip Supabase Storage thật được xác nhận.
+Hướng dẫn cấu hình target Supabase, Render, GitHub Pages. Kết quả mới: [fresh-clone setup](deployment/FRESH_CLONE_SETUP_REPORT.md), [readiness report](deployment/DEPLOYMENT_READINESS_REPORT.md), [environment matrix](deployment/ENVIRONMENT_MATRIX.md), [deployment plan và staging gates](deployment/DEPLOYMENT_PLAN.md). Phase 2026-10-14 chỉ chuẩn bị local; các thao tác cloud bên dưới chưa được thực hiện và cần được cho phép ở phase sau. Không có secret cloud trong source. Các kiểm chứng local nằm ở [VERIFICATION](VERIFICATION.md); chưa có lần deploy cloud hoặc roundtrip Supabase Storage thật được xác nhận.
 
 ## Local quick start
 
@@ -143,7 +143,7 @@ Workflow [pages.yml](../.github/workflows/pages.yml) chạy thủ công bằng w
 
 1. Push repository bằng tài khoản của bạn; Settings → Pages → Source: **GitHub Actions**. Kiểm tra CI xanh trên commit muốn deploy.
 2. Settings → Secrets and variables → Actions → Variables: thêm `VITE_API_BASE_URL` là HTTPS backend `/api/v1`, `VITE_SOCKET_URL` là HTTPS backend origin. Đây là public URLs, không cần secret DB ở GitHub Pages.
-3. Actions → Deploy frontend to GitHub Pages → Run workflow trên main. Workflow validates URLs, build shared/web, lấy base path từ `configure-pages`, upload dist và deploy vào environment `github-pages`.
+3. Actions → Deploy frontend to GitHub Pages → Run workflow trên commit/branch đã review khi được phép deploy. Workflow validates URLs, build shared/web, lấy base path từ `configure-pages`, upload dist và deploy vào environment `github-pages`.
 4. Lấy URL từ job deployment/environment; đặt origin đó trong CLIENT_ORIGIN ở Render và redeploy backend nếu thay env. Mở login, đăng nhập, refresh deep route, thử Exam và Quiz.
 
 Workflow dùng quyền contents:read; chỉ deploy job có pages:write/id-token:write. Cách dùng artifact/environment theo [GitHub custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
@@ -157,6 +157,7 @@ Custom domain: cấu hình trong Settings → Pages → Custom domain, xác minh
 ## Verification commands
 
 ```bash
+npm run db:generate
 npm run lint
 npm run typecheck
 npm test
@@ -175,7 +176,7 @@ npm run test:e2e
 npm run test:deployment
 ```
 
-`pdftotext` cần cho PDF integration (Debian/Ubuntu: `sudo apt-get install poppler-utils`). Playwright dùng ports3000/5173; deployment smoke dùng3001/5174, production API/web artifacts và static404, kiểm tra login/refresh/PDF. Chạy build trước deployment smoke. Tests không dọn toàn database; fixture có ID ngẫu nhiên. Chỉ chạy trên disposable test DB. CI tạo mới PostgreSQL service mỗi job; credential `ci-test-only` là synthetic fixture, không phải cloud secret.
+`pdftotext` cần cho PDF integration (Debian/Ubuntu: `sudo apt-get install poppler-utils`). Playwright dùng ports3000/5173; deployment smoke dùng3001/5174, production API/web artifacts và static404, kiểm tra login/refresh/PDF. Chạy build trước deployment smoke. Smoke hiện có dùng production bundles với NODE_ENV=test trên HTTP localhost. Probe bổ sung `node tests/deployment/production-readiness.mjs` dùng NODE_ENV=production và TLS tự ký local (cần openssl; ports 3002/5443/5444); không thay thế hosted staging. Chỉ chạy probe trên loopback test database. Tests không dọn toàn database; fixture có ID ngẫu nhiên. Chỉ chạy trên disposable test DB. CI tạo mới PostgreSQL service mỗi job; credential `ci-test-only` là synthetic fixture, không phải cloud secret.
 
 ## Troubleshooting và vận hành
 

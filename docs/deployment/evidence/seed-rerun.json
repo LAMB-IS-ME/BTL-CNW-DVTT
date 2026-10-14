@@ -1,0 +1,22 @@
+{
+  "tables": [
+    "User",
+    "Class",
+    "ClassMember",
+    "QuestionBank",
+    "Question",
+    "QuestionOption",
+    "Exam",
+    "ExamClass",
+    "ExamQuestion",
+    "ExamQuestionPool",
+    "LiveQuiz",
+    "LiveQuizQuestion",
+    "ExamAttempt",
+    "AttemptQuestion",
+    "AttemptAnswer"
+  ],
+  "beforeSha256": "0461b80dc2acbb27f4e051c548cab982225bd5abdbd5ec800648ec1eb5de1397",
+  "afterSha256": "0461b80dc2acbb27f4e051c548cab982225bd5abdbd5ec800648ec1eb5de1397",
+  "unchanged": true
+}

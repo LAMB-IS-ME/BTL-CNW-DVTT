@@ -1,0 +1,14 @@
+{
+  "scope": "CLOUD_STORAGE_READ_ONLY_NOT_HOSTED_APP",
+  "bucket": "question-assets",
+  "private": true,
+  "maxBytes": 5242880,
+  "allowedMimeTypes": [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ],
+  "signedDownloadStatus": 200,
+  "signedDownloadBytes": 166547,
+  "publicDownloadStatus": 400
+}

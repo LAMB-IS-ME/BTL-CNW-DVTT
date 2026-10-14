@@ -3,14 +3,18 @@ import { io, type Socket } from "socket.io-client";
 import { useEffect } from "react";
 import type { ClientEvents, ServerEvents } from "@exam/shared";
 export function connectSocket(): Socket<ServerEvents, ClientEvents> {
-  const socket: Socket<ServerEvents, ClientEvents> = io(
+  const url =
     import.meta.env.VITE_SOCKET_URL ||
-      (import.meta.env.DEV ? "http://localhost:3000" : window.location.origin),
-    {
-      withCredentials: true,
-      autoConnect: false,
-    },
-  );
+    (import.meta.env.DEV ? "http://localhost:3000" : window.location.origin);
+  const socket: Socket<ServerEvents, ClientEvents> = io(url, {
+    withCredentials: true,
+    autoConnect: false,
+    // Same-origin polling GETs omit Origin in browsers. Start with WebSocket,
+    // which sends Origin, preserving the server's strict handshake allowlist.
+    ...(new URL(url, window.location.origin).origin === window.location.origin
+      ? { transports: ["websocket"] }
+      : {}),
+  });
   socket.on("connect_error", (error) => {
     if (error.message === "UNAUTHENTICATED") void verifySession();
   });

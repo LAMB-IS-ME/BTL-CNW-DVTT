@@ -1,29 +1,39 @@
 services:
   - type: web
-    name: online-exam-api
+    name: examspace-staging
     runtime: node
     plan: free
+    region: singapore
+    branch: deploy/examspace-free-staging
     autoDeployTrigger: "off"
-    buildCommand: npm ci --include=dev && npm run db:generate && npm run build -w @exam/api
-    startCommand: npm run db:migrate && npm run start -w @exam/api
+    buildCommand: npm ci --include=dev && npm run db:generate && npm run build
+    startCommand: CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: 22.23.2
       - key: NODE_ENV
         value: production
+      - key: SERVE_WEB
+        value: "true"
+      - key: NODE_EXTRA_CA_CERTS
+        value: /opt/render/project/src/apps/api/assets/certs/supabase-prod-ca-2021.crt
+      - key: VITE_API_BASE_URL
+        value: /api/v1
+      - key: VITE_SOCKET_URL
+        value: ""
+      - key: VITE_BASE_PATH
+        value: /
       - key: SESSION_SECRET
         generateValue: true
       - key: DATABASE_URL
         sync: false
       - key: DIRECT_URL
         sync: false
-      - key: CLIENT_ORIGIN
-        sync: false
       - key: COOKIE_SECURE
         value: "true"
       - key: COOKIE_SAME_SITE
-        value: none
+        value: lax
       - key: TRUST_PROXY
         value: "1"
       - key: SUPABASE_URL

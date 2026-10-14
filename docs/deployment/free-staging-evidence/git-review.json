@@ -1,0 +1,112 @@
+{
+  "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+  "baselineBranch": "ux/education-saas-redesign-pilot",
+  "baselineHead": "d7723622cfa943a288279c61e33cee998fe339fe",
+  "remoteMain": "2cda149838b20cb0c11c89ddf2203fb474a70f64",
+  "proposedBranch": "deploy/examspace-free-staging",
+  "proposedCommitMessage": "feat(deploy): prepare free single-origin staging",
+  "candidateCommitSha": null,
+  "approval": "APPROVED_ONE_COMMIT_AND_FIRST_PUSH",
+  "existingOutgoingCommits": [
+    {
+      "sha": "d7723622cfa943a288279c61e33cee998fe339fe",
+      "message": "docs: prepare reproducible setup and deployment readiness"
+    },
+    {
+      "sha": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d",
+      "message": "fix: harden session lifecycle and live quiz recovery"
+    },
+    {
+      "sha": "d3e7cbadab88a3e4b8839941edaa9d590085e1ca",
+      "message": "fix: protect published assets and repair paginated workflows"
+    },
+    {
+      "sha": "a830497c72998639bba27b5d8d23c952709720ab",
+      "message": "fix: resolve admin account mutations and release gates"
+    },
+    {
+      "sha": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+      "message": "feat(ui): roll out live quiz experience"
+    },
+    {
+      "sha": "e236cb87221f2596aed424b833f281d6e34be66b",
+      "message": "feat(ui): roll out grading and results experience"
+    },
+    {
+      "sha": "2444199f7ca3a0113d5ea3aad7567e70d0677df0",
+      "message": "feat(ui): roll out Focus Desk student exam experience"
+    },
+    {
+      "sha": "f22be07eaf6953ae5966366d3ca779df8473c9c3",
+      "message": "feat(ui): roll out Exam Folio teacher workflow"
+    },
+    {
+      "sha": "4e70c6553e73c41c3e5cb6032caf1c59723a3a2e",
+      "message": "feat(ui): polish teacher dashboard and question bank"
+    },
+    {
+      "sha": "5fa11bdcea4a02923dd4e191e27bad0f0f657e00",
+      "message": "chore: checkpoint verified Question Bank functional UX pilot"
+    }
+  ],
+  "phaseFiles": [
+    "README.md",
+    "apps/api/.env.example",
+    "apps/api/assets/certs/supabase-prod-ca-2021.crt",
+    "apps/api/src/app.ts",
+    "apps/api/src/config/env.ts",
+    "apps/api/src/web.test.ts",
+    "apps/api/src/web.ts",
+    "apps/web/src/lib/socket.ts",
+    "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "docs/deployment/FREE_STAGING_RUNBOOK.md",
+    "docs/deployment/free-staging-evidence/blueprint-validation.json",
+    "docs/deployment/free-staging-evidence/candidate-source-manifest.json",
+    "docs/deployment/free-staging-evidence/database-tls.json",
+    "docs/deployment/free-staging-evidence/git-review.json",
+    "docs/deployment/free-staging-evidence/historical-artifacts.json",
+    "docs/deployment/free-staging-evidence/metadata-security-local.json",
+    "docs/deployment/free-staging-evidence/protect-migration-metadata.sql",
+    "docs/deployment/free-staging-evidence/security-scan.json",
+    "docs/deployment/free-staging-evidence/storage-read-only.json",
+    "docs/deployment/free-staging-evidence/verification-summary.json",
+    "docs/deployment/free-staging-verification.json",
+    "docs/screenshots/free-staging/local/quiz-final.png",
+    "docs/screenshots/free-staging/local/student-result.png",
+    "render.yaml",
+    "tests/deployment/playwright.same-origin.config.ts",
+    "tests/deployment/production-readiness.mjs",
+    "tests/e2e/core.spec.ts"
+  ],
+  "excludeHistoricalArtifacts": 85,
+  "trackedChanges": 8,
+  "stagedChanges": 0,
+  "newBranchCreated": false,
+  "committed": false,
+  "pushed": false,
+  "mergeMain": false,
+  "forcePush": false,
+  "pushTriggers": {
+    "githubCI": true,
+    "githubPages": false,
+    "render": false
+  },
+  "renderAutoDeployAfterCreation": "off",
+  "mainUnaffected": true,
+  "excludedRawLogs": [
+    "docs/deployment/free-staging-evidence/lint.txt",
+    "docs/deployment/free-staging-evidence/build.txt",
+    "docs/deployment/free-staging-evidence/local-seed.txt",
+    "docs/deployment/free-staging-evidence/integration.txt",
+    "docs/deployment/free-staging-evidence/local-migrate.txt",
+    "docs/deployment/free-staging-evidence/same-origin-tls.txt",
+    "docs/deployment/free-staging-evidence/same-origin-flows-fixed.txt",
+    "docs/deployment/free-staging-evidence/typecheck-final.txt",
+    "docs/deployment/free-staging-evidence/unit-final.txt",
+    "docs/deployment/free-staging-evidence/unit.txt",
+    "docs/deployment/free-staging-evidence/lint-final.txt",
+    "docs/deployment/free-staging-evidence/build-final.txt",
+    "docs/deployment/free-staging-evidence/typecheck.txt",
+    "docs/deployment/free-staging-evidence/same-origin-flows.txt"
+  ]
+}

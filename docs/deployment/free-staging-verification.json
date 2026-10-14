@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "phase": "FREE_STAGING_DEPLOYMENT",
+  "status": "APPROVED_PRE_COMMIT_CHECKPOINT",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "publicUrl": null,
+  "hostedStagingVerified": false,
+  "productionReady": false,
+  "baseline": {
+    "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "d7723622cfa943a288279c61e33cee998fe339fe",
+    "trackedModifications": 0,
+    "stagedChanges": 0,
+    "historicalUntrackedArtifacts": 85
+  },
+  "git": {
+    "currentBranch": "ux/education-saas-redesign-pilot",
+    "currentHead": "d7723622cfa943a288279c61e33cee998fe339fe",
+    "trackedModifications": 8,
+    "stagedChanges": 0,
+    "committed": false,
+    "pushed": false,
+    "mainChanged": false,
+    "proposedBranch": "deploy/examspace-free-staging",
+    "review": "free-staging-evidence/git-review.json",
+    "historicalArtifactsPreserved": 85,
+    "historicalHashMismatches": [],
+    "approval": "ONE_COMMIT_AND_FIRST_PUSH_GRANTED",
+    "rawLogsCommitted": false
+  },
+  "hosting": {
+    "topology": "One Render Free Native Node Web Service: SPA + Express + Socket.IO, Supabase Free PostgreSQL/Storage",
+    "renderWorkspace": "tea-db7m2r3ncjis73eq90tg",
+    "renderMcpAccess": "PASS",
+    "renderServiceCreated": false,
+    "renderFreeSupport": "VERIFIED_OFFICIAL_DOCS",
+    "renderAccountCreateEligibility": "NOT_TESTED",
+    "renderPaymentMethod": "ABSENT_USER_CONFIRMED",
+    "paidResourcesCreated": 0,
+    "newResourceCostInThisTurn": 0,
+    "currency": "USD",
+    "fullAccountBillRead": false,
+    "supabaseProject": "zhdxuqcbvhcnujcdbkgw",
+    "supabasePlan": "free",
+    "supabaseStatus": "ACTIVE_HEALTHY",
+    "supabasePostgresVersion": "17.11.0.002",
+    "supabaseRegion": "ap-southeast-2",
+    "renderRegionProposed": "singapore",
+    "buildCommand": "npm ci --include=dev && npm run db:generate && npm run build",
+    "startCommand": "CLIENT_ORIGIN=\"$RENDER_EXTERNAL_URL\" npm run start -w @exam/api",
+    "autoDeploy": "off",
+    "healthcheckProposed": "/api/health",
+    "healthcheckApplied": false
+  },
+  "database": {
+    "inspection": "READ_ONLY_BEFORE_SECURITY_CHANGE",
+    "prismaMigrationsCompleted": 2,
+    "checksumsMatchSource": true,
+    "users": 15,
+    "roles": {
+      "ADMIN": 1,
+      "TEACHER": 2,
+      "STUDENT": 12
+    },
+    "classes": 2,
+    "questions": 27,
+    "exams": 3,
+    "sessionsAtInspection": 1,
+    "storageObjects": 1,
+    "seedRerun": false,
+    "reset": false,
+    "demoPasswordConfiguredMatchesCheckedRoles": true,
+    "demoPasswordIsDefault": false,
+    "connectionMode": "session_pooler_port_5432_ipv4",
+    "clientToPoolerTls": {
+      "encrypted": true,
+      "authorized": true,
+      "protocol": "TLSv1.3",
+      "sslmode": "verify-full"
+    },
+    "poolerToPostgresInternalTls": false,
+    "renderConnectivity": "NOT_TESTED"
+  },
+  "remoteChanges": [
+    {
+      "provider": "Supabase",
+      "project": "zhdxuqcbvhcnujcdbkgw",
+      "migration": "protect_prisma_migration_metadata",
+      "sql": "free-staging-evidence/protect-migration-metadata.sql",
+      "reason": "RLS disabled and anonymous table grants exposed migration metadata",
+      "action": "Revoke all privileges from anon/authenticated/PUBLIC; enable RLS on _prisma_migrations",
+      "localTest": "PASS_TRANSACTION_ROLLBACK",
+      "postChangeVerification": "PASS",
+      "prismaChecksumsUnchanged": true,
+      "applicationCountsUnchanged": true,
+      "applicationDataMutated": false,
+      "businessSchemaChanged": false,
+      "advisorAfter": {
+        "ERROR": 0,
+        "WARN": 0,
+        "INFO": 22
+      }
+    }
+  ],
+  "storage": {
+    "scope": "CLOUD_READ_ONLY_NOT_HOSTED_APP",
+    "bucket": "question-assets",
+    "private": true,
+    "maxBytes": 5242880,
+    "signedDownloadStatus": 200,
+    "publicDownloadStatus": 400,
+    "uploadRoundtrip": "NOT_TESTED",
+    "evidence": "free-staging-evidence/storage-read-only.json"
+  },
+  "verification": {
+    "fresh": {
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "unit": {
+        "passed": 94,
+        "files": 20,
+        "failed": 0
+      },
+      "integration": {
+        "passed": 62,
+        "files": 15,
+        "failed": 0,
+        "database": "ISOLATED_LOCAL_POSTGRESQL_16_15"
+      },
+      "blueprintSchema": "PASS",
+      "localMigrateSeed": "PASS",
+      "localProductionTls": {
+        "status": "PASS",
+        "assertionGroups": 8,
+        "secureHttpOnlyLax": true,
+        "csrf": "PASS",
+        "exactCors": "PASS",
+        "authenticatedWss": "PASS",
+        "anonymousAndWrongOriginWssRejected": true,
+        "sessionSurvivesSigtermAndSigkill": true,
+        "logoutRevokesWss": true,
+        "publicTlsCertificateTested": false
+      },
+      "productionBrowser": {
+        "passed": 3,
+        "failed": 0,
+        "retries": 0,
+        "wssVerified": true,
+        "scenarios": [
+          "Teacher/Student Exam autosave/reload/monitor/submit/essay grading/result",
+          "Live Quiz lobby/start/answer/final/reload",
+          "Mobile 390 role guard"
+        ],
+        "evidence": "free-staging-evidence/verification-summary.json"
+      },
+      "secretScan": "PASS_SCOPED",
+      "historicalIntegrity": "PASS"
+    },
+    "reused": {
+      "npmCi": "BASELINE_PASS_NOT_RERUN",
+      "npmAudit": "BASELINE_PASS_NOT_RERUN_DEPENDENCIES_UNCHANGED",
+      "full20BrowserSuite": "BASELINE_PASS_NOT_RERUN"
+    },
+    "hosted": {
+      "status": "BLOCKED",
+      "reason": "Git review and first-push approval required before Render clones candidate",
+      "adminTeacherStudent": "NOT_TESTED",
+      "httpsWss": "NOT_TESTED",
+      "storageUploadAndProtection": "NOT_TESTED",
+      "pdfExcel": "NOT_TESTED",
+      "responsiveWidths": [
+        1440,
+        1024,
+        820,
+        390,
+        320
+      ],
+      "responsiveStatus": "NOT_TESTED",
+      "coldStart": "NOT_TESTED",
+      "sessionExpiryAndCloudRestart": "NOT_TESTED"
+    }
+  },
+  "failuresResolved": [
+    {
+      "kind": "PRODUCT",
+      "before": {
+        "productionBrowserPassed": 1,
+        "productionBrowserFailed": 2
+      },
+      "reason": "Same-origin polling GET lacks Origin required by server handshake policy",
+      "fix": "Same-origin client uses WebSocket directly; server policy and Socket.IO events unchanged",
+      "after": "3_PASS_NO_RETRIES",
+      "beforeEvidence": "free-staging-evidence/verification-summary.json"
+    },
+    {
+      "kind": "SETUP",
+      "items": [
+        "PostgreSQL extracted libpq path",
+        "YAML/JSON schema validator dependencies",
+        "Scanner module/subprocess sandbox",
+        "Missing Supabase CA for verify-full"
+      ],
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "Hosted acceptance pending",
+    "Same-origin socket requires WSS, no polling fallback",
+    "Render idle/cold start/ephemeral filesystem/single instance",
+    "Supabase Free pausing and quotas",
+    "Rolling deploy overlap not yet verified",
+    "Health is liveness only",
+    "Cloud upload, public proxy and five-width hosted checks pending"
+  ],
+  "reports": [
+    "FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "FREE_STAGING_RUNBOOK.md"
+  ],
+  "screenshotsScope": "LOCAL_SYNTHETIC_ONLY",
+  "nextAction": "Execute approved commit/push, inspect CI, then Free deploy and hosted acceptance"
+}

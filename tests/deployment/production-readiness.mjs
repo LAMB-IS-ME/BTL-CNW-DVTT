@@ -23,8 +23,9 @@ if (
   throw new Error("Only an isolated loopback test database is allowed");
 
 const directory = await mkdtemp(join(tmpdir(), "exam-production-readiness-"));
+const sameOrigin = process.env.DEPLOYMENT_SAME_ORIGIN === "true";
 const origin = "https://localhost:5443";
-const api = "https://localhost:5444";
+const api = sameOrigin ? origin : "https://localhost:5444";
 const secret = randomBytes(48).toString("hex");
 const checks = [];
 let backend, browser, site, proxy;
@@ -54,6 +55,7 @@ const startBackend = async () => {
       ...process.env,
       DOTENV_CONFIG_PATH: "/dev/null",
       NODE_ENV: "production",
+      SERVE_WEB: String(sameOrigin),
       PORT: "3002",
       DATABASE_URL: database,
       SESSION_SECRET: secret,
@@ -130,52 +132,54 @@ try {
     cert: await readFile(join(directory, "cert.pem")),
   };
   const web = join(directory, "web");
-  execFileSync(
-    "npm",
-    [
-      "exec",
-      "-w",
-      "@exam/web",
-      "--",
-      "vite",
-      "build",
-      "--base",
-      "/",
-      "--outDir",
-      web,
-    ],
-    {
-      stdio: "ignore",
-      env: {
-        ...process.env,
-        VITE_API_BASE_URL: `${api}/api/v1`,
-        VITE_SOCKET_URL: api,
+  if (!sameOrigin) {
+    execFileSync(
+      "npm",
+      [
+        "exec",
+        "-w",
+        "@exam/web",
+        "--",
+        "vite",
+        "build",
+        "--base",
+        "/",
+        "--outDir",
+        web,
+      ],
+      {
+        stdio: "ignore",
+        env: {
+          ...process.env,
+          VITE_API_BASE_URL: `${api}/api/v1`,
+          VITE_SOCKET_URL: api,
+        },
       },
-    },
-  );
-  await copyFile(join(web, "index.html"), join(web, "404.html"));
-  const types = {
-    ".html": "text/html",
-    ".js": "text/javascript",
-    ".css": "text/css",
-    ".woff2": "font/woff2",
-  };
-  site = https.createServer(tls, async (req, res) => {
-    const path = new URL(req.url, origin).pathname;
-    try {
-      const file = join(web, path === "/" ? "index.html" : path);
-      const data = await readFile(file);
-      res
-        .writeHead(200, {
-          "Content-Type": types[extname(file)] || "application/octet-stream",
-        })
-        .end(data);
-    } catch {
-      res
-        .writeHead(404, { "Content-Type": "text/html" })
-        .end(await readFile(join(web, "404.html")));
-    }
-  });
+    );
+    await copyFile(join(web, "index.html"), join(web, "404.html"));
+    const types = {
+      ".html": "text/html",
+      ".js": "text/javascript",
+      ".css": "text/css",
+      ".woff2": "font/woff2",
+    };
+    site = https.createServer(tls, async (req, res) => {
+      const path = new URL(req.url, origin).pathname;
+      try {
+        const file = join(web, path === "/" ? "index.html" : path);
+        const data = await readFile(file);
+        res
+          .writeHead(200, {
+            "Content-Type": types[extname(file)] || "application/octet-stream",
+          })
+          .end(data);
+      } catch {
+        res
+          .writeHead(404, { "Content-Type": "text/html" })
+          .end(await readFile(join(web, "404.html")));
+      }
+    });
+  }
   // The local edge overwrites forwarding headers; production ingress must do so too.
   proxy = https.createServer(tls, (req, res) => {
     const upstream = http.request(
@@ -222,8 +226,10 @@ try {
     socket.on("error", () => upstream.destroy());
     socket.on("close", () => upstream.destroy());
   });
-  await new Promise((ready) => site.listen(5443, "localhost", ready));
-  await new Promise((ready) => proxy.listen(5444, "localhost", ready));
+  if (site) await new Promise((ready) => site.listen(5443, "localhost", ready));
+  await new Promise((ready) =>
+    proxy.listen(sameOrigin ? 5443 : 5444, "localhost", ready),
+  );
   await startBackend();
   check("NODE_ENV=production bundle startup and health");
   browser = await chromium.launch();
@@ -236,7 +242,10 @@ try {
     if (r.url().includes("/assets/") && r.status() !== 200)
       assetFailures.push(r.status());
   });
-  assert.equal((await page.goto(`${origin}/teacher/exams`)).status(), 404);
+  assert.equal(
+    (await page.goto(`${origin}/teacher/exams`)).status(),
+    sameOrigin ? 200 : 404,
+  );
   await page.getByLabel("Email", { exact: true }).fill("teacher1@exam.local");
   const seedSource = await readFile("apps/api/prisma/seed.ts", "utf8");
   const password =
@@ -251,7 +260,9 @@ try {
   assert.deepEqual(errors, []);
   assert.deepEqual(assetFailures, []);
   check(
-    "HTTPS cross-origin browser login, production assets, SPA deep-link and refresh",
+    sameOrigin
+      ? "HTTPS same-origin browser login, production assets, HTTP200 SPA deep-link and refresh"
+      : "HTTPS cross-origin browser login, production assets, SPA deep-link and refresh",
   );
   const cookies = await context.cookies(api);
   const sid = cookies.find((c) => c.name === "online_exam_sid");
@@ -289,11 +300,9 @@ try {
   );
   const cookie = `${sid.name}=${sid.value}`;
   const socket = await connect(cookie);
-  const ack = await socket
-    .timeout(5000)
-    .emitWithAck("exam:monitor:join", {
-      examId: "00000000-0000-4000-8000-000000000402",
-    });
+  const ack = await socket.timeout(5000).emitWithAck("exam:monitor:join", {
+    examId: "00000000-0000-4000-8000-000000000402",
+  });
   assert.ok(ack.data && !ack.error);
   await connect(undefined, origin, false);
   await connect(cookie, "https://untrusted.invalid", false);
@@ -345,11 +354,36 @@ try {
     401,
   );
   check("CSRF-valid logout revokes HTTP session and disconnects WSS");
+  if (sameOrigin) {
+    const child = spawn(
+      process.execPath,
+      [
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "tests/deployment/playwright.same-origin.config.ts",
+      ],
+      {
+        stdio: "inherit",
+        env: {
+          ...process.env,
+          DOTENV_CONFIG_PATH: "/dev/null",
+          DEPLOYMENT_PROBE_ORIGIN: origin,
+          DEPLOYMENT_SCREENSHOT_DIR: "docs/screenshots/free-staging/local/",
+        },
+      },
+    );
+    const [exitCode] = await once(child, "exit");
+    assert.equal(exitCode, 0, "Same-origin production Exam/Quiz browser flows");
+    check(
+      "Production HTTPS Teacher/Student Exam, autosave, grading, results and Live Quiz browser flows with WSS",
+    );
+  }
   console.info(
     JSON.stringify(
       {
         status: "PASS",
-        scope: "LOCAL_TLS_ONLY",
+        scope: sameOrigin ? "LOCAL_SINGLE_ORIGIN_TLS_ONLY" : "LOCAL_TLS_ONLY",
         checks,
         hostedStagingVerified: false,
       },

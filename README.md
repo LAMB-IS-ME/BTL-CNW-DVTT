@@ -89,6 +89,8 @@ Chụp từ Playwright với API/PostgreSQL thật; fixture E2E có tên tự si
 
 ## Deployment
 
+Phase Free Staging hiện tại dùng **một Render Free Web Service cùng origin + Supabase Free**; xem [báo cáo thực thi](docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) và [runbook](docs/deployment/FREE_STAGING_RUNBOOK.md). `render.yaml` đã được chuẩn bị cho topology này. Chưa có URL public: đang chờ duyệt candidate và push branch staging. Phần bên dưới ghi lại phương án của phase chuẩn bị trước đó, không phải cấu hình Free Staging mới.
+
 Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem [hai phương án và chi phí dự kiến](docs/deployment/DEPLOYMENT_PLAN.md), [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) và [đối chiếu đặc tả](docs/spec/SPEC_RECONCILIATION.md). Các bước cloud dưới đây chỉ thực hiện khi được cho phép ở phase sau.
 
 1. **Supabase:** tạo project, lấy DB URLs, chạy migrations; tạo private Storage bucket, giữ service key ở backend.

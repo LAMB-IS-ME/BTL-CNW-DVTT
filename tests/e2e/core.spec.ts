@@ -1,6 +1,8 @@
 import { test, expect, type Page, type BrowserContext } from "@playwright/test";
-const origin = "http://localhost:5173",
-  base = "http://localhost:3000/api/v1";
+const origin = process.env.DEPLOYMENT_PROBE_ORIGIN || "http://localhost:5173",
+  base = process.env.DEPLOYMENT_PROBE_ORIGIN
+    ? `${origin}/api/v1`
+    : "http://localhost:3000/api/v1";
 async function login(page: Page, email: string) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill(email);
@@ -55,6 +57,9 @@ test("Exam: login, start, autosave, refresh, realtime monitor, submit, essay gra
     student = await browser.newContext();
   const tp = await teacher.newPage(),
     sp = await student.newPage();
+  const websocketUrls: string[] = [];
+  for (const page of [tp, sp])
+    page.on("websocket", (socket) => websocketUrls.push(socket.url()));
   await login(tp, "teacher1@exam.local");
   const list = await teacher.request.get(
     `${base}/teacher/students?search=student1@exam.local`,
@@ -134,12 +139,20 @@ test("Exam: login, start, autosave, refresh, realtime monitor, submit, essay gra
   ).toBeVisible();
   await sp.screenshot({
     path:
-      "docs/screenshots/" +
+      (process.env.DEPLOYMENT_SCREENSHOT_DIR || "docs/screenshots/") +
       (test.info().title.startsWith("Exam") ? "student-result" : "quiz-final") +
       ".png",
     fullPage: true,
     animations: "disabled",
   });
+  if (process.env.DEPLOYMENT_PROBE_ORIGIN) {
+    expect(websocketUrls.length).toBeGreaterThanOrEqual(2);
+    expect(
+      websocketUrls.every((url) =>
+        url.startsWith("wss://localhost:5443/socket.io/"),
+      ),
+    ).toBe(true);
+  }
   await teacher.close();
   await student.close();
 });
@@ -150,6 +163,9 @@ test("Live Quiz: authenticated join, realtime lobby, start, answer, reveal and f
     student = await browser.newContext();
   const tp = await teacher.newPage(),
     sp = await student.newPage();
+  const websocketUrls: string[] = [];
+  for (const page of [tp, sp])
+    page.on("websocket", (socket) => websocketUrls.push(socket.url()));
   await login(tp, "teacher1@exam.local");
   const q = await question(teacher);
   const quiz = await mutation<{ id: string }>(teacher, "/teacher/quizzes", {
@@ -192,12 +208,20 @@ test("Live Quiz: authenticated join, realtime lobby, start, answer, reveal and f
   ).toBeVisible();
   await sp.screenshot({
     path:
-      "docs/screenshots/" +
+      (process.env.DEPLOYMENT_SCREENSHOT_DIR || "docs/screenshots/") +
       (test.info().title.startsWith("Exam") ? "student-result" : "quiz-final") +
       ".png",
     fullPage: true,
     animations: "disabled",
   });
+  if (process.env.DEPLOYMENT_PROBE_ORIGIN) {
+    expect(websocketUrls.length).toBeGreaterThanOrEqual(2);
+    expect(
+      websocketUrls.every((url) =>
+        url.startsWith("wss://localhost:5443/socket.io/"),
+      ),
+    ).toBe(true);
+  }
   await teacher.close();
   await student.close();
 });

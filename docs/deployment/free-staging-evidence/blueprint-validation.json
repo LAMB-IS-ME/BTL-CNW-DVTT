@@ -1,0 +1,8 @@
+{
+  "valid": true,
+  "source": "https://render.com/schema/render.yaml.json",
+  "validator": "python-jsonschema",
+  "plan": "free",
+  "buildCommand": "npm ci --include=dev && npm run db:generate && npm run build",
+  "startCommand": "CLIENT_ORIGIN=\"$RENDER_EXTERNAL_URL\" npm run start -w @exam/api"
+}

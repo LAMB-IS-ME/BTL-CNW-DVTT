@@ -1,0 +1,101 @@
+{
+  "provenance": "Executed in the previous turn on the approved candidate; not rerun during commit cleanup",
+  "final": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "unit": {
+      "passed": 94,
+      "files": 20
+    },
+    "integration": {
+      "passed": 62,
+      "files": 15
+    },
+    "productionTlsAssertionGroups": 8,
+    "productionBrowser": {
+      "passed": 3,
+      "retries": 0
+    },
+    "localMigrateSeed": "PASS"
+  },
+  "beforeFix": {
+    "browserPassed": 1,
+    "browserFailed": 2,
+    "cause": "Same-origin browser polling omitted Origin; fixed by WebSocket transport without weakening server validation"
+  },
+  "rawLogFingerprints": {
+    "lint.txt": {
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "bytes": 20,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "build.txt": {
+      "sha256": "ccec21810060709e231994ed5c0e1ad511f0ac5672d2dd53eda756bf83774393",
+      "bytes": 6892,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "local-seed.txt": {
+      "sha256": "50422ccedaa2c5bfca46caf0d383927b7ad655e40ffd8cae5162bd8b88905147",
+      "bytes": 620,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "integration.txt": {
+      "sha256": "37267f3ee67b89eb2b6dcceeec327bcc7f6f5bc2f652a1d18aad0725a6b72fab",
+      "bytes": 3447,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "local-migrate.txt": {
+      "sha256": "6a547a1cc6c3a4b814079d15dd251858b3705ffaca1841c4e6cccea1431448b3",
+      "bytes": 655,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "same-origin-tls.txt": {
+      "sha256": "2d033891c4d4a1544594c0ff10f6ca5472484b5b3d288bc4c9466b41cece0bfb",
+      "bytes": 702,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "same-origin-flows-fixed.txt": {
+      "sha256": "e31645a6cd42425bb541e325d6c35a300219cf0df4e114551a4790e1c9543197",
+      "bytes": 1405,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "typecheck-final.txt": {
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "bytes": 228,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "unit-final.txt": {
+      "sha256": "2dd4a1cb3ccd15738d3ebb285e60943aa6762145157693caa66ef14f9ea1d6b0",
+      "bytes": 435,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "unit.txt": {
+      "sha256": "d236adf8f5139a238d8ca187c20c4bc617516bd6d8a2364f9a67784f21cb0fa0",
+      "bytes": 643,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "lint-final.txt": {
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "bytes": 20,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "build-final.txt": {
+      "sha256": "4021becc116e31e8721a338d45cf09c1b01073cfe5084cb0c7e0dd7d962d4fe3",
+      "bytes": 6892,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "typecheck.txt": {
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "bytes": 228,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    },
+    "same-origin-flows.txt": {
+      "sha256": "efb6d3af1b9e5f9b15050a4d2943b842f0eaf4f4bc79400cab9a12d6ebc4361c",
+      "bytes": 3984,
+      "retention": "LOCAL_ONLY_EXCLUDED_FROM_COMMIT"
+    }
+  },
+  "rawLogsCommitted": false,
+  "hostedVerified": false
+}

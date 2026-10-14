@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "scope": "LOCAL_TRANSACTION_ROLLED_BACK",
+  "ownerRead": true,
+  "checksumsUnchanged": true,
+  "anon_read": false,
+  "auth_write": false,
+  "relrowsecurity": true
+}

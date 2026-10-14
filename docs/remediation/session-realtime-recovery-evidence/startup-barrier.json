@@ -1,0 +1,7 @@
+{
+  "reconciliationBlockedOnDatabaseLock": true,
+  "listeningWhileBlocked": false,
+  "browsersAttemptedReconnectDuringStartup": true,
+  "connectedAfterReady": 1,
+  "duplicateMembership": false
+}

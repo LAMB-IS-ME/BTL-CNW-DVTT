@@ -5,7 +5,10 @@ import type { ClientEvents, ServerEvents, QuizState } from "@exam/shared";
 import { testContext, account } from "./helpers.js";
 import { examFixture } from "./fixture.js";
 import { createRealtime } from "../src/sockets/server.js";
-import { closeExpiredQuestions } from "../src/modules/live-quiz/service.js";
+import {
+  closeExpiredQuestions,
+  quizEvents,
+} from "../src/modules/live-quiz/service.js";
 let ctx: ReturnType<typeof testContext>,
   rt: ReturnType<typeof createRealtime>,
   url: string;
@@ -245,4 +248,126 @@ it("keeps ownership, join eligibility and progression guards on the real transpo
   expect(
     await lateStudent.emitWithAck("quiz:room:join", { roomId }),
   ).toMatchObject({ error: { code: "QUIZ_ROOM_NOT_JOINABLE" } });
+});
+
+it("does not leave a phantom online participant when the transport closes during a blocked join", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Interrupted join" },
+  });
+  const created = await f.teacher.agent
+    .post(`/api/v1/teacher/quizzes/${quiz.id}/rooms`)
+    .set(f.teacher.headers);
+  const roomId: string = created.body.data.id;
+  const student = await connect(f.student.cookie);
+  let release!: () => void;
+  let locked!: () => void;
+  const ready = new Promise<void>((r) => {
+    locked = r;
+  });
+  const hold = new Promise<void>((r) => {
+    release = r;
+  });
+  const transaction = ctx.db.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM "QuizRoom" WHERE id=${roomId}::uuid FOR UPDATE`;
+    locked();
+    await hold;
+  });
+  await ready;
+  try {
+    student.emit("quiz:room:join", { roomId }, () => {});
+    await expect
+      .poll(async () => {
+        const rows = await ctx.db.$queryRaw<
+          { count: bigint }[]
+        >`SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query LIKE '%QuizRoom%'`;
+        return Number(rows[0]!.count);
+      })
+      .toBeGreaterThan(0);
+    student.disconnect();
+  } finally {
+    release();
+    await transaction;
+  }
+  await expect
+    .poll(() => ctx.db.quizParticipant.count({ where: { roomId } }))
+    .toBe(1);
+  await expect
+    .poll(() =>
+      ctx.db.quizParticipant.count({ where: { roomId, isConnected: true } }),
+    )
+    .toBe(0);
+  // A later valid join restores the same member; another tab keeps it online.
+  const first = await connect(f.student.cookie),
+    second = await connect(f.student.cookie);
+  await first.emitWithAck("quiz:room:join", { roomId });
+  await second.emitWithAck("quiz:room:join", { roomId });
+  await first.emitWithAck("quiz:room:leave", { roomId });
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId, isConnected: true },
+    }),
+  ).toBe(1);
+  await second.emitWithAck("quiz:room:leave", { roomId });
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId, isConnected: true },
+    }),
+  ).toBe(0);
+  expect(await ctx.db.quizParticipant.count({ where: { roomId } })).toBe(1);
+});
+
+it("serializes two near-simultaneous tab disconnects without duplicate offline events", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Two tabs disconnect" },
+  });
+  const created = await f.teacher.agent
+    .post(`/api/v1/teacher/quizzes/${quiz.id}/rooms`)
+    .set(f.teacher.headers);
+  const roomId: string = created.body.data.id;
+  const a = await connect(f.student.cookie),
+    b = await connect(f.student.cookie);
+  await Promise.all([
+    a.emitWithAck("quiz:room:join", { roomId }),
+    b.emitWithAck("quiz:room:join", { roomId }),
+  ]);
+  expect(await rt.io.in(`quiz-room:${roomId}`).fetchSockets()).toHaveLength(2);
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId, isConnected: true },
+    }),
+  ).toBe(1);
+  let offlineEvents = 0;
+  const changed = (id: string, kind: string) => {
+    if (id === roomId && kind === "left") offlineEvents++;
+  };
+  quizEvents.on("changed", changed);
+  try {
+    a.disconnect();
+    b.disconnect();
+    await expect
+      .poll(
+        async () =>
+          (await rt.io.in(`quiz-room:${roomId}`).fetchSockets()).length,
+      )
+      .toBe(0);
+    await expect
+      .poll(() =>
+        ctx.db.quizParticipant.count({ where: { roomId, isConnected: true } }),
+      )
+      .toBe(0);
+    expect(offlineEvents).toBe(1);
+    expect(await ctx.db.quizParticipant.count({ where: { roomId } })).toBe(1);
+    const recovered = await connect(f.student.cookie);
+    const state = await recovered.emitWithAck("quiz:room:join", { roomId });
+    if ("error" in state) throw new Error(state.error.message);
+    expect(state.data.participants).toHaveLength(1);
+    expect(state.data.participants[0]!.isConnected).toBe(true);
+    expect(await rt.io.in(`quiz-room:${roomId}`).fetchSockets()).toHaveLength(
+      1,
+    );
+  } finally {
+    quizEvents.off("changed", changed);
+  }
 });

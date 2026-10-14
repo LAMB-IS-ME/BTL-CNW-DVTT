@@ -15,7 +15,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { AuthProvider, AuthForm, Guard, useAuth } from "./features/auth";
-import { api } from "./lib/api";
+import { api, ApiFailure } from "./lib/api";
 import "./styles/pilot-tokens.css";
 import "./styles/question-bank.css";
 import "./styles/teacher-dashboard.css";
@@ -95,7 +95,14 @@ const AdminOverview = lazy(() =>
   import("./features/admin").then((m) => ({ default: m.AdminOverview })),
 );
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 10000 } },
+  defaultOptions: {
+    queries: {
+      retry: (count, error) =>
+        !(error instanceof ApiFailure && [401, 403].includes(error.status)) &&
+        count < 1,
+      staleTime: 10000,
+    },
+  },
 });
 function Shell() {
   const { user } = useAuth();

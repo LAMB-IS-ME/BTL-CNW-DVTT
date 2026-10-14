@@ -1,0 +1,24 @@
+[WebServer] (node:33474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:33485) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:33516) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:33567) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/ui/live-quiz-hardening.spec.ts:130:1 › missing real join ACK times out honestly, then explicit retry recovers without a duplicate participant (10.8s)
+  ✓   2 [chromium] › tests/ui/live-quiz-hardening.spec.ts:199:1 › answer committed before a lost ACK survives reload and host recovery; next question focus and state remain usable (7.3s)
+  ✓   3 [chromium] › tests/ui/live-quiz-hardening.spec.ts:305:1 › library empty, loading, failed fetch, retry, long title and existing API pagination (5.4s)
+  ✓   4 [chromium] › tests/ui/live-quiz-hardening.spec.ts:388:1 › long participant names, rich question content and landscape reflow preserve answer controls (7.0s)
+  ✓   5 [chromium] › tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results (24.7s)
+  ✓   6 [chromium] › tests/ui/live-quiz.spec.ts:20:3 › 1024: real three-context lifecycle, recovery, deadline and results (24.4s)
+  ✓   7 [chromium] › tests/ui/live-quiz.spec.ts:20:3 › 820: real three-context lifecycle, recovery, deadline and results (23.8s)
+  ✓   8 [chromium] › tests/ui/live-quiz.spec.ts:20:3 › 390: real three-context lifecycle, recovery, deadline and results (23.7s)
+  ✓   9 [chromium] › tests/ui/live-quiz.spec.ts:20:3 › 320: real three-context lifecycle, recovery, deadline and results (24.3s)
+  ✓  10 [chromium] › tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership (8.4s)
+  ✓  11 [chromium] › tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths (2.7s)
+
+  11 passed (2.8m)

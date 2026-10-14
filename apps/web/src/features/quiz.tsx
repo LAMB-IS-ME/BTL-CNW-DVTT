@@ -424,6 +424,7 @@ export function QuizRoom({ host = false }: { host?: boolean }) {
     // These server facts are irreversible within one room. A late broadcast
     // may refresh presence, but cannot reopen a revealed question or undo an answer.
     if (previous?.roomId === s.roomId) {
+      if (Date.parse(s.serverNow) < Date.parse(previous.serverNow)) return;
       if (
         ((previous.status === "FINISHED" || previous.status === "CANCELLED") &&
           s.status !== previous.status) ||

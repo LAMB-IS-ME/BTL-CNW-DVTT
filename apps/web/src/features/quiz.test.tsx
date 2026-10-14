@@ -384,3 +384,23 @@ it("retains an immutable server-recorded answer when an older participant snapsh
     (screen.getByRole("radio", { name: "POST" }) as HTMLInputElement).disabled,
   ).toBe(true);
 });
+
+it("ignores an older same-question presence snapshot after the reconnect snapshot", () => {
+  mount(true);
+  const newer = {
+    ...state(),
+    serverNow: "2026-10-13T12:00:02.000Z",
+    participants: [
+      { id: "offline", fullName: "Offline Student", isConnected: false },
+    ],
+  };
+  act(() => mock.join?.({ data: newer }));
+  const older = {
+    ...newer,
+    serverNow: "2026-10-13T12:00:01.000Z",
+    participants: [{ ...newer.participants[0]!, isConnected: true }],
+  };
+  act(() => mock.listeners.get("quiz:state")?.(older));
+  expect(screen.getByText("Mất kết nối", { exact: true })).toBeTruthy();
+  expect(screen.queryByText("Trực tuyến", { exact: true })).toBeNull();
+});

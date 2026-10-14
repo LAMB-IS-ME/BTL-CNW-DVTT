@@ -1,0 +1,22 @@
+[WebServer] (node:36432) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 13 tests using 1 worker
+
+(node:36487) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/recovery/lifecycle.spec.ts:75:1 › session expiry before SPA navigation clears protected identity (1.0s)
+  ✓   2 tests/recovery/lifecycle.spec.ts:120:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership (15.5s)
+  ✓   3 tests/recovery/lifecycle.spec.ts:297:3 › Admin: expired reload and protected route remain signed out (554ms)
+  ✓   4 tests/recovery/lifecycle.spec.ts:297:3 › Student: expired reload and protected route remain signed out (725ms)
+  ✓   5 tests/recovery/lifecycle.spec.ts:321:1 › idle expiry is detected without navigation; recovery is responsive and keyboard accessible (31.5s)
+  ✓   6 tests/recovery/lifecycle.spec.ts:379:1 › Teacher draft mutation: expired CSRF confirms auth, does not create or replay the draft (1.7s)
+  ✓   7 tests/recovery/lifecycle.spec.ts:419:1 › network failure and valid-session RBAC/CSRF rejection do not become expiry (3.9s)
+  ✓   8 tests/recovery/lifecycle.spec.ts:475:1 › logout in another tab revokes the shared session (30.9s)
+  ✓   9 tests/recovery/lifecycle.spec.ts:503:1 › Question Bank editor expiry leaves stored question intact and does not bypass its leave guard (1.4s)
+  ✓  10 tests/recovery/lifecycle.spec.ts:547:1 › Grading expiry preserves submitted status, grade and result release policy (1.4s)
+  ✓  11 tests/recovery/lifecycle.spec.ts:590:1 › Student autosave expiry retains accepted answer and does not submit or replay unsaved answer (4.2s)
+  ✓  12 tests/recovery/lifecycle.spec.ts:645:1 › clicking logout after expiration recovers instead of retaining a stale header (1.0s)
+  ✓  13 tests/recovery/lifecycle.spec.ts:675:1 › reconnect attempts during a blocked startup cannot race presence reconciliation (6.6s)
+
+  13 passed (1.7m)

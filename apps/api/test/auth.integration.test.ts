@@ -202,3 +202,32 @@ it("rejects empty/wrong passwords, unknown credentials and locked accounts while
   expect(locked.status).toBe(403);
   expect(locked.body.error.code).toBe("ACCOUNT_LOCKED");
 });
+
+it.each(["ADMIN", "TEACHER", "STUDENT"] as const)(
+  "rejects expired and revoked %s sessions without relaxing CSRF",
+  async (role) => {
+    for (const revoke of [false, true]) {
+      const a = await account(ctx, role);
+      const endpoint =
+        role === "ADMIN"
+          ? "/admin/users"
+          : role === "TEACHER"
+            ? "/teacher/exams"
+            : "/student/exams";
+      expect((await a.agent.get(`/api/v1${endpoint}`)).status).toBe(200);
+      if (revoke)
+        await ctx.db
+          .$executeRaw`DELETE FROM session WHERE sess::jsonb->>'userId' = ${a.user.id}`;
+      else
+        await ctx.db
+          .$executeRaw`UPDATE session SET expire = NOW() - INTERVAL '1 second' WHERE sess::jsonb->>'userId' = ${a.user.id}`;
+      expect((await a.agent.get(`/api/v1${endpoint}`)).status).toBe(401);
+      expect((await a.agent.get("/api/v1/auth/me")).body.error.code).toBe(
+        "UNAUTHENTICATED",
+      );
+      const rejected = await a.agent.post("/api/v1/auth/logout").set(a.headers);
+      expect(rejected.status).toBe(403);
+      expect(rejected.body.error.code).toBe("CSRF_INVALID");
+    }
+  },
+);

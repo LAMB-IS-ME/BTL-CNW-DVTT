@@ -486,7 +486,11 @@ function AttemptWorkspace({
             break;
           } catch (e) {
             last = e;
-            if (isLockedFailure(e)) break;
+            if (
+              isLockedFailure(e) ||
+              (e instanceof ApiFailure && [401, 403].includes(e.status))
+            )
+              break;
             if (n < 2)
               await new Promise((resolve) =>
                 setTimeout(resolve, 500 * (n + 1)),

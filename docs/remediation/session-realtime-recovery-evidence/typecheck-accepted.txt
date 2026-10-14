@@ -1,0 +1,15 @@
+
+> typecheck
+> npm run typecheck --workspaces --if-present && tsc -p tsconfig.tests.json
+
+
+> @exam/shared@1.0.0 typecheck
+> tsc --noEmit
+
+
+> @exam/api@1.0.0 typecheck
+> tsc --noEmit
+
+
+> @exam/web@1.0.0 typecheck
+> tsc --noEmit

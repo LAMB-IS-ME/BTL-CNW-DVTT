@@ -30,6 +30,8 @@ export async function roomState(
   roomId: string,
   actor?: UserDto,
 ): Promise<QuizState> {
+  // Capture before reading: a slow older snapshot must not look newer on arrival.
+  const serverNow = new Date().toISOString();
   const r = await db.quizRoom.findUnique({
     where: { id: roomId },
     include: roomInclude,
@@ -73,7 +75,7 @@ export async function roomState(
     status: r.status,
     currentIndex: r.currentQuestionIndex,
     total: r.questions.length,
-    serverNow: new Date().toISOString(),
+    serverNow,
     closesAt: r.questionClosesAt?.toISOString() || null,
     participants: r.participants.map((p) => ({
       id: p.id,
@@ -163,11 +165,11 @@ export async function joinRoom(db: Db, roomId: string, actor: UserDto) {
   return roomState(db, roomId, actor);
 }
 export async function leaveRoom(db: Db, roomId: string, studentId: string) {
-  await db.quizParticipant.updateMany({
-    where: { roomId, studentId },
+  const changed = await db.quizParticipant.updateMany({
+    where: { roomId, studentId, isConnected: true },
     data: { isConnected: false, lastSeenAt: new Date() },
   });
-  quizEvents.emit("changed", roomId, "left");
+  if (changed.count) quizEvents.emit("changed", roomId, "left");
 }
 export async function startRoom(db: Db, roomId: string, actor: UserDto) {
   await db.$transaction(async (tx) => {

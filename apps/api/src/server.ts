@@ -6,6 +6,12 @@ import { parseEnv } from "./config/env.js";
 import { createDb } from "./db/client.js";
 const config = parseEnv(process.env);
 const db = createDb(config.DATABASE_URL);
+// Single-instance startup barrier: no old sockets can survive this process.
+// Finish reconciliation before attaching realtime or accepting HTTP connections.
+await db.quizParticipant.updateMany({
+  where: { isConnected: true },
+  data: { isConnected: false },
+});
 const stopExpiry = startExpiryJob(db);
 const app = createApp({ db, config });
 const server = createServer(app);

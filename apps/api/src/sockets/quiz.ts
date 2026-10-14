@@ -27,6 +27,28 @@ type IO = Server<
   { user: UserDto }
 >;
 export function attachQuiz(io: IO, db: Db) {
+  // Serialize one member's join/leave transitions, including a reconnect on
+  // another socket, so an older disconnect cannot overwrite a real new join.
+  const transitions = new Map<string, Promise<void>>();
+  function transition<T>(roomId: string, userId: string, fn: () => Promise<T>) {
+    const key = `${roomId}:${userId}`;
+    const result = (transitions.get(key) || Promise.resolve()).then(fn);
+    const tail: Promise<void> = result
+      .then(
+        () => {},
+        () => {},
+      )
+      .finally(() => {
+        if (transitions.get(key) === tail) transitions.delete(key);
+      });
+    transitions.set(key, tail);
+    return result;
+  }
+  async function offlineIfAbsent(roomId: string, studentId: string) {
+    const sockets = await io.in(`quiz-room:${roomId}`).fetchSockets();
+    if (!sockets.some((s) => s.data.user.id === studentId))
+      await leaveRoom(db, roomId, studentId);
+  }
   const probes = new Map<string, { count: number; reset: number }>();
   const changed = (roomId: string, kind: QuizChange) => {
     void (async () => {
@@ -113,13 +135,24 @@ export function attachQuiz(io: IO, db: Db) {
           check(r, 404, "QUIZ_ROOM_NOT_FOUND");
           roomId = r.id;
         }
-        const state = await joinRoom(db, roomId, socket.data.user);
-        await socket.join(`quiz-room:${roomId}`);
-        if (socket.data.user.role === "TEACHER")
-          await socket.join(`quiz-host:${roomId}`);
-        rooms.add(roomId);
-        socket.emit("quiz:state", state);
-        return state;
+        const joinedRoomId = roomId;
+        return transition(joinedRoomId, socket.data.user.id, async () => {
+          check(socket.connected, 409, "QUIZ_CONNECTION_CLOSED");
+          await joinRoom(db, joinedRoomId, socket.data.user);
+          await socket.join(`quiz-room:${joinedRoomId}`);
+          if (socket.data.user.role === "TEACHER")
+            await socket.join(`quiz-host:${joinedRoomId}`);
+          // disconnect may have fired while the database transaction was pending,
+          // before this room could be recorded by the disconnect handler.
+          if (!socket.connected) {
+            await offlineIfAbsent(joinedRoomId, socket.data.user.id);
+            throw new AppError(409, "QUIZ_CONNECTION_CLOSED");
+          }
+          rooms.add(joinedRoomId);
+          const state = await roomState(db, joinedRoomId, socket.data.user);
+          socket.emit("quiz:state", state);
+          return state;
+        });
       }),
     );
     socket.on("quiz:host:start", (p, ack) =>
@@ -156,17 +189,12 @@ export function attachQuiz(io: IO, db: Db) {
         true,
       ),
     );
-    const leave = async (roomId: string) => {
-      await socket.leave(`quiz-room:${roomId}`);
-      rooms.delete(roomId);
-      const others = await io.in(`user:${socket.data.user.id}`).fetchSockets();
-      if (
-        !others.some(
-          (s) => s.id !== socket.id && s.rooms.has(`quiz-room:${roomId}`),
-        )
-      )
-        await leaveRoom(db, roomId, socket.data.user.id);
-    };
+    const leave = (roomId: string) =>
+      transition(roomId, socket.data.user.id, async () => {
+        await socket.leave(`quiz-room:${roomId}`);
+        rooms.delete(roomId);
+        await offlineIfAbsent(roomId, socket.data.user.id);
+      });
     socket.on("quiz:room:leave", (p, ack) =>
       run(ack, async () => {
         await leave(roomPayload.parse(p).roomId);

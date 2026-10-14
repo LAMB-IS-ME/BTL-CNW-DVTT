@@ -17,7 +17,10 @@ import {
   CatalogPager,
   useCatalogPage,
 } from "./catalog-pagination";
-vi.mock("../lib/api", () => ({ api: vi.fn() }));
+vi.mock("../lib/api", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../lib/api")>()),
+  api: vi.fn(),
+}));
 afterEach(() => {
   cleanup();
   vi.resetAllMocks();

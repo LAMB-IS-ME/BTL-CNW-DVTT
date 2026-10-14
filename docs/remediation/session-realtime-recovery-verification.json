@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "phase": "SESSION LIFECYCLE + LIVE QUIZ RECOVERY REMEDIATION",
+  "status": "COMPLETE_WITH_DOCUMENTED_LIMITATIONS",
+  "date": "2026-10-13",
+  "timezone": "Asia/Bangkok",
+  "baseline": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "d3e7cbadab88a3e4b8839941edaa9d590085e1ca",
+    "initialTrackedAndStaged": "CLEAN",
+    "historicalUntrackedArtifacts": 47
+  },
+  "findings": [
+    {
+      "id": "AUTH-001",
+      "status": "REMEDIATED",
+      "before": "Persisted session expiration returned 401 but SPA identity remained",
+      "after": "Confirmed expiry removes protected identity/cache and offers explicit re-login; no mutation replay"
+    },
+    {
+      "id": "REL-001",
+      "status": "REMEDIATED_SINGLE_INSTANCE",
+      "before": "Student B stayed marked online after SIGKILL and restart without reconnect",
+      "after": "Startup barrier reconciles presence; real reconnect restores only connected members"
+    },
+    {
+      "id": "QUIZ_JOIN_DISCONNECT_RACE",
+      "status": "REMEDIATED",
+      "before": "Join pending on DB lock completed after disconnect and left phantom online member",
+      "after": "Per-member serialization and actual room-socket reconciliation"
+    }
+  ],
+  "tests": [
+    {
+      "suite": "unit",
+      "status": "PASS",
+      "passed": 78,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/unit-accepted.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "integration",
+      "status": "PASS",
+      "passed": 62,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/integration-resume-final.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "recoveryBrowser",
+      "status": "PASS",
+      "passed": 13,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/recovery-accepted.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "existingE2E",
+      "status": "PASS",
+      "passed": 16,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/e2e-verified.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "liveQuizBrowser",
+      "status": "PASS",
+      "passed": 11,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/live-browser-final.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "moduleCompatibility",
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0,
+      "evidence": "session-realtime-recovery-evidence/module-compatibility-accepted.txt",
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "exitCode": 0,
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "lint",
+      "status": "PASS",
+      "evidence": "session-realtime-recovery-evidence/lint-accepted.txt",
+      "exitCode": 0,
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "typecheck",
+      "status": "PASS",
+      "evidence": "session-realtime-recovery-evidence/typecheck-accepted.txt",
+      "exitCode": 0,
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "freshExecutionDuringCleanup": false
+    },
+    {
+      "suite": "build",
+      "status": "PASS",
+      "evidence": "session-realtime-recovery-evidence/build-accepted.txt",
+      "exitCode": 0,
+      "provenance": "REUSED in cleanup from approved 2026-10-13 remediation execution; source/test/config integrity and evidence checked on 2026-10-14",
+      "freshExecutionDuringCleanup": false
+    }
+  ],
+  "recoveryCoverage": {
+    "session": [
+      "expired",
+      "revoked",
+      "idle foreground <=30s plus request latency",
+      "SPA navigation",
+      "reload",
+      "cross-tab logout",
+      "expired logout with cached CSRF",
+      "valid-session CSRF rejection",
+      "RBAC rejection",
+      "network error",
+      "late response/error-body/download",
+      "Teacher Exam draft",
+      "Question Bank editor",
+      "Grading draft",
+      "Student autosave accepted-answer recovery"
+    ],
+    "quiz": [
+      "SIGKILL/restart twice",
+      "A reconnect/B offline",
+      "startup offline flags before reconnect",
+      "blocked startup rejects transport until reconciliation finishes",
+      "join after transport disconnect while waiting on row lock",
+      "two tabs keep presence until last leaves",
+      "two near-simultaneous disconnects emit one offline transition",
+      "late ACK/older snapshots",
+      "answers/membership/scores/deadlines unchanged",
+      "automatic finish after downtime expiry",
+      "duplicate submission rejected",
+      "teacher ownership/student membership"
+    ]
+  },
+  "responsive": {
+    "widths": [
+      1440,
+      1024,
+      820,
+      390,
+      320
+    ],
+    "horizontalOverflowPixels": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "keyboardAndFocus": "PASS",
+    "visualInspection": [
+      "expired-320.png",
+      "expired-1440.png"
+    ],
+    "screenReaderCertification": "NOT TESTED",
+    "provenance": "REUSED from approved remediation; screenshot bytes/dimensions and geometry evidence freshly checked in cleanup",
+    "screenshots": [
+      "../screenshots/session-realtime-recovery/expired-1024.png",
+      "../screenshots/session-realtime-recovery/expired-1440.png",
+      "../screenshots/session-realtime-recovery/expired-320.png",
+      "../screenshots/session-realtime-recovery/expired-390.png",
+      "../screenshots/session-realtime-recovery/expired-820.png"
+    ]
+  },
+  "testIsolation": {
+    "postgres": "16.15, loopback port 55439",
+    "databases": [
+      "examspace_recovery_test",
+      "examspace_recovery_integration_test",
+      "examspace_recovery_compat_test"
+    ],
+    "recoveryPorts": [
+      3000,
+      5173
+    ],
+    "scratchCompatibilityPorts": [
+      3010,
+      5183
+    ],
+    "postgresStopped": true,
+    "productionSupabaseUsed": false,
+    "rawSessionTokensCookiesPasswordsOrDumpsInEvidence": false
+  },
+  "provenance": {
+    "historicalEvidenceReuse": "Audit findings/context only; no historical PASS substituted for final tests",
+    "samePhaseReuse": "Final API source unchanged since 62-test integration. Existing E2E/live suites cover unchanged paths; later non-auth export-message correction verified by final unit/static/10-test module suite and consolidated 13-test recovery suite.",
+    "automaticRetries": 0,
+    "cleanupReuse": "Approved same-phase acceptance results reused after 19 source/test/config hashes matched; dependency manifests/lockfile and existing config/schema match baseline. No suite rerun or duplicate test-count aggregation."
+  },
+  "initialNonPassingRuns": [
+    {
+      "classification": "sandbox socket denial and incomplete existing API test mock; corrected",
+      "excludedLocalLogName": "unit.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "expected failing reproduction of confirmed product race",
+      "evidence": "session-realtime-recovery-evidence/join-race-before.txt"
+    },
+    {
+      "classification": "deadline fixture sequencing and shared-DB expiry-job interference; separate DBs and authoritative index wait added",
+      "excludedLocalLogName": "browser-expanded.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "logout fixture lacked cached SPA CSRF",
+      "excludedLocalLogName": "browser-complete.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "logout navigation/vanishing-target harness failures",
+      "excludedLocalLogName": "browser-resume-final.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "cross-tab 10s expectation shorter than 30s auth polling; logout test navigation kept target unavailable; corrected test setup, final consolidated 13 PASS",
+      "excludedLocalLogName": "browser-verified.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "scratch missing workspace-local dependencies; interrupted, links repaired, unchanged suite passed",
+      "excludedLocalLogName": "e2e-compatibility.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    },
+    {
+      "classification": "confirmed non-auth export-message regression; product compatibility restored, original assertion retained, final suite passed",
+      "excludedLocalLogName": "module-compatibility-final.txt",
+      "disposition": "Redundant raw log kept locally outside commit; historical classification retained here"
+    }
+  ],
+  "approvalReview": {
+    "previousCommand": "npm test redirected to unit-complete.txt",
+    "previousResult": "NOT EXECUTED: workspace-credit review failure, not an unsafe-action decision",
+    "resumedResult": "PASS via normal approval mechanism",
+    "bypass": false
+  },
+  "limitations": [
+    "Single API instance only; no multi-instance coordination",
+    "Memory-only unsaved edits are cleared on confirmed expiry; warning shown; only server-confirmed data restored",
+    "No presence correctness promise while backend is completely offline",
+    "Existing serverNow timestamp is not a versioned distributed ordering protocol; millisecond ties/wall-clock corrections not certified",
+    "Foreground idle detection is periodic; background/network-offline detection waits for revalidation",
+    "Hosted TLS/WSS/cross-site cookies/Supabase and cloud restart not tested",
+    "Firefox/WebKit, load/soak/large classes and full screen-reader certification not tested",
+    "Existing large bundle and pg deprecation warnings remain; no dependency remediation"
+  ],
+  "skipped": [
+    "Historical visual board regeneration",
+    "Unrelated pagination/assets/Admin redesign/BTL work",
+    "Deployment/multi-instance/load tests"
+  ],
+  "finalFailedGates": [],
+  "finalBlockedGates": [],
+  "releaseReadyClaim": false,
+  "git": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "baselineHead": "d3e7cbadab88a3e4b8839941edaa9d590085e1ca",
+    "snapshot": "Cleanup before single authorized local commit; actual resulting hash and post-commit status reported in handoff",
+    "approvedModifiedTrackedCount": 15,
+    "approvedNewSourceTestConfigCount": 4,
+    "selectedFileCount": 46,
+    "selectionManifest": "session-realtime-recovery-evidence/cleanup-audit.json",
+    "historicalUntrackedCount": 47,
+    "historicalHashMismatches": [],
+    "excludedPhaseUntrackedCount": 38,
+    "expectedRemainingUntrackedCount": 85,
+    "commitMessage": "fix: harden session lifecycle and live quiz recovery",
+    "authorizedLocalCommitCount": 1,
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pr": false
+  },
+  "safety": {
+    "noPush": true,
+    "noDeploy": true,
+    "noMerge": true,
+    "noPR": true,
+    "noResetCheckoutDiscardClean": true,
+    "historicalArtifactsPreserved": true,
+    "oneLocalCommitExplicitlyAuthorized": true
+  },
+  "cleanupDate": "2026-10-14",
+  "cleanupEvidence": "session-realtime-recovery-evidence/cleanup-audit.json"
+}

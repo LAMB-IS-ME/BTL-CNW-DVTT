@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -10,21 +17,79 @@ import {
   type Role,
 } from "@exam/shared";
 import { z } from "zod";
-import { api, ApiFailure } from "../lib/api";
+import { onSessionEnded } from "../lib/session";
+import { api, ApiFailure, isSessionFailure } from "../lib/api";
 import { ErrorBox, Field, Loading } from "../components/ui";
-const AuthContext = createContext<{ user: UserDto | null; loading: boolean }>({
-  user: null,
-  loading: true,
-});
+const AuthContext = createContext<{
+  user: UserDto | null;
+  loading: boolean;
+  error?: unknown;
+  retry?: () => void;
+}>({ user: null, loading: true });
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const cache = useQueryClient();
+  const [expired, setExpired] = useState(false);
+  const knownUser = useRef(false);
   const q = useQuery({
     queryKey: ["me"],
-    queryFn: () => api<UserDto>("/auth/me"),
+    queryFn: () => api<UserDto | null>("/auth/me"),
     retry: false,
+    refetchInterval: (query) => (query.state.data ? 30000 : false),
+    refetchIntervalInBackground: false,
   });
+  if (q.data) knownUser.current = true;
+  useEffect(
+    () =>
+      onSessionEnded((reason) => {
+        setExpired(reason === "expired" && knownUser.current);
+        knownUser.current = false;
+        // Cancel before removing: late protected query results cannot repopulate cache.
+        void cache.cancelQueries();
+        cache.removeQueries({
+          predicate: (query) => query.queryKey[0] !== "me",
+        });
+        cache.getMutationCache().clear();
+        cache.setQueryData(["me"], null);
+      }),
+    [cache],
+  );
+  if (expired)
+    return (
+      <main className="auth card" aria-labelledby="session-ended-title">
+        <h1
+          id="session-ended-title"
+          tabIndex={-1}
+          ref={(node) => node?.focus()}
+        >
+          Phiên đăng nhập đã kết thúc
+        </h1>
+        <p role="alert">
+          Phiên đã hết hạn hoặc bị thu hồi. Vui lòng đăng nhập lại.
+        </p>
+        <p>
+          Các thay đổi chưa lưu trong đề thi, câu hỏi, chấm bài hoặc đáp án chưa
+          được máy chủ xác nhận có thể đã mất. Đăng nhập lại để kiểm tra dữ liệu
+          đã lưu.
+        </p>
+        <p>
+          Bài đã nộp và điểm đã lưu không bị thay đổi. Không tự gửi lại thao tác
+          trước đó.
+        </p>
+        <a className="button" href={`${import.meta.env.BASE_URL}login`}>
+          Đăng nhập lại
+        </a>
+      </main>
+    );
   return (
     <AuthContext.Provider
-      value={{ user: q.data || null, loading: q.isPending }}
+      value={{
+        user: isSessionFailure(q.error) ? null : q.data || null,
+        loading: q.isPending,
+        error: isSessionFailure(q.error) ? undefined : q.error,
+        retry: () => {
+          void q.refetch();
+        },
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -32,9 +97,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 export const useAuth = () => useContext(AuthContext);
 export function Guard({ role, children }: { role: Role; children: ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading, error, retry } = useAuth();
   if (loading) return <Loading />;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user && error)
+    return (
+      <>
+        <ErrorBox error={error} />
+        <button onClick={retry}>Thử lại</button>
+      </>
+    );
+  if (!user)
+    return <Navigate to="/login" replace state={{ loginRequired: true }} />;
   if (user.role !== role) return <Navigate to="/403" replace />;
   return <>{children}</>;
 }
@@ -77,6 +150,11 @@ export function AuthForm({ register = false }: { register?: boolean }) {
                 "POST",
                 data,
               );
+              await cache.cancelQueries();
+              cache.removeQueries({
+                predicate: (query) => query.queryKey[0] !== "me",
+              });
+              cache.getMutationCache().clear();
               cache.setQueryData(["me"], r.user);
               nav(`/${r.user.role.toLowerCase()}`);
             }

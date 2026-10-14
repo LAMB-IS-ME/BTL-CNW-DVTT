@@ -1,0 +1,25 @@
+[WebServer] (node:35619) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:35641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:35652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:35677) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:35726) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/ui/grading-results-recovery.spec.ts:17:1 › grading, lookahead, exam context, results and analytics retry the failed request (14.0s)
+  ✓   2 tests/ui/grading-results-recovery.spec.ts:77:1 › student history and detail loading/error recover without exposing cached protected details (4.7s)
+  ✓   3 tests/ui/grading-results-recovery.spec.ts:127:3 › dirty dialog keyboard, focus restoration and overflow 1440 (2.0s)
+  ✓   4 tests/ui/grading-results-recovery.spec.ts:127:3 › dirty dialog keyboard, focus restoration and overflow 1024 (1.9s)
+  ✓   5 tests/ui/grading-results-recovery.spec.ts:127:3 › dirty dialog keyboard, focus restoration and overflow 820 (2.3s)
+  ✓   6 tests/ui/grading-results-recovery.spec.ts:127:3 › dirty dialog keyboard, focus restoration and overflow 390 (2.2s)
+  ✓   7 tests/ui/grading-results-recovery.spec.ts:127:3 › dirty dialog keyboard, focus restoration and overflow 320 (2.3s)
+  ✓   8 tests/ui/grading-results-recovery.spec.ts:171:1 › exports retry, have correct filenames and MIME, and retain full exam scope on page two (2.6s)
+  ✓   9 tests/ui/grading-results-recovery.spec.ts:235:1 › empty grading uses the real endpoint and has no false next page (1.6s)
+  ✓  10 tests/ui/live-quiz-compat.spec.ts:25:1 › Live Quiz CSS stays inside its boundary; representative library captures (3.6s)
+
+  10 passed (40.5s)

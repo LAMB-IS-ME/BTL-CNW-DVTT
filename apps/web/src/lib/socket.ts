@@ -1,8 +1,9 @@
+import { verifySession } from "./api";
 import { io, type Socket } from "socket.io-client";
 import { useEffect } from "react";
 import type { ClientEvents, ServerEvents } from "@exam/shared";
 export function connectSocket(): Socket<ServerEvents, ClientEvents> {
-  return io(
+  const socket: Socket<ServerEvents, ClientEvents> = io(
     import.meta.env.VITE_SOCKET_URL ||
       (import.meta.env.DEV ? "http://localhost:3000" : window.location.origin),
     {
@@ -10,6 +11,13 @@ export function connectSocket(): Socket<ServerEvents, ClientEvents> {
       autoConnect: false,
     },
   );
+  socket.on("connect_error", (error) => {
+    if (error.message === "UNAUTHENTICATED") void verifySession();
+  });
+  socket.on("disconnect", (reason) => {
+    if (reason === "io server disconnect") void verifySession();
+  });
+  return socket;
 }
 export function useAttemptPresence(
   attemptId: string,

@@ -14,7 +14,7 @@ import {
   QueryClientProvider,
   useQueryClient,
 } from "@tanstack/react-query";
-import { AuthProvider, AuthForm, Guard, useAuth } from "./features/auth";
+import { AuthProvider, AuthEntry, Guard, useAuth } from "./features/auth";
 import { api, ApiFailure } from "./lib/api";
 import "./styles/pilot-tokens.css";
 import "./styles/question-bank.css";
@@ -317,8 +317,8 @@ function Shell() {
                 </section>
               }
             />
-            <Route path="/login" element={<AuthForm />} />
-            <Route path="/register" element={<AuthForm register />} />
+            <Route path="/login" element={<AuthEntry />} />
+            <Route path="/register" element={<AuthEntry register />} />
             <Route
               path="/admin"
               element={

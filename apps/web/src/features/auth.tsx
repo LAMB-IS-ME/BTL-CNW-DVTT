@@ -111,6 +111,11 @@ export function Guard({ role, children }: { role: Role; children: ReactNode }) {
   if (user.role !== role) return <Navigate to="/403" replace />;
   return <>{children}</>;
 }
+export function AuthEntry({ register = false }: { register?: boolean }) {
+  const { loading } = useAuth();
+  // Settle the initial identity probe before a form can start a new session.
+  return loading ? <Loading /> : <AuthForm register={register} />;
+}
 export function AuthForm({ register = false }: { register?: boolean }) {
   const nav = useNavigate(),
     cache = useQueryClient();

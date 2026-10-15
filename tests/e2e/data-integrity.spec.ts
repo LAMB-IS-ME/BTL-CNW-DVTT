@@ -13,15 +13,6 @@ test("Classes → Builder: page boundaries, SPA cache and reload", async ({
   page,
 }) => {
   const catalogRequests: string[] = [];
-  page.on("request", (request) => {
-    const url = new URL(request.url());
-    if (
-      ["/api/v1/teacher/classes", "/api/v1/teacher/question-banks"].includes(
-        url.pathname,
-      )
-    )
-      catalogRequests.push(url.pathname + url.search);
-  });
   const db = createDb(database);
   const seed = await db.user.findUniqueOrThrow({
     where: { email: "teacher1@exam.local" },
@@ -49,6 +40,17 @@ test("Classes → Builder: page boundaries, SPA cache and reload", async ({
   });
   await db.$disconnect();
   await login(page, teacher.email);
+  // Finish the login/dashboard document before observing Classes/Builder.
+  await page.goto("about:blank");
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (
+      ["/api/v1/teacher/classes", "/api/v1/teacher/question-banks"].includes(
+        url.pathname,
+      )
+    )
+      catalogRequests.push(url.pathname + url.search);
+  });
   await page.goto("/teacher/classes");
   await expect(
     page.getByRole("heading", { name: "Lớp học của tôi" }),
@@ -170,6 +172,7 @@ test("Classes → Builder: page boundaries, SPA cache and reload", async ({
     });
     geometry.push({ width, overflow, touchHeight: box!.height });
   }
+  expect(catalogRequests.length).toBeGreaterThan(0);
   expect(catalogRequests.every((path) => path.includes("pageSize=20"))).toBe(
     true,
   );
@@ -492,6 +495,7 @@ test("Management paging, search, class mutations, student discovery and admin bo
   await page.getByRole("button", { name: "Tạo lớp học", exact: true }).click();
   await expect(page.getByText("Trang 1 / 2 · 23 kết quả")).toBeVisible();
   await page.getByRole("link", { name: "Bài thi", exact: true }).click();
+  await expect(page.getByLabel("Tìm bài thi", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Trang sau", exact: true }).click();
   await expect(
     page.getByRole("link", { name: `${marker} exam 22`, exact: true }),

@@ -70,3 +70,63 @@ it("shows a recoverable initial network error instead of an expiry/login redirec
     screen.queryByRole("heading", { name: "Phiên đăng nhập đã kết thúc" }),
   ).toBeNull();
 });
+
+it("keeps identity until a browser request confirms revocation, then removes protected UI and cache", async () => {
+  const { api } = await import("../lib/api");
+  const cache = mount();
+  let resolve!: (response: Response) => void;
+  vi.stubGlobal(
+    "fetch",
+    () =>
+      new Promise<Response>((done) => {
+        resolve = done;
+      }),
+  );
+  const pending = api("/teacher/exams").catch((error: unknown) => error);
+  // A server-side event unknown to this client is not itself a browser signal.
+  expect(screen.getByText("Protected teacher workspace")).toBeTruthy();
+  expect(cache.getQueryData(["me"])).toEqual(user);
+  await act(async () => {
+    resolve(
+      new Response(JSON.stringify({ error: { code: "UNAUTHENTICATED" } }), {
+        status: 401,
+      }),
+    );
+    await pending;
+  });
+  expect(screen.queryByText("Protected teacher workspace")).toBeNull();
+  expect(
+    screen.getByRole("heading", { name: "Phiên đăng nhập đã kết thúc" }),
+  ).toBeTruthy();
+  expect(cache.getQueryData(["me"])).toBeNull();
+  expect(cache.getQueryData(["protected-grade"])).toBeUndefined();
+  cache.clear();
+});
+
+it.each(["FORBIDDEN", "network"])(
+  "retains protected identity on %s without replaying a rejected draft mutation",
+  async (kind) => {
+    const { api } = await import("../lib/api");
+    const cache = mount();
+    const mutations: string[] = [];
+    vi.stubGlobal("fetch", async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/auth/csrf"))
+        return new Response(JSON.stringify({ data: { token: "test-only" } }));
+      if (init?.method === "POST") mutations.push(url);
+      if (kind === "network") throw new TypeError("Network unavailable");
+      return new Response(JSON.stringify({ error: { code: kind } }), {
+        status: 403,
+      });
+    });
+    await act(async () => {
+      await expect(
+        api("/teacher/exams", "POST", { title: "unsaved draft" }),
+      ).rejects.toThrow();
+    });
+    expect(mutations).toHaveLength(1);
+    expect(screen.getByText("Protected teacher workspace")).toBeTruthy();
+    expect(cache.getQueryData(["me"])).toEqual(user);
+    expect(cache.getQueryData(["protected-grade"])).toBe("private result");
+    cache.clear();
+  },
+);

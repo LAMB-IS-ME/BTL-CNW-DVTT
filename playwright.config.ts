@@ -10,6 +10,9 @@ if (!["127.0.0.1", "localhost", "[::1]"].includes(new URL(database).hostname))
   );
 export default defineConfig({
   testDir: "tests/e2e",
+  // npm run test:e2e runs recovery next with a fresh API rate-limit store.
+  testIgnore: "**/session-recovery.spec.ts",
+  outputDir: "test-results/core",
   fullyParallel: false,
   workers: 1,
   timeout: 60000,

@@ -1,0 +1,126 @@
+/* Opt-in pilot: Admin account creation/table and Teacher class forms only.
+   Keep the approved module styles and native control behavior unchanged. */
+.management-form-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  align-items: start;
+  gap: 16px 20px;
+}
+.management-form .field {
+  min-width: 0;
+  margin: 0;
+}
+.management-form :is(input, select) {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  border-color: #7b857c;
+}
+.management-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #dce4de;
+}
+.management-form-actions > button {
+  min-height: 44px;
+}
+.account-table th,
+.account-table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+}
+.account-table :is(button, select) {
+  min-height: 44px;
+}
+.account-table select {
+  border-color: #7b857c;
+}
+.account-name {
+  font-weight: 600;
+}
+.account-mobile-label {
+  display: none;
+}
+.account-empty td {
+  padding-block: 28px;
+  color: #535e59;
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .management-form-fields-account {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .management-form-fields {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .management-form :is(input, select),
+  .account-table select {
+    font-size: 16px;
+  }
+  .management-form-actions > button {
+    flex: 1 1 120px;
+  }
+  .account-table {
+    overflow: visible;
+  }
+  /* Explicit table roles preserve row/header/cell semantics when reflowed. */
+  .account-table :is(table, tbody) {
+    display: block;
+  }
+  .account-table table {
+    background: transparent;
+  }
+  .account-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .account-table tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px 16px;
+    padding: 20px 0;
+    border-top: 1px solid #dce4de;
+  }
+  .account-table td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    overflow-wrap: anywhere;
+  }
+  .account-table
+    :is(.account-name, .account-email, .account-action, .account-empty td) {
+    grid-column: 1 / -1;
+  }
+  .account-table .account-email {
+    margin-top: -8px;
+    color: #535e59;
+    font-size: 14px;
+  }
+  .account-mobile-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #535e59;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .account-table select {
+    width: 100%;
+    padding-inline: 8px;
+  }
+  .account-action > button {
+    width: 100%;
+  }
+}

@@ -10,12 +10,14 @@ import type { UserDto, QuestionDto } from "@exam/shared";
 import { api } from "../lib/api";
 import {
   ErrorBox,
+  Empty,
   Field,
   Loading,
   Pager,
   ConfirmButton,
 } from "../components/ui";
 import { Markdown } from "../components/Markdown";
+import "../styles/management-refinement.css";
 type Catalog = {
   id: string;
   name?: string;
@@ -38,7 +40,7 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
     <>
       <h1>{bank ? "Ngân hàng câu hỏi" : "Lớp học của tôi"}</h1>
       <form
-        className="card grid"
+        className={bank ? "card grid" : "card management-form"}
         onSubmit={async (e) => {
           e.preventDefault();
           const f = e.currentTarget;
@@ -56,16 +58,20 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
           }
         }}
       >
-        <Field label={bank ? "Tên ngân hàng" : "Tên lớp"}>
-          <input name={bank ? "title" : "name"} required />
-        </Field>
-        <Field label={bank ? "Môn học" : "Mã lớp"}>
-          <input name={bank ? "subject" : "code"} />
-        </Field>
-        <Field label="Mô tả">
-          <input name="description" />
-        </Field>
-        <button>Tạo {bank ? "ngân hàng" : "lớp học"}</button>
+        <div className={bank ? undefined : "management-form-fields"}>
+          <Field label={bank ? "Tên ngân hàng" : "Tên lớp"}>
+            <input name={bank ? "title" : "name"} required />
+          </Field>
+          <Field label={bank ? "Môn học" : "Mã lớp"}>
+            <input name={bank ? "subject" : "code"} />
+          </Field>
+          <Field label="Mô tả">
+            <input name="description" />
+          </Field>
+        </div>
+        <div className={bank ? undefined : "management-form-actions"}>
+          <button>Tạo {bank ? "ngân hàng" : "lớp học"}</button>
+        </div>
       </form>
       <CatalogControls
         paging={paging}
@@ -88,6 +94,13 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
           ))}
         </div>
       )}
+      {!bank &&
+        q.isSuccess &&
+        !q.isFetching &&
+        !paging.waiting &&
+        paging.items.length === 0 && (
+          <Empty>Không tìm thấy lớp học phù hợp.</Empty>
+        )}
       <CatalogPager paging={paging} />
     </>
   );
@@ -130,7 +143,7 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
       <h1>{c.title || c.name}</h1>
       <ErrorBox error={error} />
       <form
-        className="card grid"
+        className={bank ? "card grid" : "card management-form"}
         onSubmit={async (e) => {
           e.preventDefault();
           try {
@@ -145,25 +158,29 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
           }
         }}
       >
-        <Field label="Tên">
-          <input
-            name={bank ? "title" : "name"}
-            defaultValue={c.title || c.name}
-            required
-          />
-        </Field>
-        <Field label="Mô tả">
-          <input name="description" defaultValue={c.description} />
-        </Field>
-        <button>Lưu thông tin</button>
-        <ConfirmButton
-          onConfirm={async () => {
-            await api(`/teacher/${path}/${id}`, "DELETE");
-            await cache.invalidateQueries({ queryKey: [path] });
-          }}
-        >
-          Lưu trữ
-        </ConfirmButton>
+        <div className={bank ? undefined : "management-form-fields"}>
+          <Field label="Tên">
+            <input
+              name={bank ? "title" : "name"}
+              defaultValue={c.title || c.name}
+              required
+            />
+          </Field>
+          <Field label="Mô tả">
+            <input name="description" defaultValue={c.description} />
+          </Field>
+        </div>
+        <div className={bank ? undefined : "management-form-actions"}>
+          <button>Lưu thông tin</button>
+          <ConfirmButton
+            onConfirm={async () => {
+              await api(`/teacher/${path}/${id}`, "DELETE");
+              await cache.invalidateQueries({ queryKey: [path] });
+            }}
+          >
+            Lưu trữ
+          </ConfirmButton>
+        </div>
       </form>
       {bank && (
         <div className="actions">
@@ -232,6 +249,12 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
               </div>
             ))}
           </div>
+          {students.query.isSuccess &&
+            !students.query.isFetching &&
+            !students.waiting &&
+            students.items.length === 0 && (
+              <Empty>Không tìm thấy sinh viên phù hợp.</Empty>
+            )}
           <CatalogPager paging={students} />
           <h2>Danh sách lớp ({c.members?.length})</h2>
           {c.members?.map(({ student: u }) => (

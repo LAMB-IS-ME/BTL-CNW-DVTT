@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { UserDto } from "@exam/shared";
 import { api } from "../lib/api";
+import "../styles/management-refinement.css";
 import {
   Field,
   ErrorBox,
@@ -32,7 +33,7 @@ export function AdminUsers() {
       <section className="card">
         <h2>Tạo tài khoản</h2>
         <form
-          className="grid"
+          className="management-form"
           onSubmit={async (e) => {
             e.preventDefault();
             const f = e.currentTarget;
@@ -47,23 +48,27 @@ export function AdminUsers() {
             }
           }}
         >
-          <Field label="Họ tên">
-            <input name="fullName" required minLength={2} />
-          </Field>
-          <Field label="Email">
-            <input type="email" name="email" required />
-          </Field>
-          <Field label="Mật khẩu">
-            <input type="password" name="password" minLength={10} required />
-          </Field>
-          <Field label="Role">
-            <select name="role">
-              <option>STUDENT</option>
-              <option>TEACHER</option>
-              <option>ADMIN</option>
-            </select>
-          </Field>
-          <button>Tạo tài khoản</button>
+          <div className="management-form-fields management-form-fields-account">
+            <Field label="Họ tên">
+              <input name="fullName" required minLength={2} />
+            </Field>
+            <Field label="Email">
+              <input type="email" name="email" required />
+            </Field>
+            <Field label="Mật khẩu">
+              <input type="password" name="password" minLength={10} required />
+            </Field>
+            <Field label="Role">
+              <select name="role">
+                <option>STUDENT</option>
+                <option>TEACHER</option>
+                <option>ADMIN</option>
+              </select>
+            </Field>
+          </div>
+          <div className="management-form-actions">
+            <button>Tạo tài khoản</button>
+          </div>
         </form>
       </section>
       <ErrorBox error={error || q.error} />
@@ -94,23 +99,40 @@ export function AdminUsers() {
       {q.isPending ? (
         <Loading />
       ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
+        <div className="table-wrap account-table">
+          <table role="table" aria-label="Danh sách tài khoản">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">
+                  Họ tên
+                </th>
+                <th role="columnheader" scope="col">
+                  Email
+                </th>
+                <th role="columnheader" scope="col">
+                  Role
+                </th>
+                <th role="columnheader" scope="col">
+                  Trạng thái
+                </th>
+                <th role="columnheader" scope="col">
+                  Thao tác
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {q.data?.items.map((u) => (
-                <tr key={u.id}>
-                  <td>{u.fullName}</td>
-                  <td>{u.email}</td>
-                  <td>
+                <tr role="row" key={u.id}>
+                  <td role="cell" className="account-name">
+                    {u.fullName}
+                  </td>
+                  <td role="cell" className="account-email">
+                    {u.email}
+                  </td>
+                  <td role="cell">
+                    <span className="account-mobile-label" aria-hidden="true">
+                      Role
+                    </span>
                     <select
                       aria-label={`Role ${u.fullName}`}
                       value={u.role}
@@ -131,8 +153,13 @@ export function AdminUsers() {
                       <option>STUDENT</option>
                     </select>
                   </td>
-                  <td>{u.status}</td>
-                  <td>
+                  <td role="cell">
+                    <span className="account-mobile-label" aria-hidden="true">
+                      Trạng thái
+                    </span>
+                    {u.status}
+                  </td>
+                  <td role="cell" className="account-action">
                     <ConfirmButton
                       onConfirm={async () => {
                         await api(`/admin/users/${u.id}/status`, "PATCH", {
@@ -146,6 +173,13 @@ export function AdminUsers() {
                   </td>
                 </tr>
               ))}
+              {!q.error && q.data?.items.length === 0 && (
+                <tr role="row" className="account-empty">
+                  <td role="cell" colSpan={5}>
+                    Không tìm thấy tài khoản phù hợp.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

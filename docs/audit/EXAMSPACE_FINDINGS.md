@@ -125,6 +125,10 @@ Audit 12/10/2026; HEAD `04f99e305c89f17e6ee98ed1ea78124c260d601d`. **AUDIT COMPL
 - **Scope / complexity / regression:** vừa, reconnect/disconnect/crash, hai tabs một user, expired/finished room và startup timing; tránh đánh offline socket mới. Local business-state recovery phải giữ nguyên.
 - **Deployment impact:** P3 operational visibility; user cần quyết định chấp nhận cho demo một instance hay sửa. Cloud WSS/restart và scale chưa tested, giữ gate staging riêng.
 
+## UI-AUDIT-F1 — Host Live Quiz chậm cập nhật sau khi Student gửi đáp án
+
+Ghi nhớ từ audit local 16/10/2026, chưa tái hiện trong recovery 17/10: Teacher `teacher1` mở phòng quiz 3 câu, Student `student2` join, Host bắt đầu; Student chọn đáp án câu 1 và gửi. Báo cáo cũ ghi Student sang reveal nhưng Host vẫn “Đang nhận câu trả lời”; tool output lịch sử xác nhận chờ “Câu tiếp theo” timeout 10 giây, roster 1 người. Reload Host mới thấy state mới. Expected: Host cập nhật qua realtime không cần reload. Chưa kết luận nguyên nhân hoặc ảnh hưởng staging. Audit cũ có dùng reload để đi tiếp/chụp ảnh; đây **không phải realtime PASS**, không đưa workaround vào production. Raw evidence đã được phép dọn sau review; chưa sửa Socket.IO/protocol. Cần tái hiện và điều tra ở phase functional riêng; không đồng nhất với REL-001.
+
 ## Không phải confirmed bugs
 
 Single-instance event bus/rate limit/presence, RAM-only unsaved queue, latest20 room history, membership-dependent history index, large bundles và memory exports là giới hạn cần chấp nhận/đo thêm. Không có load/soak/multi-instance evidence. Hosted TLS/DB pooling/Storage, browser cross-site cookies, WSS cloud reconnect, backup restore và staging/production URLs **NOT TESTED**. Không tự gán P0/P1 cho các unknown này.

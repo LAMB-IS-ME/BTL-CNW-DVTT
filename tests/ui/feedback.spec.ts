@@ -19,6 +19,8 @@ test("Pilot shell: current route, keyboard, touch targets, sticky controls and r
   for (const width of [1440, 820, 390]) {
     await page.setViewportSize({ width, height: 900 });
     const nav = page.getByRole("navigation", { name: "Điều hướng giảng viên" });
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await expect(nav.locator('[aria-current="page"]')).toHaveCount(1);
     await expect(nav.locator('[aria-current="page"]')).toHaveText("Tổng quan");
     for (const link of await nav.getByRole("link").all()) {
@@ -31,11 +33,16 @@ test("Pilot shell: current route, keyboard, touch targets, sticky controls and r
     await page.getByRole("link", { name: "Đến nội dung chính" }).focus();
     await page.keyboard.press("Enter");
     await expect(page.locator("main")).toBeFocused();
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await nav.getByRole("link", { name: "Câu hỏi", exact: true }).click();
     await expect(
       page.getByRole("heading", { name: "Ngân hàng câu hỏi", exact: true }),
     ).toBeVisible();
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await expect(nav.locator('[aria-current="page"]')).toHaveText("Câu hỏi");
+    if (width === 390) await page.keyboard.press("Escape");
     const row = page
       .getByRole("row")
       .filter({ hasText: "Công nghệ Web căn bản" });
@@ -95,7 +102,10 @@ test("Pilot shell: current route, keyboard, touch targets, sticky controls and r
     await expect(
       page.getByRole("heading", { name: "Chỉnh sửa câu hỏi", exact: true }),
     ).toBeVisible();
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await expect(nav.locator('[aria-current="page"]')).toHaveText("Câu hỏi");
+    if (width === 390) await page.keyboard.press("Escape");
     const field = page.getByLabel("Lời giải", { exact: true });
     await field.scrollIntoViewIfNeeded();
     await field.focus();
@@ -127,6 +137,8 @@ test("Pilot shell: current route, keyboard, touch targets, sticky controls and r
       ).toBe(true);
     }
     await page.keyboard.press("Escape");
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await nav.getByRole("link", { name: "Tổng quan", exact: true }).click();
     await expect(
       page.getByRole("heading", { name: "Không gian giảng viên" }),
@@ -180,6 +192,8 @@ for (const [device, width] of [
     ).toBeVisible();
     await expect(page.getByRole("alert")).toHaveCount(0);
     fail = true;
+    if (width === 390)
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
     await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
     await expect(page.getByRole("alert")).toContainText("Không thể hoàn tất");
     await page.screenshot({

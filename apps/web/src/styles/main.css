@@ -427,3 +427,134 @@ section,
 aside {
   min-width: 0;
 }
+
+/* Shared navigation disclosure; existing desktop headers/sidebar stay intact. */
+.app-mobile-navigation {
+  display: none;
+}
+.app-mobile-navigation,
+.app-mobile-navigation * {
+  box-sizing: border-box;
+}
+.app-shell .app-mobile-navigation {
+  --mobile-nav-accent: #176656;
+  --mobile-nav-soft: #e9f1ed;
+  --mobile-nav-rule: #dce4de;
+  background: #fff;
+  color: #183b36;
+  font-size: 16px;
+}
+.qb-shell .app-mobile-navigation {
+  --mobile-nav-accent: var(--qb-accent);
+  --mobile-nav-soft: var(--qb-accent-soft);
+  --mobile-nav-rule: var(--qb-border);
+  color: var(--qb-ink);
+}
+.app-shell .app-mobile-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  min-height: 69px;
+  border-bottom: 1px solid var(--mobile-nav-rule);
+}
+.app-shell .app-mobile-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--mobile-nav-accent);
+  font-size: 21px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.app-shell .app-mobile-navigation button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--mobile-nav-rule);
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font-size: 16px;
+}
+.app-shell .app-mobile-toggle {
+  flex-shrink: 0;
+}
+.app-shell .app-mobile-toggle[aria-expanded="true"] {
+  background: var(--mobile-nav-soft);
+  border-color: var(--mobile-nav-accent);
+}
+.app-mobile-panel[hidden] {
+  display: none;
+}
+.app-mobile-panel {
+  padding: 8px 16px 16px;
+  border-bottom: 1px solid var(--mobile-nav-rule);
+}
+.app-mobile-panel nav {
+  display: grid;
+  gap: 4px;
+  font-size: 16px;
+}
+.app-shell .app-mobile-panel nav a {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-left: 3px solid transparent;
+  border-radius: 4px;
+  color: inherit;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.app-shell .app-mobile-panel nav a[aria-current="page"] {
+  border-left-color: var(--mobile-nav-accent);
+  background: var(--mobile-nav-soft);
+  color: var(--mobile-nav-accent);
+  font-weight: 700;
+}
+.app-shell .app-mobile-panel nav a:hover,
+.app-shell .app-mobile-navigation button:hover {
+  background: var(--mobile-nav-soft);
+}
+.app-mobile-account {
+  border-top: 1px solid var(--mobile-nav-rule);
+  margin-top: 12px;
+  padding-top: 16px;
+}
+.app-mobile-account strong,
+.app-mobile-account small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.app-mobile-account small {
+  margin-top: 2px;
+  font-size: 14px;
+}
+.app-mobile-account button {
+  width: 100%;
+  margin-top: 12px;
+}
+@media (max-width: 700px) {
+  .app-shell > .app-mobile-navigation {
+    display: block;
+  }
+  .app-shell:has(> .app-mobile-navigation) > header,
+  .app-shell:has(> .app-mobile-navigation) > .qb-sidebar {
+    display: none;
+  }
+}
+/* Only the legacy Teacher/Student headers run out of room on tablets. */
+@media (min-width: 701px) and (max-width: 960px) {
+  .app-shell[data-compact-navigation="tablet"] > .app-mobile-navigation {
+    display: block;
+  }
+  .app-shell[data-compact-navigation="tablet"] > header {
+    display: none;
+  }
+}

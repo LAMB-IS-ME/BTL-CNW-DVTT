@@ -160,7 +160,7 @@ for (const width of [1440, 820]) {
     );
   });
 }
-test("Teacher mobile navigation remains visible with a collapsed desktop preference", async ({
+test("Teacher mobile menu stays available with a collapsed desktop preference", async ({
   page,
 }) => {
   await page.addInitScript(() =>
@@ -170,6 +170,12 @@ test("Teacher mobile navigation remains visible with a collapsed desktop prefere
   await login(page);
   await page.goto(draft);
   const nav = page.getByRole("navigation", { name: "Điều hướng giảng viên" });
+  const menu = page.getByRole("button", { name: /^(Menu|Đóng)$/ });
+  await expect(menu).toBeVisible();
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await expect(nav).toBeHidden();
+  await menu.click();
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
   await expect(nav).toBeVisible();
   await expect(nav.getByRole("link")).toHaveCount(5);
   await expect(
@@ -182,6 +188,9 @@ test("Teacher mobile navigation remains visible with a collapsed desktop prefere
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(390);
   }
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeFocused();
+  await expect(nav).toBeHidden();
   for (let step = 0; step < 5; step++) await checkStep(page, step, 390);
 });
 

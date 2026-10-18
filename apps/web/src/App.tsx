@@ -23,6 +23,7 @@ import "./styles/teacher-shell.css";
 import "./styles/student-focus.css";
 import { Icon } from "./components/Icon";
 import { ApplicationSidebar } from "./components/ApplicationSidebar";
+import { MobileNavigation } from "./components/MobileNavigation";
 const TeacherDashboard = lazy(() =>
   import("./features/teacher-dashboard").then((m) => ({
     default: m.TeacherDashboard,
@@ -145,14 +146,28 @@ function Shell() {
   const [error, setError] = useState<unknown>();
   const nav = useNavigate(),
     cache = useQueryClient();
+  const logout = async () => {
+    try {
+      await api("/auth/logout", "POST");
+      cache.clear();
+      nav("/login");
+    } catch (e) {
+      setError(e);
+    }
+  };
+  const tabletMenu =
+    (user?.role === "TEACHER" && !pilot) ||
+    (user?.role === "STUDENT" && !studentFocus);
   return (
     <div
+      data-compact-navigation={tabletMenu ? "tablet" : undefined}
       className={
-        pilot
+        "app-shell " +
+        (pilot
           ? `qb-shell${examManagement ? " exam-folio-shell" : ""}${sidebarCollapsed ? " qb-sidebar-collapsed" : ""}`
           : studentFocus
             ? "focus-shell"
-            : undefined
+            : "")
       }
     >
       {pilot && (
@@ -163,11 +178,20 @@ function Shell() {
           <ApplicationSidebar />
         </>
       )}
+      {studentFocus && (
+        <a className="focus-skip" href="#main-content">
+          Đến nội dung bài thi
+        </a>
+      )}
+      {user && (
+        <MobileNavigation
+          user={user}
+          collapseAt={tabletMenu ? 960 : 700}
+          onLogout={logout}
+        />
+      )}
       {studentFocus ? (
         <>
-          <a className="focus-skip" href="#main-content">
-            Đến nội dung bài thi
-          </a>
           <header className="focus-topbar">
             <Link className="brand" to="/student/exams">
               ▦ ExamSpace
@@ -176,18 +200,7 @@ function Shell() {
               <nav aria-label="Không gian học tập">
                 <Link to="/student/results">Kết quả</Link>
                 <Link to="/student/quiz/join">Live Quiz</Link>
-                <button
-                  className="secondary"
-                  onClick={async () => {
-                    try {
-                      await api("/auth/logout", "POST");
-                      cache.clear();
-                      nav("/login");
-                    } catch (e) {
-                      setError(e);
-                    }
-                  }}
-                >
+                <button className="secondary" onClick={logout}>
                   Đăng xuất
                 </button>
               </nav>
@@ -270,18 +283,7 @@ function Shell() {
                     {pilot && <small>Giảng viên</small>}
                   </span>
                 </span>
-                <button
-                  className="secondary"
-                  onClick={async () => {
-                    try {
-                      await api("/auth/logout", "POST");
-                      cache.clear();
-                      nav("/login");
-                    } catch (e) {
-                      setError(e);
-                    }
-                  }}
-                >
+                <button className="secondary" onClick={logout}>
                   Đăng xuất
                 </button>
               </>

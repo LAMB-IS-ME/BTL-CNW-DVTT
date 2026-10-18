@@ -124,3 +124,83 @@
     width: 100%;
   }
 }
+
+/* Class roster pilot: preserve data/actions, replace repeated cards with rows. */
+.class-student-list {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 24px;
+  border: 1px solid #dce4de;
+  border-radius: 10px;
+  background: white;
+}
+.class-student-list:empty {
+  display: none;
+}
+.class-student-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 16px;
+  min-width: 0;
+}
+.class-student-row + .class-student-row {
+  border-top: 1px solid #dce4de;
+}
+.class-student-identity {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.class-student-identity > strong {
+  font-weight: 600;
+}
+.class-student-identity > span {
+  font-size: 14px;
+  color: #535e59;
+}
+.class-student-row > button {
+  min-height: 44px;
+}
+@media (min-width: 1100px) {
+  .class-student-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .class-student-picker > :nth-child(2) {
+    border-top: 0;
+  }
+  .class-student-picker > :nth-child(even) {
+    border-left: 1px solid #dce4de;
+  }
+}
+@media (max-width: 700px) {
+  /* Opt in only Admin Users, Teacher Classes and the class student picker. */
+  .management-pager {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+    align-items: center;
+  }
+  .management-pager > span {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .management-pager > button {
+    min-height: 44px;
+    width: 100%;
+  }
+  .class-student-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px;
+  }
+  .class-student-row > button {
+    justify-self: start;
+  }
+}

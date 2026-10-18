@@ -114,13 +114,18 @@ export function CatalogControls<T>({
   );
 }
 export function CatalogPager<T>({
+  className = "",
   paging,
 }: {
   paging: ReturnType<typeof useCatalogPage<T>>;
+  className?: string;
 }) {
   const busy = paging.query.isFetching || paging.waiting;
   return (
-    <nav className="catalog-pager" aria-label="Phân trang">
+    <nav
+      className={`catalog-pager ${className}`.trim()}
+      aria-label="Phân trang"
+    >
       <button
         type="button"
         className="secondary"

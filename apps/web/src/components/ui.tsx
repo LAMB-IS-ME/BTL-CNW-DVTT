@@ -90,6 +90,7 @@ export function ConfirmButton({
   );
 }
 export function Pager({
+  className = "",
   page,
   total,
   onChange,
@@ -97,9 +98,10 @@ export function Pager({
   page: number;
   total: number;
   onChange: (page: number) => void;
+  className?: string;
 }) {
   return (
-    <div className="actions">
+    <div className={`actions ${className}`.trim()}>
       <button
         type="button"
         disabled={page <= 1}

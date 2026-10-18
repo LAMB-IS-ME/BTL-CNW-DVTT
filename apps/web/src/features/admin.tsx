@@ -184,7 +184,12 @@ export function AdminUsers() {
           </table>
         </div>
       )}
-      <Pager page={page} total={q.data?.total || 0} onChange={setPage} />
+      <Pager
+        className="management-pager"
+        page={page}
+        total={q.data?.total || 0}
+        onChange={setPage}
+      />
     </>
   );
 }

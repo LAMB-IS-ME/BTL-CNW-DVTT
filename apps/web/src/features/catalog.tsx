@@ -101,7 +101,10 @@ export function CatalogList({ bank = false }: { bank?: boolean }) {
         paging.items.length === 0 && (
           <Empty>Không tìm thấy lớp học phù hợp.</Empty>
         )}
-      <CatalogPager paging={paging} />
+      <CatalogPager
+        paging={paging}
+        className={bank ? undefined : "management-pager"}
+      />
     </>
   );
 }
@@ -225,12 +228,17 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
         <>
           <h2>Thêm sinh viên</h2>
           <CatalogControls paging={students} label="Tìm sinh viên để thêm" />
-          <div className="grid">
+          <ul
+            className="class-student-list class-student-picker"
+            aria-label="Sinh viên có thể thêm"
+            role="list"
+          >
             {students.items.map((u) => (
-              <div className="card" key={u.id}>
-                <p>
-                  {u.fullName} · {u.email}
-                </p>
+              <li className="class-student-row" key={u.id}>
+                <span className="class-student-identity">
+                  <strong>{u.fullName}</strong>
+                  <span>{u.email}</span>
+                </span>
                 <button
                   disabled={c.members?.some((m) => m.student.id === u.id)}
                   onClick={async () => {
@@ -244,37 +252,49 @@ export function CatalogDetail({ bank = false }: { bank?: boolean }) {
                     }
                   }}
                 >
-                  Thêm vào lớp
+                  {c.members?.some((m) => m.student.id === u.id)
+                    ? "Đã trong lớp"
+                    : "Thêm vào lớp"}
                 </button>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
           {students.query.isSuccess &&
             !students.query.isFetching &&
             !students.waiting &&
             students.items.length === 0 && (
               <Empty>Không tìm thấy sinh viên phù hợp.</Empty>
             )}
-          <CatalogPager paging={students} />
+          <CatalogPager paging={students} className="management-pager" />
           <h2>Danh sách lớp ({c.members?.length})</h2>
-          {c.members?.map(({ student: u }) => (
-            <div className="card actions" key={u.id}>
-              <span>
-                {u.fullName} · {u.studentCode || u.email}
-              </span>
-              <ConfirmButton
-                onConfirm={async () => {
-                  await api(
-                    `/teacher/classes/${id}/students/${u.id}`,
-                    "DELETE",
-                  );
-                  await cache.invalidateQueries({ queryKey: [path] });
-                }}
-              >
-                Xóa khỏi lớp
-              </ConfirmButton>
-            </div>
-          ))}
+          <ul
+            className="class-student-list"
+            aria-label="Sinh viên trong lớp"
+            role="list"
+          >
+            {c.members?.map(({ student: u }) => (
+              <li className="class-student-row" key={u.id}>
+                <span className="class-student-identity">
+                  <strong>{u.fullName}</strong>
+                  <span>{u.studentCode || u.email}</span>
+                </span>
+                <ConfirmButton
+                  onConfirm={async () => {
+                    await api(
+                      `/teacher/classes/${id}/students/${u.id}`,
+                      "DELETE",
+                    );
+                    await cache.invalidateQueries({ queryKey: [path] });
+                  }}
+                >
+                  Xóa khỏi lớp
+                </ConfirmButton>
+              </li>
+            ))}
+          </ul>
+          {c.members?.length === 0 && (
+            <Empty>Chưa có sinh viên trong lớp.</Empty>
+          )}
           <h2>Bài thi đã giao</h2>
           {c.exams?.map(({ exam }) => (
             <p key={exam.id}>

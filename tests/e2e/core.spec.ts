@@ -8,6 +8,15 @@ async function login(page: Page, email: string) {
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+  await expect(page).not.toHaveURL(/\/login(?:\?|$)/);
+  const menu = page.getByRole("button", { name: "Menu", exact: true });
+  if (await menu.isVisible()) {
+    await menu.click();
+    await expect(menu).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Đóng", exact: true }),
+    ).toHaveAttribute("aria-expanded", "true");
+  }
   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
 }
 async function mutation<T>(

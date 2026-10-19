@@ -4,6 +4,16 @@ const png = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aXioAAAAASUVORK5CYII=",
   "base64",
 );
+async function navigateToBanks(page: Page) {
+  const menu = page.getByRole("button", { name: "Menu", exact: true });
+  if (await menu.isVisible()) {
+    await menu.click();
+    await expect(
+      page.getByRole("button", { name: "Đóng", exact: true }),
+    ).toHaveAttribute("aria-expanded", "true");
+  }
+  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+}
 async function login(page: Page) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill("teacher1@exam.local");
@@ -12,7 +22,7 @@ async function login(page: Page) {
   await expect(
     page.getByRole("heading", { name: "Không gian giảng viên" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await expect(
     page.getByRole("heading", { name: "Ngân hàng câu hỏi", exact: true }),
   ).toBeVisible();
@@ -165,7 +175,7 @@ test("Question Bank discoverability: four types, reload/edit/cancel, archive/res
     .getByRole("dialog")
     .getByRole("button", { name: "Lưu thông tin", exact: true })
     .click();
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await page.getByLabel("Tìm ngân hàng", { exact: true }).fill(name);
   const row = page.getByRole("row").filter({ hasText: name });
   await expect(row).toContainText("Đã chỉnh sửa");
@@ -349,7 +359,7 @@ test("Pilot UI: keyboard/dialog focus, slow/loading, validation, network error, 
     await new Promise((r) => setTimeout(r, 700));
     await route.continue();
   });
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await page
     .getByLabel("Tìm ngân hàng", { exact: true })
     .fill("missing_unique_bank");
@@ -568,7 +578,7 @@ test("List/detail failures retry; archive and restore errors preserve state and 
     await expect(row).toBeVisible();
   }
   await page.route("**/question-banks?view=manage*", (r) => r.fulfill(fail));
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await page.reload();
   await expect(page.getByRole("alert")).toContainText("Kiểm tra kết nối");
   await page.unroute("**/question-banks?view=manage*");
@@ -588,7 +598,7 @@ test("Dirty editor protects sidebar navigation and reload; saved editor has no f
   await page
     .getByLabel("Nội dung câu hỏi", { exact: true })
     .fill("Unsaved edit");
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await expect(
     page.getByRole("dialog", { name: "Rời trang soạn thảo?" }),
   ).toBeVisible();
@@ -681,7 +691,7 @@ for (const width of [1440, 820, 390]) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+    await navigateToBanks(page);
     await page.getByLabel("Tìm ngân hàng", { exact: true }).fill(name);
     const row = page.getByRole("row").filter({ hasText: name });
     await row.getByLabel(`Thao tác ${name}`, { exact: true }).focus();
@@ -828,7 +838,7 @@ test("Pilot evidence: desktop screenshots and warm local performance samples", a
   });
   for (let i = 0; i < 10; i++) {
     let t = performance.now();
-    await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+    await navigateToBanks(page);
     await expect(
       page.getByRole("link", { name: "Mở ngân hàng" }).first(),
     ).toBeVisible();
@@ -903,7 +913,7 @@ test("Pilot evidence: desktop screenshots and warm local performance samples", a
     path: "docs/screenshots/question-bank/after-archived.png",
     fullPage: true,
   });
-  await page.getByRole("link", { name: "Câu hỏi", exact: true }).click();
+  await navigateToBanks(page);
   await page.getByLabel("Tìm ngân hàng", { exact: true }).fill("Công nghệ");
   await expect(
     page.getByRole("link", { name: "Mở ngân hàng" }).first(),

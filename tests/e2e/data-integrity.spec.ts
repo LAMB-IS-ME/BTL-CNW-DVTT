@@ -477,14 +477,21 @@ test("Management paging, search, class mutations, student discovery and admin bo
   await expect(page.getByText("Trang 1 / 2 · 22 kết quả")).toBeVisible();
   await page.getByRole("button", { name: "Trang sau", exact: true }).click();
   const student = page
-    .locator(".card")
-    .filter({ hasText: `${marker} student 22` })
-    .filter({
-      has: page.getByRole("button", { name: "Thêm vào lớp", exact: true }),
-    });
+    .getByRole("list", { name: "Sinh viên có thể thêm", exact: true })
+    .getByRole("listitem")
+    .filter({ has: page.getByText(`${marker} student 22`, { exact: true }) });
+  await expect(student).toHaveCount(1);
   await student
     .getByRole("button", { name: "Thêm vào lớp", exact: true })
     .click();
+  await expect(
+    student.getByRole("button", { name: "Đã trong lớp", exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page
+      .getByRole("list", { name: "Sinh viên trong lớp", exact: true })
+      .getByText(`${marker} student 22`, { exact: true }),
+  ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Danh sách lớp (1)", exact: true }),
   ).toBeVisible();

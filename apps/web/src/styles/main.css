@@ -156,6 +156,14 @@ button:disabled {
   background: #fff0eb;
   color: #973d2c;
 }
+/* Content controls retain their secondary/destructive meaning on hover.
+   Module palettes and approved navigation keep their more specific styles. */
+:where(main) .secondary:hover {
+  background: #dce7e0;
+}
+:where(main) .danger:hover {
+  background: #ffe0d5;
+}
 .auth {
   max-width: 480px;
   margin: 40px auto;

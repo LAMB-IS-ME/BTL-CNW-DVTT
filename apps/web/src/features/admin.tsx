@@ -14,6 +14,7 @@ import {
   Loading,
   Pager,
   ConfirmButton,
+  Empty,
 } from "../components/ui";
 export function AdminUsers() {
   const [page, setPage] = useState(1),
@@ -212,6 +213,16 @@ function AdminClasses() {
           </p>
         </div>
       ))}
+      {paging.query.isSuccess &&
+        !paging.query.isFetching &&
+        !paging.waiting &&
+        paging.items.length === 0 && (
+          <Empty>
+            {paging.search.trim()
+              ? "Không tìm thấy lớp học phù hợp. Thử từ khóa khác."
+              : "Chưa có lớp học nào."}
+          </Empty>
+        )}
       <CatalogPager paging={paging} />
     </>
   );
@@ -220,6 +231,12 @@ export function AdminOverview({ classes = false }: { classes?: boolean }) {
   return classes ? <AdminClasses /> : <AdminStats />;
 }
 function AdminStats() {
+  const labels: Record<string, string> = {
+    users: "Tài khoản",
+    classes: "Lớp học",
+    exams: "Bài thi",
+    quizzes: "Live Quiz",
+  };
   const q = useQuery({
     queryKey: ["admin", false],
     queryFn: () => api<Record<string, number>>("/admin/stats"),
@@ -235,7 +252,7 @@ function AdminStats() {
           {Object.entries(q.data || {}).map(([k, v]) => (
             <div className="card" key={k}>
               <h2>{v}</h2>
-              <p>{k}</p>
+              <p>{labels[k] || k}</p>
             </div>
           ))}
         </div>

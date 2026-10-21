@@ -92,10 +92,52 @@ export function attachQuiz(io: IO, db: Db) {
   timer.unref();
   function bind(socket: ExamSocket) {
     const rooms = new Set<string>();
+    const settledMiddlewareErrors = new WeakSet<Error>();
+    type MembershipTurn = {
+      start: (failed: (error: Error) => void) => void;
+      finish: () => void;
+    };
+    const pending: MembershipTurn[] = [];
+    let active: MembershipTurn | undefined;
+    function advance() {
+      if (active || !socket.connected) return;
+      active = pending.shift();
+      const turn = active;
+      if (turn)
+        turn.start((error) => {
+          settledMiddlewareErrors.add(error);
+          turn.finish();
+        });
+    }
+    // Called at packet ingress, before asynchronous authorization. Keep this
+    // turn until the membership handler AND its ACK have settled, not just next().
+    function sequenceMembership(
+      event: string,
+      start: (failed: (error: Error) => void) => void,
+    ) {
+      if (event !== "quiz:room:join" && event !== "quiz:room:leave") {
+        start((error) => {
+          settledMiddlewareErrors.add(error);
+        });
+        return;
+      }
+      if (!socket.connected) return;
+      const turn: MembershipTurn = {
+        start,
+        finish() {
+          if (active !== turn) return;
+          active = undefined;
+          advance();
+        },
+      };
+      pending.push(turn);
+      advance();
+    }
     const run = <T>(
       ack: SocketAck<T>,
       fn: () => Promise<T>,
       answer = false,
+      finished?: () => void,
     ) => {
       void fn()
         .then((data) => {
@@ -108,11 +150,14 @@ export function attachQuiz(io: IO, db: Db) {
               : { code: "INVALID_EVENT", message: "Sự kiện không hợp lệ." };
           if (typeof ack === "function") ack({ error });
           socket.emit(answer ? "quiz:answer:rejected" : "quiz:error", error);
-        });
+        })
+        .finally(finished);
     };
+    const membership = <T>(ack: SocketAck<T>, fn: () => Promise<T>) =>
+      run(ack, fn, false, active?.finish);
     const roomPayload = z.object({ roomId: z.uuid() });
     socket.on("quiz:room:join", (payload, ack) =>
-      run(ack, async () => {
+      membership(ack, async () => {
         const p = z
           .object({
             roomId: z.uuid().optional(),
@@ -192,18 +237,31 @@ export function attachQuiz(io: IO, db: Db) {
     const leave = (roomId: string) =>
       transition(roomId, socket.data.user.id, async () => {
         await socket.leave(`quiz-room:${roomId}`);
+        await socket.leave(`quiz-host:${roomId}`);
         rooms.delete(roomId);
         await offlineIfAbsent(roomId, socket.data.user.id);
       });
     socket.on("quiz:room:leave", (p, ack) =>
-      run(ack, async () => {
+      membership(ack, async () => {
         await leave(roomPayload.parse(p).roomId);
         return { left: true };
       }),
     );
     socket.on("disconnect", () => {
+      // Queued packets must never enter authorization/handlers on a dead socket.
+      // An in-flight DB join still performs its connected check and reconciliation.
+      pending.length = 0;
+      active = undefined;
       for (const roomId of rooms) void leave(roomId).catch(() => {});
     });
+    socket.on("error", (error) => {
+      if (settledMiddlewareErrors.delete(error)) return;
+      // A downstream middleware rejection never reaches the handler's finally.
+      // Without packet identity on this event, cancel the transport rather than
+      // accidentally releasing a different in-flight membership operation.
+      if (active) socket.disconnect(true);
+    });
+    return sequenceMembership;
   }
   return {
     bind,

@@ -7,6 +7,7 @@ import { examFixture } from "./fixture.js";
 import { createRealtime } from "../src/sockets/server.js";
 import {
   closeExpiredQuestions,
+  createRoom,
   quizEvents,
 } from "../src/modules/live-quiz/service.js";
 let ctx: ReturnType<typeof testContext>,
@@ -42,6 +43,109 @@ async function connect(cookie: string) {
   });
   return s;
 }
+it("keeps leave/rejoin FIFO across delayed middleware and delivers reveal without a host reload", async () => {
+  const f = await examFixture(ctx);
+  const second = await account(ctx, "STUDENT");
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Membership FIFO" },
+  });
+  await ctx.db.liveQuizQuestion.create({
+    data: {
+      quizId: quiz.id,
+      questionId: f.question.id,
+      orderIndex: 0,
+      timeLimitSeconds: 30,
+      basePoints: 1000,
+    },
+  });
+  const created = await f.teacher.agent
+    .post(`/api/v1/teacher/quizzes/${quiz.id}/rooms`)
+    .set(f.teacher.headers);
+  const roomId: string = created.body.data.id;
+  const host = await connect(f.teacher.cookie);
+  const a = await connect(f.student.cookie);
+  const b = await connect(second.cookie);
+  const serverHost = rt.io.sockets.sockets.get(host.id!)!;
+  let delayed = false;
+  let entered!: () => void;
+  const held = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  serverHost.use(([event], next) => {
+    if (event === "quiz:room:leave" && !delayed) {
+      delayed = true;
+      entered();
+      // Deliberately reproduce slow middleware, not a wait/retry for assertions.
+      setTimeout(next, 500);
+    } else next();
+  });
+  const completed: string[] = [];
+  const leave = host
+    .timeout(5000)
+    .emitWithAck("quiz:room:leave", { roomId })
+    .then((r) => {
+      completed.push("leave");
+      return r;
+    });
+  await held;
+  const rejoin = host
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId })
+    .then((r) => {
+      completed.push("join");
+      return r;
+    });
+  // A different socket must not wait for this host's middleware gate.
+  const independent = await a
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId });
+  const completedWhileOtherSocketJoined = [...completed];
+  const [left, joined] = await Promise.all([leave, rejoin]);
+  expect(independent).toHaveProperty("data");
+  expect(completedWhileOtherSocketJoined).toEqual([]);
+  expect(left).toHaveProperty("data.left", true);
+  expect(joined).toHaveProperty("data");
+  expect(completed).toEqual(["leave", "join"]);
+  expect(serverHost.rooms.has(`quiz-room:${roomId}`)).toBe(true);
+  expect(serverHost.rooms.has(`quiz-host:${roomId}`)).toBe(true);
+  await b.timeout(5000).emitWithAck("quiz:room:join", { roomId });
+  await a.timeout(5000).emitWithAck("quiz:room:join", { roomId });
+  expect(await ctx.db.quizParticipant.count({ where: { roomId } })).toBe(2);
+  const states: QuizState[] = [];
+  host.on("quiz:state", (s) => states.push(s));
+  const started = await host
+    .timeout(5000)
+    .emitWithAck("quiz:host:start", { roomId });
+  if ("error" in started) throw new Error(started.error.message);
+  const answer = {
+    roomId,
+    questionId: started.data.question!.id,
+    selectedOptionIds: [f.question.options[0]!.id],
+  };
+  for (const s of [a, b])
+    expect(
+      await s.timeout(5000).emitWithAck("quiz:answer", answer),
+    ).toHaveProperty("data.accepted", true);
+  await expect.poll(() => states.at(-1)?.status).toBe("FINISHED");
+  expect(states.at(-1)?.reveal?.answerCount).toBe(2);
+  expect(states.at(-1)?.leaderboard).toHaveLength(2);
+  expect(
+    await ctx.db.quizAnswer.count({
+      where: { roomQuestionId: answer.questionId },
+    }),
+  ).toBe(2);
+  // Duplicate leave is harmless, but a real leave must remove both host rooms.
+  for (let i = 0; i < 2; i++)
+    expect(
+      await host.timeout(5000).emitWithAck("quiz:room:leave", { roomId }),
+    ).toHaveProperty("data.left", true);
+  expect(serverHost.rooms.has(`quiz-room:${roomId}`)).toBe(false);
+  expect(serverHost.rooms.has(`quiz-host:${roomId}`)).toBe(false);
+  const recovered = await host
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId });
+  expect(recovered).toHaveProperty("data.status", "FINISHED");
+});
 it("runs authenticated lobby/start/first-answer/duplicate/deadline/reveal/next/final and reconnect recovery", async () => {
   const f = await examFixture(ctx),
     second = await account(ctx, "STUDENT");
@@ -370,4 +474,192 @@ it("serializes two near-simultaneous tab disconnects without duplicate offline e
   } finally {
     quizEvents.off("changed", changed);
   }
+});
+
+it("releases membership turns after validation failure and keeps duplicate join/leave idempotent", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "FIFO errors" },
+  });
+  const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
+  const student = await connect(f.student.cookie);
+  const invalid = student
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId: "invalid" });
+  const joins = [0, 1].map(() =>
+    student.timeout(5000).emitWithAck("quiz:room:join", { roomId: room.id }),
+  );
+  expect(await invalid).toHaveProperty("error");
+  for (const result of await Promise.all(joins))
+    expect(result).toHaveProperty("data");
+  expect(
+    await ctx.db.quizParticipant.count({ where: { roomId: room.id } }),
+  ).toBe(1);
+  const badLeave = student
+    .timeout(5000)
+    .emitWithAck("quiz:room:leave", { roomId: "invalid" });
+  const leaves = [0, 1].map(() =>
+    student.timeout(5000).emitWithAck("quiz:room:leave", { roomId: room.id }),
+  );
+  expect(await badLeave).toHaveProperty("error");
+  for (const result of await Promise.all(leaves))
+    expect(result).toHaveProperty("data.left", true);
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId: room.id, isConnected: true },
+    }),
+  ).toBe(0);
+  expect(
+    rt.io.sockets.sockets.get(student.id!)!.rooms.has(`quiz-room:${room.id}`),
+  ).toBe(false);
+});
+
+it("cancels queued membership on disconnect before middleware finishes and allows a new socket to join", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Queued disconnect" },
+  });
+  const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
+  const student = await connect(f.student.cookie);
+  const server = rt.io.sockets.sockets.get(student.id!)!;
+  let release!: () => void;
+  let entered!: () => void;
+  const blocked = new Promise<void>((r) => {
+    entered = r;
+  });
+  let authorized = 0;
+  server.use(([event], next) => {
+    if (event === "quiz:room:join" || event === "quiz:room:leave") authorized++;
+    if (authorized === 1) {
+      release = next;
+      entered();
+    } else next();
+  });
+  let arrived = 0;
+  server.onAny(() => {
+    arrived++;
+  });
+  const rejected = student
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId: room.id })
+    .catch(() => undefined);
+  await blocked;
+  // No awaited ACKs: cancellation must not rely on a client retrying.
+  student.emit("quiz:room:leave", { roomId: room.id }, () => {});
+  student.emit("quiz:room:join", { roomId: room.id }, () => {});
+  await expect.poll(() => arrived).toBe(3);
+  const disconnected = new Promise<void>((r) =>
+    server.once("disconnect", () => r()),
+  );
+  student.disconnect();
+  await disconnected;
+  release();
+  await rejected;
+  const recovered = await connect(f.student.cookie);
+  const joined = await recovered
+    .timeout(5000)
+    .emitWithAck("quiz:room:join", { roomId: room.id });
+  expect(joined).toHaveProperty("data");
+  expect(authorized).toBe(1);
+  expect(
+    await ctx.db.quizParticipant.count({ where: { roomId: room.id } }),
+  ).toBe(1);
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId: room.id, isConnected: true },
+    }),
+  ).toBe(1);
+  expect(await rt.io.in(`quiz-room:${room.id}`).fetchSockets()).toHaveLength(1);
+});
+
+it("cancels membership when authorization rejects the socket without creating presence", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Authorization failure" },
+  });
+  const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
+  const student = await connect(f.student.cookie);
+  await ctx.db.user.update({
+    where: { id: f.student.user.id },
+    data: { status: "LOCKED" },
+  });
+  const disconnected = new Promise<void>((r) =>
+    student.once("disconnect", () => r()),
+  );
+  student.emit("quiz:room:join", { roomId: room.id }, () => {});
+  student.emit("quiz:room:join", { roomId: room.id }, () => {});
+  await disconnected;
+  expect(
+    await ctx.db.quizParticipant.count({ where: { roomId: room.id } }),
+  ).toBe(0);
+  expect(await rt.io.in(`quiz-room:${room.id}`).fetchSockets()).toHaveLength(0);
+});
+
+it("releases rejected membership turns at the existing middleware rate limit", async () => {
+  const user = await account(ctx, "STUDENT");
+  const student = await connect(user.cookie);
+  const server = rt.io.sockets.sockets.get(student.id!)!;
+  const errors: string[] = [];
+  server.on("error", (error) => errors.push(error.message));
+  // Exercise the actual 180-packet boundary; these messages have no business handler.
+  for (let i = 0; i < 180; i++) student.send("rate-limit boundary");
+  const roomId = crypto.randomUUID();
+  student.emit("quiz:room:leave", { roomId }, () => {});
+  student.emit("quiz:room:join", { roomId }, () => {});
+  student.emit("quiz:room:leave", { roomId }, () => {});
+  await expect
+    .poll(() => errors)
+    .toEqual(["RATE_LIMITED", "RATE_LIMITED", "RATE_LIMITED"]);
+  expect(student.connected).toBe(true);
+  expect([...server.rooms].filter((name) => name.startsWith("quiz-"))).toEqual(
+    [],
+  );
+});
+
+it("invalidates queued membership after a downstream middleware error and recovers on a new socket", async () => {
+  const f = await examFixture(ctx);
+  const quiz = await ctx.db.liveQuiz.create({
+    data: { teacherId: f.teacher.user.id, title: "Rejected pipeline" },
+  });
+  const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
+  const student = await connect(f.student.cookie);
+  const server = rt.io.sockets.sockets.get(student.id!)!;
+  let reject!: () => void;
+  let entered!: () => void;
+  const held = new Promise<void>((r) => {
+    entered = r;
+  });
+  server.use((_, next) => {
+    reject = () => next(new Error("TEST_MEMBERSHIP_REJECTED"));
+    entered();
+  });
+  let arrivals = 0;
+  server.onAny(() => {
+    arrivals++;
+  });
+  student.emit("quiz:room:join", { roomId: room.id }, () => {});
+  await held;
+  student.emit("quiz:room:leave", { roomId: room.id }, () => {});
+  student.emit("quiz:room:join", { roomId: room.id }, () => {});
+  await expect.poll(() => arrivals).toBe(3);
+  const disconnected = new Promise<void>((r) =>
+    student.once("disconnect", () => r()),
+  );
+  reject();
+  await disconnected;
+  expect(
+    await ctx.db.quizParticipant.count({ where: { roomId: room.id } }),
+  ).toBe(0);
+  const recovered = await connect(f.student.cookie);
+  expect(
+    await recovered
+      .timeout(5000)
+      .emitWithAck("quiz:room:join", { roomId: room.id }),
+  ).toHaveProperty("data");
+  expect(
+    await ctx.db.quizParticipant.count({
+      where: { roomId: room.id, isConnected: true },
+    }),
+  ).toBe(1);
+  expect(await rt.io.in(`quiz-room:${room.id}`).fetchSockets()).toHaveLength(1);
 });

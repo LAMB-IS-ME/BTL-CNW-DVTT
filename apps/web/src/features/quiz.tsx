@@ -507,7 +507,8 @@ export function QuizRoom({ host = false }: { host?: boolean }) {
       requestGeneration.current++;
       clearTimeout(joinDeadline);
       clearInterval(timer);
-      socket.emit("quiz:room:leave", { roomId: id! }, () => {});
+      // This component owns the socket. Disconnect handles departure server-side;
+      // emitting leave here can buffer an obsolete command during StrictMode setup.
       socket.removeAllListeners();
       socket.disconnect();
     };

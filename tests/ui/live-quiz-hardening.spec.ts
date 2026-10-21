@@ -472,3 +472,170 @@ test("long participant names, rich question content and landscape reflow preserv
     await Promise.all([teacher.close(), student.close()]);
   }
 });
+
+// Replay an obsolete leave immediately before the real initial join. Both
+// transports still talk to the real API; no state/answer/ACK is fabricated.
+async function leaveBeforeJoin(context: BrowserContext) {
+  let injected = 0;
+  let blocked = false;
+  const wires = new Set<WebSocketRoute>();
+  const states: string[] = [];
+  function incoming(message: string) {
+    for (const frame of message.split("\x1e"))
+      if (frame.includes('"quiz:state"')) states.push(frame);
+  }
+  function outgoing(message: string) {
+    return message.split("\x1e").flatMap((frame) => {
+      if (!injected && /^42\d*\["quiz:room:join",/.test(frame)) {
+        const [, payload] = JSON.parse(frame.slice(frame.indexOf("["))) as [
+          string,
+          { roomId: string },
+        ];
+        injected++;
+        return [
+          `42${JSON.stringify(["quiz:room:leave", { roomId: payload.roomId }])}`,
+          frame,
+        ];
+      }
+      return [frame];
+    });
+  }
+  await context.route("**/socket.io/**", async (route) => {
+    if (blocked) return route.abort();
+    if (route.request().method() === "POST")
+      return route.continue({
+        postData: outgoing(route.request().postData() || "").join("\x1e"),
+      });
+    // Reconnect can deliver its snapshot over polling before the WS upgrade.
+    // Record and forward that real response as well as WebSocket frames.
+    const response = await route.fetch();
+    const body = await response.text();
+    incoming(body);
+    return route.fulfill({ response, body });
+  });
+  await context.routeWebSocket(/\/socket\.io\//, (route) => {
+    if (blocked) {
+      void route.close();
+      return;
+    }
+    const upstream = route.connectToServer();
+    wires.add(route);
+    wires.add(upstream);
+    route.onMessage((message) => {
+      for (const frame of outgoing(String(message))) upstream.send(frame);
+    });
+    upstream.onMessage((message) => {
+      incoming(String(message));
+      route.send(message);
+    });
+  });
+  return {
+    count: () => injected,
+    states,
+    async disconnect() {
+      blocked = true;
+      await context.setOffline(true);
+      await Promise.all([...wires].map((wire) => wire.close()));
+      wires.clear();
+    },
+    async reconnect() {
+      blocked = false;
+      await context.setOffline(false);
+    },
+  };
+}
+
+test("ordered membership delivers host reveal without reload and recovers a reveal missed offline", async ({
+  browser,
+}) => {
+  const contexts = await Promise.all([0, 1, 2].map(() => browser.newContext()));
+  const [teacher, a, b] = contexts as [
+    BrowserContext,
+    BrowserContext,
+    BrowserContext,
+  ];
+  const fault = await leaveBeforeJoin(teacher);
+  try {
+    await login(teacher, "teacher1@exam.local");
+    await login(a, "student1@exam.local");
+    await login(b, "student2@exam.local");
+    const quiz = await fixture(teacher);
+    const room = await mutate<{ id: string; code: string }>(
+      teacher,
+      `/teacher/quizzes/${quiz.id}/rooms`,
+      {},
+    );
+    const [host, player, other] = (await Promise.all(
+      contexts.map((c) => c.newPage()),
+    )) as [Page, Page, Page];
+    await join(player, room.code);
+    await join(other, room.code);
+    await host.goto(`/teacher/quiz-rooms/${room.id}/host`);
+    await expect(host.locator('.lq[data-membership="joined"]')).toBeVisible();
+    expect(fault.count()).toBe(1);
+    await expect(
+      host.getByRole("heading", { name: "2 người tham gia", exact: true }),
+    ).toBeVisible();
+    await host.getByRole("button", { name: "Bắt đầu Quiz" }).click();
+    for (const p of [player, other]) {
+      await p.getByRole("radio").first().check();
+      await p
+        .getByRole("button", { name: "Gửi câu trả lời", exact: true })
+        .click();
+    }
+    // No reload/rejoin between Start and this reveal assertion.
+    await expect(
+      host.getByRole("heading", { name: "Bảng xếp hạng", exact: true }),
+    ).toBeVisible();
+    expect(
+      fault.states.some((frame) => frame.includes('"answerCount":2')),
+    ).toBe(true);
+    expect(await answerCount(room.id)).toBe(2);
+    await host.getByRole("button", { name: "Câu tiếp theo" }).click();
+    await expect(player.getByRole("checkbox")).toHaveCount(4);
+    const deadline = (await snapshot(teacher, room.id)).closesAt;
+    for (const name of ["GET", "PUT", "DELETE"])
+      await player.getByRole("checkbox", { name, exact: true }).check();
+    await player
+      .getByRole("button", { name: "Gửi câu trả lời", exact: true })
+      .click();
+    await fault.disconnect();
+    await expect(host.locator('.lq[data-membership="joined"]')).toHaveCount(0);
+    await expect(
+      player.getByRole("heading", { name: "Bảng xếp hạng", exact: true }),
+    ).toBeVisible({ timeout: 12000 });
+    const receivedBeforeReconnect = fault.states.length;
+    await fault.reconnect();
+    await expect(host.locator('.lq[data-membership="joined"]')).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(
+      host.getByRole("button", { name: "Câu tiếp theo" }),
+    ).toBeVisible();
+    expect(fault.states.length).toBeGreaterThan(receivedBeforeReconnect);
+    const recovered = await snapshot(teacher, room.id);
+    expect(recovered.closesAt).toBe(deadline);
+    expect(recovered.reveal.answerCount).toBe(1);
+    expect(recovered.participants).toHaveLength(2);
+    await host.getByRole("button", { name: "Câu tiếp theo" }).click();
+    for (const p of [player, other]) {
+      await p.getByRole("radio", { name: "True", exact: true }).check();
+      await p
+        .getByRole("button", { name: "Gửi câu trả lời", exact: true })
+        .click();
+    }
+    for (const p of [host, player, other])
+      await expect(
+        p.getByRole("heading", { name: "Kết quả cuối cùng", exact: true }),
+      ).toBeVisible();
+    expect(await answerCount(room.id)).toBe(5);
+    const final = await snapshot(teacher, room.id);
+    expect(final.status).toBe("FINISHED");
+    expect(final.leaderboard).toHaveLength(2);
+    expect(final.leaderboard[0].score).toBeGreaterThan(
+      final.leaderboard[1].score,
+    );
+  } finally {
+    await Promise.all(contexts.map((c) => c.close()));
+  }
+});

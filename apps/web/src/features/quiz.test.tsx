@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { StrictMode } from "react";
 import {
   act,
   cleanup,
@@ -15,16 +16,19 @@ const mock = vi.hoisted(() => ({
   listeners: new Map<string, (value?: unknown) => void>(),
   join: undefined as SocketAck<QuizState> | undefined,
   emitWithAck: vi.fn(),
+  emitted: [] as string[],
+  disconnect: vi.fn(),
 }));
 vi.mock("../lib/socket", () => ({
   connectSocket: () => ({
     on: (event: string, fn: (value?: unknown) => void) =>
       mock.listeners.set(event, fn),
     emit: (event: string, _: unknown, ack: SocketAck<QuizState>) => {
+      mock.emitted.push(event);
       if (event === "quiz:room:join") mock.join = ack;
     },
     connect: () => {},
-    disconnect: () => {},
+    disconnect: mock.disconnect,
     removeAllListeners: () => mock.listeners.clear(),
     timeout: () => ({ emitWithAck: mock.emitWithAck }),
   }),
@@ -69,6 +73,28 @@ function mount(host = false) {
 beforeEach(() => {
   mock.join = undefined;
   mock.emitWithAck.mockReset();
+  mock.emitted.length = 0;
+  mock.disconnect.mockClear();
+});
+
+it("disconnects its owned socket without buffering a cleanup leave across StrictMode setup", () => {
+  const view = render(
+    <StrictMode>
+      <MemoryRouter initialEntries={["/student/quiz/room/lobby"]}>
+        <Routes>
+          <Route path="/student/quiz/:id/lobby" element={<QuizRoom />} />
+        </Routes>
+      </MemoryRouter>
+    </StrictMode>,
+  );
+  expect(mock.disconnect).toHaveBeenCalledTimes(1);
+  expect(mock.emitted).not.toContain("quiz:room:leave");
+  act(() => mock.listeners.get("connect")?.());
+  act(() => mock.join?.({ data: state() }));
+  expect(screen.getByText(/Trực tuyến/)).toBeTruthy();
+  view.unmount();
+  expect(mock.disconnect).toHaveBeenCalledTimes(2);
+  expect(mock.emitted).toEqual(["quiz:room:join"]);
 });
 afterEach(() => {
   cleanup();

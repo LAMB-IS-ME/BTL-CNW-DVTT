@@ -381,7 +381,19 @@ test("Published image survives delete, Student start/reload/submit and bank repl
         await mutation(
           studentContext,
           `/student/attempts/${attempt.id}/submit`,
-          {},
+          {
+            expectedVersions: Object.fromEntries(
+              (
+                (
+                  await (
+                    await studentContext.request.get(
+                      `${base}/student/attempts/${attempt.id}`,
+                    )
+                  ).json()
+                ).data as import("@exam/shared").AttemptDto
+              ).questions.map((q) => [q.id, q.answer.savedAt]),
+            ),
+          },
         )
       ).status(),
     ).toBe(200);

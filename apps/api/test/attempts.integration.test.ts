@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { testContext, account } from "./helpers.js";
 import { examFixture } from "./fixture.js";
@@ -32,7 +33,10 @@ it("serializes concurrent start, hides keys, preserves snapshots, autosaves/resu
       await f.student.agent
         .put(`/api/v1/student/attempts/${a.id}/answers/${q.id}`)
         .set(f.student.headers)
-        .send({ selectedOptionIds: [f.question.options[0]!.id] })
+        .send({
+          selectedOptionIds: [f.question.options[0]!.id],
+          expectedSavedAt: null,
+        })
     ).status,
   ).toBe(200);
   const resumed = await f.student.agent.get(`/api/v1/student/attempts/${a.id}`);
@@ -47,11 +51,21 @@ it("serializes concurrent start, hides keys, preserves snapshots, autosaves/resu
   ).toBe(404);
   const end = `/api/v1/student/attempts/${a.id}/submit`;
   expect(
-    (await f.student.agent.post(end).set(f.student.headers)).body.data.status,
+    (
+      await f.student.agent
+        .post(end)
+        .set(f.student.headers)
+        .send(await submissionInput(ctx.db, a.id))
+    ).body.data.status,
   ).toBe("GRADED");
-  expect((await f.student.agent.post(end).set(f.student.headers)).status).toBe(
-    200,
-  );
+  expect(
+    (
+      await f.student.agent
+        .post(end)
+        .set(f.student.headers)
+        .send(await submissionInput(ctx.db, a.id))
+    ).status,
+  ).toBe(200);
   const stored = await ctx.db.examAttempt.findUniqueOrThrow({
     where: { id: a.id },
   });

@@ -3,6 +3,7 @@ import { createApp } from "../src/app.js";
 import { createDb } from "../src/db/client.js";
 import { parseEnv } from "../src/config/env.js";
 import { hashPassword } from "../src/modules/auth/password.js";
+import type { AttemptSubmission } from "@exam/shared";
 export const url = process.env.TEST_DATABASE_URL;
 export function testContext() {
   if (!url)
@@ -63,5 +64,23 @@ export async function account(
     cookie: (login.headers["set-cookie"] as unknown as string[])
       .map((c) => c.split(";")[0])
       .join("; "),
+  };
+}
+
+// Existing fixtures explicitly read the current revisions before submission.
+// Read through DB so an inner Supertest GET cannot close the ephemeral server
+// already opened by the outer POST builder. Race tests keep their old versions.
+export async function submissionInput(
+  db: ReturnType<typeof createDb>,
+  id: string,
+): Promise<AttemptSubmission> {
+  const a = await db.examAttempt.findUniqueOrThrow({
+    where: { id },
+    include: { questions: { include: { answer: true } } },
+  });
+  return {
+    expectedVersions: Object.fromEntries(
+      a.questions.map((q) => [q.id, q.answer?.savedAt.toISOString() ?? null]),
+    ),
   };
 }

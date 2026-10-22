@@ -156,6 +156,10 @@ export type StudentQuestion = {
   points: number;
 };
 export type AnswerInput = { selectedOptionIds: string[]; answerText: string };
+export type AnswerWrite = AnswerInput & { expectedSavedAt: string | null };
+export type AttemptSubmission = {
+  expectedVersions: Record<string, string | null>;
+};
 export type AttemptDto = {
   id: string;
   examId: string;

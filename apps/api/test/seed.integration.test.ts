@@ -117,7 +117,7 @@ it("preserves a saved wrong answer when resuming and skips a legacy SUBMITTED at
     a.id,
     a.questions[0]!.id,
     f.student.user.id,
-    { selectedOptionIds: [f.question.options[1]!.id] },
+    { selectedOptionIds: [f.question.options[1]!.id], expectedSavedAt: null },
   );
   const result = await completeDemoAttempt(
     ctx.db,

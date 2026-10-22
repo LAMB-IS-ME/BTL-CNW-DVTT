@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { createServer } from "node:http";
 import { io as client, type Socket } from "socket.io-client";
@@ -62,7 +63,8 @@ it("changes exam presence on join/disconnect/reconnect and sends sanitized monit
   await expect.poll(() => states.at(-1)?.rows[0]?.status).toBe("IN_PROGRESS");
   await f.student.agent
     .post(`/api/v1/student/attempts/${id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, id));
   await expect.poll(() => states.at(-1)?.rows[0]?.status).toBe("SUBMITTED");
 });
 

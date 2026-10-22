@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import {
   createRoom,
   joinRoom,
@@ -115,6 +116,7 @@ it("protects a published image before first attempt and keeps the student's hist
       await f.student.agent
         .post(`/api/v1/student/attempts/${start.body.data.id}/submit`)
         .set(f.student.headers)
+        .send(await submissionInput(ctx.db, start.body.data.id))
     ).status,
   ).toBe(200);
   expect(

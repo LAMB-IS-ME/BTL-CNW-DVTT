@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { testContext, account } from "./helpers.js";
 import {
@@ -154,12 +155,19 @@ it("rejects archive that breaks a published fixed exam; archives after closing w
       await f.student.agent
         .put(`${attempt}/answers/${start.body.data.questions[0].id}`)
         .set(f.student.headers)
-        .send({ selectedOptionIds: [f.question.options[0]!.id] })
+        .send({
+          selectedOptionIds: [f.question.options[0]!.id],
+          expectedSavedAt: null,
+        })
     ).status,
   ).toBe(200);
   expect(
-    (await f.student.agent.post(`${attempt}/submit`).set(f.student.headers))
-      .status,
+    (
+      await f.student.agent
+        .post(`${attempt}/submit`)
+        .set(f.student.headers)
+        .send(await submissionInput(ctx.db, start.body.data.id))
+    ).status,
   ).toBe(200);
   expect(
     (await f.teacher.agent.post(`${path}/restore`).set(f.teacher.headers))

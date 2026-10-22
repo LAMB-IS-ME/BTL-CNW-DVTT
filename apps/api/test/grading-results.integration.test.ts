@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { testContext, account } from "./helpers.js";
 import { examFixture } from "./fixture.js";
@@ -31,7 +32,8 @@ it("keeps partial essay grading hidden, supports regrading and preserves feedbac
   const id = start.body.data.id;
   await f.student.agent
     .post(`/api/v1/student/attempts/${id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, id));
   const a = await ctx.db.examAttempt.findUniqueOrThrow({
     where: { id },
     include: { questions: { include: { answer: true } } },
@@ -85,7 +87,8 @@ it("isolates student records and rejects non-owner grading, release, results and
   const id = started.body.data.id;
   await f.student.agent
     .post(`/api/v1/student/attempts/${id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, id));
   const a = await ctx.db.examAttempt.findUniqueOrThrow({
     where: { id },
     include: { questions: { include: { answer: true } } },
@@ -158,7 +161,8 @@ it("enforces AFTER_CLOSE and independently withholds answer keys, explanations a
     .set(f.student.headers);
   await f.student.agent
     .post(`/api/v1/student/attempts/${started.body.data.id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, started.body.data.id));
   const path = `/api/v1/student/exams/${f.exam.id}/results`;
   const hidden = (await f.student.agent.get(path)).body.data.attempts[0];
   expect(hidden.visible).toBe(false);

@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect, vi } from "vitest";
 const provider = vi.hoisted(() => ({
   upload: vi.fn(
@@ -53,7 +54,8 @@ it("signs only snapshot-visible media and keeps explanation assets private until
   );
   await f.student.agent
     .post(`/api/v1/student/attempts/${start.body.data.id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, start.body.data.id));
   expect((await f.student.agent.get(`/api/v1/assets/${asset.id}`)).status).toBe(
     403,
   );

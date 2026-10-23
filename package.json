@@ -19,7 +19,7 @@
     "db:migrate": "npm run db:migrate -w @exam/api",
     "db:seed": "npm run db:seed -w @exam/api",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:e2e": "playwright test && playwright test --config=playwright.session-recovery.config.ts",
+    "test:e2e": "playwright test && playwright test --config=playwright.student-exam.config.ts && playwright test --config=playwright.session-recovery.config.ts",
     "format": "prettier --write apps packages tests *.ts *.js *.json .github",
     "test:deployment": "node tests/deployment/smoke.mjs"
   },

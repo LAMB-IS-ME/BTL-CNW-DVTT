@@ -5,7 +5,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     services:
       postgres:
         image: postgres:17
@@ -37,7 +37,8 @@ jobs:
       - run: npm run test:integration
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npx playwright test --reporter=list
+      - run: npx playwright test --config=playwright.session-recovery.config.ts --reporter=list
       - run: npm run test:deployment
       - run: npm audit --audit-level=low
       - uses: actions/upload-artifact@v4

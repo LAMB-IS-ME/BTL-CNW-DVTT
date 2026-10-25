@@ -18,6 +18,7 @@ import {
 } from "@exam/shared";
 import { z } from "zod";
 import { onSessionEnded } from "../lib/session";
+import { clearUserDrafts } from "./attempt-drafts";
 import { api, ApiFailure, isSessionFailure } from "../lib/api";
 import { ErrorBox, Field, Loading } from "../components/ui";
 const AuthContext = createContext<{
@@ -30,6 +31,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const cache = useQueryClient();
   const [expired, setExpired] = useState(false);
   const knownUser = useRef(false);
+  const userId = useRef<string | null>(null);
+  const [draftCleanupFailed, setDraftCleanupFailed] = useState(false);
   const q = useQuery({
     queryKey: ["me"],
     queryFn: () => api<UserDto | null>("/auth/me"),
@@ -37,12 +40,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refetchInterval: (query) => (query.state.data ? 30000 : false),
     refetchIntervalInBackground: false,
   });
-  if (q.data) knownUser.current = true;
+  if (q.data) {
+    knownUser.current = true;
+    userId.current = q.data.id;
+  }
   useEffect(
     () =>
       onSessionEnded((reason) => {
+        if (reason === "logout" && userId.current)
+          setDraftCleanupFailed(!clearUserDrafts(userId.current));
         setExpired(reason === "expired" && knownUser.current);
         knownUser.current = false;
+        userId.current = null;
         // Cancel before removing: late protected query results cannot repopulate cache.
         void cache.cancelQueries();
         cache.removeQueries({
@@ -75,6 +84,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           Bài đã nộp và điểm đã lưu không bị thay đổi. Không tự gửi lại thao tác
           trước đó.
         </p>
+        <p>
+          Bản nháp đáp án đã lưu trên thiết bị được giữ tối đa 24 giờ. Đăng nhập
+          lại đúng tài khoản và mở lượt thi để kiểm tra, không tự gửi lại đáp
+          án.
+        </p>
         <a className="button" href={`${import.meta.env.BASE_URL}login`}>
           Đăng nhập lại
         </a>
@@ -91,6 +105,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       }}
     >
+      {draftCleanupFailed && (
+        <p role="alert" className="error">
+          Không thể xóa hết bản nháp trên thiết bị. Trên máy dùng chung, hãy xóa
+          dữ liệu trang trong trình duyệt.
+        </p>
+      )}
       {children}
     </AuthContext.Provider>
   );

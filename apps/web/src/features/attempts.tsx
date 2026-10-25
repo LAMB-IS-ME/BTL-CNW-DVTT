@@ -17,6 +17,20 @@ import { Markdown } from "../components/Markdown";
 // Timer ticks must not remount prompt images or disturb rich-content scrolling.
 const FocusPrompt = memo(Markdown);
 import { examAvailability, type AssignedExam } from "./student-exam-state";
+import { useAuth } from "./auth";
+import {
+  endSession,
+  onSessionEnded,
+  sessionEnded,
+  sessionGeneration,
+} from "../lib/session";
+import {
+  AttemptDraftStore,
+  DRAFT_TTL,
+  draftLogoutKey,
+  sameDraftAnswer,
+  type DraftRecord,
+} from "./attempt-drafts";
 
 function FocusLoad({
   pending,
@@ -286,9 +300,11 @@ export function AnswerControl({
 }
 export function AttemptPage() {
   const { id } = useParams();
+  const { user } = useAuth();
   const [visit] = useState(() => crypto.randomUUID());
   const q = useQuery({
-    queryKey: ["attempt", id, visit],
+    queryKey: ["attempt", user?.id, id, visit],
+    enabled: !!user,
     queryFn: async () => ({
       data: await api<AttemptDto>(`/student/attempts/${id}`),
       receivedAt: performance.now(),
@@ -299,7 +315,7 @@ export function AttemptPage() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   });
-  if (q.isPending || !q.data)
+  if (!user || q.isPending || !q.data)
     return (
       <FocusLoad
         pending={q.isPending}
@@ -309,13 +325,129 @@ export function AttemptPage() {
     );
   return (
     <AttemptWorkspace
-      key={id}
+      key={`${user.id}:${id}`}
+      userId={user.id}
       initial={q.data.data}
       receivedAt={q.data.receivedAt}
     />
   );
 }
 const StudentAnswerControl = memo(AnswerControl);
+function DraftReview({
+  state,
+  records,
+  closed = false,
+  busy,
+  onResolve,
+  onClear,
+}: {
+  state: AttemptDto;
+  records: DraftRecord[];
+  closed?: boolean;
+  busy: boolean;
+  onResolve?: (questionId: string, chosen?: DraftRecord) => Promise<void>;
+  onClear?: () => void;
+}) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    heading.current?.focus();
+  }, []);
+  const preview = (q: StudentQuestion, value: AnswerInput) =>
+    q.type === "ESSAY"
+      ? value.answerText
+      : q.options
+          .filter((o) => value.selectedOptionIds.includes(o.id))
+          .map((o) => o.contentMarkdown)
+          .join("\n");
+  return (
+    <section
+      className="focus-entry-note"
+      aria-labelledby="draft-review-title"
+      aria-busy={busy}
+    >
+      <h2 id="draft-review-title" ref={heading} tabIndex={-1}>
+        {closed
+          ? "Bản nháp của lượt thi đã khóa"
+          : "Kiểm tra bản nháp trên thiết bị"}
+      </h2>
+      <p>
+        {closed
+          ? "Nội dung dưới đây chỉ để xem và sao chép, không được gửi vào bài đã nộp."
+          : "Bản nháp chưa được xác nhận lưu trên máy chủ. Hãy quyết định cho từng câu trước khi tiếp tục làm bài hoặc nộp bài. Chọn một bản sẽ bỏ các bản còn lại đang hiển thị của câu đó."}
+      </p>
+      <p>
+        Bản nháp không được mã hóa, chỉ có trên trình duyệt này và được giữ tối
+        đa 24 giờ từ lần sửa cuối. Hãy đăng xuất khi dùng thiết bị chung.
+      </p>
+      {state.questions.map((q, index) => {
+        const candidates = records.filter((r) => r.questionId === q.id);
+        if (!candidates.length) return null;
+        return (
+          <article key={q.id}>
+            <h3>Câu {index + 1}</h3>
+            <label className="field">
+              <span>Đáp án trên máy chủ — Câu {index + 1}</span>
+              <textarea
+                readOnly
+                rows={3}
+                style={{ minHeight: 0, height: "7rem" }}
+                placeholder="Để trống"
+                value={preview(q, q.answer)}
+              />
+            </label>
+            {candidates.map((r, n) => (
+              <div key={r.recordId}>
+                <label className="field">
+                  <span>
+                    Bản nháp {n + 1} — Câu {index + 1} — nguồn{" "}
+                    {r.writerId.slice(0, 8)}
+                  </span>
+                  <textarea
+                    readOnly
+                    rows={3}
+                    style={{ minHeight: 0, height: "7rem" }}
+                    placeholder="Để trống"
+                    value={preview(q, r.answer)}
+                  />
+                </label>
+                {!closed && (
+                  <>
+                    <p>
+                      {r.baseSavedAt === q.answer.savedAt
+                        ? "Bản nháp dựa trên phiên bản máy chủ hiện tại."
+                        : "Phiên bản máy chủ đã khác. Không thể tự phục hồi bản này; bạn có thể sao chép nội dung, nhận đáp án máy chủ rồi chủ động chỉnh lại nếu lượt thi còn mở."}
+                    </p>
+                    <button
+                      className="secondary"
+                      disabled={busy || r.baseSavedAt !== q.answer.savedAt}
+                      onClick={() => void onResolve?.(q.id, r)}
+                    >
+                      Phục hồi bản nháp {n + 1} của câu {index + 1}
+                    </button>
+                  </>
+                )}
+              </div>
+            ))}
+            {!closed && (
+              <button
+                className="secondary"
+                disabled={busy}
+                onClick={() => void onResolve?.(q.id)}
+              >
+                Dùng đáp án máy chủ cho câu {index + 1}
+              </button>
+            )}
+          </article>
+        );
+      })}
+      {closed && (
+        <button className="secondary" onClick={onClear}>
+          Đã xem, xóa bản nháp trên thiết bị
+        </button>
+      )}
+    </section>
+  );
+}
 function isLockedFailure(error: unknown) {
   return (
     error instanceof ApiFailure &&
@@ -432,9 +564,11 @@ function StudentLeave({
 function AttemptWorkspace({
   initial,
   receivedAt,
+  userId,
 }: {
   initial: AttemptDto;
   receivedAt: number;
+  userId: string;
 }) {
   const [a, setA] = useState(initial),
     [clock, setClock] = useState({ serverNow: initial.serverNow, receivedAt }),
@@ -450,7 +584,14 @@ function AttemptWorkspace({
     [conflicted, setConflicted] = useState(false),
     [resolvingConflict, setResolvingConflict] = useState(false),
     [unsavedAtLock, setUnsavedAtLock] = useState(false),
-    [compactClock, setCompactClock] = useState(false);
+    [compactClock, setCompactClock] = useState(false),
+    [checkingDrafts, setCheckingDrafts] = useState(true),
+    [draftReview, setDraftReview] = useState<DraftRecord[]>([]),
+    [closedDrafts, setClosedDrafts] = useState<DraftRecord[]>([]),
+    [storageFailed, setStorageFailed] = useState(false),
+    [discardedDrafts, setDiscardedDrafts] = useState(false),
+    [choosingDraft, setChoosingDraft] = useState(false),
+    [localPersisted, setLocalPersisted] = useState(false);
   const pending = useRef(new Map<string, AnswerInput>()),
     queue = useRef<Promise<void> | null>(null),
     debounce = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
@@ -463,7 +604,79 @@ function AttemptWorkspace({
       ),
     ),
     conflict = useRef(false),
-    readSequence = useRef(0);
+    readSequence = useRef(0),
+    live = useRef(true),
+    generation = useRef(sessionGeneration()),
+    reviewing = useRef(true),
+    reviewRecords = useRef<DraftRecord[]>([]),
+    adoptedSources = useRef(new Map<string, DraftRecord[]>()),
+    choosing = useRef(false);
+  const [drafts] = useState(
+    () =>
+      new AttemptDraftStore(
+        { userId, examId: initial.examId, attemptId: initial.id },
+        undefined,
+        () =>
+          Date.parse(initial.serverNow) +
+          Math.max(0, performance.now() - receivedAt),
+      ),
+  );
+  const isLive = useCallback(
+    () =>
+      live.current &&
+      !sessionEnded() &&
+      generation.current === sessionGeneration() &&
+      !drafts.revoked(),
+    [drafts],
+  );
+  const ensureLive = useCallback(() => {
+    if (!isLive())
+      throw new ApiFailure(
+        "UNAUTHENTICATED",
+        "Phiên đăng nhập đã kết thúc.",
+        401,
+      );
+  }, [isLive]);
+  const persistenceResult = useCallback(
+    (ok: boolean) => {
+      if (!isLive()) return;
+      if (!ok) setStorageFailed(true);
+      setLocalPersisted(ok && drafts.unpersisted.size === 0);
+    },
+    [isLive, drafts],
+  );
+  useEffect(() => {
+    live.current = true;
+    const found = drafts.read(initial);
+    setStorageFailed(found.failed);
+    setDiscardedDrafts(found.discarded);
+    if (initial.status === "IN_PROGRESS") {
+      reviewRecords.current = found.records;
+      reviewing.current = found.records.length > 0;
+      setDraftReview(found.records);
+      if (found.records.length) setStatus("Cần kiểm tra bản nháp");
+    } else {
+      setClosedDrafts(found.records);
+      reviewing.current = false;
+    }
+    setCheckingDrafts(false);
+    const off = onSessionEnded(() => {
+      active.current = false;
+      clearTimeout(debounce.current);
+      drafts.stop();
+    });
+    const logout = (event: StorageEvent) => {
+      if (event.key === draftLogoutKey(userId) && drafts.revoked())
+        endSession("expired");
+    };
+    window.addEventListener("storage", logout);
+    return () => {
+      live.current = false;
+      off();
+      window.removeEventListener("storage", logout);
+    };
+    // The workspace owns this authoritative entry snapshot; subsequent GETs reconcile below.
+  }, [drafts, initial, userId]);
   const markConflict = useCallback(() => {
     conflict.current = true;
     setConflicted(true);
@@ -477,7 +690,8 @@ function AttemptWorkspace({
     ({ currentLocation, nextLocation }) =>
       currentLocation.pathname !== nextLocation.pathname &&
       (submittingRef.current ||
-        (active.current && (pending.current.size > 0 || conflict.current))),
+        (active.current &&
+          (pending.current.size > 0 || conflict.current || reviewing.current))),
   );
   useEffect(() => {
     const grid = indexGrid.current;
@@ -502,6 +716,13 @@ function AttemptWorkspace({
     return () => observer.disconnect();
   }, []);
   const flush = useCallback(async () => {
+    ensureLive();
+    if (reviewing.current)
+      throw new ApiFailure(
+        "DRAFT_REVIEW_REQUIRED",
+        "Hãy kiểm tra bản nháp trước khi lưu hoặc nộp bài.",
+        0,
+      );
     if (queue.current) return queue.current;
     const run = async () => {
       if (conflict.current)
@@ -512,10 +733,12 @@ function AttemptWorkspace({
         );
       while (pending.current.size && active.current && !conflict.current) {
         const [id, value] = pending.current.entries().next().value!;
+        const sentEdit = drafts.latest.get(id)?.editId;
         setStatus("Đang lưu…");
         let last: unknown;
         for (let n = 0; n < 3; n++) {
           try {
+            ensureLive();
             const saved = await api<{ savedAt: string }>(
               `/student/attempts/${initial.id}/answers/${id}`,
               "PUT",
@@ -524,7 +747,16 @@ function AttemptWorkspace({
                 expectedSavedAt: versions.current[id] ?? null,
               } satisfies AnswerWrite,
             );
+            ensureLive();
             versions.current[id] = saved.savedAt;
+            if (active.current) {
+              persistenceResult(
+                drafts.acknowledge(id, sentEdit, saved.savedAt),
+              );
+              const sources = adoptedSources.current.get(id) ?? [];
+              if (sources.length) persistenceResult(drafts.remove(sources));
+              adoptedSources.current.delete(id);
+            }
             // Invalidate reads started before this acknowledgement, even when
             // no further keystroke occurred while the request was in flight.
             revisions.current.set(id, (revisions.current.get(id) ?? 0) + 1);
@@ -545,6 +777,7 @@ function AttemptWorkspace({
           }
         }
         if (last) {
+          if (!isLive()) throw last;
           if (isConflictFailure(last)) markConflict();
           else setStatus("Lỗi lưu");
           setError(last);
@@ -567,7 +800,7 @@ function AttemptWorkspace({
       queue.current = null;
     });
     return queue.current;
-  }, [initial.id, markConflict]);
+  }, [initial.id, markConflict, drafts, ensureLive, isLive, persistenceResult]);
   const readState = useCallback(
     async (acceptRemote = false) => {
       // Edits may finish saving while this GET is in flight. Pending alone is not
@@ -575,12 +808,31 @@ function AttemptWorkspace({
       const beforeRead = new Map(revisions.current);
       const sequence = ++readSequence.current;
       const state = await api<AttemptDto>(`/student/attempts/${initial.id}`);
-      if (sequence !== readSequence.current) return;
+      if (!isLive() || sequence !== readSequence.current) return;
       const received = performance.now();
       setClock({ serverNow: state.serverNow, receivedAt: received });
       setNow(received);
       active.current = state.status === "IN_PROGRESS";
       if (!active.current) {
+        // Keep unsent content available for read-only copying; it can never re-enter the queue.
+        const stored = drafts.read(state);
+        if (stored.failed) setStorageFailed(true);
+        const unsent = [
+          ...stored.records,
+          ...drafts.latest.values(),
+          ...reviewRecords.current,
+        ].filter((r) =>
+          state.questions.some(
+            (q) =>
+              q.id === r.questionId && !sameDraftAnswer(r.answer, q.answer),
+          ),
+        );
+        setClosedDrafts([
+          ...new Map(unsent.map((r) => [r.recordId, r])).values(),
+        ]);
+        reviewRecords.current = [];
+        reviewing.current = false;
+        setDraftReview([]);
         // A PUT may already be committed while its acknowledgement is delayed.
         // Compare pending content with the final server snapshot before warning.
         if (
@@ -597,7 +849,7 @@ function AttemptWorkspace({
           Object.fromEntries(state.questions.map((q) => [q.id, q.answer])),
         );
         setA(state);
-        return;
+        return state;
       }
       setA(state);
       const accepted: Record<string, AnswerInput> = {};
@@ -609,6 +861,13 @@ function AttemptWorkspace({
           (queue.current && pending.current.has(q.id))
         )
           continue;
+        if (reviewRecords.current.some((r) => r.questionId === q.id)) {
+          // Unresolved candidates are read-only. Refresh their comparison without
+          // treating the authoritative baseline as permission to rebase a draft.
+          versions.current[q.id] = q.answer.savedAt;
+          accepted[q.id] = q.answer;
+          continue;
+        }
         if (q.answer.savedAt === versions.current[q.id]) continue;
         if (!acceptRemote) {
           markConflict();
@@ -618,19 +877,27 @@ function AttemptWorkspace({
         versions.current[q.id] = q.answer.savedAt;
         revisions.current.set(q.id, (revisions.current.get(q.id) ?? 0) + 1);
         pending.current.delete(q.id);
+        persistenceResult(drafts.discardQuestion(q.id));
+        persistenceResult(
+          drafts.remove(adoptedSources.current.get(q.id) ?? []),
+        );
+        adoptedSources.current.delete(q.id);
       }
-      if (acceptRemote) {
+      if (Object.keys(accepted).length)
         setAnswers((old) => ({ ...old, ...accepted }));
+      if (acceptRemote) {
         conflict.current = false;
         setConflicted(false);
         setError(undefined);
         setStatus(pending.current.size ? "Đang lưu…" : "Đã lưu");
       }
+      return state;
     },
-    [initial.id, markConflict],
+    [initial.id, markConflict, drafts, isLive, persistenceResult],
   );
   const recover = useCallback(
     async (failure: unknown) => {
+      if (!isLive()) return;
       setError(failure);
       if (isConflictFailure(failure)) {
         markConflict();
@@ -640,11 +907,11 @@ function AttemptWorkspace({
         await readState();
       }
     },
-    [readState, markConflict],
+    [readState, markConflict, isLive],
   );
   const refresh = useCallback(async () => {
-    if (submittingRef.current) return;
-    if (conflict.current) {
+    if (!isLive() || submittingRef.current) return;
+    if (conflict.current || reviewing.current) {
       await readState();
       return;
     }
@@ -658,7 +925,7 @@ function AttemptWorkspace({
       throw e;
     }
     await readState();
-  }, [flush, readState, recover]);
+  }, [flush, readState, recover, isLive]);
   useEffect(() => {
     const timer = setInterval(() => setNow(performance.now()), 500);
     const online = () => void refresh().catch(setError);
@@ -668,7 +935,8 @@ function AttemptWorkspace({
     const unload = (e: BeforeUnloadEvent) => {
       if (
         submittingRef.current ||
-        (active.current && (pending.current.size || conflict.current))
+        (active.current &&
+          (pending.current.size || conflict.current || reviewing.current))
       ) {
         e.preventDefault();
       }
@@ -728,13 +996,17 @@ function AttemptWorkspace({
   const question = a.questions[current]!;
   const change = useCallback(
     (value: AnswerInput) => {
-      if (!active.current || conflict.current) return;
+      if (!isLive() || !active.current || conflict.current || reviewing.current)
+        return;
       setAnswers((old) => ({ ...old, [question.id]: value }));
       revisions.current.set(
         question.id,
         (revisions.current.get(question.id) ?? 0) + 1,
       );
       pending.current.set(question.id, value);
+      persistenceResult(
+        drafts.put(question.id, value, versions.current[question.id] ?? null),
+      );
       setStatus("Đang lưu…");
       clearTimeout(debounce.current);
       debounce.current = setTimeout(
@@ -742,7 +1014,79 @@ function AttemptWorkspace({
         700,
       );
     },
-    [question.id, flush, recover],
+    [question.id, flush, recover, drafts, isLive, persistenceResult],
+  );
+  const resolveDraft = async (questionId: string, chosen?: DraftRecord) => {
+    if (choosing.current || !isLive()) return;
+    choosing.current = true;
+    setChoosingDraft(true);
+    setError(undefined);
+    try {
+      // A decision is always checked against a new server read, including its deadline.
+      const state = await readState();
+      if (!state || !active.current || !isLive()) return;
+      const q = state.questions.find((q) => q.id === questionId);
+      if (!q || Date.parse(state.serverNow) >= Date.parse(state.expiresAt))
+        return;
+      const candidates = reviewRecords.current.filter(
+        (r) => r.questionId === questionId,
+      );
+      if (!candidates.length) return;
+      if (chosen) {
+        if (
+          !candidates.some((r) => r.recordId === chosen.recordId) ||
+          Date.parse(state.serverNow) - chosen.editedAt >= DRAFT_TTL ||
+          chosen.baseSavedAt !== q.answer.savedAt
+        ) {
+          setError(
+            new Error(
+              "Bản nháp đã hết hạn hoặc phiên bản máy chủ đã khác. Hãy xem lại và dùng đáp án máy chủ.",
+            ),
+          );
+          return;
+        }
+        persistenceResult(
+          drafts.put(questionId, chosen.answer, chosen.baseSavedAt, {
+            editId: crypto.randomUUID(),
+            editedAt: chosen.editedAt,
+          }),
+        );
+        adoptedSources.current.set(questionId, [chosen]);
+        pending.current.set(questionId, chosen.answer);
+        revisions.current.set(
+          questionId,
+          (revisions.current.get(questionId) ?? 0) + 1,
+        );
+        setAnswers((old) => ({ ...old, [questionId]: chosen.answer }));
+      } else {
+        setAnswers((old) => ({ ...old, [questionId]: q.answer }));
+      }
+      // Only exact immutable candidates explicitly reviewed by this user are removed.
+      persistenceResult(
+        drafts.remove(
+          candidates.filter((r) => r.recordId !== chosen?.recordId),
+        ),
+      );
+      reviewRecords.current = reviewRecords.current.filter(
+        (r) => r.questionId !== questionId,
+      );
+      reviewing.current = reviewRecords.current.length > 0;
+      setDraftReview(reviewRecords.current);
+      if (!reviewing.current) await flush();
+    } catch (e) {
+      await recover(e).catch(setError);
+    } finally {
+      choosing.current = false;
+      if (isLive()) setChoosingDraft(false);
+    }
+  };
+  const storageNotice = storageFailed && (
+    <p role="alert" className="error">
+      Không thể bảo đảm lưu hoặc dọn bản nháp trên thiết bị.{" "}
+      {a.status === "IN_PROGRESS"
+        ? "Đáp án đang sửa vẫn được giữ trên trang và tiếp tục tự lưu lên máy chủ; phần chưa được máy chủ xác nhận có thể mất nếu tải lại hoặc đóng tab."
+        : "Lượt thi đã khóa; bản nháp không được gửi lại. Bạn có thể sao chép nội dung còn hiển thị."}
+    </p>
   );
   if (a.status !== "IN_PROGRESS")
     return (
@@ -760,6 +1104,20 @@ function AttemptWorkspace({
             Lượt thi đã khóa. Một số thay đổi chưa kịp lưu; bài nộp sử dụng đáp
             án đã được máy chủ ghi nhận.
           </p>
+        )}
+        {storageNotice}
+        {closedDrafts.length > 0 && (
+          <DraftReview
+            state={a}
+            records={closedDrafts}
+            closed
+            busy={false}
+            onClear={() => {
+              persistenceResult(drafts.remove(closedDrafts));
+              drafts.latest.clear();
+              setClosedDrafts([]);
+            }}
+          />
         )}
         <Link className="button" to={`/student/results/${a.examId}`}>
           Xem trạng thái kết quả
@@ -780,7 +1138,9 @@ function AttemptWorkspace({
       {blocker.state === "blocked" && (
         <StudentLeave
           busy={submitting}
-          saved={pending.current.size === 0 && !conflicted}
+          saved={
+            pending.current.size === 0 && !conflicted && !reviewing.current
+          }
           onStay={() => blocker.reset()}
           onSave={async () => {
             await flush();
@@ -818,6 +1178,22 @@ function AttemptWorkspace({
           </strong>
         </div>
       </div>
+      {storageNotice}
+      {discardedDrafts && (
+        <p className="focus-entry-note">
+          Một số bản nháp không hợp lệ hoặc quá 24 giờ đã được bỏ. Đáp án máy
+          chủ được giữ nguyên.
+        </p>
+      )}
+      {checkingDrafts && <p>Đang kiểm tra bản nháp trên thiết bị…</p>}
+      {draftReview.length > 0 && (
+        <DraftReview
+          state={a}
+          records={draftReview}
+          busy={choosingDraft || remaining === 0}
+          onResolve={resolveDraft}
+        />
+      )}
       {conflicted && (
         <section className="error" role="alert">
           <p>
@@ -928,7 +1304,13 @@ function AttemptWorkspace({
               }
               onChange={change}
               disabled={
-                submitting || conflicted || remaining === 0 || !active.current
+                checkingDrafts ||
+                reviewing.current ||
+                choosingDraft ||
+                submitting ||
+                conflicted ||
+                remaining === 0 ||
+                !active.current
               }
             />
           </fieldset>
@@ -967,20 +1349,45 @@ function AttemptWorkspace({
                 ? "Thay đổi chưa được lưu."
                 : conflicted
                   ? "Cần kiểm tra thay đổi ở tab khác."
-                  : "Đáp án được lưu tự động."}
+                  : reviewing.current
+                    ? "Chờ quyết định phục hồi bản nháp."
+                    : "Đáp án được lưu tự động."}
             </span>
+            <p aria-live="polite">
+              {conflicted
+                ? "Có xung đột · Chưa xác nhận đáp án hiện tại để nộp."
+                : pending.current.size > 0
+                  ? localPersisted
+                    ? "Đã lưu nháp trên thiết bị · Chưa xác nhận lưu trên máy chủ."
+                    : "Thay đổi đang ở bộ nhớ của trang · Chưa xác nhận lưu trên máy chủ."
+                  : reviewing.current
+                    ? "Bản nháp cần được kiểm tra trước khi tiếp tục."
+                    : "Đáp án hiện tại đã được máy chủ xác nhận."}
+            </p>
+            <small>
+              Bản nháp trên thiết bị không được mã hóa; đăng xuất để xóa khi
+              dùng máy chung.
+            </small>
           </div>
         </section>
         <div className="focus-submit">
           <StudentSubmit
             disabled={
-              submitting || conflicted || remaining === 0 || !active.current
+              checkingDrafts ||
+              reviewing.current ||
+              choosingDraft ||
+              submitting ||
+              conflicted ||
+              remaining === 0 ||
+              !active.current
             }
             onConfirm={async () => {
               submittingRef.current = true;
               setSubmitting(true);
               try {
                 await flush();
+                ensureLive();
+                if (!active.current || reviewing.current) return;
                 const state = await api<AttemptDto>(
                   `/student/attempts/${a.id}/submit`,
                   "POST",
@@ -988,6 +1395,7 @@ function AttemptWorkspace({
                     expectedVersions: { ...versions.current },
                   } satisfies AttemptSubmission,
                 );
+                ensureLive();
                 active.current = false;
                 submittingRef.current = false;
                 pending.current.clear();

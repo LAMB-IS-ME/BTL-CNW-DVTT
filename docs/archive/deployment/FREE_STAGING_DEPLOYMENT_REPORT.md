@@ -1,6 +1,6 @@
 # ExamSpace — Deployment evidence và provenance
 
-Checkpoint hiện hành **03/11/2026**: xem [runbook hiện hành](FREE_STAGING_RUNBOOK.md) và [báo cáo release cuối](../audits/FINAL_RELEASE_READINESS_20261103.md). Candidate là working tree trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`; **cloud candidate này NOT VERIFIED**. Không có commit/push/deploy trong lượt hiện tại.
+Checkpoint hiện hành **03/11/2026**: xem [runbook hiện hành](../../deployment/FREE_STAGING_RUNBOOK.md) và [báo cáo release cuối](../../audits/FINAL_RELEASE_READINESS_20261103.md). Candidate là working tree trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`; **cloud candidate này NOT VERIFIED**. Không có commit/push/deploy trong lượt hiện tại.
 
 Nội dung và JSON `free-staging-verification.json` bên dưới/đi kèm là evidence lịch sử 10/2026, không cập nhật số PASS bằng kết quả local mới và không chứng nhận release hiện tại. Các kết luận 23 E2E/hai nhóm và workflow cũ chỉ áp dụng checkpoint đó; entrypoint hiện tại có bốn nhóm như runbook. Lịch sử giữ nguyên để bảo toàn provenance.
 
@@ -15,7 +15,7 @@ Cập nhật **16/10/2026**. Hosted Session Recovery và production implementati
 
 `authRoutes()` tạo một limiter dùng chung cho **POST login và register**, quota **30 request/15 phút**. Không truyền store hoặc keyGenerator tùy biến: dependency đang cài dùng **MemoryStore trong từng instance, khóa mặc định theo req.ip** (IPv6 có chuẩn hóa subnet), tính cả request thành công/thất bại. GET me/csrf và POST logout không dùng limiter này. Counter không nằm trong PostgreSQL, không theo account/session; tạo BrowserContext mới không cấp quota IP mới.
 
-Config cũ chạy một worker, không fullyParallel, nhưng cả 23 test dùng một API process/IP. Ba session cases cần 6 login có mục đích: expiry/relogin/revoke 3 lần, network/revalidation 1, cross-tab 2. Trace failure ghi login trước còn quota 0 và lần relogin cuối bị 429; các assertion cross-tab recovery trước đó đã PASS. [Evidence 22/23 cũ](free-staging-evidence/session-recovery-full-suite-blocker.json) giữ nguyên.
+Config cũ chạy một worker, không fullyParallel, nhưng cả 23 test dùng một API process/IP. Ba session cases cần 6 login có mục đích: expiry/relogin/revoke 3 lần, network/revalidation 1, cross-tab 2. Trace failure ghi login trước còn quota 0 và lần relogin cuối bị 429; các assertion cross-tab recovery trước đó đã PASS. [Evidence 22/23 cũ](../../deployment/free-staging-evidence/session-recovery-full-suite-blocker.json) giữ nguyên.
 
 Boundary test mới dùng app và limiter thật, CSRF thật, local test DB: 30 request luân phiên login/register nhận validation 400, request thứ 31 nhận 429; fresh app cùng IP/database vẫn nhận 400 trong khi app cũ tiếp tục 429. Như vậy counter độc lập theo instance được kiểm chứng, không chỉ giả định reset process là đủ. Không tạo account bằng các invalid payload này.
 
@@ -44,19 +44,19 @@ Entry point đầy đủ cho local/CI là **`npm run test:e2e`**. `npx playwrigh
 | Build | Reuse **PASS**, production/dependencies không đổi |
 | Hosted Session Recovery | **APPROVED/PASS**, không chạy lại và không redeploy chỉ vì test config |
 
-[Evidence/hash/case results](free-staging-evidence/browser-isolation-final.json). Raw console logs chỉ `/tmp`; sanitized evidence ghi đủ 23 case và từng nhóm. Các failure lịch sử 22/23, network harness, sandbox được giữ, không đổi thành PASS hồi tố. Workspace-wide lint còn các harness untracked cũ ngoài candidate; lint candidate sạch được kiểm tra riêng, không disable rule.
+[Evidence/hash/case results](../../deployment/free-staging-evidence/browser-isolation-final.json). Raw console logs chỉ `/tmp`; sanitized evidence ghi đủ 23 case và từng nhóm. Các failure lịch sử 22/23, network harness, sandbox được giữ, không đổi thành PASS hồi tố. Workspace-wide lint còn các harness untracked cũ ngoài candidate; lint candidate sạch được kiểm tra riêng, không disable rule.
 
 ## D. Hosted và giới hạn giữ nguyên
 
 Staging https://examspace-staging.onrender.com vẫn SHA `bf3c1f5e4133d00d6e463516b5af571d86e3852d`, deploy `dep-db8e5ig473hc739etsbg`; Render Free, auto-deploy OFF theo checkpoint đã xác minh. Không tạo resource, thay DNS, gọi CI thử nghiệm hoặc mutate Supabase trong lượt isolation.
 
-False blocker cũ đã xác định: external-client 401 không phải tín hiệu browser; browser request thực tế gặp `ERR_CONNECTION_CLOSED`. Giữ identity khi lỗi mạng là đúng. Browser nhận 401 thật thì auth/cache invalidated và dashboard biến mất. Visibility revalidation, cross-tab logout/WSS, CSRF/RBAC, stale-response guard và hosted Exam/Quiz smoke PASS. [Hosted auth](free-staging-evidence/session-recovery-hosted.json), [network/visibility/WSS](free-staging-evidence/session-recovery-signals.json), [request origins](free-staging-evidence/session-recovery-exact-sequence.json).
+False blocker cũ đã xác định: external-client 401 không phải tín hiệu browser; browser request thực tế gặp `ERR_CONNECTION_CLOSED`. Giữ identity khi lỗi mạng là đúng. Browser nhận 401 thật thì auth/cache invalidated và dashboard biến mất. Visibility revalidation, cross-tab logout/WSS, CSRF/RBAC, stale-response guard và hosted Exam/Quiz smoke PASS. [Hosted auth](../../deployment/free-staging-evidence/session-recovery-hosted.json), [network/visibility/WSS](../../deployment/free-staging-evidence/session-recovery-signals.json), [request origins](../../deployment/free-staging-evidence/session-recovery-exact-sequence.json).
 
 Không cam kết revoke detection trong 45 giây khi browser chưa nhận response/notification; không kết luận nguyên nhân transport close thuộc provider nào. Hosted smoke dùng fixture đã hoàn tất, không chạy mới toàn bộ upload/Exam/Quiz mutation lifecycle hoặc load/cloud-restart test. Khi thêm nhiều auth tests sau này, từng nhóm vẫn phải tôn trọng quota thật; không tự tăng limit. Không tuyên bố production-ready.
 
 ## E. Review gate
 
-Scope commit đề xuất: **6 file test/config** liệt kê ở mục B. Reports/evidence/harness ad hoc giữ local để review; không đưa raw logs, cookies/tokens/secrets hoặc 85 artifacts lịch sử vào commit. [Final workspace audit](free-staging-evidence/browser-isolation-workspace.json) ghi exact status/counts/hash.
+Scope commit đề xuất: **6 file test/config** liệt kê ở mục B. Reports/evidence/harness ad hoc giữ local để review; không đưa raw logs, cookies/tokens/secrets hoặc 85 artifacts lịch sử vào commit. [Final workspace audit](../../deployment/free-staging-evidence/browser-isolation-workspace.json) ghi exact status/counts/hash.
 
 **85/85 historical artifacts nguyên vẹn, không production source changes, không reset/discard/git clean. Không còn blocker trong phạm vi được duyệt. Dừng để user review; không tự commit/push/deploy. Không cần redeploy chỉ vì thay test/config.**
 
@@ -91,11 +91,11 @@ Cập nhật **15/10/2026**. Public staging: **https://examspace-staging.onrende
 
 **FAIL / blocker:** chuỗi cookie expiry → relogin → server-side logout/revocation. Server `/auth/me` đã trả 401 nhưng tab visible/focused vẫn hiển thị dashboard Student, không hiện “Phiên đăng nhập đã kết thúc” sau 45 giây. Đã tái hiện trong script riêng cùng chuỗi; standalone login → revocation PASS. Chưa xác định root cause hoặc chứng minh lỗi được đưa vào bởi auth fix này. Không tăng timeout/retries, không bỏ assertion. Đây là failure UI/session recovery; kiểm tra server vẫn từ chối phiên bị thu hồi.
 
-[Hosted tổng hợp](free-staging-evidence/auth-fix-hosted.json), [lượt đầu giữ nguyên](free-staging-evidence/auth-fix-hosted-first-run.json), [standalone revocation PASS](free-staging-evidence/auth-fix-revocation-diagnostic.json), [chuỗi tái hiện FAIL](free-staging-evidence/auth-fix-revocation-sequence.json), [blocker](free-staging-evidence/auth-fix-hosted-blocker.json). Harness diagnostics lưu metadata HTTP/UI và screenshot, không cookie/token/password/HAR/trace.
+[Hosted tổng hợp](../../deployment/free-staging-evidence/auth-fix-hosted.json), [lượt đầu giữ nguyên](../../deployment/free-staging-evidence/auth-fix-hosted-first-run.json), [standalone revocation PASS](../../deployment/free-staging-evidence/auth-fix-revocation-diagnostic.json), [chuỗi tái hiện FAIL](../../deployment/free-staging-evidence/auth-fix-revocation-sequence.json), [blocker](../../deployment/free-staging-evidence/auth-fix-hosted-blocker.json). Harness diagnostics lưu metadata HTTP/UI và screenshot, không cookie/token/password/HAR/trace.
 
 ## Phạm vi và trạng thái bàn giao
 
-Đã hoàn thành đúng một test-only commit/push, review staged diff và scoped secret scan. [Precommit](free-staging-evidence/pagination-fix-precommit.json), [local E2E](free-staging-evidence/pagination-fix-local.json), [CI](free-staging-evidence/pagination-fix-ci.json), [deploy](free-staging-evidence/auth-fix-render-live.json), [workspace audit](free-staging-evidence/auth-fix-final-workspace.json).
+Đã hoàn thành đúng một test-only commit/push, review staged diff và scoped secret scan. [Precommit](../../deployment/free-staging-evidence/pagination-fix-precommit.json), [local E2E](../../deployment/free-staging-evidence/pagination-fix-local.json), [CI](../../deployment/free-staging-evidence/pagination-fix-ci.json), [deploy](../../deployment/free-staging-evidence/auth-fix-render-live.json), [workspace audit](../../deployment/free-staging-evidence/auth-fix-final-workspace.json).
 
 Không sửa nội dung dữ liệu demo, không tạo fixture mới. Login/logout cập nhật session/lastLoginAt; reconnect quiz có metadata presence thông thường. Không thay plan, payment, DNS, môi trường hoặc project FocusLab. Render Free được đọc lại; Supabase Free giữ nguyên cấu hình. Không thao tác tài nguyên trả phí; billing/quota đầy đủ không được MCP cung cấp nên không chứng nhận hóa đơn.
 
@@ -133,7 +133,7 @@ Ngày cập nhật: **15/10/2026**, Asia/Bangkok. Public URL thật: **https://e
 | Platform health check | TCP mặc định; MCP create không hỗ trợ field HTTP healthCheckPath |
 | Probe HTTP thật | `/api/health` → 200, JSON status ok |
 
-[Evidence cấu hình/deploy](free-staging-evidence/render-live.json). `buildPlan: starter` là lớp build mặc định provider, khác với runtime `plan: free`; không chọn paid compute hoặc premium build. User đã xác nhận không gắn phương thức thanh toán; MCP không cho đọc toàn bộ billing/quota account.
+[Evidence cấu hình/deploy](../../deployment/free-staging-evidence/render-live.json). `buildPlan: starter` là lớp build mặc định provider, khác với runtime `plan: free`; không chọn paid compute hoặc premium build. User đã xác nhận không gắn phương thức thanh toán; MCP không cho đọc toàn bộ billing/quota account.
 
 Một Node service phục vụ SPA + API + Socket.IO. Build: `npm ci --include=dev && npm run db:generate && npm run build`. Start: `CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api`. Không migrate/seed lúc startup. Log xác nhận `server_started`, port 10000. Truy vấn log app mức error/warn trong khoảng 02:10–02:27 UTC không trả dòng nào; không lưu raw logs mới.
 
@@ -145,7 +145,7 @@ Bucket `question-assets` private. Signed download, upload qua API, render ảnh 
 
 Fixture namespace **`STAGING-20261015021944`**: 2 tài khoản mới, 1 lớp, 1 bank, 3 câu hỏi, 2 đề, 1 Quiz/room, 2 ảnh. Không cleanup/reset hoặc ghi đè dữ liệu demo. Thao tác hết hạn session chỉ nhắm đúng SID và user ID fixture trong bộ nhớ.
 
-Read-only đối chiếu cuối: 17 users, 3 classes, 30 questions, 5 exams, 3 Storage objects; 2 Prisma migrations vẫn completed. Hai attempt fixture GRADED, điểm 4.50 và 2.00; Quiz FINISHED. [Evidence DB](free-staging-evidence/hosted-database-summary.json). Hardening `_prisma_migrations` từ lượt chuẩn bị vẫn giữ nguyên; không thêm business migration.
+Read-only đối chiếu cuối: 17 users, 3 classes, 30 questions, 5 exams, 3 Storage objects; 2 Prisma migrations vẫn completed. Hai attempt fixture GRADED, điểm 4.50 và 2.00; Quiz FINISHED. [Evidence DB](../../deployment/free-staging-evidence/hosted-database-summary.json). Hardening `_prisma_migrations` từ lượt chuẩn bị vẫn giữ nguyên; không thêm business migration.
 
 ## D. Security
 
@@ -170,7 +170,7 @@ Secrets chỉ truyền qua env provider/bộ nhớ. Không lưu password, connec
 | Bấm login trước khi initial `/auth/me` hoàn tất | **Fresh hosted FAIL** — lỗi race còn trên deployed commit |
 | Cold-start duration, cloud restart/rolling overlap, multi-student load | **SKIPPED**, không suy diễn từ local tests |
 
-[Hosted results](free-staging-evidence/hosted-verification.json), [first-run FAIL](free-staging-evidence/hosted-first-run.json), [valid PNG results](free-staging-evidence/hosted-image-verification.json), [screenshots](../screenshots/free-staging/hosted/).
+[Hosted results](../../deployment/free-staging-evidence/hosted-verification.json), [first-run FAIL](../../deployment/free-staging-evidence/hosted-first-run.json), [valid PNG results](../../deployment/free-staging-evidence/hosted-image-verification.json), [screenshots](../../screenshots/free-staging/hosted/).
 
 Các lỗi harness được giữ evidence: mật khẩu fixture ban đầu không đạt minLength 10 nên API trả 400 (chưa tạo record); assertion timer mặc định 5 giây quá ngắn nên resume cùng fixture với timeout 45 giây; PNG mẫu đầu tiên sai CRC, assertion naturalWidth không đủ chứng minh decode. Đã dùng PNG do browser tạo, kiểm tra `decode()` và reload trên một đề fixture mới. Không xóa/ghi đè ảnh hoặc snapshot trước đó. Không tính những lần lỗi harness là PASS rồi bỏ dấu vết.
 
@@ -184,9 +184,9 @@ Sửa local: `AuthEntry` đợi initial identity probe kết thúc trước khi 
 - `apps/web/src/features/auth.tsx`: wrapper loading gate 5 dòng.
 - `apps/web/src/features/auth-entry.test.tsx`: 2 regression tests với response `/auth/me` bị giữ chậm, rồi trả anonymous và đăng nhập.
 
-**Local PASS**: 16 tests liên quan / 3 files; lint, typecheck, build. Negative control bỏ gate làm cả 2 regression tests FAIL, sau đó khôi phục chính xác candidate. [Evidence fix](free-staging-evidence/login-race-fix.json). Có một lỗi typecheck ban đầu trong test (Testing Library không hỗ trợ option `exact`), đã sửa trước kết quả PASS cuối. Build vẫn có cảnh báo chunk >500 kB đã có từ trước. Chưa deploy bản sửa này.
+**Local PASS**: 16 tests liên quan / 3 files; lint, typecheck, build. Negative control bỏ gate làm cả 2 regression tests FAIL, sau đó khôi phục chính xác candidate. [Evidence fix](../../deployment/free-staging-evidence/login-race-fix.json). Có một lỗi typecheck ban đầu trong test (Testing Library không hỗ trợ option `exact`), đã sửa trước kết quả PASS cuối. Build vẫn có cảnh báo chunk >500 kB đã có từ trước. Chưa deploy bản sửa này.
 
-Evidence local chuẩn bị trước first push: 94 unit, 62 integration, 3 browser và 8 nhóm TLS/restart assertions — **local/reused**, không phải hosted. Xem [verification summary](free-staging-evidence/verification-summary.json).
+Evidence local chuẩn bị trước first push: 94 unit, 62 integration, 3 browser và 8 nhóm TLS/restart assertions — **local/reused**, không phải hosted. Xem [verification summary](../../deployment/free-staging-evidence/verification-summary.json).
 
 ## F. Giới hạn Free Tier
 
@@ -196,7 +196,7 @@ Socket cùng origin dùng WSS trực tiếp, không polling fallback. Health HTT
 
 ## G. Git và evidence
 
-HEAD vẫn `39802152`; không commit/push bổ sung. Working tree có bản sửa 2 source files, regression test mới, báo cáo/JSON/runbook và hosted evidence/scripts/screenshots. Không stage. 85 historical artifacts được đối chiếu SHA-256 và giữ nguyên; raw logs cũ vẫn local và không đưa vào commit. Danh sách/count chính xác ở [final workspace audit](free-staging-evidence/resume-final-workspace.json).
+HEAD vẫn `39802152`; không commit/push bổ sung. Working tree có bản sửa 2 source files, regression test mới, báo cáo/JSON/runbook và hosted evidence/scripts/screenshots. Không stage. 85 historical artifacts được đối chiếu SHA-256 và giữ nguyên; raw logs cũ vẫn local và không đưa vào commit. Danh sách/count chính xác ở [final workspace audit](../../deployment/free-staging-evidence/resume-final-workspace.json).
 
 ## H. Điểm dừng / bước cần duyệt
 

@@ -1,6 +1,6 @@
 # Triển khai ExamSpace
 
-Checkpoint **03/11/2026**, đối chiếu source local; [runbook hiện hành](deployment/FREE_STAGING_RUNBOOK.md) là hướng dẫn chính cho topology cùng origin trong `render.yaml`. Candidate hiện tại là working tree chưa commit trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Cloud của candidate này **NOT VERIFIED**; evidence hosted 10/2026 và các [fresh-clone](deployment/FRESH_CLONE_SETUP_REPORT.md)/[readiness](deployment/DEPLOYMENT_READINESS_REPORT.md) reports chỉ là lịch sử theo SHA/date của chúng. Không suy ra trạng thái cloud hiện tại từ lịch sử. Xem [environment matrix](deployment/ENVIRONMENT_MATRIX.md). Không truy cập production trong vòng release audit này. Kết quả và release gate: [báo cáo release 03/11/2026](audits/FINAL_RELEASE_READINESS_20261103.md).
+Checkpoint **03/11/2026**, đối chiếu source local; [runbook hiện hành](deployment/FREE_STAGING_RUNBOOK.md) là hướng dẫn chính cho topology cùng origin trong `render.yaml`. Candidate hiện tại là working tree chưa commit trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Cloud của candidate này **NOT VERIFIED**; evidence hosted 10/2026 và các [fresh-clone](archive/deployment/FRESH_CLONE_SETUP_REPORT.md)/[readiness](archive/deployment/DEPLOYMENT_READINESS_REPORT.md) reports chỉ là lịch sử theo SHA/date của chúng. Không suy ra trạng thái cloud hiện tại từ lịch sử. Xem [environment matrix](deployment/ENVIRONMENT_MATRIX.md). Không truy cập production trong vòng release audit này. Kết quả và release gate: [báo cáo release 03/11/2026](audits/FINAL_RELEASE_READINESS_20261103.md).
 
 ## Local quick start
 
@@ -112,7 +112,7 @@ Seed tạo 1 admin, 2 teacher, 12 student, 2 lớp, 2 ngân hàng, 24 câu (6 m�
 
 Production seed bị chặn trừ khi ALLOW_PRODUCTION_SEED=true. Nếu cần demo cloud, đặt DEMO_PASSWORD riêng trước seed lần đầu và tắt flag sau đó; E2E của repo chỉ dùng test DB/password development. Không seed tài khoản mặc định vào hệ thống đang phục vụ người dùng thật. v1 không có password reset UI; DEMO_PASSWORD không cập nhật account đã tồn tại.
 
-Seed phục hồi lượt demo đang IN_PROGRESS sau lỗi giữa chừng, giữ đáp án đã lưu và deadline gốc; lượt đã nộp không submit lại. Không cần reset database. Xem [báo cáo timeout/seed Supabase](SEED_RECOVERY.md) để biết cấu hình transaction và kiểm chứng chạy lại.
+Seed phục hồi lượt demo đang IN_PROGRESS sau lỗi giữa chừng, giữ đáp án đã lưu và deadline gốc; lượt đã nộp không submit lại. Không cần reset database. Xem [báo cáo timeout/seed Supabase](archive/SEED_RECOVERY.md) để biết cấu hình transaction và kiểm chứng chạy lại.
 
 ## Render backend
 

@@ -1,6 +1,6 @@
 # Live Quiz — Targeted visual polish & final UX consistency
 
-> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
+> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
 
 Branch `ux/education-saas-redesign-pilot` · HEAD `e236cb87221f2596aed424b833f281d6e34be66b`.
 
@@ -29,7 +29,7 @@ Ba UI tests mới **đỏ trước sửa, xanh sau sửa**: timeout có snapshot
 
 ## Verification
 
-Kết quả chi tiết, logs và hashes trong [verification JSON](live-quiz-polish-verification.json).
+Kết quả chi tiết, logs và hashes trong [verification JSON](../../ux/live-quiz-polish-verification.json).
 
 | Gate | Kết quả final |
 |---|---|
@@ -47,10 +47,10 @@ Giữ nguyên Socket.IO protocol, server snapshots, answer submission, progressi
 
 ## Evidence và review
 
-- [Desktop](../screenshots/live-quiz-polish/review-board-desktop.png): Teacher active/reveal, Student question và kết quả.
-- [Mobile](../screenshots/live-quiz-polish/review-board-mobile.png): question/selected/submitted, Teacher Next, ranking/final.
-- [BEFORE / AFTER](../screenshots/live-quiz-polish/visual-before-after.png): bảy cặp state/viewport tương ứng.
-- [Join consistency](../screenshots/live-quiz-polish/evidence-states.png): timeout mâu thuẫn trước sửa; pending/failed/recovered sau sửa.
+- [Desktop](../../screenshots/live-quiz-polish/review-board-desktop.png): Teacher active/reveal, Student question và kết quả.
+- [Mobile](../../screenshots/live-quiz-polish/review-board-mobile.png): question/selected/submitted, Teacher Next, ranking/final.
+- [BEFORE / AFTER](../../screenshots/live-quiz-polish/visual-before-after.png): bảy cặp state/viewport tương ứng.
+- [Join consistency](../../screenshots/live-quiz-polish/evidence-states.png): timeout mâu thuẫn trước sửa; pending/failed/recovered sau sửa.
 
 BEFORE là latest Full Rollout screenshots đã lưu; AFTER từ app và transport thật. Chỉ crop/ghép ảnh, không chỉnh pixels UI; room code/timer/score có thể khác theo fixture và thời điểm. Boards prototype/rollout cũ, reports và verification giữ nguyên hashes. Final boards được mở kiểm tra crop, chữ, role/state, hierarchy và khác biệt có ý nghĩa; user duyệt thẩm mỹ cuối.
 
@@ -63,4 +63,4 @@ Giới hạn giữ nguyên: không load/soak hàng trăm người, multi-instanc
 Dừng để user review targeted polish; không tự mở vòng polish khác hoặc cleanup+commit.
 
 
-Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.
+Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.

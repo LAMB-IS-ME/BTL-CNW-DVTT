@@ -1,12 +1,12 @@
 # Fresh-clone setup report — 2026-10-14
 
-> Snapshot trước commit tại baseline `864633b`. User đã duyệt cleanup và đúng một local commit; các trạng thái “chưa commit” bên dưới ghi nhận checkpoint cũ, không mô tả HEAD của một clone về sau. Xem [cleanup gate](evidence/commit-cleanup.json). Kết quả post-commit được báo riêng sau khi clone NEW HEAD; không ghi PASS trước khi thực hiện.
+> Snapshot trước commit tại baseline `864633b`. User đã duyệt cleanup và đúng một local commit; các trạng thái “chưa commit” bên dưới ghi nhận checkpoint cũ, không mô tả HEAD của một clone về sau. Xem [cleanup gate](../../deployment/evidence/commit-cleanup.json). Kết quả post-commit được báo riêng sau khi clone NEW HEAD; không ghi PASS trước khi thực hiện.
 
 ## Kết luận và provenance
 
 **Runtime local tái tạo được từ committed source. Bàn giao tài liệu tại HEAD còn thiếu MASTER_SPEC.** Bản sửa tài liệu/test đã chuẩn bị nhưng chưa stage/commit. Không gọi prepared overlay là clone của một commit đã chứa các sửa đổi.
 
-Repository `LAMB-IS-ME/BTL-CNW-DVTT`, branch `ux/education-saas-redesign-pilot`, HEAD `864633b93505fdeebb8c2ca15b0b0c3278a3de9d`. Baseline có 368 tracked files, 0 tracked modifications, 0 staged changes, 85 historical untracked files. Xem [Git baseline](evidence/git-baseline.json).
+Repository `LAMB-IS-ME/BTL-CNW-DVTT`, branch `ux/education-saas-redesign-pilot`, HEAD `864633b93505fdeebb8c2ca15b0b0c3278a3de9d`. Baseline có 368 tracked files, 0 tracked modifications, 0 staged changes, 85 historical untracked files. Xem [Git baseline](../../deployment/evidence/git-baseline.json).
 
 | Môi trường | Nguồn / nội dung | Kết quả và giới hạn |
 | --- | --- | --- |
@@ -16,7 +16,7 @@ Repository `LAMB-IS-ME/BTL-CNW-DVTT`, branch `ux/education-saas-redesign-pilot`,
 | Hosted staging | Không provision/deploy | **NOT TESTED**: provider TLS/WSS, cross-site cookie behavior, bucket policies thật, CDN/backup/capacity. |
 | Clones phục hồi để đối chiếu | `<review-scratch>/original` và `<review-scratch>/prepared` | Tạo mới sau interruption, chỉ kiểm tra file/hash/links; **không cài dependencies hoặc chạy lại tests**. Prepared chứa explicit final overlay. |
 
-Sau interruption do workspace credit limit, `<audit-scratch>` không còn: clones, database, binaries và raw logs không còn để mở lại. Các summary JSON, test command/exit status và execution transcript vẫn có; tiếp tục dùng evidence của cùng phase theo yêu cầu user, không thay bằng kết quả audit lịch sử. SHA raw log đã ghi chỉ là fingerprint lịch sử, không thể kiểm lại khi file đã mất. New comparison không tái tạo hay thay thế runtime evidence đã mất. [Verification](evidence/verification.json) ghi rõ provenance; [comparison](evidence/fresh-clone-comparison.json) ghi hashes final overlay và source so với HEAD.
+Sau interruption do workspace credit limit, `<audit-scratch>` không còn: clones, database, binaries và raw logs không còn để mở lại. Các summary JSON, test command/exit status và execution transcript vẫn có; tiếp tục dùng evidence của cùng phase theo yêu cầu user, không thay bằng kết quả audit lịch sử. SHA raw log đã ghi chỉ là fingerprint lịch sử, không thể kiểm lại khi file đã mất. New comparison không tái tạo hay thay thế runtime evidence đã mất. [Verification](../../deployment/evidence/verification.json) ghi rõ provenance; [comparison](../../deployment/evidence/fresh-clone-comparison.json) ghi hashes final overlay và source so với HEAD.
 
 ## Kết quả thực thi đã hoàn thành
 
@@ -49,7 +49,7 @@ Sandbox run đầu có DNS denial, một Supertest health socket failure (77/78)
 
 Đã có tracked manifests/lockfile, shared package, TS/Vite/tsup configs, source, hai SQL migrations, Prisma schema/seed, font PDF/license, `.env.example`, CI/Pages workflows, render.yaml và fixture Storage test. Không phát hiện runtime cần local-only source khi các flow được kiểm thử.
 
-MASTER_SPEC local bị `.git/info/exclude` loại khỏi Git. Cả basename `MASTER_SPEC.md` trong thư mục con cũng bị exclude. Bản bàn giao mới [MASTER_SPEC_BASELINE](../spec/MASTER_SPEC_BASELINE.md) giữ byte/hash của bản gốc, không bị ignore; README/SRS trỏ vào bản này. Root spec, bản copy local cũ `docs/spec/MASTER_SPEC.md`, ASTRA prompt và exclude được giữ nguyên. ASTRA là prompt triển khai local, không có tracked link cần giải quyết, không đưa vào bàn giao. Xem [đối chiếu spec](../spec/SPEC_RECONCILIATION.md).
+MASTER_SPEC local bị `.git/info/exclude` loại khỏi Git. Cả basename `MASTER_SPEC.md` trong thư mục con cũng bị exclude. Bản bàn giao mới [MASTER_SPEC_BASELINE](../../spec/MASTER_SPEC_BASELINE.md) giữ byte/hash của bản gốc, không bị ignore; README/SRS trỏ vào bản này. Root spec, bản copy local cũ `docs/spec/MASTER_SPEC.md`, ASTRA prompt và exclude được giữ nguyên. ASTRA là prompt triển khai local, không có tracked link cần giải quyết, không đưa vào bàn giao. Xem [đối chiếu spec](../../spec/SPEC_RECONCILIATION.md).
 
 Original clone static comparison vẫn có đúng hai Markdown file-target links hỏng. Prepared final comparison phải có 0 broken file/anchor links trong README và docs. Chỉ sau user review và một commit được cho phép ở phase khác thì Git clone mới nhận bản sửa. Không giả định các untracked file hiện tại đã được bàn giao qua Git.
 
@@ -110,11 +110,11 @@ npm run test:deployment
 node tests/deployment/production-readiness.mjs
 ```
 
-Không copy node_modules/.env từ repository chính. Với local interactive development, copy hai `.env.example` **từ clone**, điền local DB URL và SESSION_SECRET tự sinh, rồi dùng `npm run dev` theo [setup guide](../DEPLOYMENT.md#local-quick-start). Các browser tests hiện có dùng development seed password đã khai báo trong source/README; không dùng custom demo password khi chạy suite hardcoded này. Không đưa password vào report/evidence.
+Không copy node_modules/.env từ repository chính. Với local interactive development, copy hai `.env.example` **từ clone**, điền local DB URL và SESSION_SECRET tự sinh, rồi dùng `npm run dev` theo [setup guide](../../DEPLOYMENT.md#local-quick-start). Các browser tests hiện có dùng development seed password đã khai báo trong source/README; không dùng custom demo password khi chạy suite hardcoded này. Không đưa password vào report/evidence.
 
 ## Database/seed observations
 
-Migrations theo thứ tự `20260930000000_initial`, `20260930010000_integrity`; session table do migration tạo, `createTableIfMissing=false`. Có 21 bảng bật RLS; extensions kiểm tra chỉ có plpgsql. Seed không cần Supabase Storage hay ignored file; tạo 15 users (1 Admin/2 Teacher/12 Student), 2 classes, 2 banks, 24 questions, 3 exams, 1 quiz, 1 graded demo attempt điểm 3. Xem [counts](evidence/seed-counts.json) và [rerun fingerprint](evidence/seed-rerun.json).
+Migrations theo thứ tự `20260930000000_initial`, `20260930010000_integrity`; session table do migration tạo, `createTableIfMissing=false`. Có 21 bảng bật RLS; extensions kiểm tra chỉ có plpgsql. Seed không cần Supabase Storage hay ignored file; tạo 15 users (1 Admin/2 Teacher/12 Student), 2 classes, 2 banks, 24 questions, 3 exams, 1 quiz, 1 graded demo attempt điểm 3. Xem [counts](../../deployment/evidence/seed-counts.json) và [rerun fingerprint](../../deployment/evidence/seed-rerun.json).
 
 Seed upsert không ghi đè dữ liệu/password/schedule; phục hồi attempt dở theo deadline gốc. Chạy một seed process mỗi lần. Lịch đề mới đóng sau 7 ngày; seed lại không kéo dài, nên dùng DB demo mới hoặc Teacher tạo đề mới trước buổi demo. Không reset dữ liệu cần giữ. Production guard chỉ kiểm tra NODE_ENV và explicit flag; không thay thế việc xác minh DB đích/password riêng.
 

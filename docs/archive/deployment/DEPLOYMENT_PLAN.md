@@ -1,6 +1,6 @@
 # Deployment plan — lịch sử đề xuất 2026-10-14
 
-> Đã thay thế cho topology hiện hành bởi [runbook 03/11/2026](FREE_STAGING_RUNBOOK.md). Các giá, lựa chọn ưu tiên, build/start và trạng thái cloud bên dưới là lịch sử, không phải checkpoint release mới. Blueprint hiện tại serve SPA + API cùng origin; không tự làm theo phương án split-origin hoặc migrate ở start của tài liệu cũ. Giữ nguyên nội dung để review provenance.
+> Đã thay thế cho topology hiện hành bởi [runbook 03/11/2026](../../deployment/FREE_STAGING_RUNBOOK.md). Các giá, lựa chọn ưu tiên, build/start và trạng thái cloud bên dưới là lịch sử, không phải checkpoint release mới. Blueprint hiện tại serve SPA + API cùng origin; không tự làm theo phương án split-origin hoặc migrate ở start của tài liệu cũ. Giữ nguyên nội dung để review provenance.
 
 Chỉ chuẩn bị. Chưa tạo project cloud, chưa mở staging, chưa chọn mua dịch vụ, chưa deploy hoặc push. Các bước hosting bên dưới chỉ dùng ở phase được người dùng cho phép sau này. Fresh clone/test hiện tại hoàn toàn từ Git local. Không cần đưa source lên GitHub để hoàn thành phase này.
 
@@ -78,7 +78,7 @@ Bucket `question-assets` private; PNG/JPEG/WebP ≤5 MB; service credential ch�
 
 ## Cross-origin/security configuration
 
-Xem [environment matrix](ENVIRONMENT_MATRIX.md). Cùng site HTTPS: Secure=true, SameSite=lax, CLIENT_ORIGIN exact frontend origin. Khác site: SameSite=none + Secure=true, vẫn phải kiểm thử browser third-party cookie restrictions. Cookie host-only/HttpOnly không cần Domain dùng chung. CSRF giữ nguyên, token mới sau login, logout destroy store/session và disconnect socket.
+Xem [environment matrix](../../deployment/ENVIRONMENT_MATRIX.md). Cùng site HTTPS: Secure=true, SameSite=lax, CLIENT_ORIGIN exact frontend origin. Khác site: SameSite=none + Secure=true, vẫn phải kiểm thử browser third-party cookie restrictions. Cookie host-only/HttpOnly không cần Domain dùng chung. CSRF giữ nguyên, token mới sau login, logout destroy store/session và disconnect socket.
 
 TRUST_PROXY là số hop đúng topology, không phải bật mù thành 1. Edge cần overwrite X-Forwarded-Proto/For, giới hạn truy cập origin và enforce HTTP→HTTPS. API source không tự redirect HTTP. HSTS/Helmet không thay thế TLS termination. Không wildcard credentials CORS. WSS handshake bắt buộc Origin trong allowlist + session; reload session/user ở event và mỗi 30 giây.
 

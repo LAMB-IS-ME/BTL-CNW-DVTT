@@ -1,6 +1,6 @@
 # Grading & Results — UX audit và thin-slice prototype
 
-> Báo cáo lịch sử tại điểm dừng prototype. Trạng thái phê duyệt, verification và đóng phase hiện tại nằm trong [báo cáo rollout](GRADING_RESULTS_ROLLOUT_REPORT.md). Sáu board đã duyệt được giữ nguyên; không tái tạo khi đóng phase.
+> Báo cáo lịch sử tại điểm dừng prototype. Trạng thái phê duyệt, verification và đóng phase hiện tại nằm trong [báo cáo rollout](../../ux/GRADING_RESULTS_ROLLOUT_REPORT.md). Sáu board đã duyệt được giữ nguyên; không tái tạo khi đóng phase.
 
 Ngày 09–10/10/2026. **Dừng để review visual direction; chưa full rollout.**
 Branch `ux/education-saas-redesign-pilot`, HEAD `2444199f7ca3a0113d5ea3aad7567e70d0677df0`. Trước phase working tree sạch; hiện là thay đổi local chưa commit. Không push, deploy, merge hoặc PR.
@@ -24,7 +24,7 @@ Môi trường đã khởi động lại, `/tmp` cũ mất cả PostgreSQL, logs
 | Student Results | `/student/results`, `/student/results/:id`; `StudentResults` | Entry GET `/student/exams`: các bài không phải DRAFT được giao qua lớp, mặc định 20; detail GET `/student/exams/:id/results` chỉ lấy attempts của session student. Student đã có attempt vẫn có thể truy cập detail sau thay đổi membership. |
 | Context bổ sung | `result-presentation.tsx` | Dùng GET `/teacher/exams/:id` sẵn có, owner-only, để trình bày tên bài và chính sách. Không thay API. Response exam chỉ có class IDs ở relation; không giả tên lớp. PDF hiện hữu có tên lớp. |
 
-Source đối chiếu: [grading routes](../../apps/api/src/modules/grading/routes.ts), [result service](../../apps/api/src/modules/results/service.ts), [release/final-attempt logic](../../apps/api/src/modules/results/logic.ts), [analytics](../../apps/api/src/modules/analytics/service.ts), [export](../../apps/api/src/modules/exports/reports.ts). Đã đối chiếu MASTER_SPEC §§11–12, 26–27, SDD §§18–21 và các tài liệu visual identity / Student Focus trước phase.
+Source đối chiếu: [grading routes](../../../apps/api/src/modules/grading/routes.ts), [result service](../../../apps/api/src/modules/results/service.ts), [release/final-attempt logic](../../../apps/api/src/modules/results/logic.ts), [analytics](../../../apps/api/src/modules/analytics/service.ts), [export](../../../apps/api/src/modules/exports/reports.ts). Đã đối chiếu MASTER_SPEC §§11–12, 26–27, SDD §§18–21 và các tài liệu visual identity / Student Focus trước phase.
 
 ## 3. Business behavior giữ nguyên
 
@@ -76,7 +76,7 @@ Lát cắt bao phủ entry/list, workspace essay, save/status, results list/deta
 
 ## 7. Test results và commands
 
-Chi tiết commands/counts, geometry, hashes và manifest ở [verification JSON](grading-results-verification.json).
+Chi tiết commands/counts, geometry, hashes và manifest ở [verification JSON](../../ux/grading-results-verification.json).
 
 | Gate | Baseline 09/10 | Final 10/10 |
 | --- | --- | --- |
@@ -94,11 +94,11 @@ Baseline unit lần đầu có 1 health test lỗi vì sandbox chặn localhost;
 
 ## 8. Boards và self-review
 
-- [Desktop](../screenshots/grading-results-prototype/review-board-desktop.png): danh sách chấm, toàn bộ essay workspace, Teacher Results và Student released result.
-- [Mobile](../screenshots/grading-results-prototype/review-board-mobile.png): essay một cột, ngữ cảnh + điểm đã lưu, mobile result records, released và unreleased.
-- [State evidence](../screenshots/grading-results-prototype/evidence-states.png): pending/unreleased, student entry, analytics hiện hữu và teacher feedback đã công bố.
+- [Desktop](../../screenshots/grading-results-prototype/review-board-desktop.png): danh sách chấm, toàn bộ essay workspace, Teacher Results và Student released result.
+- [Mobile](../../screenshots/grading-results-prototype/review-board-mobile.png): essay một cột, ngữ cảnh + điểm đã lưu, mobile result records, released và unreleased.
+- [State evidence](../../screenshots/grading-results-prototype/evidence-states.png): pending/unreleased, student entry, analytics hiện hữu và teacher feedback đã công bố.
 
-Tạo bằng [board script](../../tests/ui/grading-results-boards.py) từ screenshots Playwright thật, 1:1 pixels, không device frame hoặc retouch UI; một số crop bỏ khoảng trống xung quanh. Agent đã mở cả ba boards và inspect ảnh workspace ở kích thước gốc. Raw captures/logs ở `/tmp` có thể tái tạo; ba boards và evidence tổng hợp được giữ trong repo. Không overwrite approved boards cũ.
+Tạo bằng [board script](../../../tests/ui/grading-results-boards.py) từ screenshots Playwright thật, 1:1 pixels, không device frame hoặc retouch UI; một số crop bỏ khoảng trống xung quanh. Agent đã mở cả ba boards và inspect ảnh workspace ở kích thước gốc. Raw captures/logs ở `/tmp` có thể tái tạo; ba boards và evidence tổng hợp được giữ trong repo. Không overwrite approved boards cũ.
 
 Self-review: không nested cards, hero/gradient, icon pastel hoặc KPI tiles; hierarchy dựa vào type/grid/rules. Grading ưu tiên nội dung và score, results dễ scan, analytics không đẩy list xuống cuối, student không dùng giant score hoặc enum kỹ thuật. Mobile có layout riêng và nhắc context; không sticky controls che bài. Desktop table hiện bắt đầu khoảng **490px**, thay cho 1.729px baseline. Shared shell legacy vẫn giữ nguyên theo scope, không mở thêm vòng redesign.
 

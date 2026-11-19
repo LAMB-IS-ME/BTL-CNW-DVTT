@@ -2,16 +2,16 @@
 
 Ngày 07/10/2026 · **Căn cứ lựa chọn Exam Folio.**
 
-Audit được thực hiện trước prototype, đối chiếu V2 tại `4e70c65` và work Exam ban đầu. Direction đã được chọn, triển khai và duyệt; trạng thái hiện hành ở [báo cáo cuối](EXAM_FOLIO_FINAL_REPORT.md). Những nhận xét “hiện tại” bên dưới mô tả baseline tại thời điểm audit.
+Audit được thực hiện trước prototype, đối chiếu V2 tại `4e70c65` và work Exam ban đầu. Direction đã được chọn, triển khai và duyệt; trạng thái hiện hành ở [báo cáo cuối](../../ux/EXAM_FOLIO_FINAL_REPORT.md). Những nhận xét “hiện tại” bên dưới mô tả baseline tại thời điểm audit.
 
 “Trông AI-generated” ở đây mô tả cảm nhận về một tổ hợp visual quen thuộc, không phải kết luận về nguồn gốc sản phẩm hay một chỉ số đã được nghiên cứu người dùng xác nhận.
 
 ## Bằng chứng đã đọc
 
-- [Board V2 desktop](../screenshots/ui-redesign/review-board-v2-desktop.png) và [mobile](../screenshots/ui-redesign/review-board-v2-mobile.png): Dashboard, Question Bank list/detail/editor/archived.
+- [Board V2 desktop](../../screenshots/ui-redesign/review-board-v2-desktop.png) và [mobile](../../screenshots/ui-redesign/review-board-v2-mobile.png): Dashboard, Question Bank list/detail/editor/archived.
 - [Design system đã duyệt](UI_REDESIGN_DESIGN_SYSTEM.md), [report V2](UI_POLISH_V2_REPORT.md), [hướng dẫn automation](UI_PILOT_AUTOMATION.md).
-- Source: [tokens](../../apps/web/src/styles/pilot-tokens.css), [shared shell và Question Bank CSS](../../apps/web/src/styles/question-bank.css), [Dashboard CSS](../../apps/web/src/styles/teacher-dashboard.css), [Dashboard JSX](../../apps/web/src/features/teacher-dashboard.tsx), [sidebar](../../apps/web/src/components/ApplicationSidebar.tsx).
-- Teacher Exam đang dang dở: [JSX](../../apps/web/src/features/exams.tsx), [CSS](../../apps/web/src/styles/teacher-exams.css); đã đối chiếu các capture list/schedule/questions/review/mobile của rollout ban đầu. Raw captures đã được final evidence thay thế và loại khi cleanup; [board cuối](../screenshots/exam-folio-final/review-board-desktop.png) ghi lại kết quả đã duyệt, không phải ảnh baseline audit.
+- Source: [tokens](../../../apps/web/src/styles/pilot-tokens.css), [shared shell và Question Bank CSS](../../../apps/web/src/styles/question-bank.css), [Dashboard CSS](../../../apps/web/src/styles/teacher-dashboard.css), [Dashboard JSX](../../../apps/web/src/features/teacher-dashboard.tsx), [sidebar](../../../apps/web/src/components/ApplicationSidebar.tsx).
+- Teacher Exam đang dang dở: [JSX](../../../apps/web/src/features/exams.tsx), [CSS](../../../apps/web/src/styles/teacher-exams.css); đã đối chiếu các capture list/schedule/questions/review/mobile của rollout ban đầu. Raw captures đã được final evidence thay thế và loại khi cleanup; [board cuối](../../screenshots/exam-folio-final/review-board-desktop.png) ghi lại kết quả đã duyệt, không phải ảnh baseline audit.
 
 ## A. Generic AI/SaaS patterns hiện tại
 
@@ -174,4 +174,4 @@ Spec triển khai đề xuất: [EXAMSPACE_VISUAL_IDENTITY.md](EXAMSPACE_VISUAL_
 
 ## F. Evidence hiện hành
 
-Giữ audit để bảo toàn reasoning và nguồn nghiên cứu, không giữ toàn bộ lịch sử capture. [Spec](EXAMSPACE_VISUAL_IDENTITY.md) ghi nguyên tắc; [báo cáo cuối](EXAM_FOLIO_FINAL_REPORT.md) ghi implementation, tests và ba board đã duyệt. Source automation được giữ để tái tạo ảnh.
+Giữ audit để bảo toàn reasoning và nguồn nghiên cứu, không giữ toàn bộ lịch sử capture. [Spec](EXAMSPACE_VISUAL_IDENTITY.md) ghi nguyên tắc; [báo cáo cuối](../../ux/EXAM_FOLIO_FINAL_REPORT.md) ghi implementation, tests và ba board đã duyệt. Source automation được giữ để tái tạo ảnh.

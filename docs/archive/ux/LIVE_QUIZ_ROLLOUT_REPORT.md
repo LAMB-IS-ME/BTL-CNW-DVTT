@@ -1,6 +1,6 @@
 # Live Quiz — Full rollout, visual refinement & functional hardening
 
-> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
+> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
 
 11/10/2026 · Branch `ux/education-saas-redesign-pilot` · HEAD `e236cb87221f2596aed424b833f281d6e34be66b`.
 
@@ -98,7 +98,7 @@ Unit ordering tests mô phỏng callbacks để tái hiện race có kiểm soá
 
 Runtime test: PostgreSQL 16 cô lập ở loopback, database có `test`; tài khoản synthetic. Không production credentials/data. Playwright dùng 3 authenticated contexts thật và Socket.IO server thật. Unit tests mock callbacks được ghi riêng; không gọi chúng là transport tests.
 
-Kết quả và hashes đầy đủ trong [verification JSON](live-quiz-rollout-verification.json).
+Kết quả và hashes đầy đủ trong [verification JSON](../../ux/live-quiz-rollout-verification.json).
 
 | Gate | Kết quả |
 |---|---|
@@ -125,11 +125,11 @@ Failures lịch sử giữ riêng: ba ACK/retry red tests, hai stale-state red t
 
 Artifacts final ở `docs/screenshots/live-quiz-rollout/`, tách khỏi prototype:
 
-- [Desktop board](../screenshots/live-quiz-rollout/review-board-desktop.png): 8 state surfaces Teacher/Student, 1440px.
-- [Mobile board](../screenshots/live-quiz-rollout/review-board-mobile.png): 8 states 390px, gồm Teacher Next.
-- [Before/after](../screenshots/live-quiz-rollout/visual-before-after.png): 3 cặp cùng state/viewport — Teacher active, Student question, submitted.
-- [Recovery/edge evidence](../screenshots/live-quiz-rollout/evidence-states.png): pending/timeout/recovered, empty/error library, disconnected.
-- [Board manifest](../screenshots/live-quiz-rollout/board-manifest.json): source hash, source dimensions, crop và display size.
+- [Desktop board](../../screenshots/live-quiz-rollout/review-board-desktop.png): 8 state surfaces Teacher/Student, 1440px.
+- [Mobile board](../../screenshots/live-quiz-rollout/review-board-mobile.png): 8 states 390px, gồm Teacher Next.
+- [Before/after](../../screenshots/live-quiz-rollout/visual-before-after.png): 3 cặp cùng state/viewport — Teacher active, Student question, submitted.
+- [Recovery/edge evidence](../../screenshots/live-quiz-rollout/evidence-states.png): pending/timeout/recovered, empty/error library, disconnected.
+- [Board manifest](../../screenshots/live-quiz-rollout/board-manifest.json): source hash, source dimensions, crop và display size.
 
 Đã tự mở cả bốn final boards, kiểm tra nhãn/role/state, crop, chữ, responsive hierarchy và khác biệt BEFORE/AFTER. Teacher board giữ control/roster nhẹ hơn câu hỏi; mobile giữ nhóm đáp án dễ quét và receipt rõ; kết quả có điểm nhấn riêng. Đây là đánh giá thiết kế dựa trên ảnh, user chưa duyệt thẩm mỹ mới.
 
@@ -142,4 +142,4 @@ Giới hạn: chưa multi-instance/server-restart/soak với hàng trăm ngườ
 Dừng để user review Full Rollout và Visual Refinement. Không commit/push/deploy/merge/PR.
 
 
-Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.
+Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.

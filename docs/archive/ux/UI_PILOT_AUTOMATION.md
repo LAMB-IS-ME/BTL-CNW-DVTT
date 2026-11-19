@@ -27,6 +27,6 @@ URL trên là ví dụ local; thay user/port bằng cấu hình test của máy.
 
 ## Chính sách evidence
 
-Chỉ version-control [board desktop](../screenshots/ui-redesign/review-board-v2-desktop.png), [board mobile](../screenshots/ui-redesign/review-board-v2-mobile.png) và [sticky focus mobile](../screenshots/ui-redesign/question-bank-sticky-focus-mobile.png). Board được ghép từ screenshot thật ở tỷ lệ 1:1, chỉ thêm label/gutter, không chỉnh UI hoặc device frame.
+Chỉ version-control [board desktop](../../screenshots/ui-redesign/review-board-v2-desktop.png), [board mobile](../../screenshots/ui-redesign/review-board-v2-mobile.png) và [sticky focus mobile](../../screenshots/ui-redesign/question-bank-sticky-focus-mobile.png). Board được ghép từ screenshot thật ở tỷ lệ 1:1, chỉ thêm label/gutter, không chỉnh UI hoặc device frame.
 
 Raw directories `before/`, `after/`, `after-v2/` được ignore; test logs, traces và `test-results/` cũng không commit. Dùng thư mục ignored khi chọn `UI_SCREENSHOT_DIR` khác. Report/verification chỉ tham chiếu evidence cuối còn giữ. Không cần rerun browser suites chỉ vì cleanup tài liệu hoặc ảnh; nếu source/runtime thay đổi thì chạy checks bị ảnh hưởng.

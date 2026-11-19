@@ -10,8 +10,8 @@ Ngày verification: **12/10/2026 (Asia/Bangkok)**. **Remediation hoàn tất đ�
 - Branch: `ux/education-saas-redesign-pilot`.
 - HEAD: `04f99e305c89f17e6ee98ed1ea78124c260d601d` — `feat(ui): roll out live quiz experience`.
 - Working tree ban đầu: chỉ untracked `docs/audit/` và `docs/screenshots/system-audit/`; không giả định clean/reset/checkout.
-- Đã đọc ba audit reports, Admin/API/browser/advisory/test evidence, source và tests liên quan. [Audit baseline](../audit/EXAMSPACE_SYSTEM_AUDIT.md) và [findings](../audit/EXAMSPACE_FINDINGS.md) không bị sửa.
-- Test copy tại `<isolated-test-workspace>`, copy tracked files và remediation source, **không copy `.env`**. [Source manifest](evidence/source-manifest.json) đối chiếu source test với working tree; [historical hashes](evidence/historical-hashes.json) bảo vệ audit/approved screenshots.
+- Đã đọc ba audit reports, Admin/API/browser/advisory/test evidence, source và tests liên quan. [Audit baseline](../../audits/EXAMSPACE_SYSTEM_AUDIT.md) và [findings](../../audits/EXAMSPACE_FINDINGS.md) không bị sửa.
+- Test copy tại `<isolated-test-workspace>`, copy tracked files và remediation source, **không copy `.env`**. [Source manifest](../../remediation/evidence/source-manifest.json) đối chiếu source test với working tree; [historical hashes](../../remediation/evidence/historical-hashes.json) bảo vệ audit/approved screenshots.
 - PostgreSQL **16.15**, UTF8, cluster riêng `<isolated-test-cluster>`, loopback `127.0.0.1:55439`, DB `examspace_remediation_test`; hai migrations hiện hữu, synthetic seed/users. Không Supabase production, credentials production hoặc destructive cloud test.
 - Node **22.23.2**, npm **10.9.8**, Prisma/adapter **7.10.0**, Chromium Playwright. DB schema, Socket.IO protocol, scoring, result-release policy và visual source ngoài Admin không thay đổi.
 
@@ -36,7 +36,7 @@ Không có **PARTIALLY RESOLVED** hoặc **BLOCKED** trong ba release gates đư
 
 ## 3. Admin root cause và bản sửa
 
-Hai routes `PATCH /api/v1/admin/users/:id/status` và `/role` gọi `$queryRaw` với `SELECT pg_advisory_xact_lock(904201)`. PostgreSQL trả `void`; Prisma báo **P2010 / UnsupportedNativeDataType** trước actor recheck/update. [Fresh reproduction](evidence/admin-before.json) ghi cả LOCKED, ACTIVE và TEACHER đều HTTP500, DB vẫn STUDENT/ACTIVE. ACTIVE request trước sửa kiểm tra đường unlock query; unlock thực từ LOCKED được regression sau sửa kiểm chứng.
+Hai routes `PATCH /api/v1/admin/users/:id/status` và `/role` gọi `$queryRaw` với `SELECT pg_advisory_xact_lock(904201)`. PostgreSQL trả `void`; Prisma báo **P2010 / UnsupportedNativeDataType** trước actor recheck/update. [Fresh reproduction](../../remediation/evidence/admin-before.json) ghi cả LOCKED, ACTIVE và TEACHER đều HTTP500, DB vẫn STUDENT/ACTIVE. ACTIVE request trước sửa kiểm tra đường unlock query; unlock thực từ LOCKED được regression sau sửa kiểm chứng.
 
 `apps/api/src/modules/admin/lock.ts` gom SQL vào `lockAdminMutations(tx)`:
 
@@ -71,11 +71,11 @@ Session behavior được giữ đúng implementation: Admin lock không chủ �
 
 Error injection dùng Playwright route đúng **một response** để kiểm tra recovery; successful mutations/retry đi tới API/DB thật. Business dependency409 được integration test bằng class thật. Pending response chỉ trì hoãn network để quan sát button state; không mock backend success. Role select hiện không có loading indicator riêng trong source; phase này không thêm UX feature mới.
 
-Trước sửa, case2 phát hiện alert cũ còn sau role success ([red evidence](evidence/red-summary.json)). Bản sửa duy nhất ở Admin UI là `setError(undefined)` sau role update + refetch thành công. Không thay markup/style. [Locked screenshot](evidence/screenshots/admin-locked.png), [restored screenshot](evidence/screenshots/admin-restored.png); đã xem ảnh restored trực tiếp.
+Trước sửa, case2 phát hiện alert cũ còn sau role success ([red evidence](../../remediation/evidence/red-summary.json)). Bản sửa duy nhất ở Admin UI là `setError(undefined)` sau role update + refetch thành công. Không thay markup/style. [Locked screenshot](../../remediation/evidence/screenshots/admin-locked.png), [restored screenshot](../../remediation/evidence/screenshots/admin-restored.png); đã xem ảnh restored trực tiếp.
 
 ## 5. Dependency advisory analysis và resolution
 
-Audit baseline được chạy lại: **7 affected package entries, 3 advisories**, exit1. Không phải bảy exploit riêng. [Before JSON](evidence/npm-audit-before.json), [production before](evidence/npm-audit-production-before.json).
+Audit baseline được chạy lại: **7 affected package entries, 3 advisories**, exit1. Không phải bảy exploit riêng. [Before JSON](../../remediation/evidence/npm-audit-before.json), [production before](../../remediation/evidence/npm-audit-production-before.json).
 
 | Advisory | Baseline path / exposure | Resolution |
 |---|---|---|
@@ -92,8 +92,8 @@ Không `npm audit fix`, force upgrade/downgrade, blanket update hoặc advisory 
 ## 6. Clean install và CI gate
 
 - **`npm ci` PASS** trong test copy sạch và actual workspace; normal scripts, 839 packages added; 0 vulnerabilities. Lockfile không đổi sau install.
-- [Actual resolved tree](evidence/dependency-paths-after.txt): concurrently10.0.6, shell-quote1.12.0, source-map-js1.2.2, cả KaTeX consumers dedupe0.18.9; `npm ls` exit0, không invalid/extraneous trên paths đã kiểm.
-- **Sau clean install**: [full `npm audit --json`](evidence/npm-audit-after.json)0; [production `--omit=dev`](evidence/npm-audit-production-after.json)0; [đúng gate `npm audit --audit-level=low`](final-cleanup-verification.json) exit0.
+- [Actual resolved tree](../../remediation/evidence/dependency-paths-after.txt): concurrently10.0.6, shell-quote1.12.0, source-map-js1.2.2, cả KaTeX consumers dedupe0.18.9; `npm ls` exit0, không invalid/extraneous trên paths đã kiểm.
+- **Sau clean install**: [full `npm audit --json`](../../remediation/evidence/npm-audit-after.json)0; [production `--omit=dev`](../../remediation/evidence/npm-audit-production-after.json)0; [đúng gate `npm audit --audit-level=low`](../../remediation/final-cleanup-verification.json) exit0.
 - CI source `.github/workflows/ci.yml` giữ nguyên: Node22 từ `.nvmrc`, npm đi kèm Node (workflow không pin npm riêng), `npm ci`, generate/migrate/seed, lint/typecheck/unit/integration/build/E2E/local smoke và low audit. CI dùng PostgreSQL17; local verification dùng16.15. Không claim GitHub-hosted runner đã thực thi.
 - Không đổi workflow triggers/secrets/deploy jobs, audit threshold hay `continue-on-error`.
 
@@ -107,13 +107,13 @@ Không `npm audit fix`, force upgrade/downgrade, blanket update hoặc advisory 
 - Cả hai consumer resolve renderer từ chính package context; inherited `trust:true` không tạo image hoặc `javascript:` href; explicit own `trust:true` vẫn có upstream trusted-render behavior. App không bật trust.
 - Markdown pipeline vẫn chặn unsafe URL/image khi `Object.prototype.trust` được mô phỏng; prototype luôn restore trong finally.
 
-Hai direct-consumer assertions đã chạy trên old installed dependencies: **2 FAIL/4 PASS**, tạo image từ inherited trust. Cùng assertions trên final dependencies PASS ([red log](evidence/verification-summary.json)). Đây là reproduction của prerequisite upstream trong test, không phát hiện app có prototype pollution entrypoint. Không thay trust policy để đạt green.
+Hai direct-consumer assertions đã chạy trên old installed dependencies: **2 FAIL/4 PASS**, tạo image từ inherited trust. Cùng assertions trên final dependencies PASS ([red log](../../remediation/evidence/verification-summary.json)). Đây là reproduction của prerequisite upstream trong test, không phát hiện app có prototype pollution entrypoint. Không thay trust policy để đạt green.
 
 ## 8. E2E harness và assertions
 
-Fresh baseline core E2E fail đúng `getByLabel("Nhận xét")` khớp textarea và dialog “Điểm và nhận xét chưa lưu” ([log](evidence/red-summary.json), [DOM](evidence/red-summary.json)). Sửa thành `getByRole("textbox", { name: "Nhận xét", exact: true })`; không `nth()`.
+Fresh baseline core E2E fail đúng `getByLabel("Nhận xét")` khớp textarea và dialog “Điểm và nhận xét chưa lưu” ([log](../../remediation/evidence/red-summary.json), [DOM](../../remediation/evidence/red-summary.json)). Sửa thành `getByRole("textbox", { name: "Nhận xét", exact: true })`; không `nth()`.
 
-Sau đó assertion cũ `4.5/5 · 90.0%` fail vì approved UI tách nodes/spacing ([log](evidence/red-summary.json)). Giữ **điểm4.5/5**, **phần trăm90.0%** bằng hai exact assertions, thêm **feedback được công bố**. Không sửa Grading UI/dialog/draft protection/scoring. Full tracked suite **17 PASS /0 fail /0 skipped**, gồm14 cũ +3 Admin mới; sau tăng assertion DB/reload, Admin subset **3/3 PASS** lại.
+Sau đó assertion cũ `4.5/5 · 90.0%` fail vì approved UI tách nodes/spacing ([log](../../remediation/evidence/red-summary.json)). Giữ **điểm4.5/5**, **phần trăm90.0%** bằng hai exact assertions, thêm **feedback được công bố**. Không sửa Grading UI/dialog/draft protection/scoring. Full tracked suite **17 PASS /0 fail /0 skipped**, gồm14 cũ +3 Admin mới; sau tăng assertion DB/reload, Admin subset **3/3 PASS** lại.
 
 ## 9. Final verification matrix
 
@@ -121,17 +121,17 @@ Commands dùng latest runtime source; test copy source bằng hash với working
 
 | Command / suite | Final result | Evidence |
 |---|---|---|
-| `npm ci` (clean test copy + workspace) | PASS, exit0 | [copy](evidence/verification-summary.json), [workspace](evidence/verification-summary.json) |
-| `npm run db:generate`, `db:migrate`, `db:seed` | PASS | [migrate](evidence/verification-summary.json), [seed](evidence/verification-summary.json) |
-| `npm run lint` | PASS | [lint](evidence/verification-summary.json) |
-| `npm run typecheck` | PASS | [typecheck](evidence/verification-summary.json) |
-| `npm test` | **58/58**,17 files,0 skipped | [unit](evidence/verification-summary.json) |
-| `npm run test:integration` | **43/43**,13 files,0 skipped; gồm10 Admin mới | [integration](evidence/verification-summary.json) |
-| `npm run build` | PASS | [build](evidence/verification-summary.json) |
-| `npm run test:e2e` | **17/17**,0 skipped | [tracked E2E](evidence/verification-summary.json) |
-| `playwright test tests/e2e/admin.spec.ts` sau thêm DB assertion | **3/3**,0 skipped | [Admin final](evidence/verification-summary.json) |
-| Selected existing Grading/Live Quiz browser compatibility | **9/9**,0 skipped trong selection | [compatibility](evidence/verification-summary.json) |
-| `npm run test:deployment` (local bundles only) | PASS | [smoke](evidence/verification-summary.json) |
+| `npm ci` (clean test copy + workspace) | PASS, exit0 | [copy](../../remediation/evidence/verification-summary.json), [workspace](../../remediation/evidence/verification-summary.json) |
+| `npm run db:generate`, `db:migrate`, `db:seed` | PASS | [migrate](../../remediation/evidence/verification-summary.json), [seed](../../remediation/evidence/verification-summary.json) |
+| `npm run lint` | PASS | [lint](../../remediation/evidence/verification-summary.json) |
+| `npm run typecheck` | PASS | [typecheck](../../remediation/evidence/verification-summary.json) |
+| `npm test` | **58/58**,17 files,0 skipped | [unit](../../remediation/evidence/verification-summary.json) |
+| `npm run test:integration` | **43/43**,13 files,0 skipped; gồm10 Admin mới | [integration](../../remediation/evidence/verification-summary.json) |
+| `npm run build` | PASS | [build](../../remediation/evidence/verification-summary.json) |
+| `npm run test:e2e` | **17/17**,0 skipped | [tracked E2E](../../remediation/evidence/verification-summary.json) |
+| `playwright test tests/e2e/admin.spec.ts` sau thêm DB assertion | **3/3**,0 skipped | [Admin final](../../remediation/evidence/verification-summary.json) |
+| Selected existing Grading/Live Quiz browser compatibility | **9/9**,0 skipped trong selection | [compatibility](../../remediation/evidence/verification-summary.json) |
+| `npm run test:deployment` (local bundles only) | PASS | [smoke](../../remediation/evidence/verification-summary.json) |
 | `npm audit`, `npm audit --audit-level=low`, `npm audit --omit=dev` | PASS,0 vulnerabilities | JSON + gate ở§6 |
 | `git diff --check` / historical artifact hashes | PASS | [git final](FINAL_CLEANUP_VERIFICATION.md) |
 

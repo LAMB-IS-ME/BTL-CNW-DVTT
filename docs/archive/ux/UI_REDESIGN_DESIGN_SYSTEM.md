@@ -43,4 +43,4 @@ Shell/component dùng chung được chuẩn bị trong `components`, nhưng ch�
 
 Dashboard lấy ngân hàng đang dùng từ endpoint manage hiện có (3 mục gần đây, total từ server); không suy tổng từ một trang dữ liệu. Link Lớp học/Bài thi/Live Quiz dẫn đến các route hiện có.
 
-Dashboard dùng nhãn sentence case, mint `#356656` trên `#e7f0ed` ở icon thư viện/learning và success ở dấu check; giữ indigo primary. Hover mũi tên 2px/140ms, tắt khi reduced motion. Xem [report V2](UI_POLISH_V2_REPORT.md), [đo tương phản token](ui-redesign-contrast.json) và [automation](UI_PILOT_AUTOMATION.md).
+Dashboard dùng nhãn sentence case, mint `#356656` trên `#e7f0ed` ở icon thư viện/learning và success ở dấu check; giữ indigo primary. Hover mũi tên 2px/140ms, tắt khi reduced motion. Xem [report V2](UI_POLISH_V2_REPORT.md), [đo tương phản token](../../ux/ui-redesign-contrast.json) và [automation](UI_PILOT_AUTOMATION.md).

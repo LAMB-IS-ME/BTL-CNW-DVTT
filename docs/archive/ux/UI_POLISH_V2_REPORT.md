@@ -61,13 +61,13 @@ Không chạy lại integration/backend suite: không có thay đổi backend ha
 
 Chạy trên PostgreSQL 16 cô lập tại loopback và Storage HTTP double. Chromium xác nhận các flow Question Bank, upload/retry, lifecycle, dirty navigation, responsive và ba flow core Exam/Quiz/RBAC. Targeted UI xác nhận shell boundary, keyboard/focus, dialog bounds, reduced motion và sticky save không che field đang focus.
 
-[Verification JSON](ui-polish-v2-verification.json) lưu kết quả V2, hash source/evidence cuối và số đo density. Source/test runtime giữ nguyên khi cleanup nên reuse Chromium 14/14, UI 6/6 và unit/frontend 27/27; không chạy lại browser/backend suites. Lint, typecheck, build và diff check đã chạy lại sau cleanup ngày 06/10/2026: tất cả PASS (exit 0). Hash của 13 file source/test/config khớp V2 đã duyệt; các local link còn giữ đều hợp lệ. Xem [hướng dẫn automation](UI_PILOT_AUTOMATION.md).
+[Verification JSON](../../ux/ui-polish-v2-verification.json) lưu kết quả V2, hash source/evidence cuối và số đo density. Source/test runtime giữ nguyên khi cleanup nên reuse Chromium 14/14, UI 6/6 và unit/frontend 27/27; không chạy lại browser/backend suites. Lint, typecheck, build và diff check đã chạy lại sau cleanup ngày 06/10/2026: tất cả PASS (exit 0). Hash của 13 file source/test/config khớp V2 đã duyệt; các local link còn giữ đều hợp lệ. Xem [hướng dẫn automation](UI_PILOT_AUTOMATION.md).
 
 ## D. SCREENSHOTS
 
-- [Review board V2 desktop](../screenshots/ui-redesign/review-board-v2-desktop.png) — 4496 × 3445px, Dashboard/list/detail/editor/archived.
-- [Review board V2 mobile](../screenshots/ui-redesign/review-board-v2-mobile.png) — 2564 × 3137px, năm màn hình trên + sticky focus.
-- [Sticky save / focus mobile](../screenshots/ui-redesign/question-bank-sticky-focus-mobile.png) — 390 × 900px, kiểm tra field lời giải nằm phía trên thanh lưu.
+- [Review board V2 desktop](../../screenshots/ui-redesign/review-board-v2-desktop.png) — 4496 × 3445px, Dashboard/list/detail/editor/archived.
+- [Review board V2 mobile](../../screenshots/ui-redesign/review-board-v2-mobile.png) — 2564 × 3137px, năm màn hình trên + sticky focus.
+- [Sticky save / focus mobile](../../screenshots/ui-redesign/question-bank-sticky-focus-mobile.png) — 390 × 900px, kiểm tra field lời giải nằm phía trên thanh lưu.
 
 Vòng V2 đã inspect 38 PNG và kiểm tra 29 capture records ở 1440/820/390 không có document overflow. Sau khi được duyệt, chỉ giữ ba evidence cuối trên; raw captures/manifests và board V1 được xóa khỏi workspace, có thể tạo lại bằng automation. Không chỉnh pixel của ba evidence được giữ.
 

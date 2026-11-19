@@ -1,6 +1,6 @@
 # Deployment readiness report — ExamSpace — 2026-10-14
 
-> Snapshot trước commit tại baseline `864633b`. User đã duyệt cleanup và đúng một local commit; các trạng thái “chưa commit” bên dưới ghi nhận checkpoint cũ, không mô tả HEAD của một clone về sau. Xem [cleanup gate](evidence/commit-cleanup.json). Kết quả post-commit được báo riêng sau khi clone NEW HEAD; không ghi PASS trước khi thực hiện.
+> Snapshot trước commit tại baseline `864633b`. User đã duyệt cleanup và đúng một local commit; các trạng thái “chưa commit” bên dưới ghi nhận checkpoint cũ, không mô tả HEAD của một clone về sau. Xem [cleanup gate](../../deployment/evidence/commit-cleanup.json). Kết quả post-commit được báo riêng sau khi clone NEW HEAD; không ghi PASS trước khi thực hiện.
 
 ## Quyết định
 
@@ -14,7 +14,7 @@
 - Các commit trước: session recovery → asset/pagination integrity → admin/release gates → Live Quiz → grading/results → Student/Teacher UX. Không sửa lịch sử.
 - Thay đổi phase này: README/SRS/deployment guide, comments trong hai env examples, spec bàn giao, reports/evidence, một test probe local production. Không đổi runtime, UI, auth policy, schema/migration, dependency/lockfile, Socket.IO protocol hoặc deployment triggers.
 
-[Baseline](evidence/git-baseline.json), [final Git/integrity](evidence/final-review.json), [machine-readable readiness](deployment-readiness.json).
+[Baseline](../../deployment/evidence/git-baseline.json), [final Git/integrity](../../deployment/evidence/final-review.json), [machine-readable readiness](../../deployment/deployment-readiness.json).
 
 ## Trạng thái tài liệu và implementation
 
@@ -25,10 +25,10 @@
 | Bản spec bàn giao | PREPARED / VERIFIED static | `docs/spec/MASTER_SPEC_BASELINE.md` byte-identical, không ignored; chưa commit |
 | README số test cũ / VERIFICATION cũ | OUTDATED nếu coi là kết quả hiện tại | README đã chuyển tới report mới; evidence lịch sử giữ nguyên |
 | SRS/SDD/seed-recovery/audit/remediation | DOCUMENTED | Đã đối chiếu deployment-critical behavior với source; không coi toàn bộ historical findings còn mở |
-| Environment | IMPLEMENTED / DOCUMENTED / VERIFIED parser | [Matrix đầy đủ](ENVIRONMENT_MATRIX.md), không có secrets thật trong templates |
+| Environment | IMPLEMENTED / DOCUMENTED / VERIFIED parser | [Matrix đầy đủ](../../deployment/ENVIRONMENT_MATRIX.md), không có secrets thật trong templates |
 | Hosted topology | DOCUMENTED, NOT TESTED | [Hai lựa chọn](DEPLOYMENT_PLAN.md), chưa tạo hosting |
 
-Bản local `MASTER_SPEC.md` và copy `docs/spec/MASTER_SPEC.md` được giữ nguyên. Kiểm tra khi resume phát hiện exclude dùng basename nên cả copy cùng tên vẫn ignored; bản mới đổi basename để tránh sửa `.git/info/exclude`. Business requirements giữ nguyên. [Reconciliation](../spec/SPEC_RECONCILIATION.md) ghi rõ Node/tooling/routes/checklist-target khác trạng thái thực thi, không viết lại nghiệp vụ theo implementation.
+Bản local `MASTER_SPEC.md` và copy `docs/spec/MASTER_SPEC.md` được giữ nguyên. Kiểm tra khi resume phát hiện exclude dùng basename nên cả copy cùng tên vẫn ignored; bản mới đổi basename để tránh sửa `.git/info/exclude`. Business requirements giữ nguyên. [Reconciliation](../../spec/SPEC_RECONCILIATION.md) ghi rõ Node/tooling/routes/checklist-target khác trạng thái thực thi, không viết lại nghiệp vụ theo implementation.
 
 ## Verification bắt buộc
 
@@ -52,7 +52,7 @@ Bản local `MASTER_SPEC.md` và copy `docs/spec/MASTER_SPEC.md` được giữ 
 | P. Security-pattern checks | PASS scoped scan | No detected real secret in new deliverables; không phải chứng nhận security toàn hệ thống |
 | Q. Regression suites / advisory | PASS | 78 unit, 62 integration, 20 E2E; npm audit low gate 0 vulnerabilities tại lần chạy |
 
-Commands, failure/retry provenance và summary ở [verification](evidence/verification.json), setup ở [fresh-clone report](FRESH_CLONE_SETUP_REPORT.md). Không chạy lại tests khi resume theo user request. Scratch tạm cũ không còn; summary JSON và execution transcript còn hợp lệ, raw logs không còn để kiểm tra lại. Hai clones mới chỉ phục vụ static comparison, không giả lập kết quả execution mới. Không dùng PASS từ các remediation phase cũ thay acceptance của phase này.
+Commands, failure/retry provenance và summary ở [verification](../../deployment/evidence/verification.json), setup ở [fresh-clone report](FRESH_CLONE_SETUP_REPORT.md). Không chạy lại tests khi resume theo user request. Scratch tạm cũ không còn; summary JSON và execution transcript còn hợp lệ, raw logs không còn để kiểm tra lại. Hai clones mới chỉ phục vụ static comparison, không giả lập kết quả execution mới. Không dùng PASS từ các remediation phase cũ thay acceptance của phase này.
 
 ## Frontend, backend và database
 
@@ -121,12 +121,12 @@ Không còn confirmed local runtime/setup failure trong các gates đã thực t
 
 - [Fresh-clone setup](FRESH_CLONE_SETUP_REPORT.md)
 - [Deployment plan](DEPLOYMENT_PLAN.md)
-- [Environment matrix](ENVIRONMENT_MATRIX.md)
-- [Readiness JSON](deployment-readiness.json)
-- [Verification summary](evidence/verification.json)
-- [Fresh/prepared comparison](evidence/fresh-clone-comparison.json)
-- [Secrets/security scope](evidence/security-scan.json)
-- [Final integrity review](evidence/final-review.json)
-- [Production probe source](../../tests/deployment/production-readiness.mjs)
+- [Environment matrix](../../deployment/ENVIRONMENT_MATRIX.md)
+- [Readiness JSON](../../deployment/deployment-readiness.json)
+- [Verification summary](../../deployment/evidence/verification.json)
+- [Fresh/prepared comparison](../../deployment/evidence/fresh-clone-comparison.json)
+- [Secrets/security scope](../../deployment/evidence/security-scan.json)
+- [Final integrity review](../../deployment/evidence/final-review.json)
+- [Production probe source](../../../tests/deployment/production-readiness.mjs)
 
 85 historical untracked artifacts và protected local specs/exclude được đối chiếu SHA-256, không thay đổi. Final diff chỉ docs/env comments và new test/report files; không staged changes. Dừng tại user review. **NO COMMIT / NO PUSH / NO DEPLOY / NO MERGE / NO PR.**

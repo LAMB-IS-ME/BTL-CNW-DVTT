@@ -6,7 +6,7 @@
 
 ## A. Audit source và behavior
 
-Đã đọc [visual audit](VISUAL_IDENTITY_AUDIT.md), [ExamSpace identity](EXAMSPACE_VISUAL_IDENTITY.md), [Teacher report](EXAM_FOLIO_FINAL_REPORT.md), Teacher Exam JSX/CSS, shell/sidebar, tokens, shared controls, Markdown, Student attempts, socket/timer/API, backend attempts và targeted tests.
+Đã đọc [visual audit](VISUAL_IDENTITY_AUDIT.md), [ExamSpace identity](EXAMSPACE_VISUAL_IDENTITY.md), [Teacher report](../../ux/EXAM_FOLIO_FINAL_REPORT.md), Teacher Exam JSX/CSS, shell/sidebar, tokens, shared controls, Markdown, Student attempts, socket/timer/API, backend attempts và targeted tests.
 
 | Phần | Source / behavior thật |
 | --- | --- |
@@ -41,9 +41,9 @@ Chromium chạy application thật, login seed account, tạo đề 30 câu trê
 
 ## C. Focus Desk implementation
 
-[App.tsx](../../apps/web/src/App.tsx) chỉ kích hoạt `focus-shell` cho Student `/exams/:id` và `/attempts/:id`; guard, router, Teacher header/sidebar và các module còn lại giữ nguyên. Header gọn với brand, đường về danh sách, skip link; bỏ global dashboard destinations và footer khỏi hai route này.
+[App.tsx](../../../apps/web/src/App.tsx) chỉ kích hoạt `focus-shell` cho Student `/exams/:id` và `/attempts/:id`; guard, router, Teacher header/sidebar và các module còn lại giữ nguyên. Header gọn với brand, đường về danh sách, skip link; bỏ global dashboard destinations và footer khỏi hai route này.
 
-[attempts.tsx](../../apps/web/src/features/attempts.tsx) và [student-focus.css](../../apps/web/src/styles/student-focus.css):
+[attempts.tsx](../../../apps/web/src/features/attempts.tsx) và [student-focus.css](../../../apps/web/src/styles/student-focus.css):
 
 - Entry là cột đọc mở, mô tả và definition list thời lượng/lượt/đóng bài, một action bắt đầu/tiếp tục, lịch sử bên dưới rule. Đang start có nhãn busy; lịch sử không còn status enum thô.
 - Desktop: câu hỏi bên trái, mục lục phụ bên phải; title bài thi 18px, prompt 21px, timer 23px không nền. Màu giấy/mực/xanh trầm nối với ExamSpace; không dùng sheet authoring, stepper, metadata rail hay sidebar của Teacher Folio.
@@ -80,7 +80,7 @@ Browser dùng seed `student1@exam.local` và dữ liệu test riêng, không dat
 - Console/pageerror được kiểm tra trong ba responsive flows. Chỉ loại đúng 401 của `/auth/me` trước login (expected auth probe); fault cases cố ý sinh lỗi được kiểm riêng.
 - Teacher sidebar: mở/thu, persistence, desktop/tablet workspace, mobile preference và readiness trong suite có sẵn.
 
-Xem [evidence JSON](student-focus-verification.json) cho geometry, counts và lệnh thực thi.
+Xem [evidence JSON](../../ux/student-focus-verification.json) cho geometry, counts và lệnh thực thi.
 
 ## F. Tests và phân biệt failures
 
@@ -109,10 +109,10 @@ Warnings baseline và after: Vite Markdown chunk >500kB; pg adapter cảnh báo 
 
 ## G. Review boards
 
-- [Desktop board](../screenshots/student-focus-prototype/review-board-desktop.png): entry, selected single choice + 30-question index/save/timer, essay, submit confirmation.
-- [Mobile board](../screenshots/student-focus-prototype/review-board-mobile.png): entry, selected, multiple choice, expanded navigation 30 câu, essay, confirmation.
+- [Desktop board](../../screenshots/student-focus-prototype/review-board-desktop.png): entry, selected single choice + 30-question index/save/timer, essay, submit confirmation.
+- [Mobile board](../../screenshots/student-focus-prototype/review-board-mobile.png): entry, selected, multiple choice, expanded navigation 30 câu, essay, confirmation.
 
-Generator [student-focus-boards.py](../../tests/ui/student-focus-boards.py) ghép screenshot Chromium **1:1**, chỉ thêm nền ngoài/gutter/caption. Không device frame, không crop phần UI để che lỗi. Raw captures hiện tại ở `/tmp/focus-after`; raw/log/DB trong `/tmp` của lượt trước đã mất sau gián đoạn môi trường, baseline được giữ theo kết quả đã ghi trong chat/report. Hai board cuối vẫn nguyên vẹn trong repo. Đã tự mở và inspect lại cả hai board sau khi tiếp tục. Không regenerate: các panel của board không chứa code/image stress fixture, và memoization không đổi visual của chúng. Kết quả inspect: chữ/state đúng, không loading/blank capture, không caption chồng/cắt, alignment đúng; có thể mở ảnh gốc để đọc ở 100%.
+Generator [student-focus-boards.py](../../../tests/ui/student-focus-boards.py) ghép screenshot Chromium **1:1**, chỉ thêm nền ngoài/gutter/caption. Không device frame, không crop phần UI để che lỗi. Raw captures hiện tại ở `/tmp/focus-after`; raw/log/DB trong `/tmp` của lượt trước đã mất sau gián đoạn môi trường, baseline được giữ theo kết quả đã ghi trong chat/report. Hai board cuối vẫn nguyên vẹn trong repo. Đã tự mở và inspect lại cả hai board sau khi tiếp tục. Không regenerate: các panel của board không chứa code/image stress fixture, và memoization không đổi visual của chúng. Kết quả inspect: chữ/state đúng, không loading/blank capture, không caption chồng/cắt, alignment đúng; có thể mở ảnh gốc để đọc ở 100%.
 
 ## H. Changed files
 

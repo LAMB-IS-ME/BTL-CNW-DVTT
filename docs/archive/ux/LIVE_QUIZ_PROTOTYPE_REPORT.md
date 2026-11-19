@@ -1,6 +1,6 @@
 # Live Quiz — UX audit & thin-slice prototype
 
-> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
+> Historical phase report. User subsequently approved the complete Live Quiz experience. See [final cleanup and verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for the current decision and commit gates.
 
 11/10/2026 · Branch `ux/education-saas-redesign-pilot` · Baseline `e236cb87221f2596aed424b833f281d6e34be66b`.
 
@@ -129,4 +129,4 @@ Remaining risks/out of scope: không có version/order token cho snapshot; broad
 Dừng để review **Live Quiz thin-slice prototype**. Chưa có user approval visual direction; không tự coi tests PASS là duyệt. Brief Full Rollout mới được giữ làm bước tiếp theo có điều kiện, chưa tạo rollout report/boards và chưa tích hợp ba design skill. Không commit/push/deploy/merge/PR.
 
 
-Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.
+Final cleanup provenance: this report records its original phase. `external-artifacts/` identifies historical scratch artifacts, not repository files; those raw captures/logs are no longer available locally. Historical hashes remain original run records. See [final verification](../../ux/LIVE_QUIZ_FINAL_VERIFICATION.md) for current checks and portable-metadata integrity.

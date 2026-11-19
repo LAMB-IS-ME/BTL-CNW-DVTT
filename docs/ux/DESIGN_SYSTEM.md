@@ -1,50 +1,77 @@
-# ExamSpace — Academic Console proposal và phạm vi pilot
+# ExamSpace — Design system
 
-Thiết kế modern academic SaaS cho công việc soạn câu hỏi: navy/slate, blue accent, nền gray. Pilot chỉ áp dụng shell khi đang ở đường dẫn Question Bank/editor; rời pilot trở lại giao diện cũ. Không đổi theme toàn cục, framework, Tailwind config, auth/session hoặc DB schema.
+Tài liệu này mô tả token và quy tắc giao diện **đang có trong code**. Nguồn token nằm trong `apps/web/src/styles/`. Khi đổi màu, khoảng cách hay bo góc, hãy sửa token ở đó trước, rồi mới sửa component.
 
-## Tokens
+Ba tài liệu cũ (Academic Console, Education SaaS V2, Exam Folio visual identity) đã được gộp vào đây. Bản gốc nằm trong [archive](../archive/ux/).
 
-| Nhóm | Giá trị / vai trò |
-|---|---|
-| Font | `Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`; không tải font từ dịch vụ ngoài; fallback có tiếng Việt |
-| Heading | Page 28/36, section 18/26, panel 16/24, weight 650–750 |
-| Body | 14/22 table/form, 15/24 description, 16/27 preview; metadata 12/18 |
-| Spacing | 4, 8, 12, 16, 24, 32, 48 px |
-| Radius | Control 6, panel/dialog 10, status pill 100 px |
-| Shadow | Surface không shadow; dropdown `0 8px 24px #17203314`; dialog `0 24px 80px #111c3233` |
-| Background/surface | #F4F6FA / #FFFFFF |
-| Ink/muted | #172033 / #536176 |
-| Sidebar | #111C32; text #D8E0EF |
-| Accent/focus | #3157D5; focus outline 3px + offset 3px; sidebar focus #A0B8FF |
-| Border | #D9E0EA (surface); #8491A6 (form controls) |
-| Success | #166534 on #ECFDF3; luôn có nhãn chữ |
-| Danger | #B42318 on #FFF1F0; destructive confirmation |
-| Warning | #854D0E on #FFFBEB |
+## 1. Hai bộ token và phạm vi áp dụng
 
-Cặp text normal cần ≥4.5:1, focus/control boundaries ≥3:1 so với nền. Kiểm tra palette bằng tính WCAG sRGB trong báo cáo cuối, không coi đây là full WCAG audit.
+| Bộ token | File | Áp dụng cho |
+| --- | --- | --- |
+| **V2 — indigo** | `pilot-tokens.css` (`.qb-shell`, biến `--qb-*`) | Teacher Dashboard `/teacher`, Question Bank `/teacher/question-banks/**`, `/teacher/questions/**` |
+| **Exam Folio — mực xanh trên nền giấy ấm** | `teacher-exams.css` (`.qb-shell.exam-folio-shell` ghi đè `--qb-*`) | Quản lý đề thi của giảng viên `/teacher/exams`, `new`, `:id/edit`, `:id/preview` |
+| | `student-focus.css` (`.focus-shell`, `--focus-*`) | Danh sách đề, màn hình vào thi và làm bài của sinh viên |
+| | `grading-results.css` (`.record-page`, `--record-*`) | Chấm bài, kết quả của giảng viên và sinh viên |
+| | `live-quiz.css` (`--lq-*`) | Live Quiz: host, sinh viên, kết quả |
+| Giao diện cơ sở | `main.css`, `management-refinement.css`, `catalog-pagination.css` | Admin, lớp học và các trang còn lại; thanh điều hướng mobile dùng accent `#176656` |
 
-## Hierarchy và components
+Route nào dùng shell nào được quyết định trong `apps/web/src/App.tsx` (biến `pilot`, `examManagement`, `studentFocus`). Không tạo thêm bộ token thứ ba. Module mới nên dùng bộ Exam Folio.
 
-- Page: sidebar 216px, topbar 64px, breadcrumb nhỏ, heading + mô tả + CTA. Desktop content max 1280px. Mobile nav gọn, list reflow, không card hóa mọi section.
-- List/table: một surface có border, header nền slate nhạt, đường phân hàng; tên đậm, subject/count/date/status phụ; “Mở ngân hàng” và “Chỉnh sửa” là control có chữ. Secondary menu không phụ thuộc hover. Có paging 20 hàng, URL lưu filter/page.
-- Buttons: primary blue chỉ cho tác vụ chính, secondary nền trắng/viền, text cho điều hướng, danger đỏ cho archive. Busy đổi nhãn và disabled; không giả thành công trước API.
-- Form: label luôn hiện, helper text, lỗi cạnh trường + summary; native select/radio/checkbox, min 44px target. Không đổi option TRUE_FALSE wire values (True/False) chỉ đổi nhãn trình bày.
-- Dialog: native `dialog.showModal`, accessible name, Escape/hủy, focus containment và trả focus trigger; pending ngăn đóng giữa mutation. Confirm ghi tên nguồn, ảnh hưởng và khả năng khôi phục.
-- Dropdown: native details/summary, menu action có chữ; Escape đóng, keyboard focus hiển thị. Không dùng ARIA menu nếu không triển khai roving tabindex.
-- Feedback: live status/persistent success inline; lỗi có retry; không auto-dismiss thông báo quan trọng. Toast không là bằng chứng dữ liệu đã persist, E2E reload xác nhận.
-- Empty: phân biệt chưa có dữ liệu và bộ lọc không khớp; hướng dẫn cùng CTA tạo/reset filter.
-- Skeleton: chỉ khi query pending; có status accessible; error thay skeleton bằng retry. Không shimmer liên tục.
-- Editor: form + preview 2 cột desktop; mobile tab Soạn thảo/Xem trước; sticky action footer, dirty state, Hủy. Prompt/options/explanation + metadata chia section, không lồng card mỗi option.
-- Media: chọn ảnh trước save, gỡ/chọn lại local; save nội dung → upload → link, báo trạng thái từng bước. Nếu upload fail, giữ ID/nội dung trong editor để thử lại. Gỡ/thay ảnh là thay tham chiếu trong Markdown, giữ object để không phá lịch sử. Không gọi permanent delete trong pilot.
+## 2. Màu
 
-## Motion
+| Vai trò | V2 (indigo) | Exam Folio |
+| --- | --- | --- |
+| Nền trang | `#f7f8fc` | `#f3f1ea` |
+| Bề mặt / tờ đề | `#ffffff` | `#fffefa` |
+| Chữ chính | `#20253d` | `#252c2a` |
+| Chữ phụ | `#515c72` | `#535e59` |
+| Chữ mờ (metadata) | `#626d82` | `#646d67` |
+| Đường phân cách | `#e4e7ef` | `#d7d9d1` |
+| Viền control | `#8491a6` | `#7b857c` |
+| Accent / nút chính | `#4b47c9` | `#24574e` |
+| Accent hover | `#3935a8` | `#19443c` |
+| Accent nhạt (chọn) | `#efedff` | `#edf2eb` |
+| Thành công | `#166534` | `#246242` |
+| Cảnh báo | `#854d0e` | `#825b19` |
+| Lỗi / xóa | `#b42318` | `#a1372d` |
+| Thông tin | `#3730a3` | `#285782` |
 
-Hover/focus/pressed 150ms; dialog 200ms opacity/translate nhỏ. Reduced motion tắt transition/animation. Không animation hàng mỗi refetch, không delay giả, không dependency animation mới.
+Live Quiz bổ sung `--lq-console: #204c43`, `--lq-console-muted: #d4e4d8` và `--lq-selected: #e5eee2` cho màn hình host.
 
-## Hướng cho các module chưa rollout
+Màu trạng thái luôn đi kèm chữ, không dùng màu làm dấu hiệu duy nhất. Chữ thường cần độ tương phản tối thiểu 4.5:1, viền control và focus tối thiểu 3:1. Số đo các cặp màu V2 nằm trong [ui-redesign-contrast.json](ui-redesign-contrast.json).
 
-Teacher/Admin ưu tiên density vừa phải và navigation nhất quán. Student Exam giữ timer/progress/nav/autosave/submit tập trung, không hiệu ứng làm phân tâm. Live Quiz có thể dùng navy và violet semantic accent, 250–400ms reveal/leaderboard, nhưng cần review riêng. Những đề xuất này chưa được áp dụng.
+## 3. Chữ, khoảng cách, bo góc, đổ bóng
 
-## UI UX Pro Max
+| Nhóm | Giá trị |
+| --- | --- |
+| Font | `Inter, system-ui, sans-serif`. Không tải font từ dịch vụ ngoài; font hệ thống có đủ tiếng Việt |
+| Cỡ chữ | Tiêu đề trang 32 (mobile 27), section 20, nội dung 14, metadata 12. Input trên mobile 16 để tránh zoom |
+| Khoảng cách | 4, 8, 12, 16, 24, 32, 48 px. Lề trang: desktop 40, tablet 24, mobile 16 |
+| Bo góc V2 | Control 10, surface nhỏ 12, card/dialog 18, hero 24, pill 999 |
+| Bo góc Exam Folio | Control 6, card 0: dùng đường kẻ thay cho card |
+| Đổ bóng V2 | Surface `0 2px 8px #20253d04`; dropdown `0 8px 24px #20253d0d`; dialog `0 24px 80px #20253d26` |
+| Đổ bóng Exam Folio | Không đổ bóng bề mặt |
+| Chuyển động | Hover/press 140ms, dialog khoảng 180ms. `prefers-reduced-motion: reduce` tắt toàn bộ animation |
 
-Đã kiểm tra repository [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) và entrypoint ở commit `09170eec67eefd46a7ae85de61b40c194020f997`. Không có bản cài trong skill catalog/local search. Đọc hướng dẫn để đánh giá an toàn; không install, không chạy search/generator, không áp dụng workflow skill, không file nào do skill sinh hoặc sửa. Spec ExamSpace đã xác định hướng thiết kế cụ thể nên dùng CSS/React hiện tại. Không thêm runtime dependency, không cấp credentials cho tooling thiết kế.
+## 4. Bố cục và breakpoint
+
+- **Trên 960px:** editor câu hỏi hai cột (soạn và xem trước), sidebar giảng viên đóng/mở được và trạng thái được nhớ lại.
+- **Từ 960px trở xuống:** editor chuyển sang hai tab "Soạn thảo" và "Xem trước".
+- **Từ 700px trở xuống:** thanh điều hướng mobile, trang một cột, bộ lọc xếp dọc.
+- **Exam Folio:** số câu và số bước đặt trên một trục lề, nhóm nội dung tách bằng đường kẻ thay vì card. Điểm, nguồn và trạng thái sẵn sàng đặt ở lề cạnh nội dung liên quan.
+
+## 5. Component và trạng thái
+
+- **Nút:** nút chính (accent) chỉ dùng cho một tác vụ chính trên mỗi vùng; nút phụ nền trắng có viền; nút xóa/lưu trữ màu đỏ và luôn có hộp xác nhận. Khi đang xử lý, nút đổi nhãn và bị khóa; không báo thành công trước khi API trả về.
+- **Form:** label luôn hiện; dùng input, select, checkbox và radio native; vùng nhấn tối thiểu 44px; focus ring 3px, offset 3px; lỗi hiện ngay cạnh trường.
+- **Dialog:** `dialog.showModal()` native, có tên truy cập, Escape để hủy, khóa focus bên trong và trả focus về nút đã mở; không cho đóng khi đang gửi.
+- **Bảng và danh sách:** giữ semantic của table; phân trang 20 dòng, filter và trang hiện tại lưu trên URL.
+- **Thông báo:** dùng trạng thái inline, không tự biến mất; lỗi luôn kèm nút thử lại. Không dùng thư viện toast.
+- **Trống / đang tải / lỗi:** phân biệt "chưa có dữ liệu" với "bộ lọc không khớp"; skeleton tĩnh có live status; khi lỗi, không hiển thị số 0 giả.
+- **Ảnh câu hỏi** (`QuestionImage` trong `components/Markdown.tsx`): có trạng thái đang tải và lỗi; nút "Thử lại" xin lại signed URL rồi tải lại ảnh, dùng được cả trong form chỉ đọc.
+- **Thay đổi chưa lưu** (`useBuilderGuard` trong `features/builder-guard.tsx`): builder đề thi và Live Quiz chặn rời trang khi còn chỉnh sửa chưa lưu, hỏi xác nhận bằng dialog native và `beforeunload`.
+- **Làm bài:** timer, tiến độ, trạng thái autosave và nút nộp luôn hiển thị; đáp án chưa gửi được lên server được giữ tạm trong trình duyệt để khôi phục (`features/attempt-drafts.ts`).
+
+## 6. Không dùng
+
+Gradient trang trí, texture giấy, hình minh họa giả, số liệu KPI giả, icon trong ô pastel ở mọi section, animation khi refetch, hoặc thư viện UI/animation mới.

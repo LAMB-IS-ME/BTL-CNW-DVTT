@@ -4,24 +4,24 @@ User approved the remediation and authorized **one local commit** with message `
 
 ## Baseline and preservation
 
-Branch: `ux/education-saas-redesign-pilot`. Parent HEAD: `04f99e305c89f17e6ee98ed1ea78124c260d601d`. The commit containing this document identifies the reviewed source version; [source hashes](evidence/source-manifest.json) identify the exact tested implementation.
+Branch: `ux/education-saas-redesign-pilot`. Parent HEAD: `04f99e305c89f17e6ee98ed1ea78124c260d601d`. The commit containing this document identifies the reviewed source version; [source hashes](../../remediation/evidence/source-manifest.json) identify the exact tested implementation.
 
 All approved source, tests and dependency hashes match the remediation snapshot and isolated test copy. No implementation edits were needed during cleanup. Lock key904201, transaction scope, actor recheck, session/socket enforcement, Admin error clearing and Grading score/percentage/feedback assertions are preserved. No schema, Socket.IO protocol, scoring, release policy, visual redesign or CI policy changes.
 
 ## Cleanup and staged scope
 
-[Complete file classification](evidence/commit-scope.json) lists the54 selected files and every retained untracked exclusion.
+[Complete file classification](../../remediation/evidence/commit-scope.json) lists the54 selected files and every retained untracked exclusion.
 
 - Keep9 source/test/manifest files: Admin helper/routes/UI, integration/browser regressions, Grading harness, KaTeX tests, package manifest and lockfile.
 - Keep historical audit reports, structured observations, dependency tree, source hashes, the linked audit reproduction source and two necessary historical Admin error screenshots.
 - Keep remediation reports, curated before/after summaries, audit JSON, hashes and two Admin success-state screenshots.
 - Keep31 local untracked raw logs/DOM captures/intermediate snapshots plus6 ignored historical raw logs **outside the commit**. No deletion was needed. No database, browser session, trace archive, node_modules, scratch script or temporary screenshot is staged.
-- Replace machine-specific path text in two historical files with portable placeholders; remove one redundant EOF blank line in the dependency tree. All historical findings, FAIL outcomes, limitations and provenance remain unchanged. [Before/after hashes](evidence/portability-normalization.json) record the two transformations; originals remain archived locally. Of85 historical artifacts,83 are byte-identical and two have only path/EOF whitespace normalization. Approved screenshots are byte-identical.
-- Remediation evidence links now target curated summaries instead of local raw logs. [Prior verification](evidence/verification-summary.json) and [red-test diagnostics](evidence/red-summary.json) preserve results and original evidence hashes. The original remediation report is explicitly labelled as a pre-approval snapshot.
+- Replace machine-specific path text in two historical files with portable placeholders; remove one redundant EOF blank line in the dependency tree. All historical findings, FAIL outcomes, limitations and provenance remain unchanged. [Before/after hashes](../../remediation/evidence/portability-normalization.json) record the two transformations; originals remain archived locally. Of85 historical artifacts,83 are byte-identical and two have only path/EOF whitespace normalization. Approved screenshots are byte-identical.
+- Remediation evidence links now target curated summaries instead of local raw logs. [Prior verification](../../remediation/evidence/verification-summary.json) and [red-test diagnostics](../../remediation/evidence/red-summary.json) preserve results and original evidence hashes. The original remediation report is explicitly labelled as a pre-approval snapshot.
 
 ## Fresh final verification
 
-These are **new cleanup-phase executions**, not relabelled baseline results. [Machine-readable execution record](final-cleanup-verification.json) includes commands, final outcomes, counts and raw-log hashes; logs themselves remain local.
+These are **new cleanup-phase executions**, not relabelled baseline results. [Machine-readable execution record](../../remediation/final-cleanup-verification.json) includes commands, final outcomes, counts and raw-log hashes; logs themselves remain local.
 
 | Gate | Result |
 |---|---|

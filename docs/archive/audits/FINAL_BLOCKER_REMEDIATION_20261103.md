@@ -20,7 +20,7 @@ Phạm vi là hai nhóm blocker của audit 03/11: mất nội dung chưa lưu v
 
 ### B1. Bảo vệ nội dung chưa lưu
 
-Tái sử dụng kiến trúc `useBlocker` + native dialog/beforeunload của dự án qua [builder-guard.tsx](../../apps/web/src/features/builder-guard.tsx):
+Tái sử dụng kiến trúc `useBlocker` + native dialog/beforeunload của dự án qua [builder-guard.tsx](../../../apps/web/src/features/builder-guard.tsx):
 
 - So sánh baseline với các giá trị thực sự được lưu; đổi bước, tìm kiếm hoặc chọn trang của picker không tự tạo dirty state.
 - Chặn link nội bộ và Back/Forward khi có thay đổi hoặc request đang pending; lựa chọn ở lại giữ nguyên form. Sau save thành công, tiếp tục đúng đích history đã bị chặn.
@@ -54,7 +54,7 @@ Quiz không có field PUBLISHED: phạm vi tương ứng là definition chưa ar
 | Upload/delete asset | Giữ guards reference/snapshot và validation đã có; kiểm chứng lại bằng integration. Không xóa object production. |
 | Admin status/role; grading/release | Rà soát: dependency/RBAC guards hiện có không cho đổi chủ sở hữu/xóa source published; chấm/công bố không sửa cấu trúc đề. Không mở thêm quyền Admin. |
 
-Validation tập trung ở [Exam configuration](../../apps/api/src/modules/exams/configuration.ts), [Quiz configuration](../../apps/api/src/modules/live-quiz/configuration.ts), [source lifecycle](../../apps/api/src/modules/question-banks/lifecycle.ts). Reuse row/catalog locks, không thêm lock theo thứ tự ngược. Các lỗi sử dụng mã API có sẵn và thông báo tiếng Việt; bổ sung thông báo `INVALID_CLASS/BANK/QUESTION`.
+Validation tập trung ở [Exam configuration](../../../apps/api/src/modules/exams/configuration.ts), [Quiz configuration](../../../apps/api/src/modules/live-quiz/configuration.ts), [source lifecycle](../../../apps/api/src/modules/question-banks/lifecycle.ts). Reuse row/catalog locks, không thêm lock theo thứ tự ngược. Các lỗi sử dụng mã API có sẵn và thông báo tiếng Việt; bổ sung thông báo `INVALID_CLASS/BANK/QUESTION`.
 
 ### B3. Lint và dependency gate
 
@@ -73,11 +73,11 @@ Advisory: [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m24
 
 ## C. Regression tests added
 
-- **13 frontend/component tests:** [builder-integrity.test.tsx](../../apps/web/src/features/builder-integrity.test.tsx): hai builder với links/Back/Forward/unload, giữ form qua step, picker không dirty, pending/failure/retry, success không cảnh báo sai, tiếp tục đúng history destination, giữ created ID khi tạo room lỗi, và không archive nội dung dirty.
-- **8 PostgreSQL integration tests:** [published-invariants.integration.test.ts](../../apps/api/test/published-invariants.integration.test.ts): chặn cấu hình sai, so sánh nguyên trạng mọi field sau rollback, cho phép fixed → pool hợp lệ, khóa sau attempt, create/publish không partial row, filter/options rollback, Quiz source/LOBBY/archive/legacy guard, hai race source mutation.
-- **6 Playwright regressions:** [builder-blockers.spec.ts](../../tests/recovery/builder-blockers.spec.ts): native reload/tab-close và history thật, save 503/pending rồi success qua backend thật, dirty archive, UI bỏ câu cuối của PUBLISHED, question editor đổi ESSAY và kiểm tra nguồn pool qua API thật.
+- **13 frontend/component tests:** [builder-integrity.test.tsx](../../../apps/web/src/features/builder-integrity.test.tsx): hai builder với links/Back/Forward/unload, giữ form qua step, picker không dirty, pending/failure/retry, success không cảnh báo sai, tiếp tục đúng history destination, giữ created ID khi tạo room lỗi, và không archive nội dung dirty.
+- **8 PostgreSQL integration tests:** [published-invariants.integration.test.ts](../../../apps/api/test/published-invariants.integration.test.ts): chặn cấu hình sai, so sánh nguyên trạng mọi field sau rollback, cho phép fixed → pool hợp lệ, khóa sau attempt, create/publish không partial row, filter/options rollback, Quiz source/LOBBY/archive/legacy guard, hai race source mutation.
+- **6 Playwright regressions:** [builder-blockers.spec.ts](../../../tests/recovery/builder-blockers.spec.ts): native reload/tab-close và history thật, save 503/pending rồi success qua backend thật, dirty archive, UI bỏ câu cuối của PUBLISHED, question editor đổi ESSAY và kiểm tra nguồn pool qua API thật.
 - Sáu fixture socket cũ được bổ sung câu khách quan hợp lệ để thỏa room readiness; **không bỏ assertion socket/FIFO/reconnect**. Test asset bổ sung reject tại room creation, đồng thời tạo legacy room trực tiếp trong test để **giữ kiểm tra reject tại start**.
-- [playwright.blockers.config.ts](../../playwright.blockers.config.ts) dùng server/rate-limit store mới. `npm run test:e2e` và một step CI hiện có chạy thêm nhóm này; không xây dựng Autonomous Workflow.
+- [playwright.blockers.config.ts](../../../playwright.blockers.config.ts) dùng server/rate-limit store mới. `npm run test:e2e` và một step CI hiện có chạy thêm nhóm này; không xây dựng Autonomous Workflow.
 
 ## D. Verification results
 
@@ -124,34 +124,34 @@ Không cộng targeted tests vào tổng một lần nữa. Negative controls FA
 
 **26 source/test/config files và 2 report/evidence files.** [Task-only patch](/tmp/examspace-blocker-remediation-20261103/task-only.patch) tách khỏi những thay đổi đã có trước.
 
-- [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
-- [apps/api/src/modules/classes/routes.ts](../../apps/api/src/modules/classes/routes.ts)
-- [apps/api/src/modules/exams/configuration.ts](../../apps/api/src/modules/exams/configuration.ts)
-- [apps/api/src/modules/exams/routes.ts](../../apps/api/src/modules/exams/routes.ts)
-- [apps/api/src/modules/live-quiz/configuration.ts](../../apps/api/src/modules/live-quiz/configuration.ts)
-- [apps/api/src/modules/live-quiz/routes.ts](../../apps/api/src/modules/live-quiz/routes.ts)
-- [apps/api/src/modules/live-quiz/service.ts](../../apps/api/src/modules/live-quiz/service.ts)
-- [apps/api/src/modules/question-banks/lifecycle.ts](../../apps/api/src/modules/question-banks/lifecycle.ts)
-- [apps/api/src/modules/question-banks/routes.ts](../../apps/api/src/modules/question-banks/routes.ts)
-- [apps/api/src/utils/errors.ts](../../apps/api/src/utils/errors.ts)
-- [apps/api/test/asset-integrity.integration.test.ts](../../apps/api/test/asset-integrity.integration.test.ts)
-- [apps/api/test/published-invariants.integration.test.ts](../../apps/api/test/published-invariants.integration.test.ts)
-- [apps/api/test/quiz.integration.test.ts](../../apps/api/test/quiz.integration.test.ts)
-- [apps/web/src/features/builder-guard.tsx](../../apps/web/src/features/builder-guard.tsx)
-- [apps/web/src/features/builder-integrity.test.tsx](../../apps/web/src/features/builder-integrity.test.tsx)
-- [apps/web/src/features/exams.tsx](../../apps/web/src/features/exams.tsx)
-- [apps/web/src/features/quiz.tsx](../../apps/web/src/features/quiz.tsx)
-- [apps/web/src/styles/live-quiz.css](../../apps/web/src/styles/live-quiz.css)
-- [docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.md](../../docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.md)
-- [docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.verification.json](../../docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.verification.json)
-- [package-lock.json](../../package-lock.json)
-- [package.json](../../package.json)
-- [playwright.blockers.config.ts](../../playwright.blockers.config.ts)
-- [tests/deployment/hosted-auth-fix.mjs](../../tests/deployment/hosted-auth-fix.mjs)
-- [tests/deployment/hosted-auth-revocation-diagnostic.mjs](../../tests/deployment/hosted-auth-revocation-diagnostic.mjs)
-- [tests/deployment/hosted-auth-revocation-sequence.mjs](../../tests/deployment/hosted-auth-revocation-sequence.mjs)
-- [tests/deployment/hosted-staging-image.mjs](../../tests/deployment/hosted-staging-image.mjs)
-- [tests/recovery/builder-blockers.spec.ts](../../tests/recovery/builder-blockers.spec.ts)
+- [.github/workflows/ci.yml](../../../.github/workflows/ci.yml)
+- [apps/api/src/modules/classes/routes.ts](../../../apps/api/src/modules/classes/routes.ts)
+- [apps/api/src/modules/exams/configuration.ts](../../../apps/api/src/modules/exams/configuration.ts)
+- [apps/api/src/modules/exams/routes.ts](../../../apps/api/src/modules/exams/routes.ts)
+- [apps/api/src/modules/live-quiz/configuration.ts](../../../apps/api/src/modules/live-quiz/configuration.ts)
+- [apps/api/src/modules/live-quiz/routes.ts](../../../apps/api/src/modules/live-quiz/routes.ts)
+- [apps/api/src/modules/live-quiz/service.ts](../../../apps/api/src/modules/live-quiz/service.ts)
+- [apps/api/src/modules/question-banks/lifecycle.ts](../../../apps/api/src/modules/question-banks/lifecycle.ts)
+- [apps/api/src/modules/question-banks/routes.ts](../../../apps/api/src/modules/question-banks/routes.ts)
+- [apps/api/src/utils/errors.ts](../../../apps/api/src/utils/errors.ts)
+- [apps/api/test/asset-integrity.integration.test.ts](../../../apps/api/test/asset-integrity.integration.test.ts)
+- [apps/api/test/published-invariants.integration.test.ts](../../../apps/api/test/published-invariants.integration.test.ts)
+- [apps/api/test/quiz.integration.test.ts](../../../apps/api/test/quiz.integration.test.ts)
+- [apps/web/src/features/builder-guard.tsx](../../../apps/web/src/features/builder-guard.tsx)
+- [apps/web/src/features/builder-integrity.test.tsx](../../../apps/web/src/features/builder-integrity.test.tsx)
+- [apps/web/src/features/exams.tsx](../../../apps/web/src/features/exams.tsx)
+- [apps/web/src/features/quiz.tsx](../../../apps/web/src/features/quiz.tsx)
+- [apps/web/src/styles/live-quiz.css](../../../apps/web/src/styles/live-quiz.css)
+- [docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.md](FINAL_BLOCKER_REMEDIATION_20261103.md)
+- [docs/audits/FINAL_BLOCKER_REMEDIATION_20261103.verification.json](FINAL_BLOCKER_REMEDIATION_20261103.verification.json)
+- [package-lock.json](../../../package-lock.json)
+- [package.json](../../../package.json)
+- [playwright.blockers.config.ts](../../../playwright.blockers.config.ts)
+- [tests/deployment/hosted-auth-fix.mjs](../../../tests/deployment/hosted-auth-fix.mjs)
+- [tests/deployment/hosted-auth-revocation-diagnostic.mjs](../../../tests/deployment/hosted-auth-revocation-diagnostic.mjs)
+- [tests/deployment/hosted-auth-revocation-sequence.mjs](../../../tests/deployment/hosted-auth-revocation-sequence.mjs)
+- [tests/deployment/hosted-staging-image.mjs](../../../tests/deployment/hosted-staging-image.mjs)
+- [tests/recovery/builder-blockers.spec.ts](../../../tests/recovery/builder-blockers.spec.ts)
 
 Không sửa `attempts.tsx`, `attempt-integrity.test.tsx` hoặc ba deployment docs/JSON modified trước phiên. 29 artifact ảnh/JSON do suite cũ ghi vào `docs` đã được lưu riêng cho lượt test và trả về **đúng bytes/hash trước phiên**. Không xóa các artifact cũ hoặc dữ liệu untracked ngoài phạm vi lint nêu trên.
 

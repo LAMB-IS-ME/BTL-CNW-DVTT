@@ -5,10 +5,10 @@ Remediation executed: 2026-10-13 (Asia/Bangkok). Approved cleanup and integrity 
 ## Baseline and continuity
 
 - Branch `ux/education-saas-redesign-pilot`; parent baseline `d3e7cbadab88a3e4b8839941edaa9d590085e1ca`; confirmed before the authorized commit.
-- Initial tracked/staged tree clean; all 47 historical untracked artifacts recorded with SHA-256 in [baseline.json](session-realtime-recovery-evidence/baseline.json). Resume verified every hash unchanged. No reset/checkout/discard/clean.
+- Initial tracked/staged tree clean; all 47 historical untracked artifacts recorded with SHA-256 in [baseline.json](../../remediation/session-realtime-recovery-evidence/baseline.json). Resume verified every hash unchanged. No reset/checkout/discard/clean.
 - Read the system audit, findings, readiness JSON, SDD and deployment/security documentation; verified actual auth, CSRF, Guard, API/download client, socket, Quiz service, startup, deadline, grading and autosave source. Historical audit results are context, not final PASS evidence.
 - PostgreSQL 16.15 was downloaded/extracted in `/tmp`, bound only to loopback port 55439. Three disposable databases separate recovery browser, integration, and compatibility jobs. Synthetic fixtures only; no production Supabase/DB/Storage. Existing browser suites run from a scratch copy with matching product source, generated Prisma client/dependencies reused and Vite filesystem allowance for local fonts. No approved screenshots overwritten.
-- The previous final `npm test` request was **NOT EXECUTED**: automatic approval review ran out of workspace credits. This was a review failure, not an unsafe-action verdict. The resumed command used the normal approval mechanism and passed; no bypass. The [verification JSON](session-realtime-recovery-verification.json) retains the review-failure classification; the redundant resume checkpoint stays local outside the commit.
+- The previous final `npm test` request was **NOT EXECUTED**: automatic approval review ran out of workspace credits. This was a review failure, not an unsafe-action verdict. The resumed command used the normal approval mechanism and passed; no bypass. The [verification JSON](../../remediation/session-realtime-recovery-verification.json) retains the review-failure classification; the redundant resume checkpoint stays local outside the commit.
 
 ## Before-fix reproduction and root causes
 
@@ -19,7 +19,7 @@ Remediation executed: 2026-10-13 (Asia/Bangkok). Approved cleanup and integrity 
 | REL-001 | Teacher + two Student browsers, real Socket.IO; API SIGKILL, close B during outage, restart with A reconnecting. DB and host UI still reported both online. | Persistent `isConnected` survived process death; no startup reconciliation. Membership and answers were correct. |
 | Join/disconnect race | Hold real `QuizRoom` row lock, send join, verify handler waits on lock, disconnect socket, release lock. Before-fix regression fails: one phantom online participant. | Disconnect handler ran before `rooms.add`; pending join later persisted online without a live socket. |
 
-[Before browser log](session-realtime-recovery-evidence/before-browser.txt), [session probe](session-realtime-recovery-evidence/session-before.json), [crash probe](session-realtime-recovery-evidence/quiz-before.json), [join race failure](session-realtime-recovery-evidence/join-race-before.txt). Two baseline browser tests passed their **bug-confirmation assertions**, not product acceptance.
+[Before browser log](../../remediation/session-realtime-recovery-evidence/before-browser.txt), [session probe](../../remediation/session-realtime-recovery-evidence/session-before.json), [crash probe](../../remediation/session-realtime-recovery-evidence/quiz-before.json), [join race failure](../../remediation/session-realtime-recovery-evidence/join-race-before.txt). Two baseline browser tests passed their **bug-confirmation assertions**, not product acceptance.
 
 ## Session behavior and implementation
 
@@ -53,19 +53,19 @@ Approved remediation gates completed with exit 0 on 2026-10-13. **All results be
 
 | Gate | Status | Reused evidence |
 |---|---|---|
-| Unit/frontend | PASS — 78 tests / 19 files | [unit-accepted.txt](session-realtime-recovery-evidence/unit-accepted.txt), exit 0 |
-| Integration | PASS — 62 tests / 15 files | [integration-resume-final.txt](session-realtime-recovery-evidence/integration-resume-final.txt), exit 0 |
-| Lint | PASS | [lint-accepted.txt](session-realtime-recovery-evidence/lint-accepted.txt), exit 0 |
-| Typecheck | PASS | [typecheck-accepted.txt](session-realtime-recovery-evidence/typecheck-accepted.txt), exit 0 |
-| Build | PASS | [build-accepted.txt](session-realtime-recovery-evidence/build-accepted.txt), exit 0; existing >500 kB bundle warning |
-| Recovery browser | PASS — all 13 scenarios in one final run | [recovery-accepted.txt](session-realtime-recovery-evidence/recovery-accepted.txt), exit 0 |
-| Existing E2E | PASS — 16 tests | [e2e-verified.txt](session-realtime-recovery-evidence/e2e-verified.txt) |
-| Live Quiz browser | PASS — 11 tests, five widths | [live-browser-final.txt](session-realtime-recovery-evidence/live-browser-final.txt) |
-| Grading/Results + Live Quiz compatibility | PASS — 10 tests | [module-compatibility-accepted.txt](session-realtime-recovery-evidence/module-compatibility-accepted.txt), exit 0 |
+| Unit/frontend | PASS — 78 tests / 19 files | [unit-accepted.txt](../../remediation/session-realtime-recovery-evidence/unit-accepted.txt), exit 0 |
+| Integration | PASS — 62 tests / 15 files | [integration-resume-final.txt](../../remediation/session-realtime-recovery-evidence/integration-resume-final.txt), exit 0 |
+| Lint | PASS | [lint-accepted.txt](../../remediation/session-realtime-recovery-evidence/lint-accepted.txt), exit 0 |
+| Typecheck | PASS | [typecheck-accepted.txt](../../remediation/session-realtime-recovery-evidence/typecheck-accepted.txt), exit 0 |
+| Build | PASS | [build-accepted.txt](../../remediation/session-realtime-recovery-evidence/build-accepted.txt), exit 0; existing >500 kB bundle warning |
+| Recovery browser | PASS — all 13 scenarios in one final run | [recovery-accepted.txt](../../remediation/session-realtime-recovery-evidence/recovery-accepted.txt), exit 0 |
+| Existing E2E | PASS — 16 tests | [e2e-verified.txt](../../remediation/session-realtime-recovery-evidence/e2e-verified.txt) |
+| Live Quiz browser | PASS — 11 tests, five widths | [live-browser-final.txt](../../remediation/session-realtime-recovery-evidence/live-browser-final.txt) |
+| Grading/Results + Live Quiz compatibility | PASS — 10 tests | [module-compatibility-accepted.txt](../../remediation/session-realtime-recovery-evidence/module-compatibility-accepted.txt), exit 0 |
 
-All log links are under [session-realtime-recovery-evidence](session-realtime-recovery-evidence/). Earlier non-passing runs remain classified in the verification JSON; redundant raw logs stay local outside the commit: initial sandboxed unit run failed due to local socket restriction and an incomplete test mock; the mock now keeps real API exports and later approved runs pass. One expanded browser run had a deadline fixture race/overlapping expiry-job interference; suites now use separate DBs and wait for authoritative question index before changing a test deadline. The last pre-interruption run had 11 PASS and one logout test harness failure: API-only login had not primed SPA CSRF, so logout correctly succeeded with a fresh anonymous token instead of exercising stale CSRF. The corrected fixture logs in through the UI and keeps the original recovery assertion. No weakened assertions, retries or deleted tests.
+All log links are under [session-realtime-recovery-evidence](../../remediation/session-realtime-recovery-evidence/). Earlier non-passing runs remain classified in the verification JSON; redundant raw logs stay local outside the commit: initial sandboxed unit run failed due to local socket restriction and an incomplete test mock; the mock now keeps real API exports and later approved runs pass. One expanded browser run had a deadline fixture race/overlapping expiry-job interference; suites now use separate DBs and wait for authoritative question index before changing a test deadline. The last pre-interruption run had 11 PASS and one logout test harness failure: API-only login had not primed SPA CSRF, so logout correctly succeeded with a fresh anonymous token instead of exercising stale CSRF. The corrected fixture logs in through the UI and keeps the original recovery assertion. No weakened assertions, retries or deleted tests.
 
-Responsive recovery screenshots cover 1440, 1024, 820, 390, 320; all measured document overflow 0px. Heading focus, keyboard Tab/Enter login action and role switch are asserted. [Geometry](session-realtime-recovery-evidence/geometry.json); [screenshots](../screenshots/session-realtime-recovery/). No full screen-reader certification.
+Responsive recovery screenshots cover 1440, 1024, 820, 390, 320; all measured document overflow 0px. Heading focus, keyboard Tab/Enter login action and role switch are asserted. [Geometry](../../remediation/session-realtime-recovery-evidence/geometry.json); [screenshots](../../screenshots/session-realtime-recovery/). No full screen-reader certification.
 
 ## Remaining boundaries
 
@@ -78,9 +78,9 @@ Responsive recovery screenshots cover 1440, 1024, 820, 390, 320; all measured do
 
 ## Git / changed files
 
-The approved implementation comprises **15 modified tracked files and 4 new source/test/config files**; all 19 hashes match [the approved manifest](session-realtime-recovery-evidence/verified-source-hashes.json). Product changes stay within session/API/auth/Guard/autosave retry/socket boundaries and Quiz startup/presence/snapshot ordering. The pagination test changes only its API mock to retain AuthProvider exports; no pagination product change.
+The approved implementation comprises **15 modified tracked files and 4 new source/test/config files**; all 19 hashes match [the approved manifest](../../remediation/session-realtime-recovery-evidence/verified-source-hashes.json). Product changes stay within session/API/auth/Guard/autosave retry/socket boundaries and Quiz startup/presence/snapshot ordering. The pagination test changes only its API mock to retain AuthProvider exports; no pagination product change.
 
-The [cleanup audit](session-realtime-recovery-evidence/cleanup-audit.json) lists every selected file, category, dependency/config/schema hash, screenshot hash and excluded phase log. The commit selects **46 files**: 19 source/test/config, 2 reports, 20 evidence files and 5 screenshots. **38 redundant phase artifacts remain local and untracked**, alongside all **47 historical artifacts**, preserved byte-for-byte. No files were deleted; no approved review boards were overwritten. Historical manifest paths are inventory records, not dependencies or promised fresh-clone links.
+The [cleanup audit](../../remediation/session-realtime-recovery-evidence/cleanup-audit.json) lists every selected file, category, dependency/config/schema hash, screenshot hash and excluded phase log. The commit selects **46 files**: 19 source/test/config, 2 reports, 20 evidence files and 5 screenshots. **38 redundant phase artifacts remain local and untracked**, alongside all **47 historical artifacts**, preserved byte-for-byte. No files were deleted; no approved review boards were overwritten. Historical manifest paths are inventory records, not dependencies or promised fresh-clone links.
 
 Accepted logs preserve assertions, counts, timings and warnings. Only absolute checkout prefixes in four logs were normalized to `<repository>`; trailing whitespace/extra blank EOF lines were also removed from six logs to satisfy Git whitespace checks. Original and sanitized SHA-256 values are recorded in the cleanup audit. No DB dumps, browser state/traces, credentials, real environment files or runtime files are selected. The browser fixture's explicit local-only signing constant and fake invalid CSRF token are synthetic test inputs, not captured credentials.
 
@@ -147,6 +147,6 @@ Run browser commands sequentially with ports 3000/5173 free; existing E2E/UI con
 
 ## Cleanup handoff
 
-Fresh cleanup checks: branch/parent baseline, 19 source/test/config hashes, dependency/config/schema baseline comparison, all 47 historical hashes, complete scope/diff review, selected-file secret/artifact review, JSON parsing, report/source/evidence links, screenshot structure and Git whitespace checks. Exact selection and evidence hashes are in [cleanup-audit.json](session-realtime-recovery-evidence/cleanup-audit.json). Staging and its diff must pass before the single authorized commit; post-commit hash, parent, message, file set and tracked/staged cleanliness are checked in the final handoff rather than embedding a self-referential commit hash here.
+Fresh cleanup checks: branch/parent baseline, 19 source/test/config hashes, dependency/config/schema baseline comparison, all 47 historical hashes, complete scope/diff review, selected-file secret/artifact review, JSON parsing, report/source/evidence links, screenshot structure and Git whitespace checks. Exact selection and evidence hashes are in [cleanup-audit.json](../../remediation/session-realtime-recovery-evidence/cleanup-audit.json). Staging and its diff must pass before the single authorized commit; post-commit hash, parent, message, file set and tracked/staged cleanliness are checked in the final handoff rather than embedding a self-referential commit hash here.
 
-The reused gates above PASS; no final FAIL or BLOCKED gate remains. Earlier failures/review denial are classified, not counted as passing executions. PostgreSQL was stopped after remediation; [shutdown evidence](session-realtime-recovery-evidence/shutdown.txt) is historical, not a new runtime test. Remaining untracked files are intentionally preserved; do not describe the entire working tree as clean. No push, deploy, merge or PR. Stop for user review of the local commit.
+The reused gates above PASS; no final FAIL or BLOCKED gate remains. Earlier failures/review denial are classified, not counted as passing executions. PostgreSQL was stopped after remediation; [shutdown evidence](../../remediation/session-realtime-recovery-evidence/shutdown.txt) is historical, not a new runtime test. Remaining untracked files are intentionally preserved; do not describe the entire working tree as clean. No push, deploy, merge or PR. Stop for user review of the local commit.

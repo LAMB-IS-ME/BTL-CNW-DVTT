@@ -2,7 +2,7 @@
 
 Checkpoint **03/11/2026**, đối chiếu source local. Branch candidate `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a` **cộng working tree chưa commit**. HEAD riêng không chứa đầy đủ candidate; phải bàn giao cả source/test/config untracked được liệt kê trong báo cáo release cuối.
 
-**Local final acceptance đã PASS ở checkpoint trước. Cloud cho candidate hiện tại: NOT VERIFIED.** Không dùng số PASS/SHA/URL hosted trong lịch sử bên dưới làm chứng nhận source mới. Kết quả release mới và manifest/hash nằm trong [báo cáo release cuối](../audits/FINAL_RELEASE_READINESS_20261103.md); báo cáo [blocker remediation](../audits/FINAL_BLOCKER_REMEDIATION_20261103.md) là checkpoint trước sửa reliability ảnh. Lượt này không commit/push/deploy, không đọc credentials hoặc truy cập production.
+**Local final acceptance đã PASS ở checkpoint trước. Cloud cho candidate hiện tại: NOT VERIFIED.** Không dùng số PASS/SHA/URL hosted trong lịch sử bên dưới làm chứng nhận source mới. Kết quả release mới và manifest/hash nằm trong [báo cáo release cuối](../audits/FINAL_RELEASE_READINESS_20261103.md); báo cáo [blocker remediation](../archive/audits/FINAL_BLOCKER_REMEDIATION_20261103.md) là checkpoint trước sửa reliability ảnh. Lượt này không commit/push/deploy, không đọc credentials hoặc truy cập production.
 
 ## Topology và commands khớp source
 
@@ -58,7 +58,7 @@ Các SHA/service IDs, approval và số liệu dưới đây chỉ mô tả ngà
 
 # ExamSpace — Runbook Free Staging
 
-Ngày cập nhật: 15/10/2026 (Asia/Bangkok). **LIVE SHA `bf3c1f5e4133d00d6e463516b5af571d86e3852d`**, deploy `dep-db8e5ig473hc739etsbg`. CI SUCCESS (98 unit / 62 integration / 20 E2E), hosted auth PARTIAL PASS; blocker expiry → relogin → revocation đã tái hiện. Dừng review, không lặp commit/push/deploy. Xem [report](FREE_STAGING_DEPLOYMENT_REPORT.md).
+Ngày cập nhật: 15/10/2026 (Asia/Bangkok). **LIVE SHA `bf3c1f5e4133d00d6e463516b5af571d86e3852d`**, deploy `dep-db8e5ig473hc739etsbg`. CI SUCCESS (98 unit / 62 integration / 20 E2E), hosted auth PARTIAL PASS; blocker expiry → relogin → revocation đã tái hiện. Dừng review, không lặp commit/push/deploy. Xem [report](../archive/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md).
 
 ## 1. Gate trước khi tiếp tục
 

@@ -2,7 +2,7 @@
 
 **Đặc tả visual identity · 07/10/2026 · Full Teacher Exam rollout và sidebar đã được duyệt.**
 
-**Trạng thái hiện tại:** Teacher Exam Folio đủ 5 bước và shared Teacher sidebar đóng/mở đã được review, duyệt để đóng gói local commit. [Báo cáo rollout và verification](EXAM_FOLIO_FINAL_REPORT.md) là evidence hiện hành. Không rollout visual sang module khác.
+**Trạng thái hiện tại:** Teacher Exam Folio đủ 5 bước và shared Teacher sidebar đóng/mở đã được review, duyệt để đóng gói local commit. [Báo cáo rollout và verification](../../ux/EXAM_FOLIO_FINAL_REPORT.md) là evidence hiện hành. Không rollout visual sang module khác.
 
 Direction: **Phiếu đề & lề ghi chú**. Căn cứ: [Visual identity audit](VISUAL_IDENTITY_AUDIT.md), source và board V2 hiện có, cùng research UI-UX-Pro-Max ở commit `477bcb28c9812b385cb51a4605ddf30d7b2266e2`.
 
@@ -315,7 +315,7 @@ Tách current/hover/focus/selected/disabled. Underline navigation không thay fo
 
 ## 12. Tiêu chí review cho agent triển khai sau
 
-Các tiêu chí dưới đây dùng cho review; kết quả implementation và kiểm thử hiện tại nằm trong [báo cáo cuối](EXAM_FOLIO_FINAL_REPORT.md).
+Các tiêu chí dưới đây dùng cho review; kết quả implementation và kiểm thử hiện tại nằm trong [báo cáo cuối](../../ux/EXAM_FOLIO_FINAL_REPORT.md).
 
 1. Đặt list, editor, Dashboard cạnh nhau: cùng family nhưng phải khác composition theo tác vụ, không chỉ khác title và icon.
 2. Bỏ màu khỏi ý tưởng: vẫn đọc được index, current step, selected, lifecycle và thứ bậc actions.
@@ -334,4 +334,4 @@ Không dùng prompt triển khai chỉ gồm “modern education SaaS”. Brief 
 
 UI-UX-Pro-Max cung cấp các gợi ý style, typography và UX đã được chọn lọc trong [audit](VISUAL_IDENTITY_AUDIT.md#d-ui-ux-pro-max-đã-inspect-gì-dùng-gì-loại-gì). Exam Folio, palette cụ thể, cột lề, radius theo vai trò và treatment của từng bước là **đề xuất tổng hợp riêng cho ExamSpace**, không phải output generator đã áp vào product.
 
-Palette và composition đã render, được review qua ba board cuối; automated Chromium đã PASS. Chưa kiểm chứng mọi fallback font/zoom, Safari/Firefox hay usability study với người dùng cuối. Xem giới hạn và verification trong [báo cáo cuối](EXAM_FOLIO_FINAL_REPORT.md).
+Palette và composition đã render, được review qua ba board cuối; automated Chromium đã PASS. Chưa kiểm chứng mọi fallback font/zoom, Safari/Firefox hay usability study với người dùng cuối. Xem giới hạn và verification trong [báo cáo cuối](../../ux/EXAM_FOLIO_FINAL_REPORT.md).

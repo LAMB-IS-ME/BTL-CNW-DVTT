@@ -77,7 +77,7 @@ Seed: 1 admin, 2 teacher, 12 student, 2 lớp, 2 banks, 24 câu đủ 4 loại, 
 
 Integration/E2E cần TEST_DATABASE_URL trỏ DB riêng tên chứa `test`, đã migrate/seed. Cần `pdftotext` (poppler-utils) và `npx playwright install --with-deps chromium`. Deployment smoke cần build trước. Không chạy tests vào production DB. Lệnh chuẩn bị DB và CI được mô tả ở [DEPLOYMENT](docs/DEPLOYMENT.md#verification-commands).
 
-Kết quả kiểm tra mới và giới hạn được ghi trong [Deployment readiness](docs/deployment/DEPLOYMENT_READINESS_REPORT.md) và [Fresh-clone setup](docs/deployment/FRESH_CLONE_SETUP_REPORT.md). [VERIFICATION](docs/VERIFICATION.md) là evidence lịch sử, không phải kết luận hiện tại. Hosted HTTPS/WSS, Supabase Storage và URL public vẫn cần kiểm chứng riêng; chưa tuyên bố release-ready.
+Kết quả kiểm tra mới và giới hạn được ghi trong [Deployment readiness](docs/archive/deployment/DEPLOYMENT_READINESS_REPORT.md) và [Fresh-clone setup](docs/archive/deployment/FRESH_CLONE_SETUP_REPORT.md). [VERIFICATION](docs/VERIFICATION.md) là evidence lịch sử, không phải kết luận hiện tại. Hosted HTTPS/WSS, Supabase Storage và URL public vẫn cần kiểm chứng riêng; chưa tuyên bố release-ready.
 
 ## Ảnh giao diện thực
 
@@ -89,9 +89,9 @@ Chụp từ Playwright với API/PostgreSQL thật; fixture E2E có tên tự si
 
 ## Deployment
 
-Checkpoint **03/11/2026**: candidate local là working tree trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Xem [runbook hiện hành](docs/deployment/FREE_STAGING_RUNBOOK.md) và [báo cáo release](docs/audits/FINAL_RELEASE_READINESS_20261103.md). `render.yaml` mô tả **một Render Web Service cùng origin + Supabase PostgreSQL/private Storage**, vẫn trỏ branch staging cũ; phải chọn đúng candidate được review trước deploy. Cloud của candidate hiện tại **NOT VERIFIED**. [Evidence hosted 10/2026](docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) là lịch sử, không xác nhận URL/trạng thái cloud hiện tại. Phần dưới là phương án split-origin cũ, không phải cấu hình Blueprint hiện hành.
+Checkpoint **03/11/2026**: candidate local là working tree trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Xem [runbook hiện hành](docs/deployment/FREE_STAGING_RUNBOOK.md) và [báo cáo release](docs/audits/FINAL_RELEASE_READINESS_20261103.md). `render.yaml` mô tả **một Render Web Service cùng origin + Supabase PostgreSQL/private Storage**, vẫn trỏ branch staging cũ; phải chọn đúng candidate được review trước deploy. Cloud của candidate hiện tại **NOT VERIFIED**. [Evidence hosted 10/2026](docs/archive/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) là lịch sử, không xác nhận URL/trạng thái cloud hiện tại. Phần dưới là phương án split-origin cũ, không phải cấu hình Blueprint hiện hành.
 
-Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem [hai phương án và chi phí dự kiến](docs/deployment/DEPLOYMENT_PLAN.md), [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) và [đối chiếu đặc tả](docs/spec/SPEC_RECONCILIATION.md). Các bước cloud dưới đây chỉ thực hiện khi được cho phép ở phase sau.
+Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem [hai phương án và chi phí dự kiến](docs/archive/deployment/DEPLOYMENT_PLAN.md), [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) và [đối chiếu đặc tả](docs/spec/SPEC_RECONCILIATION.md). Các bước cloud dưới đây chỉ thực hiện khi được cho phép ở phase sau.
 
 1. **Supabase:** tạo project, lấy DB URLs, chạy migrations; tạo private Storage bucket, giữ service key ở backend.
 2. **Render:** dùng render.yaml hoặc Web Service root monorepo; nhập env, deploy API, kiểm tra health/login/WSS. Free instance có thể sleep; dùng một instance luôn chạy cho thi realtime ổn định.

@@ -1,6 +1,6 @@
 # Question Bank UX pilot — kết quả nghiệm thu local
 
-Ngày 01/10/2026, branch `ux/question-bank-pilot`, baseline source `2cda149` + working tree chưa commit. Tiếp tục từ source/diff/tests đang dở; không làm lại audit các module khác. Source of truth: [EXAMSPACE_UX_REWORK_SPEC.md](../../EXAMSPACE_UX_REWORK_SPEC.md).
+Ngày 01/10/2026, branch `ux/question-bank-pilot`, baseline source `2cda149` + working tree chưa commit. Tiếp tục từ source/diff/tests đang dở; không làm lại audit các module khác. Source of truth: [EXAMSPACE_UX_REWORK_SPEC.md](../EXAMSPACE_UX_REWORK_SPEC.md).
 
 ## 1–3. Audit cuối cùng, functional gaps và phần đã sửa
 
@@ -54,7 +54,7 @@ Editor có Hủy và trạng thái mới/chưa lưu/đang lưu/đã lưu. Route 
 
 ## 9. Hiệu năng before/after
 
-Bằng chứng gốc được giữ tại [question-bank-baseline.json](question-bank-baseline.json); lần đo cuối tại [question-bank-performance.json](question-bank-performance.json). Chromium headless, Vite dev, PostgreSQL 16 loopback:55432, Storage HTTP double local. Không đo Supabase. Đơn vị ms.
+Bằng chứng gốc được giữ tại [question-bank-baseline.json](../../ux/question-bank-baseline.json); lần đo cuối tại [question-bank-performance.json](../../ux/question-bank-performance.json). Chromium headless, Vite dev, PostgreSQL 16 loopback:55432, Storage HTTP double local. Không đo Supabase. Đơn vị ms.
 
 | Thao tác | Trước | Sau, median [min–max] | Số mẫu sau |
 |---|---|---|---|
@@ -68,7 +68,7 @@ Các số navigation/save/upload bao gồm Playwright actionability/assertion ov
 
 API request timing (bao gồm HTTP/session/backend/DB): list median 10.4 ms (n=3), detail 10.2 (n=1), search 13.1 (n=4), PATCH 14.9 (n=20, gồm link ảnh), upload 17.6 (n=5). Cache khiến số request ít hơn số navigation.
 
-[question-bank-db-performance.json](question-bank-db-performance.json): EXPLAIN ANALYZE representative SELECT, n=10 warm; execution median list 0.2705 ms, detail 0.0175, search 0.075. Không gồm planning, connection/pool, Prisma, auth hoặc toàn bộ query của một request; không lấy số này trừ khỏi API latency để suy ra chính xác từng tầng.
+[question-bank-db-performance.json](../../ux/question-bank-db-performance.json): EXPLAIN ANALYZE representative SELECT, n=10 warm; execution median list 0.2705 ms, detail 0.0175, search 0.075. Không gồm planning, connection/pool, Prisma, auth hoặc toàn bộ query của một request; không lấy số này trừ khỏi API latency để suy ra chính xác từng tầng.
 
 Cải tiến được chứng minh là giảm request và thêm feedback lúc chờ. Không đủ bằng chứng để quy toàn bộ cảm giác “đơ” ban đầu cho DB, Supabase hay thiếu pending. Chưa đo runtime production/cloud hoặc long-task/INP đầy đủ.
 
@@ -78,11 +78,11 @@ Cải tiến được chứng minh là giảm request và thêm feedback lúc ch
 
 Đã mở và inspect ảnh render, không chỉ kiểm tra file tồn tại:
 
-- [AFTER list desktop](../screenshots/question-bank/after-list-desktop.png)
-- [AFTER bank detail](../screenshots/question-bank/after-detail.png)
-- [AFTER editor](../screenshots/question-bank/after-editor.png)
-- [AFTER archived](../screenshots/question-bank/after-archived.png)
-- [AFTER mobile](../screenshots/question-bank/after-mobile.png)
+- [AFTER list desktop](../../screenshots/question-bank/after-list-desktop.png)
+- [AFTER bank detail](../../screenshots/question-bank/after-detail.png)
+- [AFTER editor](../../screenshots/question-bank/after-editor.png)
+- [AFTER archived](../../screenshots/question-bank/after-archived.png)
+- [AFTER mobile](../../screenshots/question-bank/after-mobile.png)
 
 Giữ 4 ảnh BEFORE trong cùng thư mục. Ảnh dùng demo/fixture local, không cookie/token/key. Full-page editor phản ánh sticky controls ở vị trí viewport lúc chụp; có thể cuộn để thao tác các trường bên dưới. Không overwrite ảnh module khác trong kết quả bàn giao.
 

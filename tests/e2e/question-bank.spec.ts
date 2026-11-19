@@ -401,8 +401,21 @@ test("JPEG/WebP persist, actual replace control, invalid signature, interrupted 
     mimeType: "image/png",
     buffer: Buffer.from("not a real image"),
   });
+  const rejectedUpload = page.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" &&
+      /\/assets$/.test(new URL(response.url()).pathname),
+  );
   await page.getByRole("button", { name: "Lưu câu hỏi", exact: true }).click();
-  await expect(page.getByRole("alert")).toContainText("hợp lệ");
+  const invalidImage = await rejectedUpload;
+  expect(invalidImage.status()).toBe(400);
+  expect((await invalidImage.json()).error.code).toBe("INVALID_IMAGE");
+  // Decode errors for both local previews also have alerts; assert the API error.
+  await expect(
+    page
+      .getByRole("alert")
+      .filter({ hasText: "Chỉ nhận ảnh PNG, JPEG hoặc WebP hợp lệ." }),
+  ).toBeVisible();
   await page
     .getByLabel("Chọn ảnh", { exact: true })
     .setInputFiles(await encodedImage(page, "image/jpeg"));

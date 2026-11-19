@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { questionSchema, type QuestionInput } from "@exam/shared";
 import { api } from "../../lib/api";
 import { Field } from "./ui";
-import { Markdown } from "../../components/Markdown";
+import { Markdown, QuestionImage } from "../../components/Markdown";
 import { type Bank, type BankQuestion, useCatalogRefresh } from "./banks";
 import {
   ConfirmAction,
@@ -775,7 +775,7 @@ function QuestionForm({
                   )}
                   {file && (
                     <div className="qb-staged-image">
-                      <img
+                      <QuestionImage
                         src={fileUrl || undefined}
                         alt="Ảnh đã chọn, chưa lưu"
                       />
@@ -823,7 +823,7 @@ function QuestionForm({
                   Ảnh chờ lưu ·{" "}
                   {target === "promptMarkdown" ? "Nội dung" : "Lời giải"}
                 </p>
-                <img src={fileUrl || undefined} alt="Ảnh chờ lưu" />
+                <QuestionImage src={fileUrl || undefined} alt="Ảnh chờ lưu" />
               </div>
             )}
           </aside>

@@ -1,19 +1,75 @@
-> Cập nhật approval 14/10/2026: user đã duyệt đúng một commit và first push; raw logs chỉ giữ local, kết quả và fingerprint ở verification-summary.json. Các trạng thái chưa commit/deploy bên dưới là checkpoint trước thao tác, không phải kết quả sau triển khai.
+# ExamSpace — Runbook deployment hiện hành
+
+Checkpoint **03/11/2026**, đối chiếu source local. Branch candidate `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a` **cộng working tree chưa commit**. HEAD riêng không chứa đầy đủ candidate; phải bàn giao cả source/test/config untracked được liệt kê trong báo cáo release cuối.
+
+**Local final acceptance đã PASS ở checkpoint trước. Cloud cho candidate hiện tại: NOT VERIFIED.** Không dùng số PASS/SHA/URL hosted trong lịch sử bên dưới làm chứng nhận source mới. Kết quả release mới và manifest/hash nằm trong [báo cáo release cuối](../audits/FINAL_RELEASE_READINESS_20261103.md); báo cáo [blocker remediation](../audits/FINAL_BLOCKER_REMEDIATION_20261103.md) là checkpoint trước sửa reliability ảnh. Lượt này không commit/push/deploy, không đọc credentials hoặc truy cập production.
+
+## Topology và commands khớp source
+
+`render.yaml` hiện mô tả **một Node Web Service serve cả SPA + REST + Socket.IO**, region `singapore`, plan `free`, auto-deploy off. Blueprint vẫn trỏ branch `deploy/examspace-free-staging`, khác candidate hiện tại: khi được duyệt deploy, operator phải chọn đúng revision/artifact đã kiểm chứng; không deploy nhầm HEAD/branch cũ. Không thay blueprint trong vòng release audit này.
+
+```sh
+# Root monorepo. Cấp public VITE_* trước build, secrets chỉ backend.
+npm ci --include=dev
+npm run db:generate
+npm run build
+# Start đúng như render.yaml; không tự migrate/seed trong start.
+CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
+```
+
+Node yêu cầu `>=22.12.0`; blueprint pin `22.23.2`, kiểm thử local dùng `22.23.4`. API entry `apps/api/dist/server.js`, SPA `apps/web/dist`; giữ `apps/api/assets/fonts` và CA công khai trong artifact. `SERVE_WEB=true` để Express serve SPA. Health `/api/health` chỉ là liveness. `PORT` do host cấp; HTTP/WSS cùng một port. Không dùng Vite dev/preview làm production server.
+
+## Environment và database
+
+Nguồn: `apps/api/src/config/env.ts`, `prisma.config.ts`, `db/client.ts`, `app.ts`, frontend `api.ts`/`socket.ts`, [environment matrix](ENVIRONMENT_MATRIX.md). Không copy `.env` thật vào report/artifact.
+
+| Biến | Cấu hình target cùng origin |
+| --- | --- |
+| NODE_ENV / SERVE_WEB | `production` / `true` |
+| DATABASE_URL | Secret runtime cho Prisma adapter và session pool; direct hoặc session pooler phù hợp network/IPv4; xác minh TLS/hostname/CA |
+| DIRECT_URL | Secret connection cho CLI, ưu tiên trước DATABASE_URL; CLI fallback DATABASE_URL; không phải URL runtime |
+| SESSION_SECRET | Secret ≥32 ký tự, giữ ổn định qua redeploy; không tạo lại secret khi redeploy service hiện có |
+| CLIENT_ORIGIN | Exact HTTPS origin, không path/trailing slash; start lấy RENDER_EXTERNAL_URL |
+| COOKIE_SECURE / COOKIE_SAME_SITE / TRUST_PROXY | `true` / `lax` / `1` nếu đúng một trusted edge; xác minh proxy thực |
+| SESSION_COOKIE_NAME / SESSION_MAX_AGE_MS | default `online_exam_sid` / `28800000` |
+| SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY | URL target / secret backend-only, dùng cho Storage; không vào VITE_* |
+| SUPABASE_STORAGE_BUCKET | `question-assets`, private; PNG/JPEG/WebP, ≤5 MB |
+| NODE_EXTRA_CA_CERTS | CA công khai tại `/opt/render/project/src/apps/api/assets/certs/supabase-prod-ca-2021.crt`, được cấp trước Node startup; không tắt TLS verification |
+| VITE_API_BASE_URL / VITE_SOCKET_URL / VITE_BASE_PATH | `/api/v1` / chuỗi rỗng / `/`; build lại khi thay |
+| ALLOW_PRODUCTION_SEED | `false`; không seed/reset dữ liệu thật |
+| TEST_DATABASE_URL / DOTENV_CONFIG_PATH | Chỉ test riêng: DB loopback có `test` trong tên / `/dev/null`; không dùng credentials production |
+
+Có **hai migrations**: `20260930000000_initial`, `20260930010000_integrity` (gồm session table, constraints/indexes và RLS). Không có migration mới cho image reliability. Trước deployment được duyệt, operator kiểm tra target, backup/restore plan, migration history/checksums và pending SQL. Chỉ chạy `npm run db:migrate` với đúng DIRECT_URL/DATABASE_URL sau review; `migrate deploy` chỉ áp dụng pending migrations, không reset/db push. Không suy ra cloud đã migrate từ kết quả database test local. Nếu target đã có cả hai migrations, không seed lại hoặc sửa record demo.
+
+Runtime cần role trusted có quyền DML và table-owner/BYPASSRLS theo schema; frontend không dùng Supabase Auth/Data API. Tối đa 10 Prisma + 5 session connections mỗi process. Supabase private Storage ký URL 300 giây sau API authorization; ảnh lỗi có retry lấy lại URL, không sửa đáp án/snapshot/grading. Source không tự tạo bucket/policies. Tham khảo [connection modes](https://supabase.com/docs/guides/database/connecting-to-postgres) và [private buckets](https://supabase.com/docs/guides/storage/buckets/fundamentals).
+
+## Verification và release gate
+
+Trên DB loopback riêng: migrate/seed → lint/typecheck/build → unit/frontend → integration → `npm run test:e2e` → `npm run test:deployment`. `test:e2e` chạy **4 nhóm**: core (bao gồm image regressions mới), Student Exam 25, Session Recovery 3, Builder blockers 6. Mỗi nhóm có server/rate-limit store riêng, không tăng quota/retries. Số PASS thực tế lấy từ báo cáo release cuối, không lấy các số 23/54 của checkpoint cũ. Chạy `npm audit --audit-level=low` để kiểm tra advisory hiện hành khi mạng cho phép. Không chạy các hosted harness ad hoc hoặc destructive suite vào cloud.
+
+Trước go-live cần xác minh trên staging riêng đúng candidate: HTTPS/cookie/proxy, DB/session/TLS, WSS/reconnect, private Storage upload/read/expiry/retry và public-access denial, SPA deep refresh, PDF/Excel, single-instance restart/overlap và dữ liệu sau restart. Không deploy giữa ca thi/Quiz; startup reconciliation cập nhật presence toàn DB. Chuẩn bị maintenance/rollback ứng dụng; không rollback schema tự động. Free service sleep/cold start không có SLA kỳ thi; operator phải chấp nhận giới hạn demo hoặc chọn vận hành phù hợp khi được duyệt. Những mục hosted này **NOT RUN** trong vòng local này.
+
+## Lịch sử — giữ nguyên, không phải chỉ dẫn hiện hành
+
+Các SHA/service IDs, approval và số liệu dưới đây chỉ mô tả ngày ghi nhận. Không suy ra trạng thái cloud ngày 03/11/2026, không chạy lại script dựa trên quyền cũ.
+
+<details>
+<summary>Runbook checkpoint 15/10/2026 (nguyên văn)</summary>
 
 # ExamSpace — Runbook Free Staging
 
-Ngày kiểm tra: 14/10/2026 (Asia/Bangkok). Tài liệu dành cho agent/operator tiếp tục công việc; user không cần tự chạy terminal. **Chưa deploy**. Xem [report](FREE_STAGING_DEPLOYMENT_REPORT.md) và [trạng thái máy đọc](free-staging-verification.json).
+Ngày cập nhật: 15/10/2026 (Asia/Bangkok). **LIVE SHA `bf3c1f5e4133d00d6e463516b5af571d86e3852d`**, deploy `dep-db8e5ig473hc739etsbg`. CI SUCCESS (98 unit / 62 integration / 20 E2E), hosted auth PARTIAL PASS; blocker expiry → relogin → revocation đã tái hiện. Dừng review, không lặp commit/push/deploy. Xem [report](FREE_STAGING_DEPLOYMENT_REPORT.md).
 
 ## 1. Gate trước khi tiếp tục
 
 - User đã xác nhận workspace Render chưa gắn phương thức thanh toán. Chỉ `plan: free`, không thêm thẻ, add-on, disk, Postgres, Redis, cron hoặc ping giữ sống. Nếu provider đòi thanh toán/thẻ, dừng; không đổi sang paid.
-- Chờ user review candidate và cho phép **một local commit + lần push đầu tiên**. Repo `LAMB-IS-ME/BTL-CNW-DVTT`; branch mới đề xuất `deploy/examspace-free-staging`; parent `d7723622cfa943a288279c61e33cee998fe339fe`. Không merge main/force push. Không đưa 85 artifact lịch sử vào commit.
+- Branch `deploy/examspace-free-staging`, HEAD `bf3c1f5e4133d00d6e463516b5af571d86e3852d`. Chưa có quyền sửa production/commit/push/deploy thêm cho blocker mới. Không merge main/force push hoặc commit 85 historical artifacts.
 - Đọc [manifest artifact](free-staging-evidence/historical-artifacts.json), [review Git](free-staging-evidence/git-review.json), [scan secrets](free-staging-evidence/security-scan.json). Kiểm tra lại HEAD/diff/hash trước thao tác được duyệt.
 - Quyền MCP Render/Supabase đang hoạt động. GitHub CLI có quyền push nhưng **quyền kỹ thuật không thay sự chấp thuận của user**.
 
 ## 2. Cấu hình chính xác
 
-Một Render Native Node Web Service, tên đề xuất `examspace-staging`, region `singapore`, plan `free`, một instance, repo root, auto-deploy **off**. PostgreSQL/Storage ở Supabase ExamSpace `zhdxuqcbvhcnujcdbkgw`, Sydney `ap-southeast-2`. Không tạo Supabase project hoặc đụng project FocusLab (tên tổ chức chứa ExamSpace cũng là FocusLab; không nhầm tổ chức với project).
+Một Render Native Node Web Service, tên `examspace-staging`, region `singapore`, plan `free`, một instance, repo root, auto-deploy **off**. PostgreSQL/Storage ở Supabase ExamSpace `zhdxuqcbvhcnujcdbkgw`, Sydney `ap-southeast-2`. Không tạo Supabase project hoặc đụng project FocusLab (tên tổ chức chứa ExamSpace cũng là FocusLab; không nhầm tổ chức với project).
 
 ```sh
 # Build, có devDependencies vì Prisma/Vite/TypeScript cần lúc build.
@@ -61,27 +117,19 @@ Runtime/session dùng tối đa 10 + 5 pool connections/process. Client→pooler
 
 Tài khoản demo Admin/Teacher1/Student1 xác minh hash khớp secret demo hiện có, khác password development mặc định. Không reset password, session hoặc lịch đề. Trước hosted tests kiểm tra lịch đề/dữ liệu đang dùng, tạo fixtures có prefix riêng cho lượt test; không chỉnh sửa record demo để kéo dài deadline. Không chạy integration/E2E destructive suites vào Supabase.
 
-## 4. Sau Git approval
+## 4. Checkpoint hiện tại và thao tác tiếp theo
 
-1. Đối chiếu candidate hash; tạo branch mới từ baseline với working tree hiện tại. Stage đúng allowlist trong `git-review.json`, bỏ qua historical artifacts. Commit message đề xuất `feat(deploy): prepare free single-origin staging`. Ghi SHA thực sau commit; nếu diff đổi ngoài phạm vi đã duyệt, review lại.
-2. Push branch mới tới origin bằng Git hiện có. CI `on: [push,pull_request]` sẽ chạy. GitHub Pages chỉ `workflow_dispatch`, không tự chạy. Main giữ nguyên. Repo hiện public; không đổi visibility.
-3. Chờ/đọc CI của commit vừa push. Không tự sửa workflow khác, không nới assertions hoặc dependency audit threshold.
-4. Dùng Render MCP `create_web_service` với workspace `tea-db7m2r3ncjis73eq90tg`, `plan:free`, `autoDeploy:no`, đúng branch/build/start/env. MCP không hỗ trợ toàn bộ Blueprint fields, gồm healthCheckPath; kiểm tra field thực sau create. Nếu không có API quyền để đặt `/api/health`, kiểm tra mặc định health TCP và probe `/api/health` chủ động; không khai rằng HTTP healthcheck đã được cấu hình nếu chưa làm.
-5. Theo dõi deploy/log đã lọc secret; lấy service ID và public URL thực. Verify TLS certificate/redirect và `/api/health`, rồi browser/API/WSS smoke. `autoDeploy:no` không ngăn initial deploy khi tạo service.
-6. Ghi evidence và cập nhật report/JSON theo kết quả thật. Không đánh dấu hosted PASS chỉ vì build live hoặc health 200.
+Service `[redacted]`, deploy `dep-db8e5ig473hc739etsbg` LIVE đúng HEAD, Free, auto-deploy OFF. CI 38750653237 SUCCESS. HTTP health 200; platform TCP mặc định. Không tạo service hoặc trigger thêm. Giữ SESSION_SECRET/env và dữ liệu.
 
-Git-backed Native Node được chọn vì có repo/quyền clone, không cần registry. Prebuilt image có hỗ trợ ở Dashboard/API nhưng MCP hiện không tạo được và chưa có image/registry credential; không public image mới. CLI/API deploy không tự gửi uncommitted local source lên Render.
+Bước tiếp theo cần review blocker trong `free-staging-evidence/auth-fix-hosted-blocker.json`. Script `hosted-auth-revocation-sequence.mjs` tái hiện bằng fixture hiện có, không SQL/business mutation; không tự sửa ứng dụng hoặc tăng retries.
 
-## 5. Hosted acceptance còn phải thực hiện
+## 5. Hosted evidence và cách tiếp tục
 
-Dùng browser contexts riêng Admin/Teacher/Student; không lưu cookies/storageState/HAR/trace. Giữ mutation fixtures tách dữ liệu đã có, không load test.
+Evidence cũ `free-staging-evidence/hosted-verification.json` chỉ cho commit 39802152. Evidence mới `auth-fix-hosted.json` PASS early login/ba vai trò/Exam/Quiz WSS/Storage download/export, nhưng FAIL chuỗi session revocation sau expiry/relogin. Không coi tổng thể PASS. Responsive và upload full lifecycle chưa chạy lại trên SHA mới. PNG fixture lỗi CRC đã được kiểm tra lại bằng valid PNG, evidence riêng `hosted-image-verification.json`.
 
-- HTTPS redirect/certificate, SPA refresh, static MIME/cache, không lỗi console/CSP; thử 1440/1024/820/390/320.
-- Login/logout/reload, Secure/HttpOnly/Lax, CSRF reject/accept, RBAC/ownership, session persistence và expiry bằng session fixture riêng.
-- Teacher class/question bank/build/publish/monitor, Student start/autosave/reload/timer/submit, essay grading/release/results; đối chiếu API/DB khi cần.
-- Live Quiz lobby/start/questions/answer/deadline/leaderboard/finish/reconnect bằng WSS thật. Client cùng origin dùng WebSocket trực tiếp vì browser polling GET không gửi Origin; server vẫn bắt buộc Origin allowlist và session. Network không hỗ trợ WSS sẽ không có polling fallback ở topology này.
-- Upload ảnh test qua app, render/reload, owner/non-owner và referenced-asset delete guard; private bucket/public URL deny; PDF/Excel download.
-- Thử cold start có kiểm soát sau idle, không ping loop/cron. Không restart/deploy khi đang có ca thi hoặc Quiz cần giữ.
+Fixture prefix `STAGING-20261015021944`; tài khoản mới dùng password derived chỉ trong bộ nhớ từ secret local, không ghi credential. Hai attempt đã GRADED, room FINISHED. Không cleanup/reset/ghi đè ảnh, kể cả fixture lỗi. Không chạy destructive local integration suites vào Supabase.
+
+Scripts `tests/deployment/hosted-staging*.mjs` là harness của lượt đã chạy. Không chạy lại mù quáng: main tạo fixture mới, resume giả định state cũ, image script tạo câu hỏi/đề mới. Đọc checkpoint trước và chỉ chạy kiểm thử còn cần. Không lưu cookies/storageState/HAR/trace hoặc signed URLs. Cold-start duration, hosted process restart/rolling overlap và multi-student load chưa kiểm thử; không cần restart khi có người đang thi.
 
 ## 6. Reproduce local evidence
 
@@ -103,4 +151,6 @@ Probe yêu cầu `TEST_DATABASE_URL`, từ chối cloud host trước khi mở s
 
 [Supabase Free](https://supabase.com/pricing): 500 MB DB, 1 GB Storage, 5 GB egress + 5 GB cached egress, pause sau một tuần không hoạt động. Đã restore thì kiểm tra status, không gọi restore lặp. Không có cam kết 24/7 hoặc chịu tải lớn.
 
-Rollback app theo previous deploy/source được duyệt; giữ SESSION_SECRET và DB URLs. Deploy/restart trong maintenance window vì startup reconciliation của single process và rolling overlap cần kiểm chứng hosted. Không rollback DB tự động, không reset dữ liệu, không mở lại grants công khai cho migration metadata. Khi chưa có deployment đầu tiên thì chưa có deployment rollback target.
+Rollback app theo previous deploy/source được duyệt; giữ SESSION_SECRET và DB URLs. Deploy/restart trong maintenance window vì startup reconciliation của single process và rolling overlap cần kiểm chứng hosted. Không rollback DB tự động, không reset dữ liệu, không mở lại grants công khai cho migration metadata. Deployment trước là 39802152 (có early-login race); không tự rollback khi chưa được duyệt.
+
+</details>

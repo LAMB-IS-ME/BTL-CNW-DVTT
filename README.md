@@ -89,7 +89,7 @@ Chụp từ Playwright với API/PostgreSQL thật; fixture E2E có tên tự si
 
 ## Deployment
 
-Phase Free Staging hiện tại dùng **một Render Free Web Service cùng origin + Supabase Free**; xem [báo cáo thực thi](docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) và [runbook](docs/deployment/FREE_STAGING_RUNBOOK.md). `render.yaml` đã được chuẩn bị cho topology này. Chưa có URL public: đang chờ duyệt candidate và push branch staging. Phần bên dưới ghi lại phương án của phase chuẩn bị trước đó, không phải cấu hình Free Staging mới.
+Checkpoint **03/11/2026**: candidate local là working tree trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Xem [runbook hiện hành](docs/deployment/FREE_STAGING_RUNBOOK.md) và [báo cáo release](docs/audits/FINAL_RELEASE_READINESS_20261103.md). `render.yaml` mô tả **một Render Web Service cùng origin + Supabase PostgreSQL/private Storage**, vẫn trỏ branch staging cũ; phải chọn đúng candidate được review trước deploy. Cloud của candidate hiện tại **NOT VERIFIED**. [Evidence hosted 10/2026](docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) là lịch sử, không xác nhận URL/trạng thái cloud hiện tại. Phần dưới là phương án split-origin cũ, không phải cấu hình Blueprint hiện hành.
 
 Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem [hai phương án và chi phí dự kiến](docs/deployment/DEPLOYMENT_PLAN.md), [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) và [đối chiếu đặc tả](docs/spec/SPEC_RECONCILIATION.md). Các bước cloud dưới đây chỉ thực hiện khi được cho phép ở phase sau.
 
@@ -98,7 +98,7 @@ Phase chuẩn bị chỉ kiểm thử local; không cần push lên GitHub. Xem 
 3. **GitHub Pages:** bật GitHub Actions trong Pages, đặt public `VITE_API_BASE_URL`/`VITE_SOCKET_URL`, chạy workflow Pages thủ công. Base path lấy từ Pages metadata;404.html phục hồi SPA deep links.
 4. **Domain/cookie:** cập nhật exact CLIENT_ORIGIN. Cross-site cần Secure + SameSite=None và browser cho phép cookie; app/API custom subdomain cùng site hỗ trợ ổn định hơn.
 
-Chưa deploy lên tài khoản cloud. Các bước cần tài khoản, custom domain, migrations/seed và troubleshooting nằm trong [hướng dẫn triển khai](docs/DEPLOYMENT.md).
+Vòng release hiện tại không truy cập hoặc deploy cloud. Cấu hình, migration gate và troubleshooting nằm trong [hướng dẫn triển khai](docs/DEPLOYMENT.md); chỉ thực hiện các thao tác cloud khi được duyệt riêng.
 
 ## Tài liệu
 

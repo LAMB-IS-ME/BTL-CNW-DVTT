@@ -1,4 +1,6 @@
-# Deployment plan — đề xuất để review, 2026-10-14
+# Deployment plan — lịch sử đề xuất 2026-10-14
+
+> Đã thay thế cho topology hiện hành bởi [runbook 03/11/2026](FREE_STAGING_RUNBOOK.md). Các giá, lựa chọn ưu tiên, build/start và trạng thái cloud bên dưới là lịch sử, không phải checkpoint release mới. Blueprint hiện tại serve SPA + API cùng origin; không tự làm theo phương án split-origin hoặc migrate ở start của tài liệu cũ. Giữ nguyên nội dung để review provenance.
 
 Chỉ chuẩn bị. Chưa tạo project cloud, chưa mở staging, chưa chọn mua dịch vụ, chưa deploy hoặc push. Các bước hosting bên dưới chỉ dùng ở phase được người dùng cho phép sau này. Fresh clone/test hiện tại hoàn toàn từ Git local. Không cần đưa source lên GitHub để hoàn thành phase này.
 

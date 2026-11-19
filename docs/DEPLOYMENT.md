@@ -1,6 +1,6 @@
 # Triển khai ExamSpace
 
-Hướng dẫn cấu hình target Supabase, Render, GitHub Pages. Kết quả mới: [fresh-clone setup](deployment/FRESH_CLONE_SETUP_REPORT.md), [readiness report](deployment/DEPLOYMENT_READINESS_REPORT.md), [environment matrix](deployment/ENVIRONMENT_MATRIX.md), [deployment plan và staging gates](deployment/DEPLOYMENT_PLAN.md). Phase 2026-10-14 chỉ chuẩn bị local; các thao tác cloud bên dưới chưa được thực hiện và cần được cho phép ở phase sau. Không có secret cloud trong source. Các kiểm chứng local nằm ở [VERIFICATION](VERIFICATION.md); chưa có lần deploy cloud hoặc roundtrip Supabase Storage thật được xác nhận.
+Checkpoint **03/11/2026**, đối chiếu source local; [runbook hiện hành](deployment/FREE_STAGING_RUNBOOK.md) là hướng dẫn chính cho topology cùng origin trong `render.yaml`. Candidate hiện tại là working tree chưa commit trên `ui/final-refinement-recovery`, base HEAD `51251acdb5f4eece85c3d44d2958ca98ba2efe0a`. Cloud của candidate này **NOT VERIFIED**; evidence hosted 10/2026 và các [fresh-clone](deployment/FRESH_CLONE_SETUP_REPORT.md)/[readiness](deployment/DEPLOYMENT_READINESS_REPORT.md) reports chỉ là lịch sử theo SHA/date của chúng. Không suy ra trạng thái cloud hiện tại từ lịch sử. Xem [environment matrix](deployment/ENVIRONMENT_MATRIX.md). Không truy cập production trong vòng release audit này. Kết quả và release gate: [báo cáo release 03/11/2026](audits/FINAL_RELEASE_READINESS_20261103.md).
 
 ## Local quick start
 
@@ -33,6 +33,7 @@ Thiếu Supabase Storage env vẫn chạy được các flow không có ảnh; u
 | Biến                      | Cách điền / mặc định                                                                |
 | ------------------------- | ----------------------------------------------------------------------------------- |
 | NODE_ENV                  | development local, production Render                                                |
+| SERVE_WEB                 | false local dev; true khi Express serve SPA cùng origin từ apps/web/dist             |
 | PORT                      | 3000 local; Render cấp tự động, API bind0.0.0.0                                     |
 | DATABASE_URL              | URL PostgreSQL thật có quyền đọc/ghi schema app và session; chỉ server              |
 | DIRECT_URL                | Prisma CLI dùng trước DATABASE_URL; direct hoặc session-pooler phù hợp cho migrate  |
@@ -51,12 +52,12 @@ Thiếu Supabase Storage env vẫn chạy được các flow không có ảnh; u
 | NODE_VERSION              | Blueprint pin22.23.2; khi nâng version chạy lại full gates                          |
 | TEST_DATABASE_URL         | Chỉ test command, DB riêng có chữ test trong tên; không phải app runtime env        |
 
-### Frontend: apps/web/.env; GitHub Actions repository variables khi deploy
+### Frontend: public build-time variables
 
 | Biến              | Cách điền                                                                                 |
 | ----------------- | ----------------------------------------------------------------------------------------- |
-| VITE_API_BASE_URL | Public backend URL kết thúc `/api/v1`, không trailing slash                               |
-| VITE_SOCKET_URL   | Public backend origin, không `/api/v1` hay `/socket.io`                                   |
+| VITE_API_BASE_URL | Cùng origin `/api/v1`; split-origin dùng backend URL kết thúc `/api/v1`, không trailing slash                               |
+| VITE_SOCKET_URL   | Cùng origin để chuỗi rỗng; split-origin dùng backend origin, không `/api/v1` hay `/socket.io`                                   |
 | VITE_BASE_PATH    | Local/custom domain `/`; project Pages `/TEN_REPOSITORY/`; workflow tự lấy Pages metadata |
 
 VITE_* là thông tin public được đóng vào bundle. Không đặt password, DATABASE_URL hoặc service key tại đây. Thay URL phải build/deploy frontend lại.
@@ -118,12 +119,12 @@ Seed phục hồi lượt demo đang IN_PROGRESS sau lỗi giữa chừng, giữ
 Tạo Web Service từ repository, root directory để trống (root monorepo). Có thể dùng [render.yaml](../render.yaml) qua New Blueprint, hoặc nhập thủ công:
 
 ```text
-Build: npm ci --include=dev && npm run db:generate && npm run build -w @exam/api
-Start: npm run db:migrate && npm run start -w @exam/api
+Build: npm ci --include=dev && npm run db:generate && npm run build
+Start: CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
 Health Check: /api/health
 ```
 
-Blueprint cấu hình Node 22.23.2, production, SESSION_SECRET generated, các credential/origin sync:false; migrations chạy trước start. Không bỏ dev dependencies vì Prisma CLI hiện nằm devDependencies và cần lúc migrate. Không đổi root thành apps/api với các commands trên. Giữ `apps/api/assets/fonts` để PDF chạy từ bundle. Không cần persistent disk vì uploads/session/data ở Supabase.
+Blueprint cấu hình Node 22.23.2, production, SERVE_WEB=true, SESSION_SECRET generated cho service mới, credential sync:false; CLIENT_ORIGIN lấy RENDER_EXTERNAL_URL ở start. Giữ SESSION_SECRET của service hiện có. Migrations không chạy trong start: kiểm tra target/backup/history rồi áp dụng pending migrations riêng khi được duyệt. Blueprint branch staging chưa phải candidate working tree hiện tại. Không bỏ dev dependencies vì Prisma CLI hiện nằm devDependencies và cần lúc migrate. Không đổi root thành apps/api với các commands trên. Giữ `apps/api/assets/fonts` để PDF chạy từ bundle. Không cần persistent disk vì uploads/session/data ở Supabase.
 
 Điền DATABASE_URL, DIRECT_URL, CLIENT_ORIGIN, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY; giữ COOKIE_SECURE=true, TRUST_PROXY=1, ALLOW_PRODUCTION_SEED=false. PORT do Render cấp. Socket.IO dùng cùng HTTP service/port, browser URL HTTPS sẽ negotiate WSS; không mở port WebSocket riêng. Health kiểm tra process sống; sau deploy phải smoke login, DB/session và room reconnect.
 
@@ -137,7 +138,7 @@ Blueprint mặc định plan free để không tự chọn tài nguyên trả ph
 - Nếu qua thêm proxy, xem lại TRUST_PROXY theo topology; không đặt true vô điều kiện. Frontend fetch/socket đã bật credentials.
 - Không dùng `Access-Control-Allow-Origin: *` cùng cookie. Browser DevTools phải thấy SID HttpOnly; logout xóa cookie/DB session.
 
-## GitHub Pages frontend
+## GitHub Pages frontend — phương án split-origin thay thế
 
 Workflow [pages.yml](../.github/workflows/pages.yml) chạy thủ công bằng workflow_dispatch, không tự publish khi push. CI [ci.yml](../.github/workflows/ci.yml) chạy push/PR với PostgreSQL 17 service và toàn bộ gates.
 
@@ -165,11 +166,16 @@ npm run build
 npm audit
 ```
 
-Để integration/E2E, tạo DB riêng tên có `test`, đặt TEST_DATABASE_URL trong shell qua secret manager hoặc export URL bạn quản lý; chuẩn bị schema/seed bằng cùng DB:
+Để integration/E2E, dùng một shell test riêng, tạo DB loopback riêng tên có `test`, đặt TEST_DATABASE_URL trong shell qua secret manager hoặc export URL bạn quản lý; chuẩn bị schema/seed bằng cùng DB:
 
 ```bash
-DATABASE_URL="$TEST_DATABASE_URL" DIRECT_URL="$TEST_DATABASE_URL" npm run db:migrate
-DATABASE_URL="$TEST_DATABASE_URL" npm run db:seed
+# TEST_DATABASE_URL phải là database test loopback riêng trước khi chạy block này.
+export DOTENV_CONFIG_PATH=/dev/null
+export DATABASE_URL="$TEST_DATABASE_URL" DIRECT_URL="$TEST_DATABASE_URL"
+export NODE_ENV=test
+unset SUPABASE_URL SUPABASE_SERVICE_ROLE_KEY DEMO_PASSWORD
+npm run db:migrate
+npm run db:seed
 npm run test:integration
 npx playwright install --with-deps chromium
 npm run test:e2e
@@ -199,4 +205,4 @@ Trước migrate dữ liệu thật, backup theo project policy. Review SQL migr
 
 ## Các thao tác cần tài khoản của bạn
 
-Tạo Supabase project/bucket, nhập DB/service credentials; tạo Render service/chọn plan; push GitHub/bật Actions/Pages/variables/run deployment; quản lý DNS/custom domains; chạy smoke Storage và browser cookies trên URLs thật. Những thao tác này chưa được thực hiện bởi agent và không được tính thành cloud verification đã pass.
+Khi có deployment được duyệt: xác định đúng target/revision và tái sử dụng project/service/bucket hiện có nếu phù hợp; không tạo trùng theo hướng dẫn bootstrap. Cấp secrets qua secret store; kiểm tra migration/backup, DNS/HTTPS/cookie/WSS và Storage trên staging riêng. Không tự push/bật Actions/Pages/trigger deployment. Cloud smoke của candidate hiện tại chưa chạy; evidence lịch sử không thay thế verification này.

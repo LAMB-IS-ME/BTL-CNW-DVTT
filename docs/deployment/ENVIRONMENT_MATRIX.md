@@ -1,6 +1,8 @@
-# Environment matrix — đối chiếu source 2026-11-03
+# Environment matrix
 
-Nguồn: `apps/api/src/config/env.ts`, `app.ts`, `db/client.ts`, `prisma.config.ts`, `prisma/seed.ts`, frontend `lib/api.ts`, `lib/socket.ts`, `vite.config.ts`, các config/tests và workflow tracked. Không đọc/copy `.env` thật. D = development; S = staging; P = production. Ví dụ `.invalid` là placeholder phải thay, không phải domain được chọn.
+Bảng đầy đủ các biến môi trường mà source đang đọc, đối chiếu với `apps/api/src/config/env.ts`, `app.ts`, `db/client.ts`, `prisma.config.ts`, `prisma/seed.ts`, `apps/web/src/lib/api.ts`, `lib/socket.ts`, `vite.config.ts` và `render.yaml`. D = development, S = staging, P = production. Domain `.invalid` trong cột ví dụ chỉ là placeholder.
+
+Cấu hình mặc định khi deploy là **cùng origin**: một Render Web Service với `SERVE_WEB=true`, `VITE_API_BASE_URL=/api/v1`, `VITE_SOCKET_URL=""`, `COOKIE_SAME_SITE=lax`; `CLIENT_ORIGIN` được lệnh start gán từ `RENDER_EXTERNAL_URL`. Cột "split-origin" chỉ áp dụng cho phương án phụ GitHub Pages. Hướng dẫn thao tác xem trong [runbook](FREE_STAGING_RUNBOOK.md).
 
 ## Runtime, build và seed
 
@@ -14,7 +16,7 @@ Nguồn: `apps/api/src/config/env.ts`, `app.ts`, `db/client.ts`, `prisma.config.
 | SESSION_SECRET | express-session | Required D/S/P, ≥32 ký tự | Secret | Ký SID | Không | Sinh random 48 bytes bằng crypto, cấp riêng từng environment | Giữ ổn định khi restart; thay làm mất hiệu lực cookie cũ. |
 | SESSION_COOKIE_NAME | Session + logout | Optional D/S/P | Public | Tên cookie | online_exam_sid | online_exam_sid | Không đụng cookie app khác cùng host. |
 | SESSION_MAX_AGE_MS | Session cookie | Optional D/S/P | Public | Max age cookie | 28800000 | 28800000 | Session store touch và cookie expiry không tương đương sliding-cookie SLA; kiểm tra kỳ hạn staging. |
-| CLIENT_ORIGIN | REST CORS, CSRF, Socket.IO | Optional D; required correct value S/P | Public | Exact allowlist, comma-separated | http://localhost:5173 | https://app.example.invalid | Không path/trailing slash/wildcard; production bắt buộc HTTPS; Pages origin không gồm repo path. |
+| CLIENT_ORIGIN | REST CORS, CSRF, Socket.IO | Optional D; S/P cùng origin do lệnh start gán từ `RENDER_EXTERNAL_URL` | Public | Exact allowlist, comma-separated | http://localhost:5173 | https://app.example.invalid | Không path/trailing slash/wildcard; production bắt buộc HTTPS; Pages origin không gồm repo path. |
 | COOKIE_SECURE | Session + logout | Optional D; true S/P | Public | Chỉ browser HTTPS | false | true | API từ chối production hoặc SameSite=None nếu false; proxy phải được trust đúng. |
 | COOKIE_SAME_SITE | Session + logout | Optional D/S/P | Public | Cookie site boundary | lax | lax | Cùng site HTTPS ưu tiên lax; khác site cần none + Secure, vẫn có third-party cookie blocking. |
 | TRUST_PROXY | Express | Optional D/S/P; review S/P | Public | Số proxy hops (0–5) | 0 | 1 chỉ khi đúng một trusted edge | Bảo vệ origin server, overwrite forwarding headers; không dùng 1 cho mọi topology. |
@@ -46,4 +48,4 @@ Không có env riêng cho session database, CSRF secret/disable, cookie Domain h
 | LIVE_QUIZ_WIDTHS | tests/ui/live-quiz.spec.ts | Optional danh sách width comma-separated | Test-only. |
 | NODE_OPTIONS | Node/dependency diagnostics | Optional, ví dụ --trace-deprecation | Không phải app parser; không dùng để tắt TLS verification. |
 
-Các biến phục vụ công cụ mới (`LD_LIBRARY_PATH`, `PATH`) chỉ chọn binaries PostgreSQL đã extract vào scratch, không phải yêu cầu ứng dụng. Playwright browser cache là tool prerequisite; fresh npm ci của candidate hiện tại phải có evidence riêng; việc tái dùng node_modules không chứng minh fresh install PASS.
+Playwright cần cài browser (`npx playwright install --with-deps chromium`); đây là công cụ test, không phải biến của ứng dụng.

@@ -14,7 +14,7 @@ Phạm vi là hai nhóm blocker của audit 03/11: mất nội dung chưa lưu v
 4. **Mutation gián tiếp:** room creation đọc Quiz rồi ghi room ngoài một transaction; archive Quiz chưa đồng bộ với start; archive lớp chưa bảo vệ assignment của đề đang công bố.
 5. **Lint:** 13 bindings không dùng trong bốn harness hosted untracked. Đây không phải lỗi application source. Ngoài ra audit registry mới phát hiện một advisory minimatch tạo 18 moderate findings theo cây dependency, trái với số 0 không có giá trị xác nhận từ lần audit offline cũ.
 
-**Negative controls trên bản sao source trước sửa:** 4 regression frontend FAIL đúng ở thiếu unload/archive guard; 2 regression PostgreSQL FAIL vì mutation sai trả 200 thay vì 400/409. Các test khác được lọc khỏi negative control, không phải skip của verification cuối. [Frontend red](/tmp/examspace-blocker-remediation-20261103/red-frontend.log), [backend red](/tmp/examspace-blocker-remediation-20261103/red-backend.log).
+**Negative controls trên bản sao source trước sửa:** 4 regression frontend FAIL đúng ở thiếu unload/archive guard; 2 regression PostgreSQL FAIL vì mutation sai trả 200 thay vì 400/409. Các test khác được lọc khỏi negative control, không phải skip của verification cuối. Frontend red, backend red.
 
 ## B. Changes implemented
 
@@ -85,16 +85,16 @@ Tất cả lệnh dùng Node 22.23.4/npm 10.9.9 đã có, `DOTENV_CONFIG_PATH=/d
 
 | Lệnh/gate | Kết quả cuối | Evidence |
 | --- | --- | --- |
-| `npm run lint` | **PASS**, exit 0, full tree gồm harness untracked; không exclude thêm | [log](/tmp/examspace-blocker-remediation-20261103/lint-final.log) |
-| `npm run typecheck` | **PASS**, shared/API/web và tests | [log](/tmp/examspace-blocker-remediation-20261103/typecheck-final.log) |
-| `npm run build` | **PASS** | [log](/tmp/examspace-blocker-remediation-20261103/build-final.log) |
-| `npm test` | **159 PASS / 0 FAIL**, 24 files; autosave integrity **24/24** | [JSON](/tmp/examspace-blocker-remediation-20261103/unit-final-results.json) |
-| Targeted frontend regression | **13 PASS / 0 FAIL** | [log](/tmp/examspace-blocker-remediation-20261103/frontend-target.log) |
-| `npm run test:integration` | **82 PASS / 0 FAIL**, 18 files; gồm 8 regression mới | [JSON](/tmp/examspace-blocker-remediation-20261103/integration-final-results.json) |
-| `npm run test:e2e` | **54 PASS / 0 FAIL**: core 20, Student Exam 25, Session Recovery 3, blockers 6; bốn nhóm server liên tiếp, không retry/skip | [log](/tmp/examspace-blocker-remediation-20261103/e2e-final.log) |
-| `npm run test:deployment` | **PASS**, smoke local: production bundles, SPA subpath/404, deep refresh, Session và PDF | [log](/tmp/examspace-blocker-remediation-20261103/deployment-final.log) |
-| `npm audit --audit-level=low --json` (online) | **PASS**, 0 vulnerabilities | [log](/tmp/examspace-blocker-remediation-20261103/advisory-final.log) |
-| `npm ls minimatch --all --json` | **PASS**, caller dùng override 11.0.1 | [log](/tmp/examspace-blocker-remediation-20261103/dependency-tree.log) |
+| `npm run lint` | **PASS**, exit 0, full tree gồm harness untracked; không exclude thêm | log |
+| `npm run typecheck` | **PASS**, shared/API/web và tests | log |
+| `npm run build` | **PASS** | log |
+| `npm test` | **159 PASS / 0 FAIL**, 24 files; autosave integrity **24/24** | JSON |
+| Targeted frontend regression | **13 PASS / 0 FAIL** | log |
+| `npm run test:integration` | **82 PASS / 0 FAIL**, 18 files; gồm 8 regression mới | JSON |
+| `npm run test:e2e` | **54 PASS / 0 FAIL**: core 20, Student Exam 25, Session Recovery 3, blockers 6; bốn nhóm server liên tiếp, không retry/skip | log |
+| `npm run test:deployment` | **PASS**, smoke local: production bundles, SPA subpath/404, deep refresh, Session và PDF | log |
+| `npm audit --audit-level=low --json` (online) | **PASS**, 0 vulnerabilities | log |
+| `npm ls minimatch --all --json` | **PASS**, caller dùng override 11.0.1 | log |
 | `git diff --check` | **PASS** | Final workspace verification |
 
 Không cộng targeted tests vào tổng một lần nữa. Negative controls FAIL là kết quả mong đợi trên source cũ, không phải FAIL còn lại của sản phẩm. Các lượt trung gian có lỗi fixture, options locator TypeScript, chờ reload bị hủy/DOM commit và một lượt E2E bị API watch restart đã được sửa/chạy lại; không tăng retries, hạ assertion hoặc tăng quota để che lỗi. Source được giữ cố định trong lượt E2E cuối.
@@ -104,7 +104,7 @@ Không cộng targeted tests vào tổng một lần nữa. Negative controls FA
 - **PostgreSQL 16.15 thật**, `examspace_remediation_test` tại **127.0.0.1:55447**; không dùng PGlite, SQLite hoặc mock DB.
 - Do host chưa cài PostgreSQL, tải các gói Ubuntu PostgreSQL/server/client/libpq vào `/tmp` rồi giải nén. Không `apt install`, không system service/config. Data directory riêng `/tmp/examspace-blocker-remediation-20261103/postgres-data`, chỉ bind loopback.
 - `npm run db:migrate`: **PASS**, hai migrations committed `20260930000000_initial`, `20260930010000_integrity` applied vào database mới. `npm run db:seed`: **PASS**, dữ liệu development riêng. Không reset/migrate/seed cloud.
-- [DB/version/migration evidence](/tmp/examspace-blocker-remediation-20261103/postgres-evidence.txt); [migration log](/tmp/examspace-blocker-remediation-20261103/migrate.log); [seed log](/tmp/examspace-blocker-remediation-20261103/seed.log).
+- DB/version/migration evidence; migration log; seed log.
 - HTTP, Session, CSRF, RBAC, transaction, rollback và socket integration dùng API/PostgreSQL thật. Storage provider trong tests là fixture/double cục bộ, được ghi rõ; không coi đó là Supabase cloud PASS.
 - Playwright 503/delay injection chỉ tạo điều kiện lỗi mạng. Các save thành công và kiểm tra published/source state gọi backend thật và đọc lại dữ liệu thật. Không dùng response mock thay kết quả integration/E2E.
 - Đã dừng PostgreSQL test và xác minh các cổng 55447/3000/5173/54329/3001/5174 đều đóng. Data/evidence riêng trong `/tmp` được giữ lại; không để service nền chạy.
@@ -122,7 +122,7 @@ Không cộng targeted tests vào tổng một lần nữa. Negative controls FA
 
 ## G. Files changed
 
-**26 source/test/config files và 2 report/evidence files.** [Task-only patch](/tmp/examspace-blocker-remediation-20261103/task-only.patch) tách khỏi những thay đổi đã có trước.
+**26 source/test/config files và 2 report/evidence files.** Task-only patch tách khỏi những thay đổi đã có trước.
 
 - [.github/workflows/ci.yml](../../../.github/workflows/ci.yml)
 - [apps/api/src/modules/classes/routes.ts](../../../apps/api/src/modules/classes/routes.ts)
@@ -157,7 +157,7 @@ Không sửa `attempts.tsx`, `attempt-integrity.test.tsx` hoặc ba deployment d
 
 ## H. Git status và preservation
 
-Branch/HEAD không đổi; **0 staged, 20 tracked modified, 192 untracked files**. Trước phiên: 5 tracked modified + 183 untracked. Trong 605 file tracked/untracked có sẵn, chỉ 19 file thuộc phạm vi source/test/config/harness nói trên đổi; không thiếu file. Các thay đổi gốc trong 5 file được bảo vệ giữ nguyên byte/hash. [Git status đầy đủ](/tmp/examspace-blocker-remediation-20261103/git-status-after.txt).
+Branch/HEAD không đổi; **0 staged, 20 tracked modified, 192 untracked files**. Trước phiên: 5 tracked modified + 183 untracked. Trong 605 file tracked/untracked có sẵn, chỉ 19 file thuộc phạm vi source/test/config/harness nói trên đổi; không thiếu file. Các thay đổi gốc trong 5 file được bảo vệ giữ nguyên byte/hash. Git status đầy đủ.
 
 Hai checksum autosave trước = sau:
 

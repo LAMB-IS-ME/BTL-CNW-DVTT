@@ -7,7 +7,7 @@ Các file trong thư mục này **không còn mô tả trạng thái hiện tạ
 | File | Lý do lưu trữ |
 | --- | --- |
 | [EXAMSPACE_UX_REWORK_SPEC.md](EXAMSPACE_UX_REWORK_SPEC.md) | Đề xuất cải tiến UX v1 (01/10/2026), đã triển khai xong qua các đợt rollout UI |
-| [SEED_RECOVERY.md](SEED_RECOVERY.md) | Báo cáo sửa timeout seed trên Supabase (01/10/2026); phần cần dùng đã đưa vào troubleshooting của `docs/DEPLOYMENT.md` |
+| [SEED_RECOVERY.md](SEED_RECOVERY.md) | Báo cáo sửa timeout seed trên Supabase (01/10/2026); phần cần dùng đã đưa vào mục Migration và Troubleshooting của `docs/DEPLOYMENT.md` |
 
 ## deployment/
 
@@ -17,6 +17,7 @@ Các file trong thư mục này **không còn mô tả trạng thái hiện tạ
 | [DEPLOYMENT_READINESS_REPORT.md](deployment/DEPLOYMENT_READINESS_REPORT.md) | Ảnh chụp readiness tại `864633b` (14/10) |
 | [FRESH_CLONE_SETUP_REPORT.md](deployment/FRESH_CLONE_SETUP_REPORT.md) | Kiểm tra fresh clone tại `864633b`; vấn đề thiếu MASTER_SPEC đã được giải quyết bằng `docs/spec/MASTER_SPEC_BASELINE.md` |
 | [FREE_STAGING_DEPLOYMENT_REPORT.md](deployment/FREE_STAGING_DEPLOYMENT_REPORT.md) | Nhật ký ba lượt deploy staging tháng 10 trên URL cũ `examspace-staging.onrender.com` |
+| [FREE_STAGING_RUNBOOK_HISTORY.md](deployment/FREE_STAGING_RUNBOOK_HISTORY.md) | Phần lịch sử tách từ runbook (checkpoint 15/10, URL cũ) |
 
 ## audits/
 

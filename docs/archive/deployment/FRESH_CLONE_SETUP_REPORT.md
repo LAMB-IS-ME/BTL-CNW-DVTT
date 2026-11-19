@@ -110,7 +110,7 @@ npm run test:deployment
 node tests/deployment/production-readiness.mjs
 ```
 
-Không copy node_modules/.env từ repository chính. Với local interactive development, copy hai `.env.example` **từ clone**, điền local DB URL và SESSION_SECRET tự sinh, rồi dùng `npm run dev` theo [setup guide](../../DEPLOYMENT.md#local-quick-start). Các browser tests hiện có dùng development seed password đã khai báo trong source/README; không dùng custom demo password khi chạy suite hardcoded này. Không đưa password vào report/evidence.
+Không copy node_modules/.env từ repository chính. Với local interactive development, copy hai `.env.example` **từ clone**, điền local DB URL và SESSION_SECRET tự sinh, rồi dùng `npm run dev` theo [setup guide](../../DEPLOYMENT.md#chạy-local). Các browser tests hiện có dùng development seed password đã khai báo trong source/README; không dùng custom demo password khi chạy suite hardcoded này. Không đưa password vào report/evidence.
 
 ## Database/seed observations
 

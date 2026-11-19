@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "parent": "11e897fe6116002b0068612ed45634071d6f792a",
+  "files": [
+    "tests/e2e/data-integrity.spec.ts"
+  ],
+  "fullStagedDiffReviewed": true,
+  "secretScanFindings": 0,
+  "historicalArtifactsVerified": 85,
+  "localE2ePassed": 20,
+  "productionChanges": false,
+  "commitCount": 1,
+  "pushCount": 1,
+  "mainUnchanged": "2cda149838b20cb0c11c89ddf2203fb474a70f64"
+}

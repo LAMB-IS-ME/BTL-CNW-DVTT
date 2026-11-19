@@ -1,0 +1,24 @@
+[WebServer] (node:42235) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42267) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:42314) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 9 tests using 1 worker
+
+(node:42365) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft (2.5s)
+  ✓  2 tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register (2.7s)
+  ✓  3 tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves (2.3s)
+  ✓  4 tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts (4.7s)
+  ✓  5 tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region (2.2s)
+  ✓  6 tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains (3.4s)
+  ✓  7 tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results (24.1s)
+  ✓  8 tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership (7.8s)
+  ✓  9 tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths (2.5s)
+
+  9 passed (55.0s)

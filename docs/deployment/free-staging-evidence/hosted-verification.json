@@ -1,0 +1,236 @@
+{
+  "knownFailure": "Initial anonymous auth check can invalidate an early login; see hosted-first-run.json",
+  "scope": "FRESH_HOSTED_ACCEPTANCE_AFTER_AUTH_SETTLES",
+  "date": "2026-10-15",
+  "origin": "https://examspace-staging.onrender.com",
+  "commit": "39802152a5ec1337f790c34732707556b69247db",
+  "prefix": "STAGING-20261015021944",
+  "status": "PARTIAL_PASS_KNOWN_LOGIN_RACE",
+  "checks": [
+    {
+      "name": "Public HTTPS certificate, HTTP redirect and API health",
+      "status": "PASS",
+      "tlsProtocol": "TLS 1.3"
+    },
+    {
+      "name": "SPA deep links, asset/source denial, unauthenticated API and WSS rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "Admin login, account list, fixture creation, role changes, lock/unlock",
+      "status": "PASS"
+    },
+    {
+      "name": "Secure HttpOnly Lax cookies, reload persistence, CSRF, CORS and role isolation",
+      "status": "PASS"
+    },
+    {
+      "name": "Cloud Storage upload, signed download, private public-URL denial and unauthorized asset guard",
+      "status": "PASS"
+    },
+    {
+      "name": "Teacher classes, Question Bank, exam creation/publish and referenced image protection",
+      "status": "PASS"
+    },
+    {
+      "name": "Public HTTPS certificate, HTTP redirect and API health",
+      "status": "PASS",
+      "tlsProtocol": "TLS 1.3"
+    },
+    {
+      "name": "SPA deep links, asset/source denial, unauthenticated API and WSS rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "Student discovery, attempt, autosave/reload, server deadline, WSS monitoring, submit, grading and results",
+      "status": "PASS",
+      "imageVerification": "See separate valid-PNG verification; original fixture CRC invalid"
+    },
+    {
+      "name": "Excel export",
+      "status": "PASS",
+      "bytes": 8378
+    },
+    {
+      "name": "PDF export",
+      "status": "PASS",
+      "bytes": 14358
+    },
+    {
+      "name": "PDF and Excel export signatures, content types and nonempty content",
+      "status": "PASS"
+    },
+    {
+      "name": "Live Quiz real WSS lobby/start/question/answer/leaderboard/finish and reload reconnect",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive checks at 1440, 1024, 820, 390 and 320",
+      "status": "PASS",
+      "views": 5
+    },
+    {
+      "name": "Hosted fixture session expiry, visible recovery, re-login and preserved result",
+      "status": "PASS"
+    },
+    {
+      "name": "Logout revokes HTTP session and authenticated WSS",
+      "status": "PASS"
+    }
+  ],
+  "fixtures": {
+    "teacher": "ccb34149-2924-4a3a-b2e2-5d106fa683c9",
+    "student": "f2d807e6-f7c6-4a64-88a6-5f66c014811d",
+    "class": "25e17086-dc2c-4d9f-a7c6-81054454bac8",
+    "bank": "e583ffbc-a761-4894-b79d-f7e37b8528b8",
+    "question": "72e0d63b-f054-4beb-a3d0-4bdf786eb078",
+    "essay": "b03ee612-a879-46c7-b67e-52c06ac1ee4f",
+    "asset": "75f09325-8659-4c8f-a871-47edf0e0238a",
+    "exam": "663c28b3-94a5-40b9-8d68-e2747824550d",
+    "attempt": "cff926d7-cbd8-4532-b834-22de374b972e",
+    "quiz": "db6ba7a1-0ae7-4ad3-ae30-4bd3d983e0c8",
+    "room": "bc201a33-b1e0-4413-82a1-331848928f76"
+  },
+  "responsive": [
+    {
+      "page": "student-attempt",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "student-attempt",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "student-attempt",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "student-attempt",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "student-attempt",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-final",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-final",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-final",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-final",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-final",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-host",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-host",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-host",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-host",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "quiz-host",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "page": "teacher-classes",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "teacher-classes",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "teacher-classes",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "teacher-classes",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "teacher-classes",
+      "width": 320,
+      "overflow": 0
+    },
+    {
+      "page": "admin-users",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "admin-users",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "admin-users",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "admin-users",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "admin-users",
+      "width": 320,
+      "overflow": 0
+    }
+  ],
+  "pageErrors": [],
+  "assetFailures": [],
+  "runs": [
+    {
+      "status": "FAIL",
+      "failedPhase": "exam",
+      "failure": "expect(locator).toBeVisible() failed\n\nLocator: getByLabel('Thời gian còn lại')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByLabel('Thời gian còn lại') with timeout 5000ms\n  - waiting for getByLabel('Thời gian còn lại')\n"
+    }
+  ],
+  "fixtureImageCorrection": {
+    "originalPng": "INVALID_IDAT_CRC_TEST_FIXTURE",
+    "originalNaturalWidthAssertion": "INSUFFICIENT_TO_PROVE_FULL_DECODE",
+    "replacementEvidence": "hosted-image-verification.json",
+    "replacement": "Valid 160x80 PNG; decode and reload PASS; no original object deleted or overwritten"
+  }
+}

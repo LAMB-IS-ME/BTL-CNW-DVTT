@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-14",
+  "phase": "SESSION LIFECYCLE + LIVE QUIZ RECOVERY — FINAL CLEANUP",
+  "baselineHead": "d3e7cbadab88a3e4b8839941edaa9d590085e1ca",
+  "method": "Fresh local integrity/scope/documentation checks; reuse approved 2026-10-13 test executions. No source/test/config changes in cleanup.",
+  "sourceIntegrity": {
+    "status": "PASS",
+    "count": 19,
+    "manifest": "verified-source-hashes.json",
+    "mismatches": []
+  },
+  "historicalIntegrity": {
+    "status": "PASS",
+    "count": 47,
+    "manifest": "baseline.json",
+    "mismatches": [],
+    "contentsNotIncludedInCommit": true,
+    "manifestPathsAreLocalInventoryNotFreshCloneLinks": true
+  },
+  "dependencyConfigSchemaIntegrity": {
+    "status": "PASS",
+    "comparison": "SHA-256 of working files equals baseline Git blobs; no installed dependency tree attestation or fresh install claimed",
+    "files": [
+      {
+        "path": "apps/api/package.json",
+        "sha256": "fc09aa1e72d1c47c91e2fea81382c0489ec57f118fc23373c8950601246dbf08",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/api/prisma.config.ts",
+        "sha256": "11403e5209ebacede65996db0d86e5888675531f24de9b0081fea45648ade8b4",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/api/prisma/schema.prisma",
+        "sha256": "a435c6e426486da9729f8b4ecb2b3934720bdaca9835eed8d7cb1fee4141eabb",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/api/tsconfig.json",
+        "sha256": "c967004fb9be18248956b073996f063938d05f8daea702ca699e22de604b59e3",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/api/tsup.config.ts",
+        "sha256": "5ec4bf7436e666a08a1ccda73ffe17b9812ec5d4f9a8928ea35ffdade4c893d5",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/web/package.json",
+        "sha256": "7c82d5684c3a7ddba4342506c74a6eae1a6d9a348308ba9651ebc086913a5786",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/web/tsconfig.json",
+        "sha256": "4c305e53ee040f33c08cb6f29be93d82e5384b3b1ef694116d571705cd89372a",
+        "matchesBaseline": true
+      },
+      {
+        "path": "apps/web/vite.config.ts",
+        "sha256": "3758b53212fa42567e77814b13447877361768ba1601e3824fad704ee2958f92",
+        "matchesBaseline": true
+      },
+      {
+        "path": "eslint.config.js",
+        "sha256": "c04416e215af19b0a4ffd69cc0fd3852c465c946b998669236f426724044a221",
+        "matchesBaseline": true
+      },
+      {
+        "path": "package-lock.json",
+        "sha256": "1488849267a4cfd1e7e7c9cc39dfcad514190170efd3c410abc461499e6c50f0",
+        "matchesBaseline": true
+      },
+      {
+        "path": "package.json",
+        "sha256": "2163ecab2f8cd0f46cf36084daaacf3617004efbfc7ae1b33c80efea50551ec9",
+        "matchesBaseline": true
+      },
+      {
+        "path": "packages/shared/package.json",
+        "sha256": "6cb4005b355fe54e85d421d575058606703fd999131eb27194719022ae0b46d5",
+        "matchesBaseline": true
+      },
+      {
+        "path": "packages/shared/tsconfig.json",
+        "sha256": "b254841e7dba369ee2aab48eb4bdca5a6d880a5b9f8db3c46e290d5476866c1e",
+        "matchesBaseline": true
+      },
+      {
+        "path": "playwright.config.ts",
+        "sha256": "e5c21c3d8561fbb842239b0d6d975ee12882cb995d548ac2d4732c6a4e0b2379",
+        "matchesBaseline": true
+      },
+      {
+        "path": "playwright.live-quiz.config.ts",
+        "sha256": "d8f319d63355da1bb1c94205dd1a1553ddfdc098253aff17cbf0a23980178020",
+        "matchesBaseline": true
+      },
+      {
+        "path": "playwright.ui.config.ts",
+        "sha256": "d09bc4e2e66f1f84164599d9d1f1bee61937d8b2b9c88097370842f5cc4d5ddc",
+        "matchesBaseline": true
+      },
+      {
+        "path": "tsconfig.base.json",
+        "sha256": "80c4b466d60333ac7f9a12ab8b832cad8645889e71478c642e4288142a58c367",
+        "matchesBaseline": true
+      },
+      {
+        "path": "tsconfig.tests.json",
+        "sha256": "f309fcdc824f22633d8f323921694cd3d314fb3474a39214b4a750b47ed3e891",
+        "matchesBaseline": true
+      },
+      {
+        "path": "vitest.config.ts",
+        "sha256": "ff9c0892d5d86408685ea69c9fd2e3a61923bd2d83c94c31fa150338b8777521",
+        "matchesBaseline": true
+      },
+      {
+        "path": "vitest.integration.config.ts",
+        "sha256": "59739eb9a81095bf7de48ff752374c2488657f3e4f135a60ead5f0f944c60a08",
+        "matchesBaseline": true
+      }
+    ]
+  },
+  "artifactSelection": {
+    "selectedFileCount": 46,
+    "categories": {
+      "productionSource": [
+        "apps/api/src/modules/live-quiz/service.ts",
+        "apps/api/src/server.ts",
+        "apps/api/src/sockets/quiz.ts",
+        "apps/web/src/App.tsx",
+        "apps/web/src/features/attempts.tsx",
+        "apps/web/src/features/auth.tsx",
+        "apps/web/src/features/quiz.tsx",
+        "apps/web/src/lib/api.ts",
+        "apps/web/src/lib/socket.ts",
+        "apps/web/src/lib/session.ts"
+      ],
+      "integrationTests": [
+        "apps/api/test/auth.integration.test.ts",
+        "apps/api/test/quiz.integration.test.ts",
+        "apps/api/test/socket.integration.test.ts"
+      ],
+      "unitFrontendTests": [
+        "apps/web/src/features/catalog-pagination.test.tsx",
+        "apps/web/src/features/quiz.test.tsx",
+        "apps/web/src/lib/api.test.ts",
+        "apps/web/src/features/session-lifecycle.test.tsx"
+      ],
+      "browserTests": [
+        "tests/recovery/lifecycle.spec.ts"
+      ],
+      "testConfiguration": [
+        "playwright.recovery.config.ts"
+      ],
+      "reports": [
+        "docs/remediation/SESSION_REALTIME_RECOVERY_REPORT.md",
+        "docs/remediation/session-realtime-recovery-verification.json"
+      ],
+      "sanitizedEvidence": [
+        "docs/remediation/session-realtime-recovery-evidence/baseline.json",
+        "docs/remediation/session-realtime-recovery-evidence/verified-source-hashes.json",
+        "docs/remediation/session-realtime-recovery-evidence/unit-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/integration-resume-final.txt",
+        "docs/remediation/session-realtime-recovery-evidence/recovery-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/e2e-verified.txt",
+        "docs/remediation/session-realtime-recovery-evidence/live-browser-final.txt",
+        "docs/remediation/session-realtime-recovery-evidence/module-compatibility-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/lint-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/typecheck-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/build-accepted.txt",
+        "docs/remediation/session-realtime-recovery-evidence/before-browser.txt",
+        "docs/remediation/session-realtime-recovery-evidence/join-race-before.txt",
+        "docs/remediation/session-realtime-recovery-evidence/session-before.json",
+        "docs/remediation/session-realtime-recovery-evidence/quiz-before.json",
+        "docs/remediation/session-realtime-recovery-evidence/quiz-after.json",
+        "docs/remediation/session-realtime-recovery-evidence/startup-barrier.json",
+        "docs/remediation/session-realtime-recovery-evidence/geometry.json",
+        "docs/remediation/session-realtime-recovery-evidence/shutdown.txt",
+        "docs/remediation/session-realtime-recovery-evidence/cleanup-audit.json"
+      ],
+      "screenshots": [
+        "docs/screenshots/session-realtime-recovery/expired-1024.png",
+        "docs/screenshots/session-realtime-recovery/expired-1440.png",
+        "docs/screenshots/session-realtime-recovery/expired-320.png",
+        "docs/screenshots/session-realtime-recovery/expired-390.png",
+        "docs/screenshots/session-realtime-recovery/expired-820.png"
+      ]
+    },
+    "excludedPhaseFileCount": 38,
+    "excludedPhaseFiles": [
+      "docs/remediation/session-realtime-recovery-evidence/after-browser.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-complete.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-expanded.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-latest.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-resume-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/browser-verified.txt",
+      "docs/remediation/session-realtime-recovery-evidence/build-complete.txt",
+      "docs/remediation/session-realtime-recovery-evidence/build-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/build-resume-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/build.txt",
+      "docs/remediation/session-realtime-recovery-evidence/compat-db-setup.txt",
+      "docs/remediation/session-realtime-recovery-evidence/e2e-compatibility.txt",
+      "docs/remediation/session-realtime-recovery-evidence/format-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/git-final.json",
+      "docs/remediation/session-realtime-recovery-evidence/git-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/integration-db-setup.txt",
+      "docs/remediation/session-realtime-recovery-evidence/integration-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/integration.txt",
+      "docs/remediation/session-realtime-recovery-evidence/lint-complete.txt",
+      "docs/remediation/session-realtime-recovery-evidence/lint-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/lint-resume-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/lint-verified.txt",
+      "docs/remediation/session-realtime-recovery-evidence/lint.txt",
+      "docs/remediation/session-realtime-recovery-evidence/logout-verified.txt",
+      "docs/remediation/session-realtime-recovery-evidence/module-compatibility-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/resume-checkpoint.json",
+      "docs/remediation/session-realtime-recovery-evidence/sanitization-check.json",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck-complete.txt",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck-resume-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck-second.txt",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck-verified.txt",
+      "docs/remediation/session-realtime-recovery-evidence/typecheck.txt",
+      "docs/remediation/session-realtime-recovery-evidence/unit-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/unit-resume-final.txt",
+      "docs/remediation/session-realtime-recovery-evidence/unit-second.txt",
+      "docs/remediation/session-realtime-recovery-evidence/unit.txt"
+    ],
+    "excludedDisposition": "Retained locally, untracked; redundant interim/setup/debug/inventory logs. Not required to read this report or rerun tests.",
+    "historicalExcludedCount": 47,
+    "expectedRemainingUntrackedCount": 85
+  },
+  "evidenceNormalization": [
+    {
+      "file": "unit-accepted.txt",
+      "originalSha256": "c61effe6b34bacfdcbd1f95f82795c138f843e57378d655055e0582d5e175573",
+      "sanitizedSha256": "12e32214e4bcd077b46ac1576d96c33b851858deb4df4a4f84beae37c0b5c56a",
+      "change": "Replace absolute checkout prefix with <repository>; test output/results unchanged; Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged"
+    },
+    {
+      "file": "integration-resume-final.txt",
+      "originalSha256": "563d2761c99309680750400af6d64fe30251dd9a4c629516f5b36f76516ce043",
+      "sanitizedSha256": "6473e2e7189a20ac71559810bb7edda1b175dc76d623ecee6a456d4f624d5033",
+      "change": "Replace absolute checkout prefix with <repository>; test output/results unchanged; Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged"
+    },
+    {
+      "file": "build-accepted.txt",
+      "originalSha256": "b561222ff3ea78341c17ae6abe11aedf482db37efc0d11d4351eb9215023f16a",
+      "sanitizedSha256": "cfbf85e4095aae36662f435076bf37db06da2985583c71f6b7678a52d725d63f",
+      "change": "Replace absolute checkout prefix with <repository>; test output/results unchanged; Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged"
+    },
+    {
+      "file": "join-race-before.txt",
+      "originalSha256": "0df9fadfda4ee04c4037dcfe332cecdae35dc21eed8ca8ac2941b8b3561c3463",
+      "sanitizedSha256": "0f551b0219cdcbe67df8260d4fb11198ea2ef6642bc94018e453ba1cbb46daf2",
+      "change": "Replace absolute checkout prefix with <repository>; test output/results unchanged; Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged"
+    },
+    {
+      "file": "lint-accepted.txt",
+      "originalSha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "change": "Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged",
+      "sanitizedSha256": "b936abfefef25d5e5df6d3cf22f9c47bdbe3d5199b0917b5aa280965a10b8d45"
+    },
+    {
+      "file": "typecheck-accepted.txt",
+      "originalSha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "change": "Trim trailing whitespace and extra blank EOF lines; assertions/counts unchanged",
+      "sanitizedSha256": "33141242a6be5e38773e9a7ceb324e54a3fbd1403836920f9ff4163e7ad26cb4"
+    }
+  ],
+  "evidenceSha256": {
+    "baseline.json": "34bd28c1b209108fff53e90d728cd6d21a3d3f9389f7b6c6a99e46c0a03a5341",
+    "verified-source-hashes.json": "2c48dcef04ef1216980422909ba1a48f358a945489ea9102b9d52ebad9ba2479",
+    "unit-accepted.txt": "12e32214e4bcd077b46ac1576d96c33b851858deb4df4a4f84beae37c0b5c56a",
+    "integration-resume-final.txt": "6473e2e7189a20ac71559810bb7edda1b175dc76d623ecee6a456d4f624d5033",
+    "recovery-accepted.txt": "ccbc32c63be08876331c10b808b2096adffde4d0b0d3dfc7c016d4c3c675ef17",
+    "e2e-verified.txt": "685f48dafad4eb5e5fd56b820c60b7b375e6368b665ffd69952fca4de34a6688",
+    "live-browser-final.txt": "5ff036c2d9597b2f6fb100ac877f9b458e3efe3d0a6c70fceb7eedf82258f497",
+    "module-compatibility-accepted.txt": "dc9bd21155fd20ce0e4a051a8d7354e547006b1c4b6d1525e9ba37b86fe08ef3",
+    "lint-accepted.txt": "b936abfefef25d5e5df6d3cf22f9c47bdbe3d5199b0917b5aa280965a10b8d45",
+    "typecheck-accepted.txt": "33141242a6be5e38773e9a7ceb324e54a3fbd1403836920f9ff4163e7ad26cb4",
+    "build-accepted.txt": "cfbf85e4095aae36662f435076bf37db06da2985583c71f6b7678a52d725d63f",
+    "before-browser.txt": "b365193ddf9724e7381d59cfdbabeb1ac0a86ad3bace4eac649cdab81fb9cdcc",
+    "join-race-before.txt": "0f551b0219cdcbe67df8260d4fb11198ea2ef6642bc94018e453ba1cbb46daf2",
+    "session-before.json": "88bbd7ae235a0a8a1b89f96ff46a9b67485dad3f68f95e282f1234ac5d5b280f",
+    "quiz-before.json": "7a1133a3af61115a16388efd165d33212ca0cd6b59bc87b168663d3ba6892f34",
+    "quiz-after.json": "70d33eda54d2063170b981fc023e17de29613a08a37a2fb4957336226b783b1e",
+    "startup-barrier.json": "fd6f740abd3d2a591f2ebf96fdf0b299a98bcd947483f0a234c884a1e14c8495",
+    "geometry.json": "d8819b7900aefee4db684f29329398621632ceeacd1e2c0f19f920f8622db78c",
+    "shutdown.txt": "cbd919faceb5b702cf516051cd7ca0cba44ac845d9a162668e06cab6575ccab9"
+  },
+  "screenshots": [
+    {
+      "path": "docs/screenshots/session-realtime-recovery/expired-1024.png",
+      "width": 1024,
+      "height": 900,
+      "sha256": "d9e337eb78593df0cfac463cf18a66a4dd17eaa6e54266e772e6bd98259b391f"
+    },
+    {
+      "path": "docs/screenshots/session-realtime-recovery/expired-1440.png",
+      "width": 1440,
+      "height": 900,
+      "sha256": "4dbc45bada2a6170f80ec19aaa0c7bb5277b1267a0ce1bd38f55c6714d21d15d"
+    },
+    {
+      "path": "docs/screenshots/session-realtime-recovery/expired-320.png",
+      "width": 320,
+      "height": 900,
+      "sha256": "4f4488ae18811dbf65e3c9109813912491be3dae7459211333fa7530d7f29b78"
+    },
+    {
+      "path": "docs/screenshots/session-realtime-recovery/expired-390.png",
+      "width": 390,
+      "height": 900,
+      "sha256": "1c5fd5355b076d3f5bd2b4b8c38f847708de56c84858ae2cbc7a6db8c009c540"
+    },
+    {
+      "path": "docs/screenshots/session-realtime-recovery/expired-820.png",
+      "width": 820,
+      "height": 900,
+      "sha256": "f0e94ba538b3663a2282d3edceb2f8691029a13096c734b133cea4aa2536c210"
+    }
+  ],
+  "review": {
+    "sourceScope": "PASS: approved source preserved; no schema, dependency, scoring, timer, Socket.IO payload, auth policy or design change",
+    "security": "PASS: bounded diff and selected-file review; test-only constants distinguished from real credentials; no real secrets, cookies, tokens, browser session captures, database dumps or runtime files selected",
+    "documentation": "PASS: selected JSON parses, 22 report links resolve within tracked/selected files, source references exist, suite selectors match accepted logs; no fresh-clone runtime execution claimed",
+    "stagedDiff": "PASS: exact 46-file selection matches reviewed content, source hashes unchanged, no unrelated files; cached whitespace check passed after evidence-only formatting cleanup",
+    "postCommit": "Verified after commit in handoff; this document cannot contain its own commit hash",
+    "secretScan": {
+      "status": "PASS",
+      "method": "Bounded text-pattern scan plus manual selected source/evidence review",
+      "findings": [],
+      "syntheticFixtureConstantsReviewed": true
+    }
+  },
+  "commitAuthorization": {
+    "count": 1,
+    "message": "fix: harden session lifecycle and live quiz recovery",
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pr": false
+  }
+}

@@ -2,7 +2,7 @@
 
 ## 1. Giới thiệu
 
-ExamSpace là website thi trực tuyến và Live Quiz cho bài tập lớn Công nghệ Web và Dịch vụ trực tuyến. Tài liệu mô tả Core đã triển khai trong `apps/api`, `apps/web`, `packages/shared`; nguồn phạm vi là [MASTER_SPEC](../MASTER_SPEC.md). Đối chiếu nghiệm thu nằm ở [VERIFICATION](VERIFICATION.md).
+ExamSpace là website thi trực tuyến và Live Quiz cho bài tập lớn Công nghệ Web và Dịch vụ trực tuyến. Tài liệu mô tả Core đã triển khai trong `apps/api`, `apps/web`, `packages/shared`; nguồn phạm vi là [MASTER_SPEC](spec/MASTER_SPEC_BASELINE.md). Đối chiếu nghiệm thu lịch sử nằm ở [VERIFICATION](VERIFICATION.md); xem [đối chiếu baseline](spec/SPEC_RECONCILIATION.md) và [báo cáo release 03/11/2026](audits/FINAL_RELEASE_READINESS_20261103.md).
 
 ## 2. Mục đích
 
@@ -14,7 +14,7 @@ Core bao gồm tài khoản, lớp, ngân hàng câu hỏi, ảnh riêng tư, t�
 
 ## 4. Đối tượng sử dụng
 
-Sinh viên dùng trình duyệt desktop/mobile; giảng viên soạn câu hỏi và tổ chức lớp; quản trị viên quản lý người dùng. Người triển khai cần quyền quản lý PostgreSQL, Supabase Storage, Render và GitHub Pages.
+Sinh viên dùng trình duyệt desktop/mobile; giảng viên soạn câu hỏi và tổ chức lớp; quản trị viên quản lý người dùng. Người triển khai cần quyền quản lý Supabase (PostgreSQL, Storage) và Render; ứng dụng chạy thành một Web Service phục vụ SPA và API cùng origin.
 
 ## 5. Thuật ngữ
 
@@ -59,6 +59,7 @@ Admin không mặc nhiên có quyền nghiệp vụ Teacher. Backend kiểm tra 
 | FR-AUTH-001   | Đăng ký STUDENT, đăng nhập bằng email/password Argon2id; không nhận role từ public registration                            |
 | FR-AUTH-002   | Login đổi SID/CSRF; `/me` đọc identity server; logout hủy Session và ngắt socket của phiên                                 |
 | FR-AUTH-003   | Chặn tài khoản khóa, sai role/ownership; mutation bắt buộc Origin hợp lệ và CSRF token                                     |
+| FR-AUTH-004   | Session hết hạn hoặc bị thu hồi: SPA xóa dữ liệu được bảo vệ, ngắt socket, đưa về đăng nhập; lỗi mạng/403 không bị coi là hết hạn |
 | FR-ADMIN-001  | Danh sách phân trang/tìm kiếm/lọc role, tạo người dùng cho ba role                                                         |
 | FR-ADMIN-002  | Khóa/mở khóa/đổi role có ràng buộc tự thao tác, dependency và kiểm tra quyền trong transaction                             |
 | FR-ADMIN-003  | Xem thống kê hệ thống và danh sách lớp                                                                                     |
@@ -68,6 +69,7 @@ Admin không mặc nhiên có quyền nghiệp vụ Teacher. Backend kiểm tra 
 | FR-QBANK-002  | SINGLE_CHOICE, MULTIPLE_CHOICE, TRUE_FALSE, ESSAY; kiểm tra đáp án đúng/phương án theo loại                                |
 | FR-QBANK-003  | Soạn/preview Markdown GFM, LaTeX, code highlighting; không render raw HTML                                                 |
 | FR-QBANK-004  | Upload PNG/JPEG/WebP tối đa 5 MB qua backend tới bucket private; signed URL theo quyền snapshot/release                    |
+| FR-QBANK-005  | Ảnh tải lỗi hiển thị thông báo và nút Thử lại (xin lại signed URL); asset đang được đề đã publish tham chiếu không xóa được |
 | FR-EXAM-001   | Builder năm bước: thông tin/lớp, lịch, câu cố định, pools/settings, preview/publish; archive đề                            |
 | FR-EXAM-002   | Kiểm tra ownership, lịch và số câu không trùng có thể rút trước publish/start                                              |
 | FR-EXAM-003   | Start kiểm tra assignment, lịch, trạng thái, số lượt; concurrent start chỉ có một lượt active                              |
@@ -76,6 +78,8 @@ Admin không mặc nhiên có quyền nghiệp vụ Teacher. Backend kiểm tra 
 | FR-EXAM-006   | Debounce autosave, trạng thái lưu/lỗi, retry, refresh/reconnect phục hồi đáp án từ DB                                      |
 | FR-EXAM-007   | Submit idempotent; từ chối sửa sau expiry; server job auto-submit kể cả sinh viên offline                                  |
 | FR-EXAM-008   | Teacher nhận NOT_STARTED, IN_PROGRESS, DISCONNECTED, SUBMITTED qua Socket; disconnect có grace period                      |
+| FR-EXAM-009   | Server kiểm tra cấu hình đề và Quiz trước khi lưu/publish/start; builder chặn rời trang khi còn thay đổi chưa lưu                |
+| FR-EXAM-010   | Đáp án chưa lưu được giữ tạm trong trình duyệt và cho sinh viên kiểm tra, gửi lại khi mở lại attempt còn hạn; bản sửa cũ không ghi đè bản mới |
 | FR-GRADE-001  | Tự chấm single/true-false và multiple exact-set; sai/bỏ trống 0, không có partial credit                                   |
 | FR-GRADE-002  | Teacher chấm ESSAY trong [0, points], feedback; chỉ hoàn tất totalScore khi toàn bộ essay có điểm                          |
 | FR-RESULT-001 | IMMEDIATE, AFTER_CLOSE, MANUAL đều yêu cầu GRADED; server enforce showCorrectAnswers/showExplanations/showDetailedScore    |
@@ -133,15 +137,19 @@ Các FR đạt khi module thực thi với PostgreSQL thật và test liên quan
 | Requirement       | Implementation module                                     | Test tương ứng                                                                                                        |
 | ----------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | FR-AUTH-001–003   | auth, middleware/auth.ts, middleware/security.ts          | auth.integration.test.ts; auth/password.test.ts; web/lib/api.test.ts; socket.integration.test.ts                      |
+| FR-AUTH-004       | web/lib/api.ts; web/features/auth.tsx, App.tsx            | session-lifecycle.test.tsx; auth-entry.test.tsx; tests/e2e/session-recovery.spec.ts |
 | FR-ADMIN-001–003  | admin/routes.ts; web/features/admin.tsx                   | auth.integration.test.ts (create/roles/lock); review route tổng quan                                                  |
 | FR-CLASS-001–002  | classes/routes.ts; web/features/catalog.tsx               | catalog.integration.test.ts; E2E Exam fixture                                                                         |
 | FR-QBANK-001–002  | question-banks/routes.ts; shared schemas                  | catalog.integration.test.ts; shared/src/question.test.ts                                                              |
 | FR-QBANK-003      | web/components/Markdown.tsx; catalog.tsx                  | Markdown.test.tsx; E2E render công thức                                                                               |
 | FR-QBANK-004      | storage/routes.ts; Markdown AssetImage                    | storage.integration.test.ts (provider boundary); catalog.integration.test.ts (invalid upload); external smoke pending |
+| FR-QBANK-005      | web/components/Markdown.tsx (QuestionImage); question-banks/lifecycle.ts | question-image.test.tsx; asset-integrity.integration.test.ts; tests/e2e/question-image-reliability.spec.ts |
 | FR-EXAM-001–002   | exams/routes.ts, service.ts                               | exams.integration.test.ts; exams/selection.test.ts                                                                    |
 | FR-EXAM-003–004   | attempts/service.ts, logic.ts; exams/selection.ts         | attempts.integration.test.ts; attempts/logic.test.ts; selection.test.ts                                               |
 | FR-EXAM-005–007   | attempts; jobs/expiry.ts; web/features/attempts.tsx       | attempts.integration.test.ts; logic.test.ts; web/lib/timer.test.ts; tests/e2e/core.spec.ts                            |
 | FR-EXAM-008       | sockets/server.ts, presence.ts; web/features/results.tsx  | socket.integration.test.ts; web/features/critical.test.tsx; E2E Exam                                                  |
+| FR-EXAM-009       | exams/configuration.ts; live-quiz/configuration.ts; web/features/builder-guard.tsx | published-invariants.integration.test.ts; builder-integrity.test.tsx; tests/recovery/builder-blockers.spec.ts |
+| FR-EXAM-010       | web/features/attempt-drafts.ts, attempts.tsx; attempts/service.ts | attempt-drafts.test.ts; attempt-integrity.test.tsx; attempt-concurrency.integration.test.ts; tests/e2e/student-exam-integrity.spec.ts |
 | FR-GRADE-001–002  | attempts/logic.ts; grading/routes.ts                      | logic.test.ts; grading.integration.test.ts; E2E Exam                                                                  |
 | FR-RESULT-001–002 | results/logic.ts, service.ts                              | results/logic.test.ts; grading.integration.test.ts; storage.integration.test.ts; E2E Exam                             |
 | FR-RESULT-003–004 | analytics; exports/reports.ts; web/features/analytics.tsx | exports.integration.test.ts; source review SQL pagination                                                             |

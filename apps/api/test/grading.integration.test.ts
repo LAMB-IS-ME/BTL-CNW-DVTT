@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { testContext, account } from "./helpers.js";
 import { examFixture } from "./fixture.js";
@@ -19,7 +20,8 @@ it("grades essay with ownership/range validation and enforces score/key/explanat
   const id = start.body.data.id;
   await f.student.agent
     .post(`/api/v1/student/attempts/${id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, id));
   const a = await ctx.db.examAttempt.findUniqueOrThrow({
     where: { id },
     include: { questions: { include: { answer: true } } },

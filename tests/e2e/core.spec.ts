@@ -1,11 +1,22 @@
 import { test, expect, type Page, type BrowserContext } from "@playwright/test";
-const origin = "http://localhost:5173",
-  base = "http://localhost:3000/api/v1";
+const origin = process.env.DEPLOYMENT_PROBE_ORIGIN || "http://localhost:5173",
+  base = process.env.DEPLOYMENT_PROBE_ORIGIN
+    ? `${origin}/api/v1`
+    : "http://localhost:3000/api/v1";
 async function login(page: Page, email: string) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+  await expect(page).not.toHaveURL(/\/login(?:\?|$)/);
+  const menu = page.getByRole("button", { name: "Menu", exact: true });
+  if (await menu.isVisible()) {
+    await menu.click();
+    await expect(menu).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Đóng", exact: true }),
+    ).toHaveAttribute("aria-expanded", "true");
+  }
   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
 }
 async function mutation<T>(
@@ -55,6 +66,9 @@ test("Exam: login, start, autosave, refresh, realtime monitor, submit, essay gra
     student = await browser.newContext();
   const tp = await teacher.newPage(),
     sp = await student.newPage();
+  const websocketUrls: string[] = [];
+  for (const page of [tp, sp])
+    page.on("websocket", (socket) => websocketUrls.push(socket.url()));
   await login(tp, "teacher1@exam.local");
   const list = await teacher.request.get(
     `${base}/teacher/students?search=student1@exam.local`,
@@ -121,19 +135,33 @@ test("Exam: login, start, autosave, refresh, realtime monitor, submit, essay gra
   await expect(tp.getByText("Đã nộp", { exact: true })).toBeVisible();
   await tp.goto(`/teacher/exams/${exam.id}/grading`);
   await tp.getByLabel("Điểm (0–3)").fill("2.5");
-  await tp.getByLabel("Nhận xét").fill("Lập luận tốt, cần thêm ví dụ.");
+  await tp
+    .getByRole("textbox", { name: "Nhận xét", exact: true })
+    .fill("Lập luận tốt, cần thêm ví dụ.");
   await tp.getByRole("button", { name: "Lưu điểm", exact: true }).click();
   await expect(tp.getByText("Đã lưu điểm", { exact: true })).toBeVisible();
   await sp.reload();
-  await expect(sp.getByText("4.5/5 · 90.0%")).toBeVisible();
+  await expect(sp.getByText("4.5 / 5", { exact: true })).toBeVisible();
+  await expect(sp.getByText("90.0%", { exact: true })).toBeVisible();
+  await expect(
+    sp.getByText("Lập luận tốt, cần thêm ví dụ.", { exact: false }),
+  ).toBeVisible();
   await sp.screenshot({
     path:
-      "docs/screenshots/" +
+      (process.env.DEPLOYMENT_SCREENSHOT_DIR || "docs/screenshots/") +
       (test.info().title.startsWith("Exam") ? "student-result" : "quiz-final") +
       ".png",
     fullPage: true,
     animations: "disabled",
   });
+  if (process.env.DEPLOYMENT_PROBE_ORIGIN) {
+    expect(websocketUrls.length).toBeGreaterThanOrEqual(2);
+    expect(
+      websocketUrls.every((url) =>
+        url.startsWith("wss://localhost:5443/socket.io/"),
+      ),
+    ).toBe(true);
+  }
   await teacher.close();
   await student.close();
 });
@@ -144,6 +172,9 @@ test("Live Quiz: authenticated join, realtime lobby, start, answer, reveal and f
     student = await browser.newContext();
   const tp = await teacher.newPage(),
     sp = await student.newPage();
+  const websocketUrls: string[] = [];
+  for (const page of [tp, sp])
+    page.on("websocket", (socket) => websocketUrls.push(socket.url()));
   await login(tp, "teacher1@exam.local");
   const q = await question(teacher);
   const quiz = await mutation<{ id: string }>(teacher, "/teacher/quizzes", {
@@ -186,12 +217,20 @@ test("Live Quiz: authenticated join, realtime lobby, start, answer, reveal and f
   ).toBeVisible();
   await sp.screenshot({
     path:
-      "docs/screenshots/" +
+      (process.env.DEPLOYMENT_SCREENSHOT_DIR || "docs/screenshots/") +
       (test.info().title.startsWith("Exam") ? "student-result" : "quiz-final") +
       ".png",
     fullPage: true,
     animations: "disabled",
   });
+  if (process.env.DEPLOYMENT_PROBE_ORIGIN) {
+    expect(websocketUrls.length).toBeGreaterThanOrEqual(2);
+    expect(
+      websocketUrls.every((url) =>
+        url.startsWith("wss://localhost:5443/socket.io/"),
+      ),
+    ).toBe(true);
+  }
   await teacher.close();
   await student.close();
 });

@@ -27,6 +27,28 @@ type IO = Server<
   { user: UserDto }
 >;
 export function attachQuiz(io: IO, db: Db) {
+  // Serialize one member's join/leave transitions, including a reconnect on
+  // another socket, so an older disconnect cannot overwrite a real new join.
+  const transitions = new Map<string, Promise<void>>();
+  function transition<T>(roomId: string, userId: string, fn: () => Promise<T>) {
+    const key = `${roomId}:${userId}`;
+    const result = (transitions.get(key) || Promise.resolve()).then(fn);
+    const tail: Promise<void> = result
+      .then(
+        () => {},
+        () => {},
+      )
+      .finally(() => {
+        if (transitions.get(key) === tail) transitions.delete(key);
+      });
+    transitions.set(key, tail);
+    return result;
+  }
+  async function offlineIfAbsent(roomId: string, studentId: string) {
+    const sockets = await io.in(`quiz-room:${roomId}`).fetchSockets();
+    if (!sockets.some((s) => s.data.user.id === studentId))
+      await leaveRoom(db, roomId, studentId);
+  }
   const probes = new Map<string, { count: number; reset: number }>();
   const changed = (roomId: string, kind: QuizChange) => {
     void (async () => {
@@ -70,10 +92,52 @@ export function attachQuiz(io: IO, db: Db) {
   timer.unref();
   function bind(socket: ExamSocket) {
     const rooms = new Set<string>();
+    const settledMiddlewareErrors = new WeakSet<Error>();
+    type MembershipTurn = {
+      start: (failed: (error: Error) => void) => void;
+      finish: () => void;
+    };
+    const pending: MembershipTurn[] = [];
+    let active: MembershipTurn | undefined;
+    function advance() {
+      if (active || !socket.connected) return;
+      active = pending.shift();
+      const turn = active;
+      if (turn)
+        turn.start((error) => {
+          settledMiddlewareErrors.add(error);
+          turn.finish();
+        });
+    }
+    // Called at packet ingress, before asynchronous authorization. Keep this
+    // turn until the membership handler AND its ACK have settled, not just next().
+    function sequenceMembership(
+      event: string,
+      start: (failed: (error: Error) => void) => void,
+    ) {
+      if (event !== "quiz:room:join" && event !== "quiz:room:leave") {
+        start((error) => {
+          settledMiddlewareErrors.add(error);
+        });
+        return;
+      }
+      if (!socket.connected) return;
+      const turn: MembershipTurn = {
+        start,
+        finish() {
+          if (active !== turn) return;
+          active = undefined;
+          advance();
+        },
+      };
+      pending.push(turn);
+      advance();
+    }
     const run = <T>(
       ack: SocketAck<T>,
       fn: () => Promise<T>,
       answer = false,
+      finished?: () => void,
     ) => {
       void fn()
         .then((data) => {
@@ -86,11 +150,14 @@ export function attachQuiz(io: IO, db: Db) {
               : { code: "INVALID_EVENT", message: "Sự kiện không hợp lệ." };
           if (typeof ack === "function") ack({ error });
           socket.emit(answer ? "quiz:answer:rejected" : "quiz:error", error);
-        });
+        })
+        .finally(finished);
     };
+    const membership = <T>(ack: SocketAck<T>, fn: () => Promise<T>) =>
+      run(ack, fn, false, active?.finish);
     const roomPayload = z.object({ roomId: z.uuid() });
     socket.on("quiz:room:join", (payload, ack) =>
-      run(ack, async () => {
+      membership(ack, async () => {
         const p = z
           .object({
             roomId: z.uuid().optional(),
@@ -113,13 +180,24 @@ export function attachQuiz(io: IO, db: Db) {
           check(r, 404, "QUIZ_ROOM_NOT_FOUND");
           roomId = r.id;
         }
-        const state = await joinRoom(db, roomId, socket.data.user);
-        await socket.join(`quiz-room:${roomId}`);
-        if (socket.data.user.role === "TEACHER")
-          await socket.join(`quiz-host:${roomId}`);
-        rooms.add(roomId);
-        socket.emit("quiz:state", state);
-        return state;
+        const joinedRoomId = roomId;
+        return transition(joinedRoomId, socket.data.user.id, async () => {
+          check(socket.connected, 409, "QUIZ_CONNECTION_CLOSED");
+          await joinRoom(db, joinedRoomId, socket.data.user);
+          await socket.join(`quiz-room:${joinedRoomId}`);
+          if (socket.data.user.role === "TEACHER")
+            await socket.join(`quiz-host:${joinedRoomId}`);
+          // disconnect may have fired while the database transaction was pending,
+          // before this room could be recorded by the disconnect handler.
+          if (!socket.connected) {
+            await offlineIfAbsent(joinedRoomId, socket.data.user.id);
+            throw new AppError(409, "QUIZ_CONNECTION_CLOSED");
+          }
+          rooms.add(joinedRoomId);
+          const state = await roomState(db, joinedRoomId, socket.data.user);
+          socket.emit("quiz:state", state);
+          return state;
+        });
       }),
     );
     socket.on("quiz:host:start", (p, ack) =>
@@ -156,26 +234,34 @@ export function attachQuiz(io: IO, db: Db) {
         true,
       ),
     );
-    const leave = async (roomId: string) => {
-      await socket.leave(`quiz-room:${roomId}`);
-      rooms.delete(roomId);
-      const others = await io.in(`user:${socket.data.user.id}`).fetchSockets();
-      if (
-        !others.some(
-          (s) => s.id !== socket.id && s.rooms.has(`quiz-room:${roomId}`),
-        )
-      )
-        await leaveRoom(db, roomId, socket.data.user.id);
-    };
+    const leave = (roomId: string) =>
+      transition(roomId, socket.data.user.id, async () => {
+        await socket.leave(`quiz-room:${roomId}`);
+        await socket.leave(`quiz-host:${roomId}`);
+        rooms.delete(roomId);
+        await offlineIfAbsent(roomId, socket.data.user.id);
+      });
     socket.on("quiz:room:leave", (p, ack) =>
-      run(ack, async () => {
+      membership(ack, async () => {
         await leave(roomPayload.parse(p).roomId);
         return { left: true };
       }),
     );
     socket.on("disconnect", () => {
+      // Queued packets must never enter authorization/handlers on a dead socket.
+      // An in-flight DB join still performs its connected check and reconciliation.
+      pending.length = 0;
+      active = undefined;
       for (const roomId of rooms) void leave(roomId).catch(() => {});
     });
+    socket.on("error", (error) => {
+      if (settledMiddlewareErrors.delete(error)) return;
+      // A downstream middleware rejection never reaches the handler's finally.
+      // Without packet identity on this event, cancel the transport rather than
+      // accidentally releasing a different in-flight membership operation.
+      if (active) socket.disconnect(true);
+    });
+    return sequenceMembership;
   }
   return {
     bind,

@@ -1,0 +1,14 @@
+{
+  "README.md": "493f88f43f062476b34e2c83977b800d589be13760d8c26d8a13017329b47b5f",
+  "apps/api/.env.example": "f1a7afa0bfe186ce72ac6a6b24e82702f484ba04b2e494e748279ee50a63e0d3",
+  "apps/api/assets/certs/supabase-prod-ca-2021.crt": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+  "apps/api/src/app.ts": "53296bf12d4bd63998078d7beec609aa4aefa26a43e58dfc144a845011680943",
+  "apps/api/src/config/env.ts": "58c0fd06dd01cc9a772bedd7f8f2516ce115d55345f4dd8ef161023df04f5677",
+  "apps/api/src/web.test.ts": "6c8886afe8c13f815733650e8c6b4c38d523934b51cb345f4871f21a2c0be373",
+  "apps/api/src/web.ts": "4cc30cca33501abaf6346fceb97e032a9e64839bc7ee51a70fd7385cc2d8f065",
+  "apps/web/src/lib/socket.ts": "8c33c768b197f6859862248ff9742b160550a1438baaf4d14e40f2833d8d4087",
+  "render.yaml": "3d3c1515f22532e5a992449af02dfa57f452c3802165f16255554777f394813f",
+  "tests/deployment/playwright.same-origin.config.ts": "3d0ea6f21e584071daade7b2505edcf8dd60588bf520c319f9e4a9e2a121cbec",
+  "tests/deployment/production-readiness.mjs": "3ad8a0de70aec5530bd6e78fb7c3587f1cef863c5dd14d50724088d49576e6f8",
+  "tests/e2e/core.spec.ts": "88012abb530f419e79e6da96cc1eea560e466bbb540d2d9d35cf760f9a5e87ee"
+}

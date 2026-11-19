@@ -1,0 +1,37 @@
+
+> test:e2e
+> playwright test
+
+[WebServer] (node:22289) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22311) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22322) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:22346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 17 tests using 1 worker
+
+(node:22395) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/admin.spec.ts:32:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery (5.2s)
+  ✓   2 tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry (2.1s)
+  ✓   3 tests/e2e/admin.spec.ts:201:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs (2.4s)
+[WebServer] (node:22322) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+  ✓   4 tests/e2e/core.spec.ts:51:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result (7.7s)
+  ✓   5 tests/e2e/core.spec.ts:146:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard (4.4s)
+  ✓   6 tests/e2e/core.spec.ts:204:1 › mobile login and server-backed role guard (1.3s)
+  ✓   7 tests/e2e/question-bank.spec.ts:58:1 › Question Bank discoverability: four types, reload/edit/cancel, archive/restore, bank filters and lifecycle (28.1s)
+  ✓   8 tests/e2e/question-bank.spec.ts:190:1 › Images through API/DB and local Storage boundary: stage/upload/reload/replace/remove, validation and retry (7.0s)
+  ✓   9 tests/e2e/question-bank.spec.ts:279:1 › Pilot UI: keyboard/dialog focus, slow/loading, validation, network error, mobile/reduced motion and dirty Back (5.8s)
+  ✓  10 tests/e2e/question-bank.spec.ts:383:1 › JPEG/WebP persist, actual replace control, invalid signature, interrupted linking resumes without duplicate upload (5.7s)
+  ✓  11 tests/e2e/question-bank.spec.ts:460:1 › Search debounces eight keys, final query wins over late response, filters persist on reload (6.3s)
+  ✓  12 tests/e2e/question-bank.spec.ts:518:1 › List/detail failures retry; archive and restore errors preserve state and dialogs allow retry (10.1s)
+  ✓  13 tests/e2e/question-bank.spec.ts:581:1 › Dirty editor protects sidebar navigation and reload; saved editor has no false warning (4.3s)
+  ✓  14 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs (4.3s)
+  ✓  15 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs (4.5s)
+  ✓  16 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs (4.5s)
+  ✓  17 tests/e2e/question-bank.spec.ts:714:1 › Pilot evidence: desktop screenshots and warm local performance samples (17.4s)
+
+  17 passed (2.1m)

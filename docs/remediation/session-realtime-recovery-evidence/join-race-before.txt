@@ -1,0 +1,35 @@
+
+ RUN  v5.0.2 <repository>
+
+ ❯ apps/api/test/quiz.integration.test.ts (4 tests | 1 failed | 3 skipped) 1561ms
+   × does not leave a phantom online participant when the transport closes during a blocked join 1430ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/api/test/quiz.integration.test.ts > does not leave a phantom online participant when the transport closes during a blocked join
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ apps/api/test/quiz.integration.test.ts:274:95
+    272|   } finally { release(); await transaction; }
+    273|   await expect.poll(() => ctx.db.quizParticipant.count({where: {roomId…
+    274|   await expect.poll(() => ctx.db.quizParticipant.count({where: {roomId…
+       |                                                                                               ^
+    275|   // A later valid join restores the same member; another tab keeps it…
+    276|   const first = await connect(f.student.cookie), second = await connec…
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ apps/api/test/quiz.integration.test.ts:274:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  18:30:27
+   Duration  2.27s (tests 71%, import 18%, transform 10%)

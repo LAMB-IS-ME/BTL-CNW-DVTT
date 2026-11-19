@@ -1,0 +1,16 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.2 /home/lamb/Project/BTL-CNW-DVTT
+
+
+ Test Files  19 passed (19)
+      Tests  77 passed (77)
+   Start at  21:57:31
+   Duration  2.33s (environment 38%, import 26%, tests 24%, transform 12%, worker 1%)
+
+    Isolate  19 workers spawned · ~414ms startup each (spawn + environment, per file)
+             at least ~301ms faster with isolate: false — reuses workers across files instead of one per file
+

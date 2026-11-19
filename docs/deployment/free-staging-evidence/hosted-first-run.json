@@ -1,0 +1,25 @@
+{
+  "scope": "FRESH_HOSTED_ACCEPTANCE",
+  "date": "2026-10-15",
+  "origin": "https://examspace-staging.onrender.com",
+  "commit": "39802152a5ec1337f790c34732707556b69247db",
+  "prefix": "STAGING-20261015021649",
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "Public HTTPS certificate, HTTP redirect and API health",
+      "status": "PASS",
+      "tlsProtocol": "TLS 1.3"
+    },
+    {
+      "name": "SPA deep links, asset/source denial, unauthenticated API and WSS rejection",
+      "status": "PASS"
+    }
+  ],
+  "fixtures": {},
+  "responsive": [],
+  "pageErrors": [],
+  "assetFailures": [],
+  "failedPhase": "admin",
+  "failure": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Đăng xuất', exact: true })\nExpected: visible\nTimeout: 45000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('button', { name: 'Đăng xuất', exact: true }) with timeout 45000ms\n  - waiting for getByRole('button', { name: 'Đăng xuất', exact: true })\n"
+}

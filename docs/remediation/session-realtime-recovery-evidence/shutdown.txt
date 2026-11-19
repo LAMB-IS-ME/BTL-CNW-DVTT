@@ -1,0 +1,4 @@
+waiting for server to shut down.... done
+server stopped
+
+Local test ports after teardown: {3000: 'CLOSED', 3010: 'CLOSED', 5173: 'CLOSED', 5183: 'CLOSED'}

@@ -95,7 +95,12 @@ export function attemptRoutes(db: Db) {
   );
   r.post("/attempts/:attemptId/submit", async (req, res) =>
     res.json({
-      data: await submitAttempt(db, param(req, "attemptId"), req.user.id),
+      data: await submitAttempt(
+        db,
+        param(req, "attemptId"),
+        req.user.id,
+        req.body,
+      ),
     }),
   );
   return r;

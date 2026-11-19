@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-15",
+  "project": "zhdxuqcbvhcnujcdbkgw",
+  "readOnlyVerification": true,
+  "counts": {
+    "users": 17,
+    "classes": 3,
+    "questions": 30,
+    "exams": 5,
+    "storageObjects": 3,
+    "completedPrismaMigrations": 2,
+    "fixturePrefix": "STAGING-20261015021944",
+    "fixtureUsers": 2,
+    "fixtureAttempts": "GRADED_4.50_AND_2.00",
+    "fixtureQuiz": "FINISHED",
+    "cleanup": "NOT_RUN",
+    "existingDataReset": false
+  },
+  "attempts": [
+    {
+      "status": "GRADED",
+      "score": "4.50"
+    },
+    {
+      "status": "GRADED",
+      "score": "2.00"
+    }
+  ],
+  "quizStatus": "FINISHED",
+  "rawRowsWithCredentialsSaved": false
+}

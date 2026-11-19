@@ -1,0 +1,672 @@
+[WebServer] (node:9570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9594) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9605) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:9631) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 19 tests using 1 worker
+
+(node:9683) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft (1.9s)
+(node:9787) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   2 tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register (1.7s)
+(node:9892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   3 tests/ui/grading-results-rollout.spec.ts:57:3 › all 1 grading submissions are reachable without losing drafts (1.3s)
+(node:9994) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   4 tests/ui/grading-results-rollout.spec.ts:57:3 › all 20 grading submissions are reachable without losing drafts (1.7s)
+(node:10093) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   5 tests/ui/grading-results-rollout.spec.ts:57:3 › all 21 grading submissions are reachable without losing drafts (1.8s)
+(node:10192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 tests/ui/grading-results-rollout.spec.ts:57:3 › all 30 grading submissions are reachable without losing drafts (1.9s)
+(node:10300) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 tests/ui/grading-results-rollout.spec.ts:57:3 › all 100 grading submissions are reachable without losing drafts (2.8s)
+(node:10400) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   8 tests/ui/grading-results-rollout.spec.ts:57:3 › all 105 grading submissions are reachable without losing drafts (2.7s)
+(node:10498) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves (1.5s)
+(node:10599) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts (1.7s)
+(node:10700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  11 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 0 isolated records and preserves return page (1.3s)
+(node:10830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  12 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 1 isolated records and preserves return page (1.3s)
+(node:10935) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  13 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 20 isolated records and preserves return page (1.4s)
+(node:11032) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  14 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 25 isolated records and preserves return page (1.5s)
+(node:11136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  15 tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region (1.3s)
+(node:11239) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  16 tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains (1.3s)
+(node:11347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  17 tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results (281ms)
+(node:11453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  18 tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership (104ms)
+(node:11533) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  19 tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths (88ms)
+
+
+  1) tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:12:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-di-b241b--and-cancel-keeps-the-draft/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-di-b241b--and-cancel-keeps-the-draft/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-di-b241b--and-cancel-keeps-the-draft/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-di-b241b--and-cancel-keeps-the-draft/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:36:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-sa-10319-dy-visited-Results-Register/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-sa-10319-dy-visited-Results-Register/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-sa-10319-dy-visited-Results-Register/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-sa-10319-dy-visited-Results-Register/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) tests/ui/grading-results-rollout.spec.ts:57:3 › all 1 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-d0d9d-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-d0d9d-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-d0d9d-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-d0d9d-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) tests/ui/grading-results-rollout.spec.ts:57:3 › all 20 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-11ac3-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-11ac3-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-11ac3-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-11ac3-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) tests/ui/grading-results-rollout.spec.ts:57:3 › all 21 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-400c3-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-400c3-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-400c3-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-400c3-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) tests/ui/grading-results-rollout.spec.ts:57:3 › all 30 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-8136a-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-8136a-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-8136a-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-8136a-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) tests/ui/grading-results-rollout.spec.ts:57:3 › all 100 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-6e6f3-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-6e6f3-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-6e6f3-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-6e6f3-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) tests/ui/grading-results-rollout.spec.ts:57:3 › all 105 grading submissions are reachable without losing drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:65:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-8e08c-hable-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-al-8e08c-hable-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-al-8e08c-hable-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-al-8e08c-hable-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:127:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-re-963e1-irmed-leave-never-autosaves/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-re-963e1-irmed-leave-never-autosaves/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-re-963e1-irmed-leave-never-autosaves/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-re-963e1-irmed-leave-never-autosaves/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:186:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-pe-26cdb-retry-preserve-exact-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-pe-26cdb-retry-preserve-exact-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-pe-26cdb-retry-preserve-exact-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-pe-26cdb-retry-preserve-exact-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  11) tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 0 isolated records and preserves return page 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:268:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-72229-s-and-preserves-return-page/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-st-72229-s-and-preserves-return-page/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-72229-s-and-preserves-return-page/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-st-72229-s-and-preserves-return-page/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  12) tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 1 isolated records and preserves return page 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:268:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-dbd28-s-and-preserves-return-page/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-st-dbd28-s-and-preserves-return-page/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-dbd28-s-and-preserves-return-page/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-st-dbd28-s-and-preserves-return-page/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  13) tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 20 isolated records and preserves return page 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:268:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-32b17-s-and-preserves-return-page/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-st-32b17-s-and-preserves-return-page/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-32b17-s-and-preserves-return-page/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-st-32b17-s-and-preserves-return-page/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  14) tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 25 isolated records and preserves return page 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:268:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-2c545-s-and-preserves-return-page/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-st-2c545-s-and-preserves-return-page/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-st-2c545-s-and-preserves-return-page/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-st-2c545-s-and-preserves-return-page/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  15) tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:356:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-tw-1feca-ecovers-each-results-region/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-tw-1feca-ecovers-each-results-region/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-tw-1feca-ecovers-each-results-region/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-tw-1feca-ecovers-each-results-region/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  16) tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains 
+
+    Error: Set DEMO_PASSWORD to the isolated test seed password
+
+       at grading-results-fixtures.ts:10
+
+       8 |   const password = process.env.DEMO_PASSWORD;
+       9 |   if (!password)
+    > 10 |     throw new Error("Set DEMO_PASSWORD to the isolated test seed password");
+         |           ^
+      11 |   return password;
+      12 | }
+      13 | export async function gradingFixture(submissions = 21) {
+        at gradingPassword (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:10:11)
+        at signIn (<isolated-workspace>/tests/ui/grading-results-fixtures.ts:170:59)
+        at <isolated-workspace>/tests/ui/grading-results-rollout.spec.ts:384:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-a--900c1-when-no-other-draft-remains/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/grading-results-rollout-a--900c1-when-no-other-draft-remains/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/grading-results-rollout-a--900c1-when-no-other-draft-remains/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/grading-results-rollout-a--900c1-when-no-other-draft-remains/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  17) tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results 
+
+    Error: Set DEMO_PASSWORD to the test seed password
+
+       at live-quiz-fixtures.ts:17
+
+      15 | export async function login(context: BrowserContext, email: string) {
+      16 |   if (!process.env.DEMO_PASSWORD)
+    > 17 |     throw new Error("Set DEMO_PASSWORD to the test seed password");
+         |           ^
+      18 |   await mutate(context, "/auth/login", {
+      19 |     email,
+      20 |     password: process.env.DEMO_PASSWORD,
+        at login (<isolated-workspace>/tests/ui/live-quiz-fixtures.ts:17:11)
+        at <isolated-workspace>/tests/ui/live-quiz.spec.ts:106:13
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/live-quiz-1440-real-three--70f8f-covery-deadline-and-results/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  18) tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership ─────────
+
+    Error: Set DEMO_PASSWORD to the test seed password
+
+       at live-quiz-fixtures.ts:17
+
+      15 | export async function login(context: BrowserContext, email: string) {
+      16 |   if (!process.env.DEMO_PASSWORD)
+    > 17 |     throw new Error("Set DEMO_PASSWORD to the test seed password");
+         |           ^
+      18 |   await mutate(context, "/auth/login", {
+      19 |     email,
+      20 |     password: process.env.DEMO_PASSWORD,
+        at login (<isolated-workspace>/tests/ui/live-quiz-fixtures.ts:17:11)
+        at <isolated-workspace>/tests/ui/live-quiz.spec.ts:293:11
+
+    Error Context: test-results/live-quiz-rejected-join-is-not-presented-as-room-membership/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/live-quiz-rejected-join-is-not-presented-as-room-membership/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/live-quiz-rejected-join-is-not-presented-as-room-membership/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  19) tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths 
+
+    Error: Set DEMO_PASSWORD to the test seed password
+
+       at live-quiz-fixtures.ts:17
+
+      15 | export async function login(context: BrowserContext, email: string) {
+      16 |   if (!process.env.DEMO_PASSWORD)
+    > 17 |     throw new Error("Set DEMO_PASSWORD to the test seed password");
+         |           ^
+      18 |   await mutate(context, "/auth/login", {
+      19 |     email,
+      20 |     password: process.env.DEMO_PASSWORD,
+        at login (<isolated-workspace>/tests/ui/live-quiz-fixtures.ts:17:11)
+        at <isolated-workspace>/tests/ui/live-quiz.spec.ts:370:11
+
+    Error Context: test-results/live-quiz-keyboard-timer-t-663a7-duced-motion-at-five-widths/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/live-quiz-keyboard-timer-t-663a7-duced-motion-at-five-widths/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/live-quiz-keyboard-timer-t-663a7-duced-motion-at-five-widths/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  19 failed
+    tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft 
+    tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 1 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 20 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 21 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 30 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 100 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:57:3 › all 105 grading submissions are reachable without losing drafts 
+    tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves 
+    tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts 
+    tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 0 isolated records and preserves return page 
+    tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 1 isolated records and preserves return page 
+    tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 20 isolated records and preserves return page 
+    tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 25 isolated records and preserves return page 
+    tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region 
+    tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains 
+    tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results 
+    tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership ───────────
+    tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths 

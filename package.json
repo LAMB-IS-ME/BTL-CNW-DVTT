@@ -19,15 +19,16 @@
     "db:migrate": "npm run db:migrate -w @exam/api",
     "db:seed": "npm run db:seed -w @exam/api",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test && playwright test --config=playwright.student-exam.config.ts && playwright test --config=playwright.session-recovery.config.ts && npm run test:e2e:blockers",
     "format": "prettier --write apps packages tests *.ts *.js *.json .github",
-    "test:deployment": "node tests/deployment/smoke.mjs"
+    "test:deployment": "node tests/deployment/smoke.mjs",
+    "test:e2e:blockers": "playwright test --config=playwright.blockers.config.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.20.4",
-    "concurrently": "^10.0.5",
+    "concurrently": "^10.0.6",
     "eslint": "^10.11.0",
     "globals": "^17.12.0",
     "prettier": "^3.9.9",
@@ -35,7 +36,7 @@
     "tsx": "^4.23.15",
     "typescript": "5.9",
     "typescript-eslint": "^8.71.0",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.5"
   },
   "overrides": {
     "deepmerge-ts": "^8.0.2",
@@ -43,6 +44,8 @@
     "exceljs": {
       "uuid": "^11.1.1"
     },
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "katex": "0.18.9",
+    "minimatch": "11.0.1"
   }
 }

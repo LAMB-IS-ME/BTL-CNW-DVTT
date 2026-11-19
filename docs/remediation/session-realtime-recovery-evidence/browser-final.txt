@@ -1,0 +1,20 @@
+[WebServer] (node:13755) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:13804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/recovery/lifecycle.spec.ts:75:1 › session expiry before SPA navigation clears protected identity (770ms)
+  ✓   2 tests/recovery/lifecycle.spec.ts:120:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership (7.4s)
+  ✓   3 tests/recovery/lifecycle.spec.ts:265:3 › Admin: expired reload and protected route remain signed out (547ms)
+  ✓   4 tests/recovery/lifecycle.spec.ts:265:3 › Student: expired reload and protected route remain signed out (506ms)
+  ✓   5 tests/recovery/lifecycle.spec.ts:289:1 › idle expiry is detected without navigation; recovery is responsive and keyboard accessible (24.0s)
+  ✓   6 tests/recovery/lifecycle.spec.ts:347:1 › Teacher draft mutation: expired CSRF confirms auth, does not create or replay the draft (1.5s)
+  ✓   7 tests/recovery/lifecycle.spec.ts:387:1 › network failure and valid-session RBAC/CSRF rejection do not become expiry (4.2s)
+  ✓   8 tests/recovery/lifecycle.spec.ts:443:1 › logout in another tab revokes the shared session (873ms)
+  ✓   9 tests/recovery/lifecycle.spec.ts:469:1 › Question Bank editor expiry leaves stored question intact and does not bypass its leave guard (1.3s)
+  ✓  10 tests/recovery/lifecycle.spec.ts:513:1 › Grading expiry preserves submitted status, grade and result release policy (1.3s)
+  ✓  11 tests/recovery/lifecycle.spec.ts:556:1 › Student autosave expiry retains accepted answer and does not submit or replay unsaved answer (4.0s)
+
+  11 passed (48.7s)

@@ -1,0 +1,72 @@
+--- a/tests/e2e/data-integrity.spec.ts
++++ b/tests/e2e/data-integrity.spec.ts
+@@ -13,6 +13,35 @@
+   page,
+ }) => {
+   const catalogRequests: string[] = [];
++  const db = createDb(database);
++  const seed = await db.user.findUniqueOrThrow({
++    where: { email: "teacher1@exam.local" },
++  });
++  const teacher = await db.user.create({
++    data: {
++      email: `integrity-${crypto.randomUUID()}@test.local`,
++      fullName: "Integrity Teacher",
++      role: "TEACHER",
++      passwordHash: seed.passwordHash,
++    },
++  });
++  await db.class.createMany({
++    data: Array.from({ length: 22 }, (_, i) => ({
++      teacherId: teacher.id,
++      name: `Integrity class ${String(i + 1).padStart(2, "0")}`,
++      createdAt: new Date(Date.now() - i * 1000),
++    })),
++  });
++  await db.questionBank.createMany({
++    data: Array.from({ length: 101 }, (_, i) => ({
++      ownerTeacherId: teacher.id,
++      title: `Integrity bank ${String(i + 1).padStart(3, "0")}`,
++    })),
++  });
++  await db.$disconnect();
++  await login(page, teacher.email);
++  // Finish the login/dashboard document before observing Classes/Builder.
++  await page.goto("about:blank");
+   page.on("request", (request) => {
+     const url = new URL(request.url());
+     if (
+@@ -22,33 +51,6 @@
+     )
+       catalogRequests.push(url.pathname + url.search);
+   });
+-  const db = createDb(database);
+-  const seed = await db.user.findUniqueOrThrow({
+-    where: { email: "teacher1@exam.local" },
+-  });
+-  const teacher = await db.user.create({
+-    data: {
+-      email: `integrity-${crypto.randomUUID()}@test.local`,
+-      fullName: "Integrity Teacher",
+-      role: "TEACHER",
+-      passwordHash: seed.passwordHash,
+-    },
+-  });
+-  await db.class.createMany({
+-    data: Array.from({ length: 22 }, (_, i) => ({
+-      teacherId: teacher.id,
+-      name: `Integrity class ${String(i + 1).padStart(2, "0")}`,
+-      createdAt: new Date(Date.now() - i * 1000),
+-    })),
+-  });
+-  await db.questionBank.createMany({
+-    data: Array.from({ length: 101 }, (_, i) => ({
+-      ownerTeacherId: teacher.id,
+-      title: `Integrity bank ${String(i + 1).padStart(3, "0")}`,
+-    })),
+-  });
+-  await db.$disconnect();
+-  await login(page, teacher.email);
+   await page.goto("/teacher/classes");
+   await expect(
+     page.getByRole("heading", { name: "Lớp học của tôi" }),

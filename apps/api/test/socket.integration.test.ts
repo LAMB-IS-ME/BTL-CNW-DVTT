@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import { createServer } from "node:http";
 import { io as client, type Socket } from "socket.io-client";
@@ -62,6 +63,36 @@ it("changes exam presence on join/disconnect/reconnect and sends sanitized monit
   await expect.poll(() => states.at(-1)?.rows[0]?.status).toBe("IN_PROGRESS");
   await f.student.agent
     .post(`/api/v1/student/attempts/${id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, id));
   await expect.poll(() => states.at(-1)?.rows[0]?.status).toBe("SUBMITTED");
+});
+
+it("reloads expired/revoked sessions before privileged socket packets and refuses reconnect", async () => {
+  for (const revoke of [false, true]) {
+    const f = await examFixture(ctx);
+    const teacher = connect(f.teacher.cookie);
+    await new Promise<void>((r) => teacher.once("connect", r));
+    expect(
+      await teacher.emitWithAck("exam:monitor:join", { examId: f.exam.id }),
+    ).toHaveProperty("data");
+    if (revoke)
+      await ctx.db
+        .$executeRaw`DELETE FROM session WHERE sess::jsonb->>'userId' = ${f.teacher.user.id}`;
+    else
+      await ctx.db
+        .$executeRaw`UPDATE session SET expire = NOW() - INTERVAL '1 second' WHERE sess::jsonb->>'userId' = ${f.teacher.user.id}`;
+    const disconnected = new Promise<string>((r) =>
+      teacher.once("disconnect", r),
+    );
+    teacher.emit("exam:monitor:join", { examId: f.exam.id }, () => {
+      throw new Error("Revoked packet must not run");
+    });
+    expect(await disconnected).toBe("io server disconnect");
+    const reconnect = connect(f.teacher.cookie);
+    expect(
+      (await new Promise<Error>((r) => reconnect.once("connect_error", r)))
+        .message,
+    ).toBe("UNAUTHENTICATED");
+  }
 });

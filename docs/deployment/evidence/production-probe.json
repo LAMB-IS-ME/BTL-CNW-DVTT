@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scope": "LOCAL_TLS_ONLY",
+  "checks": [
+    "NODE_ENV=production bundle startup and health",
+    "HTTPS cross-origin browser login, production assets, SPA deep-link and refresh",
+    "Secure HttpOnly SameSite=Lax host-only session cookie",
+    "Credentialed exact CORS; wrong origin, absent origin and absent CSRF rejected",
+    "Authenticated WSS monitor ACK; anonymous and untrusted-origin WSS rejected",
+    "Graceful SIGTERM exit 0; database session survives restart with same secret",
+    "Session survives unexpected process death and restart",
+    "CSRF-valid logout revokes HTTP session and disconnects WSS"
+  ],
+  "hostedStagingVerified": false
+}

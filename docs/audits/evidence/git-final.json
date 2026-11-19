@@ -1,0 +1,62 @@
+{
+  "baselineHead": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "finalHead": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "branch": "ux/education-saas-redesign-pilot",
+  "sameHead": true,
+  "trackedDiffNames": [],
+  "trackedDiffEmpty": true,
+  "manifestCheckedFiles": 179,
+  "sourceHashMismatches": [],
+  "untrackedFiles": [
+    "docs/audit/EXAMSPACE_FINDINGS.md",
+    "docs/audit/EXAMSPACE_RELEASE_READINESS.json",
+    "docs/audit/EXAMSPACE_SYSTEM_AUDIT.md",
+    "docs/audit/evidence/admin-browser-probe.json",
+    "docs/audit/evidence/admin-probe.json",
+    "docs/audit/evidence/advisory-analysis.json",
+    "docs/audit/evidence/asset-probe.json",
+    "docs/audit/evidence/btl-requirements.json",
+    "docs/audit/evidence/dependency-paths.txt",
+    "docs/audit/evidence/environment-inventory.json",
+    "docs/audit/evidence/feature-inventory.json",
+    "docs/audit/evidence/geometry.json",
+    "docs/audit/evidence/local-spec-review.json",
+    "docs/audit/evidence/npm-audit.json",
+    "docs/audit/evidence/pagination-probe.json",
+    "docs/audit/evidence/production-probe.json",
+    "docs/audit/evidence/remainder-run.json",
+    "docs/audit/evidence/restart.json",
+    "docs/audit/evidence/runtime-commands.json",
+    "docs/audit/evidence/secret-scan.json",
+    "docs/audit/evidence/source-manifest.json",
+    "docs/audit/evidence/test-summary.json",
+    "docs/audit/tooling/remainder.spec.ts.txt",
+    "docs/screenshots/system-audit/admin-lock-error-1440.png",
+    "docs/screenshots/system-audit/admin-lock-error-320.png",
+    "docs/audit/evidence/git-final.json"
+  ],
+  "untrackedOutsideAllowedAuditPaths": [],
+  "stagedDiffEmpty": true,
+  "actions": {
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pr": false,
+    "resetCheckoutDiscard": false
+  },
+  "localIgnoredLogs": "Existing logs remain ignored by *.log; sanitized JSON summaries are durable handoff evidence.",
+  "auditPortsAfterCleanup": {
+    "55435": "CLOSED",
+    "54329": "CLOSED",
+    "3000": "CLOSED",
+    "5173": "CLOSED"
+  },
+  "validation": {
+    "jsonParsing": "PASS",
+    "reportLocalLinks": "PASS",
+    "targetedAuditSecretPatterns": "NO MATCH",
+    "trackedWhitespaceDiffCheck": "PASS",
+    "notFullHistorySecretScan": true
+  }
+}

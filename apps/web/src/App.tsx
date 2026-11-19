@@ -1,7 +1,9 @@
 import { lazy, Suspense, useState } from "react";
 import { Loading, ErrorBox } from "./components/ui";
 import {
-  BrowserRouter,
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
   Routes,
   Route,
   Link,
@@ -12,8 +14,21 @@ import {
   QueryClientProvider,
   useQueryClient,
 } from "@tanstack/react-query";
-import { AuthProvider, AuthForm, Guard, useAuth } from "./features/auth";
-import { api } from "./lib/api";
+import { AuthProvider, AuthEntry, Guard, useAuth } from "./features/auth";
+import { api, ApiFailure } from "./lib/api";
+import "./styles/pilot-tokens.css";
+import "./styles/question-bank.css";
+import "./styles/teacher-dashboard.css";
+import "./styles/teacher-shell.css";
+import "./styles/student-focus.css";
+import { Icon } from "./components/Icon";
+import { ApplicationSidebar } from "./components/ApplicationSidebar";
+import { MobileNavigation } from "./components/MobileNavigation";
+const TeacherDashboard = lazy(() =>
+  import("./features/teacher-dashboard").then((m) => ({
+    default: m.TeacherDashboard,
+  })),
+);
 const QuizList = lazy(() =>
   import("./features/quiz").then((m) => ({ default: m.QuizList })),
 );
@@ -60,7 +75,19 @@ const CatalogDetail = lazy(() =>
   import("./features/catalog").then((m) => ({ default: m.CatalogDetail })),
 );
 const QuestionEditor = lazy(() =>
-  import("./features/catalog").then((m) => ({ default: m.QuestionEditor })),
+  import("./features/question-bank/editor").then((m) => ({
+    default: m.QuestionEditor,
+  })),
+);
+const BankList = lazy(() =>
+  import("./features/question-bank/banks").then((m) => ({
+    default: m.BankList,
+  })),
+);
+const BankDetail = lazy(() =>
+  import("./features/question-bank/banks").then((m) => ({
+    default: m.BankDetail,
+  })),
 );
 const AdminUsers = lazy(() =>
   import("./features/admin").then((m) => ({ default: m.AdminUsers })),
@@ -69,66 +96,204 @@ const AdminOverview = lazy(() =>
   import("./features/admin").then((m) => ({ default: m.AdminOverview })),
 );
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 10000 } },
+  defaultOptions: {
+    queries: {
+      retry: (count, error) =>
+        !(error instanceof ApiFailure && [401, 403].includes(error.status)) &&
+        count < 1,
+      staleTime: 10000,
+    },
+  },
 });
 function Shell() {
   const { user } = useAuth();
+  const location = useLocation();
+  const studentCatalog =
+    user?.role === "STUDENT" &&
+    /^\/student(?:\/exams)?\/?$/.test(location.pathname);
+  const studentFocus =
+    user?.role === "STUDENT" &&
+    (studentCatalog ||
+      /^\/student\/(?:exams|attempts)\/[^/]+\/?$/.test(location.pathname));
+  const examManagement =
+    /^\/teacher\/exams(?:\/(?:new|[^/]+\/(?:edit|preview)))?\/?$/.test(
+      location.pathname,
+    );
+  const pilot =
+    user?.role === "TEACHER" &&
+    (location.pathname === "/teacher" ||
+      examManagement ||
+      /^\/teacher\/(question-banks|questions)(\/|$)/.test(location.pathname));
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("examspace.teacher.sidebar") === "collapsed";
+    } catch {
+      return false;
+    }
+  });
+  const toggleSidebar = () => {
+    const next = !sidebarCollapsed;
+    setSidebarCollapsed(next);
+    try {
+      localStorage.setItem(
+        "examspace.teacher.sidebar",
+        next ? "collapsed" : "open",
+      );
+    } catch {
+      /* Storage can be blocked; the in-memory preference still works. */
+    }
+  };
   const [error, setError] = useState<unknown>();
   const nav = useNavigate(),
     cache = useQueryClient();
+  const logout = async () => {
+    try {
+      await api("/auth/logout", "POST");
+      cache.clear();
+      nav("/login");
+    } catch (e) {
+      setError(e);
+    }
+  };
+  const tabletMenu =
+    (user?.role === "TEACHER" && !pilot) ||
+    (user?.role === "STUDENT" && !studentFocus);
   return (
-    <>
-      <header>
-        <Link className="brand" to="/">
-          ▦ ExamSpace
-        </Link>
-        <nav>
-          {user ? (
-            <>
-              <Link to={`/${user.role.toLowerCase()}`}>Tổng quan</Link>
-              {user.role === "ADMIN" && (
-                <>
-                  <Link to="/admin/users">Tài khoản</Link>
-                  <Link to="/admin/classes">Lớp học</Link>
-                </>
-              )}
-              {user.role === "TEACHER" && (
-                <>
-                  <Link to="/teacher/classes">Lớp học</Link>
-                  <Link to="/teacher/question-banks">Câu hỏi</Link>
-                  <Link to="/teacher/exams">Bài thi</Link>
-                  <Link to="/teacher/quizzes">Live Quiz</Link>
-                </>
-              )}
-              {user.role === "STUDENT" && (
-                <>
-                  <Link to="/student/exams">Bài thi</Link>
-                  <Link to="/student/results">Kết quả</Link>
-                  <Link to="/student/quiz/join">Live Quiz</Link>
-                </>
-              )}
-              <span>{user.fullName}</span>
+    <div
+      data-compact-navigation={tabletMenu ? "tablet" : undefined}
+      className={
+        "app-shell " +
+        (pilot
+          ? `qb-shell${examManagement ? " exam-folio-shell" : ""}${sidebarCollapsed ? " qb-sidebar-collapsed" : ""}`
+          : studentFocus
+            ? "focus-shell"
+            : "")
+      }
+    >
+      {pilot && (
+        <>
+          <a className="qb-skip-link" href="#main-content">
+            Đến nội dung chính
+          </a>
+          <ApplicationSidebar />
+        </>
+      )}
+      {studentFocus && (
+        <a className="focus-skip" href="#main-content">
+          Đến nội dung bài thi
+        </a>
+      )}
+      {user && (
+        <MobileNavigation
+          user={user}
+          collapseAt={tabletMenu ? 960 : 700}
+          onLogout={logout}
+        />
+      )}
+      {studentFocus ? (
+        <>
+          <header className="focus-topbar">
+            <Link className="brand" to="/student/exams">
+              ▦ ExamSpace
+            </Link>
+            {studentCatalog ? (
+              <nav aria-label="Không gian học tập">
+                <Link to="/student/results">Kết quả</Link>
+                <Link to="/student/quiz/join">Live Quiz</Link>
+                <button className="secondary" onClick={logout}>
+                  Đăng xuất
+                </button>
+              </nav>
+            ) : (
+              <Link to="/student/exams">← Danh sách bài thi</Link>
+            )}
+          </header>
+        </>
+      ) : (
+        <header>
+          {pilot && (
+            <div className="qb-shell-tools">
               <button
-                className="secondary"
-                onClick={async () => {
-                  try {
-                    await api("/auth/logout", "POST");
-                    cache.clear();
-                    nav("/login");
-                  } catch (e) {
-                    setError(e);
-                  }
-                }}
+                type="button"
+                className="qb-sidebar-toggle secondary"
+                aria-label={
+                  sidebarCollapsed
+                    ? "Mở thanh điều hướng"
+                    : "Thu gọn thanh điều hướng"
+                }
+                title={
+                  sidebarCollapsed
+                    ? "Mở thanh điều hướng"
+                    : "Thu gọn thanh điều hướng"
+                }
+                aria-controls="teacher-navigation"
+                aria-expanded={!sidebarCollapsed}
+                onClick={toggleSidebar}
               >
-                Đăng xuất
+                <Icon
+                  name={sidebarCollapsed ? "sidebarOpen" : "sidebarClose"}
+                />
               </button>
-            </>
-          ) : (
-            <Link to="/login">Đăng nhập</Link>
+              <span className="qb-topbar-context">
+                Không gian giảng dạy <span>/</span>{" "}
+                {location.pathname === "/teacher"
+                  ? "Tổng quan"
+                  : examManagement
+                    ? "Bài thi"
+                    : "Thư viện câu hỏi"}
+              </span>
+            </div>
           )}
-        </nav>
-      </header>
-      <main>
+          <Link className="brand" to="/">
+            ▦ ExamSpace
+          </Link>
+          <nav>
+            {user ? (
+              <>
+                <Link to={`/${user.role.toLowerCase()}`}>Tổng quan</Link>
+                {user.role === "ADMIN" && (
+                  <>
+                    <Link to="/admin/users">Tài khoản</Link>
+                    <Link to="/admin/classes">Lớp học</Link>
+                  </>
+                )}
+                {user.role === "TEACHER" && (
+                  <>
+                    <Link to="/teacher/classes">Lớp học</Link>
+                    <Link to="/teacher/question-banks">Câu hỏi</Link>
+                    <Link to="/teacher/exams">Bài thi</Link>
+                    <Link to="/teacher/quizzes">Live Quiz</Link>
+                  </>
+                )}
+                {user.role === "STUDENT" && (
+                  <>
+                    <Link to="/student/exams">Bài thi</Link>
+                    <Link to="/student/results">Kết quả</Link>
+                    <Link to="/student/quiz/join">Live Quiz</Link>
+                  </>
+                )}
+                <span className={pilot ? "qb-user" : undefined}>
+                  {pilot && (
+                    <span className="qb-avatar" aria-hidden="true">
+                      {user.fullName.split(" ").at(-1)?.slice(0, 1)}
+                    </span>
+                  )}
+                  <span>
+                    {user.fullName}
+                    {pilot && <small>Giảng viên</small>}
+                  </span>
+                </span>
+                <button className="secondary" onClick={logout}>
+                  Đăng xuất
+                </button>
+              </>
+            ) : (
+              <Link to="/login">Đăng nhập</Link>
+            )}
+          </nav>
+        </header>
+      )}
+      <main id="main-content" tabIndex={-1}>
         <ErrorBox error={error} />
         <Suspense fallback={<Loading />}>
           <Routes>
@@ -154,8 +319,8 @@ function Shell() {
                 </section>
               }
             />
-            <Route path="/login" element={<AuthForm />} />
-            <Route path="/register" element={<AuthForm register />} />
+            <Route path="/login" element={<AuthEntry />} />
+            <Route path="/register" element={<AuthEntry register />} />
             <Route
               path="/admin"
               element={
@@ -184,34 +349,7 @@ function Shell() {
               path="/teacher"
               element={
                 <Guard role="TEACHER">
-                  <>
-                    <h1>Không gian giảng viên</h1>
-                    <div className="grid">
-                      {[
-                        ["classes", "Lớp học", "Quản lý danh sách sinh viên"],
-                        [
-                          "question-banks",
-                          "Ngân hàng câu hỏi",
-                          "Soạn câu hỏi và tài nguyên",
-                        ],
-                        ["exams", "Bài thi", "Cấu hình, giám sát và chấm bài"],
-                        [
-                          "quizzes",
-                          "Live Quiz",
-                          "Hoạt động tương tác trên lớp",
-                        ],
-                      ].map(([path, title, desc]) => (
-                        <Link
-                          className="card"
-                          key={path}
-                          to={`/teacher/${path}`}
-                        >
-                          <h2>{title}</h2>
-                          <p>{desc} →</p>
-                        </Link>
-                      ))}
-                    </div>
-                  </>
+                  <TeacherDashboard />
                 </Guard>
               }
             />
@@ -243,7 +381,7 @@ function Shell() {
               path="/teacher/question-banks"
               element={
                 <Guard role="TEACHER">
-                  <CatalogList bank />
+                  <BankList />
                 </Guard>
               }
             />
@@ -251,7 +389,7 @@ function Shell() {
               path="/teacher/question-banks/:id"
               element={
                 <Guard role="TEACHER">
-                  <CatalogDetail bank />
+                  <BankDetail />
                 </Guard>
               }
             />
@@ -423,18 +561,29 @@ function Shell() {
           </Routes>
         </Suspense>
       </main>
-      <footer>ExamSpace · Online Examination & Live Quiz</footer>
-    </>
+      {!studentFocus && (
+        <footer>ExamSpace · Online Examination & Live Quiz</footer>
+      )}
+    </div>
   );
 }
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+const router = createBrowserRouter(
+  [
+    {
+      path: "*",
+      element: (
         <AuthProvider>
           <Shell />
         </AuthProvider>
-      </BrowserRouter>
+      ),
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 }

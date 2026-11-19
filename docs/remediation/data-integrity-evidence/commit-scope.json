@@ -1,0 +1,187 @@
+{
+  "checkpoint": "Approved pre-commit scope; resulting commit is the commit containing this manifest. Post-commit HEAD/status are reported separately to avoid a self-referential commit hash.",
+  "baselineHead": "a830497c72998639bba27b5d8d23c952709720ab",
+  "branch": "ux/education-saas-redesign-pilot",
+  "commitMessage": "fix: protect published assets and repair paginated workflows",
+  "selectedFiles": [
+    "apps/api/src/modules/admin/routes.ts",
+    "apps/api/src/modules/classes/routes.ts",
+    "apps/api/src/modules/exams/routes.ts",
+    "apps/api/src/modules/exams/service.ts",
+    "apps/api/src/modules/live-quiz/service.ts",
+    "apps/api/src/modules/question-banks/routes.ts",
+    "apps/api/src/modules/storage/references.ts",
+    "apps/api/src/modules/storage/routes.ts",
+    "apps/api/src/utils/pagination.ts",
+    "apps/api/test/asset-integrity.integration.test.ts",
+    "apps/api/test/pagination-integrity.integration.test.ts",
+    "apps/web/src/features/admin.tsx",
+    "apps/web/src/features/catalog-pagination.test.tsx",
+    "apps/web/src/features/catalog-pagination.tsx",
+    "apps/web/src/features/catalog.tsx",
+    "apps/web/src/features/exams.tsx",
+    "apps/web/src/features/quiz.tsx",
+    "apps/web/src/styles/catalog-pagination.css",
+    "docs/remediation/DATA_INTEGRITY_REPORT.md",
+    "docs/remediation/data-integrity-evidence/browser-before.json",
+    "docs/remediation/data-integrity-evidence/browser-recovered-progress.json",
+    "docs/remediation/data-integrity-evidence/commit-scope.json",
+    "docs/remediation/data-integrity-evidence/evidence-hygiene.json",
+    "docs/remediation/data-integrity-evidence/evidence-summary.json",
+    "docs/remediation/data-integrity-evidence/historical-artifacts.json",
+    "docs/remediation/data-integrity-evidence/runtime-resume.json",
+    "docs/remediation/data-integrity-evidence/source-final-hashes.json",
+    "docs/remediation/data-integrity-verification.json",
+    "docs/screenshots/data-integrity/admin-classes-1024.png",
+    "docs/screenshots/data-integrity/admin-classes-1440.png",
+    "docs/screenshots/data-integrity/admin-classes-320.png",
+    "docs/screenshots/data-integrity/admin-classes-390.png",
+    "docs/screenshots/data-integrity/admin-classes-820.png",
+    "docs/screenshots/data-integrity/builder-after-1024.png",
+    "docs/screenshots/data-integrity/builder-after-1440.png",
+    "docs/screenshots/data-integrity/builder-after-320.png",
+    "docs/screenshots/data-integrity/builder-after-390.png",
+    "docs/screenshots/data-integrity/builder-after-820.png",
+    "docs/screenshots/data-integrity/builder-before.png",
+    "docs/screenshots/data-integrity/classes-1024.png",
+    "docs/screenshots/data-integrity/classes-1440.png",
+    "docs/screenshots/data-integrity/classes-320.png",
+    "docs/screenshots/data-integrity/classes-390.png",
+    "docs/screenshots/data-integrity/classes-820.png",
+    "docs/screenshots/data-integrity/exams-1024.png",
+    "docs/screenshots/data-integrity/exams-1440.png",
+    "docs/screenshots/data-integrity/exams-320.png",
+    "docs/screenshots/data-integrity/exams-390.png",
+    "docs/screenshots/data-integrity/exams-820.png",
+    "docs/screenshots/data-integrity/geometry.json",
+    "docs/screenshots/data-integrity/request-counts.json",
+    "docs/screenshots/data-integrity/student-image-after.png",
+    "tests/e2e/data-integrity.spec.ts",
+    "tests/e2e/storage-fixture.mjs"
+  ],
+  "groups": {
+    "productSource": 15,
+    "testsAndFixture": 5,
+    "reports": 2,
+    "evidenceJson": 8,
+    "screenshotsAndMetrics": 24
+  },
+  "localOnlyPhaseArtifacts": [
+    {
+      "path": "docs/remediation/data-integrity-evidence/asset-before.txt",
+      "sha256": "1fe3b34eb3998f0489200404b27e99d194cdd4ac5d4049477f0557302468b642",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/asset-resume.txt",
+      "sha256": "1c76a657ef3e95e09f2434a907ddbac3e28b9787c46688d4dfc3d6806dd7131c",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/browser-before.txt",
+      "sha256": "be66d50b84a395ce39ec4d32221fcbbdae7fdc21eb20d0270a25dd1080a099bf",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/browser-remaining.txt",
+      "sha256": "5868102aa6990a84f64854bd8a941e428990395282cdd69e8ce79565f70ede95",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/build-final.txt",
+      "sha256": "38f00ff31d180539363fbd0d0fa400e181e0a74ee30b84c658265b5ee9241744",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/compatibility-final.txt",
+      "sha256": "79266be73308daeb92cffe2b3afc9acb47a7415c4a01efcfc725af5c885ba68a",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/compatibility-harness-before.txt",
+      "sha256": "3e94cab56aaf4cde4f1f240550151928c54e46758702b8471928cda135ce3781",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/git-final.json",
+      "sha256": "0752d7545b5ccd2a3c540ba80f156f21f2ee99b2146d3bc7747537aeae2b550a",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/integration-final.txt",
+      "sha256": "3b2846ee1b26f69759e96f6fbb5eb80051ecc5cd564e07f2b2a91b2fc8b0689f",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/lint-final.txt",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/lint-resume.txt",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/migrate-resume.txt",
+      "sha256": "ef79531c8be7f01efc60d390eee16417f51f532dbd06f908262d05fa00433ddf",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/recovery-source-hashes.json",
+      "sha256": "5f36f9423dc54a6876545c0c05569f35f00cb32b137a565ef0a852291874f1a1",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/typecheck-final.txt",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/typecheck-resume.txt",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    },
+    {
+      "path": "docs/remediation/data-integrity-evidence/unit-final.txt",
+      "sha256": "0907f9a01bde4e2db125b894837e1005ce8ca27bbc9f57247b6d323107bafed5",
+      "reason": "Raw execution log or superseded checkpoint; condensed evidence is committed."
+    }
+  ],
+  "historicalLocalOnlyManifest": "historical-artifacts.json",
+  "historicalCount": 31,
+  "expectedRemainingUntracked": 47,
+  "approvedSourceHashesMatched": 169,
+  "dependencyManifestsMatched": 5,
+  "screenshotSha256": {
+    "docs/screenshots/data-integrity/admin-classes-1024.png": "eb68601c2b80b3d46172ff73bc7c31f407c7531589b3795b69ceeb1fbfb52a66",
+    "docs/screenshots/data-integrity/admin-classes-1440.png": "de0dc31934b5a9616055c9a1f324f40b0185cc871d9616922887eaaba5642843",
+    "docs/screenshots/data-integrity/admin-classes-320.png": "d7029af66114d1356ac4018f760a68e5dec3635b244e042cd86af61cb43c559d",
+    "docs/screenshots/data-integrity/admin-classes-390.png": "a7be094510a6906d703734127db9cfe724a7b3ac7b7df55eb74603f7c3d0ab03",
+    "docs/screenshots/data-integrity/admin-classes-820.png": "72ce3a1a611aaaed2a623c60621ecc176a4ddfa10987f33b840a797a68850420",
+    "docs/screenshots/data-integrity/builder-after-1024.png": "4abd49b0ff2f30572c5568c420752c43148ad17dd3fb990c58b280ee8378bc99",
+    "docs/screenshots/data-integrity/builder-after-1440.png": "55b827ce841c2e2a0873501b1c6cccd4fff0cc6b1f86ffa18e2c112f507c15ef",
+    "docs/screenshots/data-integrity/builder-after-320.png": "c2f56f2438cd5e73276be0354f4ad5f920e6964257a3cbf3fb08cdd5e01bb831",
+    "docs/screenshots/data-integrity/builder-after-390.png": "1e219591cc837dd1ec4dff46a333491e004df5641db11739777d46f4816f5626",
+    "docs/screenshots/data-integrity/builder-after-820.png": "c4333a842a981725aa695a3b8004bd13af2e5666e4d8a146789f758c07851b11",
+    "docs/screenshots/data-integrity/builder-before.png": "e8eb1523e938927f1375384e704bd50bd749948815fe88a33836c0d89eb36757",
+    "docs/screenshots/data-integrity/classes-1024.png": "58241debe775e46580c38cd9509355857758f9650b617e5bfef2dde1369cf6e9",
+    "docs/screenshots/data-integrity/classes-1440.png": "0510649ed882b949b759256cd94a2739609d04c8f6cd6ca1380993fa9e5aa225",
+    "docs/screenshots/data-integrity/classes-320.png": "e83521af7ae07ea62ab5fe109bc6da47e363f4d18f1095e1def224a66fa9d851",
+    "docs/screenshots/data-integrity/classes-390.png": "c2ee5cc7616203c4a0b2157805a41b1bef297d059b38c70a548a9c3dd161cefc",
+    "docs/screenshots/data-integrity/classes-820.png": "406e863e9ea7548c41ed70cd6fb4a089e1a6b56b6dd30214907fb4504012c718",
+    "docs/screenshots/data-integrity/exams-1024.png": "a73ec3b644680f3641d132b90b338b8b386365a38d0ee161037cbba209ba4165",
+    "docs/screenshots/data-integrity/exams-1440.png": "26d6f39d0987463560b2336b000af716262c949d06ce1bfac75883bc2875727d",
+    "docs/screenshots/data-integrity/exams-320.png": "d4bbf0b134b6e39ca7a457ad636d278d03a7524c0b37e837b39dbd22b66354a7",
+    "docs/screenshots/data-integrity/exams-390.png": "40987247436c96156ecdd52f76a176357cd24cf77d884f7a517103255a69f830",
+    "docs/screenshots/data-integrity/exams-820.png": "ab710d9f3f3035f483f66a88f62c24092ea9f14894bd114aa6c2b5724e197a66",
+    "docs/screenshots/data-integrity/geometry.json": "fdd811617e85b2ae1828ef278583495a82801a98e4f81fcce54d35b384f8824c",
+    "docs/screenshots/data-integrity/request-counts.json": "d1c5396abc7731e202e65d82e346358e057b39fbd292f522554be05fa63a1c14",
+    "docs/screenshots/data-integrity/student-image-after.png": "c58a6326b24d4a11193fbb0ae5eec89f8f6a455ac8d0779ab298d056f932eedd"
+  },
+  "deletions": [],
+  "push": false,
+  "deploy": false,
+  "merge": false,
+  "pr": false
+}

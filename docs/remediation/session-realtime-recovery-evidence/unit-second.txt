@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.2 /home/lamb/Project/BTL-CNW-DVTT
+
+
+ Test Files  18 passed (18)
+      Tests  75 passed (75)
+   Start at  18:26:22
+   Duration  2.26s (environment 32%, import 26%, tests 24%, transform 17%, worker 1%)
+

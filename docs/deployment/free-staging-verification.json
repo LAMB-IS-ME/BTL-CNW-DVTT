@@ -1,0 +1,822 @@
+{
+  "schemaVersion": 1,
+  "phase": "FREE_STAGING_DEPLOYMENT",
+  "status": "BROWSER_ISOLATION_PASS_AWAITING_REVIEW",
+  "date": "2026-10-16",
+  "timezone": "Asia/Bangkok",
+  "publicUrl": "https://examspace-staging.onrender.com",
+  "hostedStagingVerified": true,
+  "productionReady": false,
+  "baseline": {
+    "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "d7723622cfa943a288279c61e33cee998fe339fe",
+    "trackedModifications": 0,
+    "stagedChanges": 0,
+    "historicalUntrackedArtifacts": 85
+  },
+  "git": {
+    "currentBranch": "deploy/examspace-free-staging",
+    "currentHead": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+    "trackedModifications": 6,
+    "stagedChanges": 0,
+    "committed": true,
+    "pushed": true,
+    "mainChanged": false,
+    "proposedBranch": "deploy/examspace-free-staging",
+    "review": "free-staging-evidence/git-review.json",
+    "historicalArtifactsPreserved": 85,
+    "historicalHashMismatches": [],
+    "approval": "SIX_TEST_CONFIG_FILES_AWAITING_REVIEW_NO_COMMIT_PUSH_DEPLOY",
+    "rawLogsCommitted": false,
+    "deploymentCommitCount": 1,
+    "additionalCommits": 2,
+    "additionalPushes": 2,
+    "untrackedFiles": 184,
+    "workspaceAudit": "free-staging-evidence/browser-isolation-workspace.json",
+    "testOnlyCommitCount": 1
+  },
+  "hosting": {
+    "topology": "One Render Free Native Node Web Service: SPA + Express + Socket.IO, Supabase Free PostgreSQL/Storage",
+    "renderWorkspace": "tea-db7m2r3ncjis73eq90tg",
+    "renderMcpAccess": "PASS",
+    "renderServiceCreated": true,
+    "renderFreeSupport": "VERIFIED_OFFICIAL_DOCS",
+    "renderAccountCreateEligibility": "PASS",
+    "renderPaymentMethod": "ABSENT_USER_CONFIRMED",
+    "paidResourcesCreated": 0,
+    "newResourceCostInThisTurn": 0,
+    "currency": "USD",
+    "fullAccountBillRead": false,
+    "supabaseProject": "zhdxuqcbvhcnujcdbkgw",
+    "supabasePlan": "free",
+    "supabaseStatus": "ACTIVE_HEALTHY",
+    "supabasePostgresVersion": "17.11.0.002",
+    "supabaseRegion": "ap-southeast-2",
+    "renderRegionProposed": "singapore",
+    "buildCommand": "npm ci --include=dev && npm run db:generate && npm run build",
+    "startCommand": "CLIENT_ORIGIN=\"$RENDER_EXTERNAL_URL\" npm run start -w @exam/api",
+    "autoDeploy": "off",
+    "healthcheckProposed": "/api/health",
+    "healthcheckApplied": false,
+    "renderServiceId": "[redacted]",
+    "renderServiceName": "examspace-staging",
+    "renderActualPlan": "free",
+    "renderNumInstances": 1,
+    "renderActualRegion": "singapore",
+    "renderBuildPlan": "starter",
+    "initialDeployId": "dep-db83c4jncjis73efbd10",
+    "healthcheckActual": "provider TCP default; MCP create has no healthCheckPath field",
+    "deploymentStatus": "live",
+    "initialDeployFinishedAt": "2026-10-15T02:11:59.296833Z",
+    "deployedCommit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+    "authFixRedeployed": true,
+    "currentDeployId": "dep-db8e5ig473hc739etsbg",
+    "latestDeployFinishedAt": "2026-10-15T14:29:00.374506Z"
+  },
+  "database": {
+    "inspection": "READ_ONLY_BEFORE_SECURITY_CHANGE",
+    "prismaMigrationsCompleted": 2,
+    "checksumsMatchSource": true,
+    "users": 15,
+    "roles": {
+      "ADMIN": 1,
+      "TEACHER": 2,
+      "STUDENT": 12
+    },
+    "classes": 2,
+    "questions": 27,
+    "exams": 3,
+    "sessionsAtInspection": 1,
+    "storageObjects": 1,
+    "seedRerun": false,
+    "reset": false,
+    "demoPasswordConfiguredMatchesCheckedRoles": true,
+    "demoPasswordIsDefault": false,
+    "connectionMode": "session_pooler_port_5432_ipv4",
+    "clientToPoolerTls": {
+      "encrypted": true,
+      "authorized": true,
+      "protocol": "TLSv1.3",
+      "sslmode": "verify-full"
+    },
+    "poolerToPostgresInternalTls": false,
+    "renderConnectivity": "PASS_HOSTED_LOGIN_CRUD_SESSIONS",
+    "countsScope": "PREDEPLOY_BASELINE",
+    "postHosted": {
+      "users": 17,
+      "classes": 3,
+      "questions": 30,
+      "exams": 5,
+      "storageObjects": 3,
+      "completedPrismaMigrations": 2,
+      "fixturePrefix": "STAGING-20261015021944",
+      "fixtureUsers": 2,
+      "fixtureAttempts": "GRADED_4.50_AND_2.00",
+      "fixtureQuiz": "FINISHED",
+      "cleanup": "NOT_RUN",
+      "existingDataReset": false
+    }
+  },
+  "remoteChanges": [
+    {
+      "provider": "Supabase",
+      "project": "zhdxuqcbvhcnujcdbkgw",
+      "migration": "protect_prisma_migration_metadata",
+      "sql": "free-staging-evidence/protect-migration-metadata.sql",
+      "reason": "RLS disabled and anonymous table grants exposed migration metadata",
+      "action": "Revoke all privileges from anon/authenticated/PUBLIC; enable RLS on _prisma_migrations",
+      "localTest": "PASS_TRANSACTION_ROLLBACK",
+      "postChangeVerification": "PASS",
+      "prismaChecksumsUnchanged": true,
+      "applicationCountsUnchanged": true,
+      "applicationDataMutated": false,
+      "businessSchemaChanged": false,
+      "advisorAfter": {
+        "ERROR": 0,
+        "WARN": 0,
+        "INFO": 22
+      }
+    }
+  ],
+  "storage": {
+    "scope": "FRESH_HOSTED",
+    "bucket": "question-assets",
+    "private": true,
+    "maxBytes": 5242880,
+    "signedDownloadStatus": 200,
+    "publicDownloadStatus": 400,
+    "uploadRoundtrip": "PASS",
+    "evidence": "free-staging-evidence/storage-read-only.json",
+    "validImageDecodeReload": "PASS",
+    "protection": "PASS",
+    "hostedEvidence": [
+      "free-staging-evidence/hosted-verification.json",
+      "free-staging-evidence/hosted-image-verification.json"
+    ]
+  },
+  "verification": {
+    "fresh": {
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "unit": {
+        "passed": 94,
+        "files": 20,
+        "failed": 0
+      },
+      "integration": {
+        "passed": 62,
+        "files": 15,
+        "failed": 0,
+        "database": "ISOLATED_LOCAL_POSTGRESQL_16_15"
+      },
+      "blueprintSchema": "PASS",
+      "localMigrateSeed": "PASS",
+      "localProductionTls": {
+        "status": "PASS",
+        "assertionGroups": 8,
+        "secureHttpOnlyLax": true,
+        "csrf": "PASS",
+        "exactCors": "PASS",
+        "authenticatedWss": "PASS",
+        "anonymousAndWrongOriginWssRejected": true,
+        "sessionSurvivesSigtermAndSigkill": true,
+        "logoutRevokesWss": true,
+        "publicTlsCertificateTested": false
+      },
+      "productionBrowser": {
+        "passed": 3,
+        "failed": 0,
+        "retries": 0,
+        "wssVerified": true,
+        "scenarios": [
+          "Teacher/Student Exam autosave/reload/monitor/submit/essay grading/result",
+          "Live Quiz lobby/start/answer/final/reload",
+          "Mobile 390 role guard"
+        ],
+        "evidence": "free-staging-evidence/verification-summary.json"
+      },
+      "secretScan": "PASS_SCOPED",
+      "historicalIntegrity": "PASS"
+    },
+    "reused": {
+      "npmCi": "BASELINE_PASS_NOT_RERUN",
+      "npmAudit": "BASELINE_PASS_NOT_RERUN_DEPENDENCIES_UNCHANGED",
+      "full20BrowserSuite": "BASELINE_PASS_NOT_RERUN"
+    },
+    "hosted": {
+      "status": "PARTIAL_PASS_WITH_LOGIN_RACE_FAIL",
+      "scope": "HISTORICAL_HOSTED_COMMIT_39802152_NOT_CURRENT_SHA",
+      "adminTeacherStudent": "PASS_AFTER_INITIAL_AUTH_SETTLES",
+      "httpsWss": "PASS",
+      "storageUploadAndProtection": "PASS",
+      "validImageDecodeReload": "PASS",
+      "pdfExcel": "PASS",
+      "liveQuiz": "PASS_ONE_TEACHER_ONE_STUDENT",
+      "responsiveWidths": [
+        1440,
+        1024,
+        820,
+        390,
+        320
+      ],
+      "responsiveStatus": "PASS_6_VIEWS_30_VIEWPORT_CHECKS",
+      "sessionReloadExpiryReloginLogout": "PASS",
+      "earlyLogin": "FAIL_INITIAL_ME_RESPONSE_INVALIDATES_LOGIN",
+      "coldStart": "SKIPPED_NOT_MEASURED",
+      "cloudProcessRestart": "SKIPPED_NOT_TRIGGERED",
+      "multiStudentLoad": "SKIPPED",
+      "pageErrors": 0,
+      "staticAssetFailures": 0,
+      "evidence": [
+        "free-staging-evidence/hosted-first-run.json",
+        "free-staging-evidence/hosted-verification.json",
+        "free-staging-evidence/hosted-image-verification.json"
+      ]
+    },
+    "localLoginFix": {
+      "status": "PASS_COMMITTED_DEPLOYED_EARLY_LOGIN_HOSTED_PASS",
+      "tests": 18,
+      "files": 3,
+      "negativeControlFailed": 2,
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "evidence": "free-staging-evidence/login-race-fix.json",
+      "commit": "11e897fe6116002b0068612ed45634071d6f792a"
+    },
+    "hostedAuthFix": {
+      "status": "PASS",
+      "executed": true,
+      "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+      "productionSourceChanged": false,
+      "authGroups": 13,
+      "signalGroups": 3,
+      "evidence": [
+        "free-staging-evidence/session-recovery-hosted.json",
+        "free-staging-evidence/session-recovery-signals.json"
+      ]
+    },
+    "currentFullE2e": {
+      "status": "PASS",
+      "localPassed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "singlePlaywrightRun": false,
+      "groups": [
+        {
+          "name": "core",
+          "passed": 20
+        },
+        {
+          "name": "session-recovery",
+          "passed": 3
+        }
+      ],
+      "ciBaselinePassed": 20,
+      "newTestsNotPushed": 3,
+      "evidence": "free-staging-evidence/browser-isolation-final.json"
+    }
+  },
+  "failuresResolved": [
+    {
+      "kind": "PRODUCT",
+      "before": {
+        "productionBrowserPassed": 1,
+        "productionBrowserFailed": 2
+      },
+      "reason": "Same-origin polling GET lacks Origin required by server handshake policy",
+      "fix": "Same-origin client uses WebSocket directly; server policy and Socket.IO events unchanged",
+      "after": "3_PASS_NO_RETRIES",
+      "beforeEvidence": "free-staging-evidence/verification-summary.json"
+    },
+    {
+      "kind": "SETUP",
+      "items": [
+        "PostgreSQL extracted libpq path",
+        "YAML/JSON schema validator dependencies",
+        "Scanner module/subprocess sandbox",
+        "Missing Supabase CA for verify-full"
+      ],
+      "resolved": true
+    }
+  ],
+  "limitations": [
+    "No fixed 45-second revocation detection promise without a browser response or notification; confirmed browser 401 recovery PASS",
+    "One teacher/one student Quiz acceptance; no load/concurrency certification",
+    "Render Free idle/cold start/ephemeral filesystem/single instance; cold-start duration not measured",
+    "Supabase Free quotas and pause behavior",
+    "Same-origin sockets require WSS without polling fallback",
+    "Platform health check remains TCP default; /api/health HTTP probe PASS, liveness only",
+    "Hosted process restart/rolling overlap not tested"
+  ],
+  "reports": [
+    "FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "FREE_STAGING_RUNBOOK.md"
+  ],
+  "screenshotsScope": "HOSTED_NAMESPACED_FIXTURES_AND_PRIOR_LOCAL_SYNTHETIC",
+  "nextAction": "USER_REVIEW_SIX_TEST_CONFIG_FILES_NO_REDEPLOY_NEEDED",
+  "publicUrlVerified": true,
+  "githubCI": {
+    "runId": 38750653237,
+    "headSha": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/LAMB-IS-ME/BTL-CNW-DVTT/actions/runs/38750653237",
+    "unitPassed": 98,
+    "integrationPassed": 62,
+    "e2ePassed": 20,
+    "e2eFailed": 0,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "deploymentSmoke": "PASS",
+    "auditVulnerabilities": 0,
+    "database": "CI_LOOPBACK_POSTGRES_17"
+  },
+  "remainingBlockers": [],
+  "sessionRecovery": {
+    "date": "2026-10-16",
+    "status": "HOSTED_PASS_FULL_SUITE_TEST_ISOLATION_BLOCKED",
+    "rootCause": {
+      "classification": "FALSE_BLOCKER_TEST_SIGNAL_EXPECTATION",
+      "external401": "External Playwright APIRequestContext /auth/me; not delivered to page API client",
+      "browserRequest": "Real page /auth/me started but failed net::ERR_CONNECTION_CLOSED; no HTTP status",
+      "queryStateAt45s": {
+        "status": "error",
+        "fetchStatus": "idle",
+        "role": "STUDENT"
+      },
+      "whyDashboardRemained": "Network failure deliberately preserves known identity; no confirmed browser session-invalid response",
+      "revalidation": "Existing window visibilitychange triggered real browser /auth/me 401; auth cache became null and expired UI replaced protected content",
+      "pendingOldResponseOverwrite": "Not observed; session generation guards and hosted old Teacher response race PASS",
+      "socket": "No socket notification required on dashboard; separate active Quiz WSS sibling logout disconnect and browser verification PASS",
+      "transportFailureUnderlyingCause": "Not established; no attribution to Render/Supabase/application server"
+    },
+    "productionChanges": false,
+    "newPolling": false,
+    "newCommitPushDeploy": false,
+    "proposedCommitFiles": [
+      "apps/web/src/features/session-lifecycle.test.tsx",
+      "tests/e2e/session-recovery.spec.ts"
+    ],
+    "candidateHashes": {
+      "apps/web/src/features/session-lifecycle.test.tsx": "b3de07a2fb9d9a07b9c569cc65b279a8e86915c6260c3a7d258b767b28d9508c",
+      "tests/e2e/session-recovery.spec.ts": "8f83ee3aa0588a309889033a7b54c1d0e08da6242cc5323479a10deecd74b059"
+    },
+    "reusedVerification": {
+      "unit": {
+        "passed": 101,
+        "failed": 0,
+        "files": 21
+      },
+      "integration": {
+        "passed": 16,
+        "failed": 0,
+        "files": 4,
+        "scope": [
+          "auth",
+          "socket",
+          "attempts",
+          "exams"
+        ],
+        "database": "isolated loopback PostgreSQL"
+      },
+      "targetedBrowser": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "flaky": 0
+      },
+      "lint": "PASS_CANDIDATE_SCRATCH_AND_SCOPED_NEW_HARNESSES",
+      "typecheck": "PASS",
+      "build": "PASS",
+      "provenance": "Prior tool outputs retained in conversation and user-confirmed resume; original /tmp logs removed by environment restart; tests/config unchanged; not rerun"
+    },
+    "workspaceWideLint": "Earlier eslint . included unrelated pre-existing untracked diagnostic harnesses with unused variables; preserved those artifacts. Candidate clean scratch lint PASS. No lint rule disabled.",
+    "fullBrowser": {
+      "status": "FAIL",
+      "passed": 22,
+      "failed": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 149013.52,
+      "retriesAdded": false,
+      "tests": [
+        {
+          "file": "admin.spec.ts",
+          "title": "Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "admin.spec.ts",
+          "title": "Admin role dependency error keeps the original role and clears after successful retry",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "admin.spec.ts",
+          "title": "Teacher and Student cannot enter Admin or mutate accounts through direct APIs",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "core.spec.ts",
+          "title": "Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "core.spec.ts",
+          "title": "Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "core.spec.ts",
+          "title": "mobile login and server-backed role guard",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "data-integrity.spec.ts",
+          "title": "Classes → Builder: page boundaries, SPA cache and reload",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "data-integrity.spec.ts",
+          "title": "Published image survives delete, Student start/reload/submit and bank replacement",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "data-integrity.spec.ts",
+          "title": "Management paging, search, class mutations, student discovery and admin boundaries",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Question Bank discoverability: four types, reload/edit/cancel, archive/restore, bank filters and lifecycle",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Images through API/DB and local Storage boundary: stage/upload/reload/replace/remove, validation and retry",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Pilot UI: keyboard/dialog focus, slow/loading, validation, network error, mobile/reduced motion and dirty Back",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "JPEG/WebP persist, actual replace control, invalid signature, interrupted linking resumes without duplicate upload",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Search debounces eight keys, final query wins over late response, filters persist on reload",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "List/detail failures retry; archive and restore errors preserve state and dialogs allow retry",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Dirty editor protects sidebar navigation and reload; saved editor has no false warning",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "question-bank.spec.ts",
+          "title": "Pilot evidence: desktop screenshots and warm local performance samples",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "session-recovery.spec.ts",
+          "title": "Cookie expiry, relogin and revoke reconcile on a browser 401; reload and another login recover",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "session-recovery.spec.ts",
+          "title": "Revocation with a failed browser probe preserves identity until visibility revalidation receives 401",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "session-recovery.spec.ts",
+          "title": "Logout in another tab is reconciled by the next protected SPA request",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "environment": "Isolated scratch workspace; local PostgreSQL 16.15; no real .env",
+      "reasonForRerun": "Prior final suite evidence lost with /tmp reset"
+    },
+    "hosted": {
+      "status": "PASS",
+      "deployedCommit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+      "authGroups": 13,
+      "signalGroups": 3,
+      "evidence": [
+        "session-recovery-hosted.json",
+        "session-recovery-signals.json",
+        "session-recovery-exact-sequence.json"
+      ],
+      "sourceFixStatus": "NOT_APPLICABLE_NO_PRODUCTION_CHANGE"
+    },
+    "render": {
+      "service": "[redacted]",
+      "deployment": "dep-db8e5ig473hc739etsbg",
+      "status": "live",
+      "plan": "free",
+      "autoDeploy": "off",
+      "rechecked": "2026-10-16"
+    },
+    "earlierVerificationIssues": [
+      {
+        "kind": "TEST_SETUP",
+        "targetedBrowserFirstRun": "2 PASS / 1 FAIL; only me aborted, other protected refetch correctly received 401",
+        "correction": "Abort all revalidation requests during controlled network failure; restore network before browser 401 assertion; same assertions kept"
+      },
+      {
+        "kind": "SANDBOX",
+        "unitFirstRun": "Supertest loopback bind blocked; 16 failures",
+        "correction": "Authorized loopback-enabled run 101 PASS"
+      }
+    ],
+    "limitations": [
+      "No guarantee of revocation recognition within 45s without browser response/notification",
+      "Native window focus alone is not a promised request trigger; existing visibility revalidation verified with explicit synthetic event",
+      "Network failure root at transport layer not diagnosed",
+      "Hosted Exam/Quiz smoke uses completed fixtures; full mutation lifecycle remains local E2E or historical hosted evidence",
+      "No new hosted upload, load test, or cloud restart; prior historical results retain original scope"
+    ],
+    "historicalResultsPreserved": true,
+    "historicalCheckpoint": true,
+    "supersededBy": "browserIsolation"
+  },
+  "browserIsolation": {
+    "date": "2026-10-16",
+    "status": "PASS_AWAITING_REVIEW",
+    "rootCause": {
+      "endpoints": [
+        "POST /api/v1/auth/login",
+        "POST /api/v1/auth/register"
+      ],
+      "key": "Default req.ip, IPv6 subnet normalization; not account or session",
+      "store": "Default per-limiter MemoryStore, in-process Maps; not PostgreSQL",
+      "limit": 30,
+      "windowMs": 900000,
+      "countsSuccessfulAndFailed": true,
+      "excludedEndpoints": [
+        "GET /auth/me",
+        "GET /auth/csrf",
+        "POST /auth/logout"
+      ],
+      "previousLifecycle": "One Playwright invocation, one API process, all 23 tests serial with workers=1",
+      "failureEvidence": "session-recovery-full-suite-blocker.json",
+      "newRecoveryLoginCalls": {
+        "expiryReloginRevoke": 3,
+        "networkRevalidation": 1,
+        "crossTabLogout": 2
+      },
+      "lastFailure": "30th auth attempt had remaining=0; next relogin returned 429"
+    },
+    "fix": {
+      "entrypoint": "npm run test:e2e",
+      "groups": [
+        {
+          "config": "playwright.config.ts",
+          "count": 20,
+          "output": "test-results/core"
+        },
+        {
+          "config": "playwright.session-recovery.config.ts",
+          "count": 3,
+          "output": "test-results/session-recovery"
+        }
+      ],
+      "execution": "Two sequential Playwright invocations, each owns fresh API/Vite/Storage processes; reuseExistingServer=false; workers=1",
+      "database": "Same isolated loopback PostgreSQL allowed: limiter is not database-backed; no cloud DB",
+      "failFast": true,
+      "coverage": "Base excludes only recovery file; second includes exactly that file; no tests omitted across entrypoint",
+      "productionChanges": false,
+      "quotaPolicyChanged": false,
+      "retriesAdded": false,
+      "sleepsAdded": false
+    },
+    "verification": {
+      "rateLimitIntegration": "PASS_1_TEST_30_31_BOUNDARY_AND_STORE_INDEPENDENCE",
+      "lint": "PASS_CANDIDATE_SCRATCH",
+      "typecheck": "PASS",
+      "unit": "REUSE_101_PASS",
+      "priorRelevantIntegration": "REUSE_16_PASS",
+      "build": "REUSE_PASS_PRODUCTION_UNCHANGED",
+      "hosted": "APPROVED_PASS_UNCHANGED_NO_REDEPLOY",
+      "fullE2E": {
+        "entrypoint": "npm run test:e2e",
+        "exitCode": 0,
+        "totalPassed": 23,
+        "totalFailed": 0,
+        "skipped": 0,
+        "retriesAdded": false,
+        "singlePlaywrightRun": false,
+        "groups": [
+          {
+            "name": "core",
+            "passed": 20,
+            "duration": "2.2m"
+          },
+          {
+            "name": "session-recovery",
+            "passed": 3,
+            "duration": "9.7s"
+          }
+        ]
+      },
+      "allCaseResults": [
+        "✓   1 tests/e2e/admin.spec.ts:33:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery (4.7s)",
+        "✓   2 tests/e2e/admin.spec.ts:157:1 › Admin role dependency error keeps the original role and clears after successful retry (3.0s)",
+        "✓   3 tests/e2e/admin.spec.ts:216:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs (2.3s)",
+        "✓   4 tests/e2e/core.spec.ts:53:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result (7.7s)",
+        "✓   5 tests/e2e/core.spec.ts:159:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard (4.2s)",
+        "✓   6 tests/e2e/core.spec.ts:228:1 › mobile login and server-backed role guard (1.2s)",
+        "✓   7 tests/e2e/data-integrity.spec.ts:12:1 › Classes → Builder: page boundaries, SPA cache and reload (6.1s)",
+        "✓   8 tests/e2e/data-integrity.spec.ts:209:1 › Published image survives delete, Student start/reload/submit and bank replacement (3.5s)",
+        "✓   9 tests/e2e/data-integrity.spec.ts:412:1 › Management paging, search, class mutations, student discovery and admin boundaries (9.0s)",
+        "✓  10 tests/e2e/question-bank.spec.ts:58:1 › Question Bank discoverability: four types, reload/edit/cancel, archive/restore, bank filters and lifecycle (24.8s)",
+        "✓  11 tests/e2e/question-bank.spec.ts:190:1 › Images through API/DB and local Storage boundary: stage/upload/reload/replace/remove, validation and retry (5.7s)",
+        "✓  12 tests/e2e/question-bank.spec.ts:279:1 › Pilot UI: keyboard/dialog focus, slow/loading, validation, network error, mobile/reduced motion and dirty Back (5.2s)",
+        "✓  13 tests/e2e/question-bank.spec.ts:383:1 › JPEG/WebP persist, actual replace control, invalid signature, interrupted linking resumes without duplicate upload (4.9s)",
+        "✓  14 tests/e2e/question-bank.spec.ts:460:1 › Search debounces eight keys, final query wins over late response, filters persist on reload (5.6s)",
+        "✓  15 tests/e2e/question-bank.spec.ts:518:1 › List/detail failures retry; archive and restore errors preserve state and dialogs allow retry (9.1s)",
+        "✓  16 tests/e2e/question-bank.spec.ts:581:1 › Dirty editor protects sidebar navigation and reload; saved editor has no false warning (3.7s)",
+        "✓  17 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs (3.8s)",
+        "✓  18 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs (3.8s)",
+        "✓  19 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs (3.9s)",
+        "✓  20 tests/e2e/question-bank.spec.ts:714:1 › Pilot evidence: desktop screenshots and warm local performance samples (15.5s)",
+        "✓  1 tests/e2e/session-recovery.spec.ts:40:1 › Cookie expiry, relogin and revoke reconcile on a browser 401; reload and another login recover (3.1s)",
+        "✓  2 tests/e2e/session-recovery.spec.ts:65:1 › Revocation with a failed browser probe preserves identity until visibility revalidation receives 401 (1.1s)",
+        "✓  3 tests/e2e/session-recovery.spec.ts:99:1 › Logout in another tab is reconciled by the next protected SPA request (2.7s)"
+      ]
+    },
+    "candidateHashes": {
+      "package.json": "39da7c1a275c02a01fa6a59e096fef6da8b21076d72b0da8e235ae9a5789c94d",
+      "playwright.config.ts": "c3f48d0e8a7669ac7f13a16f316da42e71a5de6e326fee9ed4e34d345a5b065a",
+      "playwright.session-recovery.config.ts": "547ad30d4c270a658dd37a44e0845e76696c37ca1b9a3f0dc6213ca1a9ff2f2f",
+      "apps/api/test/auth-rate-limit.integration.test.ts": "0fb6dd45116e1b4415c8a688d71365943e2e2e2b19e8a24f5e4c646069d855ec",
+      "apps/web/src/features/session-lifecycle.test.tsx": "b3de07a2fb9d9a07b9c569cc65b279a8e86915c6260c3a7d258b767b28d9508c",
+      "tests/e2e/session-recovery.spec.ts": "8f83ee3aa0588a309889033a7b54c1d0e08da6242cc5323479a10deecd74b059"
+    },
+    "commitPushDeploy": false
+  }
+}

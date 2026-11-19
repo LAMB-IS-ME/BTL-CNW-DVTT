@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-14",
+  "status": "PASS_SCOPED",
+  "textFilesScanned": 315,
+  "rules": [
+    "private_key",
+    "github_token",
+    "aws_access_key",
+    "supabase_secret",
+    "jwt"
+  ],
+  "highConfidencePatternMatches": [],
+  "templateSecretValuesFound": [],
+  "environmentReferences": {
+    "DIRECT_URL": [
+      "apps/api/prisma.config.ts"
+    ],
+    "DATABASE_URL": [
+      "apps/api/prisma.config.ts",
+      "apps/api/prisma/seed.ts",
+      "apps/api/prisma/seed.ts",
+      "apps/api/src/config/env.ts"
+    ],
+    "NODE_ENV": [
+      "apps/api/prisma/seed.ts",
+      "apps/api/src/config/env.ts"
+    ],
+    "ALLOW_PRODUCTION_SEED": [
+      "apps/api/prisma/seed.ts"
+    ],
+    "DEMO_PASSWORD": [
+      "apps/api/prisma/seed.ts",
+      "tests/deployment/production-readiness.mjs",
+      "tests/recovery/lifecycle.spec.ts",
+      "tests/recovery/lifecycle.spec.ts",
+      "tests/recovery/lifecycle.spec.ts",
+      "tests/recovery/lifecycle.spec.ts",
+      "tests/ui/grading-results-fixtures.ts",
+      "tests/ui/live-quiz-fixtures.ts",
+      "tests/ui/live-quiz-fixtures.ts"
+    ],
+    "TEST_DATABASE_URL": [
+      "apps/api/test/helpers.ts",
+      "playwright.config.ts",
+      "playwright.recovery.config.ts",
+      "tests/deployment/production-readiness.mjs",
+      "tests/deployment/smoke.mjs",
+      "tests/e2e/admin.spec.ts",
+      "tests/e2e/data-integrity.spec.ts",
+      "tests/ui/live-quiz-fixtures.ts",
+      "tests/ui/student-focus-fixtures.ts"
+    ],
+    "BASE_URL": [
+      "apps/web/src/App.tsx",
+      "apps/web/src/features/auth.tsx"
+    ],
+    "VITE_API_BASE_URL": [
+      "apps/web/src/lib/api.ts"
+    ],
+    "DEV": [
+      "apps/web/src/lib/api.ts",
+      "apps/web/src/lib/socket.ts"
+    ],
+    "VITE_SOCKET_URL": [
+      "apps/web/src/lib/socket.ts"
+    ],
+    "LIVE_QUIZ_WEBKIT_EXECUTABLE": [
+      "playwright.live-quiz.config.ts",
+      "playwright.live-quiz.config.ts"
+    ],
+    "RECOVERY_BASELINE": [
+      "tests/recovery/lifecycle.spec.ts"
+    ],
+    "FOLIO_SCREENSHOT_DIR": [
+      "tests/ui/exam-folio.spec.ts"
+    ],
+    "EXAM_UI_PHASE": [
+      "tests/ui/exam.spec.ts"
+    ],
+    "EXAM_SCREENSHOT_DIR": [
+      "tests/ui/exam.spec.ts",
+      "tests/ui/teacher-sidebar.spec.ts"
+    ],
+    "UI_SCREENSHOT_DIR": [
+      "tests/ui/feedback.spec.ts",
+      "tests/ui/inventory.spec.ts"
+    ],
+    "GRADING_BEFORE": [
+      "tests/ui/grading-results-before.spec.ts"
+    ],
+    "GRADING_SCREENSHOT_DIR": [
+      "tests/ui/grading-results-recovery.spec.ts",
+      "tests/ui/grading-results-rollout.spec.ts",
+      "tests/ui/grading-results.spec.ts"
+    ],
+    "UI_PHASE": [
+      "tests/ui/inventory.spec.ts"
+    ],
+    "LIVE_QUIZ_SCREENSHOT_DIR": [
+      "tests/ui/live-quiz-compat.spec.ts",
+      "tests/ui/live-quiz-hardening.spec.ts",
+      "tests/ui/live-quiz.spec.ts"
+    ],
+    "LIVE_QUIZ_PHASE": [
+      "tests/ui/live-quiz.spec.ts"
+    ],
+    "LIVE_QUIZ_WIDTHS": [
+      "tests/ui/live-quiz.spec.ts",
+      "tests/ui/live-quiz.spec.ts"
+    ],
+    "FOCUS_ROLLOUT_DIR": [
+      "tests/ui/student-focus-rollout.spec.ts"
+    ],
+    "FOCUS_PHASE": [
+      "tests/ui/student-focus.spec.ts"
+    ],
+    "FOCUS_SCREENSHOT_DIR": [
+      "tests/ui/student-focus.spec.ts"
+    ],
+    "PORT": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SESSION_SECRET": [
+      "apps/api/src/config/env.ts"
+    ],
+    "CLIENT_ORIGIN": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SESSION_COOKIE_NAME": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SESSION_MAX_AGE_MS": [
+      "apps/api/src/config/env.ts"
+    ],
+    "COOKIE_SECURE": [
+      "apps/api/src/config/env.ts"
+    ],
+    "COOKIE_SAME_SITE": [
+      "apps/api/src/config/env.ts"
+    ],
+    "TRUST_PROXY": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SUPABASE_URL": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SUPABASE_SERVICE_ROLE_KEY": [
+      "apps/api/src/config/env.ts"
+    ],
+    "SUPABASE_STORAGE_BUCKET": [
+      "apps/api/src/config/env.ts"
+    ]
+  },
+  "environmentNamesMissingFromMatrix": [],
+  "manualReview": [
+    "MASTER_SPEC full baseline reviewed; names/examples only, no real credential found",
+    "New reports contain no passwords, SID/cookies, CSRF token values, raw session logs or DB dumps",
+    "Only new local TLS test uses ignoreHTTPSErrors/rejectUnauthorized=false for self-signed certificates; runtime security unchanged",
+    "Known development/CI synthetic credentials in pre-existing source/README classified as fixtures; no claim that repository contains no password literals"
+  ],
+  "scopeLimits": [
+    "Pattern scan is not a complete secret or history audit",
+    "Ignored actual .env and all historical untracked raw logs excluded from content scan",
+    "Original generated frontend bundles no longer available after scratch loss; no fresh bundle secret scan claimed",
+    "External provider permissions and bucket policies not tested"
+  ],
+  "runtimeSourceMismatches": [],
+  "snapshotMeaning": "Approved preparation checkpoint before the authorized local commit; historical statuses/hashes are not post-commit assertions.",
+  "cleanupEvidence": "commit-cleanup.json"
+}

@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-15",
+  "service": {
+    "autoDeploy": "no",
+    "autoDeployTrigger": "off",
+    "branch": "deploy/examspace-free-staging",
+    "createdAt": "2026-10-15T02:10:24.634012Z",
+    "dashboardUrl": "https://dashboard.render.com/web/[redacted]",
+    "id": "[redacted]",
+    "name": "examspace-staging",
+    "notifyOnFail": "default",
+    "ownerId": "tea-db7m2r3ncjis73eq90tg",
+    "repo": "https://github.com/LAMB-IS-ME/BTL-CNW-DVTT",
+    "rootDir": "",
+    "serviceDetails": {
+      "buildPlan": "starter",
+      "cache": {
+        "profile": "no-cache"
+      },
+      "env": "node",
+      "envSpecificDetails": {
+        "buildCommand": "npm ci --include=dev && npm run db:generate && npm run build",
+        "startCommand": "CLIENT_ORIGIN=\"$RENDER_EXTERNAL_URL\" npm run start -w @exam/api"
+      },
+      "healthCheckPath": "",
+      "ipAllowList": [
+        {
+          "cidrBlock": "0.0.0.0/0",
+          "description": "everywhere"
+        }
+      ],
+      "maintenanceMode": {
+        "enabled": false,
+        "uri": ""
+      },
+      "numInstances": 1,
+      "openPorts": [],
+      "plan": "free",
+      "previews": {
+        "generation": "off"
+      },
+      "pullRequestPreviewsEnabled": "no",
+      "region": "singapore",
+      "renderSubdomainPolicy": "enabled",
+      "runtime": "node",
+      "sshAddress": "[redacted]",
+      "url": "https://examspace-staging.onrender.com"
+    },
+    "slug": "examspace-staging",
+    "suspended": "not_suspended",
+    "suspenders": [],
+    "type": "web_service",
+    "updatedAt": "2026-10-15T02:11:59.451922Z"
+  },
+  "deploy": {
+    "commit": {
+      "createdAt": "2026-10-14T15:35:41Z",
+      "id": "39802152a5ec1337f790c34732707556b69247db",
+      "message": "feat(deploy): prepare free single-origin staging"
+    },
+    "createdAt": "2026-10-15T02:10:27.007999Z",
+    "finishedAt": "2026-10-15T02:11:59.296833Z",
+    "id": "dep-db83c4jncjis73efbd10",
+    "startedAt": "2026-10-15T02:10:27.003152Z",
+    "status": "live",
+    "trigger": "manual",
+    "updatedAt": "2026-10-15T02:12:32.948262Z"
+  },
+  "startup": {
+    "event": "server_started",
+    "port": 10000,
+    "timestamp": "2026-10-15T02:11:55.145370994Z",
+    "rawLogsSaved": false
+  },
+  "healthCheck": {
+    "configured": "TCP default",
+    "httpProbe": "/api/health",
+    "httpProbeStatus": 200,
+    "reason": "Render MCP create tool has no healthCheckPath setting"
+  },
+  "billing": {
+    "runtimePlan": "free",
+    "numInstances": 1,
+    "paymentMethod": "ABSENT_USER_CONFIRMED",
+    "billingApiAvailable": false,
+    "paidResourcesCreated": 0
+  }
+}

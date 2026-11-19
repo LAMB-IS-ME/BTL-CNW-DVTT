@@ -1,0 +1,44 @@
+[
+  {
+    "name": "migrate",
+    "command": "npm run db:migrate",
+    "exitCode": 0,
+    "seconds": 1.94
+  },
+  {
+    "name": "seed",
+    "command": "npm run db:seed",
+    "exitCode": 0,
+    "seconds": 1.78
+  },
+  {
+    "name": "integration",
+    "command": "npm run test:integration",
+    "exitCode": 0,
+    "seconds": 30.94
+  },
+  {
+    "name": "build",
+    "command": "npm run build",
+    "exitCode": 0,
+    "seconds": 9.18
+  },
+  {
+    "name": "e2e",
+    "command": "npm run test:e2e",
+    "exitCode": 1,
+    "seconds": 135.38
+  },
+  {
+    "name": "deployment",
+    "command": "npm run test:deployment",
+    "exitCode": 0,
+    "seconds": 4.05
+  },
+  {
+    "name": "live-lifecycle",
+    "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz.spec.ts --project chromium",
+    "exitCode": 1,
+    "seconds": 11.8
+  }
+]

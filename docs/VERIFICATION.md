@@ -1,8 +1,18 @@
 # Verification & Definition of Done audit
 
-Đối chiếu trực tiếp Section 42 của MASTER_SPEC.md với source hiện tại. Mỗi checkbox bên dưới giữ nguyên nội dung yêu cầu; `[x]` nghĩa là phần implementation đã có và bằng chứng tương ứng đã được kiểm tra, không có nghĩa cloud đã được triển khai. MASTER_SPEC.md gốc không bị sửa.
+Đối chiếu Definition of Done (Section 42 của [MASTER_SPEC](spec/MASTER_SPEC_BASELINE.md)) với source. Mỗi checkbox giữ nguyên nội dung yêu cầu; `[x]` nghĩa là đã có implementation và bằng chứng, không có nghĩa là đã kiểm chứng trên cloud.
 
-Bản kiểm chứng: 2026-09-30; source commit `07f02c3`. Kiểm tra secret theo file env và các credential patterns không có finding; test/demo passwords được ghi rõ là synthetic development. Whitespace gốc trong MASTER_SPEC, license font và SQL generated được giữ nguyên.
+> **Lưu ý:** bảng "Full verification" bên dưới là kết quả lần nghiệm thu đầu tiên (30/09/2026, commit `07f02c3`). Kết quả mới nhất:
+>
+> | Bộ | Kết quả |
+> | --- | --- |
+> | `npm test` | 166/166 qua, 25 file. Đã chạy trên commit `7f38176` |
+> | `npm run test:integration` | 82/82 qua, 18 file. Theo báo cáo 03/11/2026, chưa chạy lại |
+> | `npm run test:e2e` | 56/56 qua, 4 nhóm. Theo báo cáo 03/11/2026, chưa chạy lại |
+>
+> Chi tiết xem [báo cáo release 03/11/2026](audits/FINAL_RELEASE_READINESS_20261103.md). Kiến trúc deploy hiện tại là một Render Web Service phục vụ SPA + API cùng origin, xem [DEPLOYMENT](DEPLOYMENT.md).
+
+Bản kiểm chứng ban đầu: 2026-09-30; source commit `07f02c3`. Kiểm tra secret theo file env và các credential patterns không có finding; test/demo passwords được ghi rõ là synthetic development. Whitespace gốc trong MASTER_SPEC, license font và SQL generated được giữ nguyên.
 
 ## Full verification
 
@@ -167,8 +177,8 @@ Implementation: Repository, scripts, workflows và docs. Bằng chứng: Full ve
 - [x] typecheck pass.
 - [x] tests pass.
 - [x] build pass.
-- [x] GitHub Pages workflow. — pages.yml workflow_dispatch; production build + subpath404/refresh smoke local. Chưa publish lên GitHub.
-- [x] Render-ready API. — render.yaml;0.0.0.0/PORT, shared HTTP/WSS, health, HTTPS cookie/CORS env. Bundle smoke local; chưa deploy Render.
+- [x] GitHub Pages workflow. — pages.yml workflow_dispatch; production build + subpath404/refresh smoke local. Hiện chỉ là phương án phụ; deploy chính phục vụ SPA từ Express cùng origin.
+- [x] Render-ready API. — render.yaml: một Web Service phục vụ SPA + REST + WSS cùng origin (`SERVE_WEB=true`), 0.0.0.0/PORT, health, cookie `Secure`/`lax`. Staging: https://examspace-staging-rc.onrender.com.
 - [x] README complete. — README.md: quick start, demo, commands, screenshots, deploy/docs links.
 - [x] docs/SRS.md. — SRS 15 phần, FR IDs và traceability.
 - [x] docs/SDD.md. — SDD 27 phần, Context/Container/Component/ERD/sequences/state diagrams.
@@ -178,15 +188,15 @@ Implementation: Repository, scripts, workflows và docs. Bằng chứng: Full ve
 
 - Supabase Storage thật: upload/private object/signed URL qua network và cấu hình bucket của người dùng.
 - Supabase hosted migration/runtime permissions/TLS/connection pool với credentials thật.
-- Render deployed health/login/WSS/restart và GitHub Pages published URL/custom DNS/cookie trên browser người dùng.
+- Kiểm thử hosted đầy đủ (HTTPS/cookie, WSS/reconnect, Storage thật, restart) cho source mới nhất trên staging; xem gate trong báo cáo release.
 - GitHub Actions chạy trên GitHub runner; commands tương ứng đã chạy local, chưa claim workflow run cloud.
 
 Các bước này cần người dùng tạo/cấp tài khoản; hướng dẫn và lệnh có trong DEPLOYMENT.md. Không có secret giả, mock final flow hoặc button Core placeholder để che phần external chưa xác minh.
 
 ## Giới hạn còn lại
 
-Một API instance; presence/rate limit trong memory. Free hosting sleep làm job xử lý trễ nhưng không nhận đáp án muộn. Browser third-party cookie có thể chặn cross-site Session; nên dùng app/API cùng site HTTPS. Chưa load test hay screen-reader/WCAG audit. Export giữ workbook/PDF trong memory; Markdown chunk còn lớn; pg8 phát deprecation warning queued transaction queries. Chi tiết thiết kế và tradeoffs ở SDD.md.
+Một API instance; presence/rate limit trong memory. Free hosting sleep làm job xử lý trễ nhưng không nhận đáp án muộn. Cấu hình cùng origin tránh được vấn đề cookie cross-site; chỉ phương án phụ GitHub Pages mới gặp rủi ro trình duyệt chặn cookie bên thứ ba. Chưa load test hay screen-reader/WCAG audit. Export giữ workbook/PDF trong memory; Markdown chunk còn lớn; pg8 phát deprecation warning queued transaction queries. Chi tiết thiết kế và tradeoffs ở SDD.md.
 
 ## Lặp lại nghiệm thu
 
-Xem DEPLOYMENT.md → Verification commands. Dùng DB test riêng đã migrate/seed, có Chromium và poppler-utils. Chạy lint, typecheck, unit, integration, build, E2E, deployment smoke, audit. Không chạy test vào production DB.
+Xem [DEPLOYMENT → Kiểm thử](DEPLOYMENT.md#kiểm-thử). Dùng DB test riêng đã migrate/seed, có Chromium và poppler-utils. Chạy lint, typecheck, unit, integration, build, E2E, deployment smoke, audit. Không chạy test vào production DB.

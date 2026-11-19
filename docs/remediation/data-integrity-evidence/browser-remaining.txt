@@ -1,0 +1,22 @@
+[WebServer] (node:8898) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8919) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8930) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8973) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:9026) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:8930) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+  ✓  1 tests/e2e/question-bank.spec.ts:518:1 › List/detail failures retry; archive and restore errors preserve state and dialogs allow retry (12.2s)
+  ✓  2 tests/e2e/question-bank.spec.ts:581:1 › Dirty editor protects sidebar navigation and reload; saved editor has no false warning (5.2s)
+  ✓  3 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs (5.1s)
+  ✓  4 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs (5.4s)
+  ✓  5 tests/e2e/question-bank.spec.ts:632:3 › Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs (5.3s)
+  ✓  6 tests/e2e/question-bank.spec.ts:714:1 › Pilot evidence: desktop screenshots and warm local performance samples (17.7s)
+
+  6 passed (56.1s)

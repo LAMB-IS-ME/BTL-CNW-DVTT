@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-14",
+  "head": "864633b93505fdeebb8c2ca15b0b0c3278a3de9d",
+  "branch": "ux/education-saas-redesign-pilot",
+  "stagedFiles": [],
+  "modifiedTrackedFiles": [
+    "README.md",
+    "apps/api/.env.example",
+    "apps/web/.env.example",
+    "docs/DEPLOYMENT.md",
+    "docs/SRS.md"
+  ],
+  "newPhaseFiles": [
+    "docs/deployment/DEPLOYMENT_PLAN.md",
+    "docs/deployment/DEPLOYMENT_READINESS_REPORT.md",
+    "docs/deployment/ENVIRONMENT_MATRIX.md",
+    "docs/deployment/FRESH_CLONE_SETUP_REPORT.md",
+    "docs/deployment/deployment-readiness.json",
+    "docs/deployment/evidence/env-probe.json",
+    "docs/deployment/evidence/final-review.json",
+    "docs/deployment/evidence/fresh-clone-comparison.json",
+    "docs/deployment/evidence/git-baseline.json",
+    "docs/deployment/evidence/production-probe.json",
+    "docs/deployment/evidence/security-scan.json",
+    "docs/deployment/evidence/seed-counts.json",
+    "docs/deployment/evidence/seed-rerun.json",
+    "docs/deployment/evidence/verification.json",
+    "docs/spec/MASTER_SPEC_BASELINE.md",
+    "docs/spec/SPEC_RECONCILIATION.md",
+    "tests/deployment/production-readiness.mjs"
+  ],
+  "historicalUntrackedCount": 85,
+  "historicalHashMismatches": [],
+  "protectedIgnoredHashMismatches": [],
+  "additionalPreservedIgnoredFile": "docs/spec/MASTER_SPEC.md (created earlier in phase; byte-identical, not handoff target)",
+  "runtimeSourceMismatches": [],
+  "scratchBeforeInterruption": "Absent at resume; retained summaries used without rerun",
+  "currentScratch": "<review-scratch>",
+  "temporaryFilesInMainRepository": [],
+  "diffCheckExitCode": 0,
+  "actions": {
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pullRequest": false,
+    "resetCheckoutDiscardClean": false
+  },
+  "noTestRerunDuringResume": true,
+  "snapshotMeaning": "Approved preparation checkpoint before the authorized local commit; historical statuses/hashes are not post-commit assertions.",
+  "cleanupEvidence": "commit-cleanup.json"
+}

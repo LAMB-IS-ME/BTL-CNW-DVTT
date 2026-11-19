@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-12",
+  "baseline": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "authorization": "npm audit and metadata transfer explicitly approved; no fixes/updates",
+  "advisories": [
+    {
+      "id": "GHSA-pqg4-j6r4-53mv",
+      "cve": "CVE-2026-102422",
+      "upstreamSeverity": "critical",
+      "package": "shell-quote",
+      "installed": "1.9.0",
+      "vulnerableRange": ">=1.8.4 <1.11.0",
+      "fixed": "1.11.0",
+      "direct": false,
+      "paths": [
+        "root dev concurrently@10.0.5 -> shell-quote@1.9.0"
+      ],
+      "classification": "dev command tooling",
+      "prerequisites": "quote() consumes line terminator in token after comment token, then output executed in shell",
+      "runtimeExposure": "No demonstrated untrusted API input to this shell path; dev commands are static; may exist in build environment",
+      "source": "https://github.com/advisories/GHSA-pqg4-j6r4-53mv"
+    },
+    {
+      "id": "GHSA-68fv-2mgg-jv7q",
+      "cve": "CVE-2026-93749",
+      "upstreamSeverity": "high",
+      "package": "source-map-js",
+      "installed": "1.2.1",
+      "vulnerableRange": ">=1.0.0 <1.2.2",
+      "fixed": "1.2.2",
+      "direct": false,
+      "paths": [
+        "tsup -> postcss -> source-map-js",
+        "@tailwindcss/vite -> @tailwindcss/node -> source-map-js",
+        "jsdom -> css-tree -> source-map-js"
+      ],
+      "classification": "build/test tooling",
+      "prerequisites": "Processing malicious indexed source-map section offsets",
+      "runtimeExposure": "No application endpoint consuming uploaded source maps found",
+      "source": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q"
+    },
+    {
+      "id": "GHSA-238p-pmpm-9mq7",
+      "cve": "CVE-2026-103923",
+      "upstreamSeverity": "low",
+      "package": "katex",
+      "installed": "nested0.16.47; root0.18.9 unaffected",
+      "vulnerableRange": ">=0.11.0 <0.18.2",
+      "fixed": "0.18.2",
+      "direct": false,
+      "paths": [
+        "direct runtime rehype-katex@7.0.1 -> katex@0.16.47",
+        "direct runtime remark-math@6.0.0 -> micromark-extension-math@3.1.0 -> katex@0.16.47"
+      ],
+      "classification": "frontend Markdown/math runtime",
+      "prerequisites": "Existing prototype pollution to bypass trust restrictions",
+      "runtimeExposure": "Renderer path applies; no prototype-pollution exploit chain demonstrated",
+      "source": "https://github.com/advisories/GHSA-238p-pmpm-9mq7"
+    }
+  ],
+  "packageEntryCounts": {
+    "critical": 2,
+    "high": 1,
+    "low": 4,
+    "total": 7
+  },
+  "distinctAdvisories": 3,
+  "ciGate": "npm audit --audit-level=low; FAIL",
+  "applicationFindingSeverity": "P2; applicability and release gate, not confirmed critical remote exploit",
+  "recommendation": "Review compatible upstream/override options; fix vulnerable transitive resolutions in approved remediation phase, rerun audit/math/build/regressions. Do not blindly accept suggested rehype-katex1.2.0 or remark-math3.0.1 downgrades.",
+  "lockfileChanged": false
+}

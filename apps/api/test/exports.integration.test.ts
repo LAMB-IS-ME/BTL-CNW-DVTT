@@ -1,3 +1,4 @@
+import { submissionInput } from "./helpers.js";
 import { beforeAll, afterAll, it, expect } from "vitest";
 import ExcelJS from "exceljs";
 import { writeFile, mkdtemp, rm } from "node:fs/promises";
@@ -23,10 +24,14 @@ it("exports valid Excel, Vietnamese PDF and final-attempt analytics", async () =
       `/api/v1/student/attempts/${a.body.data.id}/answers/${a.body.data.questions[0].id}`,
     )
     .set(f.student.headers)
-    .send({ selectedOptionIds: [f.question.options[0]!.id] });
+    .send({
+      selectedOptionIds: [f.question.options[0]!.id],
+      expectedSavedAt: null,
+    });
   await f.student.agent
     .post(`/api/v1/student/attempts/${a.body.data.id}/submit`)
-    .set(f.student.headers);
+    .set(f.student.headers)
+    .send(await submissionInput(ctx.db, a.body.data.id));
   const stats = await analytics(ctx.db, f.exam.id);
   expect(stats.average).toBe(100);
   expect(stats.passRate).toBe(100);

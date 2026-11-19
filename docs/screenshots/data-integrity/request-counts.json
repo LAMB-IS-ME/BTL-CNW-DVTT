@@ -1,0 +1,21 @@
+{
+  "catalogRequests": 16,
+  "paths": [
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+    "/api/v1/teacher/classes?view=manage&page=2&pageSize=20&search=&status=active",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=class%2022&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=2&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=3&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=4&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=5&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=6&pageSize=20&search=&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20101&status=active",
+    "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20001&status=active",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+    "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active"
+  ]
+}

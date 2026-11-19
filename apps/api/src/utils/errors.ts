@@ -3,6 +3,18 @@ import type { ErrorRequestHandler, Request } from "express";
 import { ZodError, z } from "zod";
 import { Prisma } from "../generated/prisma/client.js";
 const messages: Record<string, string> = {
+  BANK_ARCHIVED: "Ngân hàng đã lưu trữ. Hãy khôi phục ngân hàng trước.",
+  QUESTION_ARCHIVED:
+    "Câu hỏi hoặc ngân hàng đã lưu trữ. Hãy khôi phục trước khi sử dụng.",
+  STORAGE_UPLOAD_FAILED:
+    "Không tải được ảnh. Nội dung đã nhập được giữ lại; vui lòng thử lưu lại.",
+  STORAGE_URL_FAILED: "Không tải được ảnh minh họa. Vui lòng thử lại.",
+  STORAGE_DELETE_FAILED: "Không thể gỡ ảnh. Vui lòng thử lại.",
+  CLASS_ARCHIVED: "Lớp đã lưu trữ, không thể thêm sinh viên.",
+  ATTEMPT_EXPIRED: "Đã hết thời gian làm bài. Bài làm đã được nộp tự động.",
+  QUIZ_ANSWER_TOO_LATE: "Đã hết thời gian trả lời câu hỏi này.",
+  QUIZ_ARCHIVED: "Quiz đã được lưu trữ.",
+
   EXAM_NOT_OPEN: "Bài thi chưa đến giờ mở.",
   EXAM_CLOSED: "Bài thi đã đóng.",
   EXAM_NOT_PUBLISHED: "Bài thi chưa được công bố.",
@@ -10,6 +22,12 @@ const messages: Record<string, string> = {
   ATTEMPT_LIMIT_REACHED: "Bạn đã dùng hết số lượt thi.",
   ATTEMPT_ALREADY_SUBMITTED: "Bài đã nộp, không thể đổi đáp án.",
   EXAM_HAS_ATTEMPTS: "Bài thi đã có lượt làm; cấu hình đã được khóa.",
+  INVALID_CLASS:
+    "Lớp được giao không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
+  INVALID_BANK:
+    "Ngân hàng câu hỏi không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
+  INVALID_QUESTION:
+    "Câu hỏi không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
   CLASS_REQUIRED: "Cần chọn ít nhất một lớp trước khi công bố.",
   INVALID_EXAM_QUESTIONS: "Cần ít nhất một câu hỏi có điểm hợp lệ.",
   INVALID_SCHEDULE: "Lịch thi không hợp lệ hoặc đã hết hạn.",
@@ -61,14 +79,12 @@ export const errorHandler: ErrorRequestHandler = (
     "type" in error &&
     ["entity.parse.failed", "entity.too.large"].includes(String(error.type))
   ) {
-    res
-      .status(error.type === "entity.too.large" ? 413 : 400)
-      .json({
-        error: {
-          code: "INVALID_BODY",
-          message: "Nội dung yêu cầu không hợp lệ hoặc quá lớn.",
-        },
-      });
+    res.status(error.type === "entity.too.large" ? 413 : 400).json({
+      error: {
+        code: "INVALID_BODY",
+        message: "Nội dung yêu cầu không hợp lệ hoặc quá lớn.",
+      },
+    });
     return;
   }
   if (error instanceof MulterError) {

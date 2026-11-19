@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "scope": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/features/auth-entry.test.tsx",
+    "apps/web/src/features/auth.tsx"
+  ],
+  "diffSha256": "20cc712df82e94a599e53fa94423ec34bf61e5d7c9019b57c2720907b04fe4b2",
+  "secretScan": "PASS_SCOPED",
+  "tests": {
+    "passed": 18,
+    "files": 3
+  },
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "build": "REUSED_PASS_IMPLEMENTATION_UNCHANGED",
+  "historicalArtifacts": 85,
+  "stagedOutsideScope": 0
+}

@@ -1,0 +1,367 @@
+[
+  {
+    "role": "ALL",
+    "feature": "Login/register/logout",
+    "route": "/login; /register",
+    "api": "/auth/csrf; /auth/login; /auth/register; /auth/logout; /auth/me",
+    "permissions": "Public registration STUDENT only; ACTIVE identity",
+    "tests": "auth integration, unit, E2E",
+    "states": "invalid/locked/expired/pending",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "Expired-session UI recovery under targeted audit; password validation accepts any nonempty existing password but still verifies Argon2 hash"
+  },
+  {
+    "role": "ADMIN",
+    "feature": "Overview",
+    "route": "/admin",
+    "api": "GET /admin/stats",
+    "permissions": "ADMIN",
+    "tests": "Source + representative browser",
+    "states": "loading/error/counts",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  },
+  {
+    "role": "ADMIN",
+    "feature": "User list/search/filter/pagination",
+    "route": "/admin/users",
+    "api": "GET /admin/users?page&search&role",
+    "permissions": "ADMIN",
+    "tests": "auth integration + audit browser",
+    "states": "empty/loading/error/20-row pages",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "No tailored empty-state message; raw English role/status labels"
+  },
+  {
+    "role": "ADMIN",
+    "feature": "Create account",
+    "route": "/admin/users",
+    "api": "POST /admin/users",
+    "permissions": "ADMIN",
+    "tests": "auth integration + audit workflow/UI",
+    "states": "validation/duplicate/success/error",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  },
+  {
+    "role": "ADMIN",
+    "feature": "Lock/unlock and role assignment",
+    "route": "/admin/users",
+    "api": "PATCH /admin/users/:id/status; PATCH /admin/users/:id/role",
+    "permissions": "ADMIN, no self change; dependency guard",
+    "tests": "admin-probe.json + admin-browser-probe.json; existing self-action/auth tests do not cover successful status mutation",
+    "states": "ACTIVE/LOCKED/role dependency",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "FAIL",
+    "limitations": "ADMIN-001: both non-self mutations return 500; Prisma cannot deserialize void from advisory lock query. Own-role 409 works before transaction."
+  },
+  {
+    "role": "ADMIN",
+    "feature": "Class overview",
+    "route": "/admin/classes",
+    "api": "GET /admin/classes?page",
+    "permissions": "ADMIN",
+    "tests": "Source + audit API",
+    "states": "loading/error/empty",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "UI has no pager beyond first 20"
+  },
+  {
+    "role": "ADMIN",
+    "feature": "Edit account identity/reset password",
+    "route": "none",
+    "api": "none",
+    "permissions": "none",
+    "tests": "Source inventory",
+    "states": "none",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "NOT IMPLEMENTED",
+    "limitations": "Not required by local MASTER_SPEC §3.1; do not invent a missing core feature"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Dashboard/navigation",
+    "route": "/teacher",
+    "api": "GET /teacher/question-banks?view=manage&status=active&sort=updated&pageSize=3",
+    "permissions": "TEACHER owner",
+    "tests": "Historical pilot + audit geometry",
+    "states": "recent/empty/error/retry",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Recent banks are intentionally three, not all-system statistics"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Classes/create/edit/archive",
+    "route": "/teacher/classes; /teacher/classes/:id",
+    "api": "GET/POST /teacher/classes; GET/PATCH/DELETE /teacher/classes/:id",
+    "permissions": "TEACHER owner",
+    "tests": "catalog integration + audit A/pagination",
+    "states": "active/archived/loading/error",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "First 20 classes only in list; shared cache key with builder"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Roster/search/add/remove",
+    "route": "/teacher/classes/:id",
+    "api": "GET /teacher/students?search; POST/DELETE /teacher/classes/:id/students[/studentId]",
+    "permissions": "Owner; ACTIVE STUDENT for add",
+    "tests": "catalog integration + audit A",
+    "states": "duplicate/invalid/archived",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Search default 20; no full-roster large-load test"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Bank/question management",
+    "route": "/teacher/question-banks; /teacher/question-banks/:id; /teacher/questions/:questionId/edit",
+    "api": "/teacher/question-banks; /teacher/questions/:questionId; archive/restore",
+    "permissions": "Owner; archive guards for published sources/Quiz",
+    "tests": "question-lifecycle integration + question-bank E2E",
+    "states": "4 types/filter/archive/restore/dirty/error/retry",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Bank picker caps differ from paginated management screen"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Question image upload/references",
+    "route": "question editor",
+    "api": "POST/DELETE /teacher/questions/:questionId/assets[/assetId]; GET /assets/:id",
+    "permissions": "Owner upload; snapshot-authorized student read",
+    "tests": "storage integration + asset-probe.json",
+    "states": "staged/retry/missing/snapshot-protected",
+    "dependencies": [
+      "PostgreSQL",
+      "Session",
+      "Storage"
+    ],
+    "status": "PARTIAL",
+    "limitations": "ASSET-001 confirmed: published reference can be deleted before snapshot, Student GET404; hosted provider not tested"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Exam list/builder/settings",
+    "route": "/teacher/exams; /teacher/exams/new; /teacher/exams/:id/edit|preview",
+    "api": "GET/POST/PATCH /teacher/exams[/id]; PUT classes/questions/pools",
+    "permissions": "Owner; config locked once attempts exist",
+    "tests": "exams integration + audit A/pagination; historical Folio",
+    "states": "draft/published/archived/invalid",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "Exam list 20 without pager; class/bank pickers 100; publication validates sources, snapshots are created at attempt Start"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Publish/archive",
+    "route": "exam builder",
+    "api": "POST /teacher/exams/:id/publish|archive",
+    "permissions": "Owner",
+    "tests": "exams/question-lifecycle integration; audit A",
+    "states": "invalid schedule/pool/assignment/published",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Realtime monitoring",
+    "route": "/teacher/exams/:id/monitor",
+    "api": "GET monitor; exam:monitor:join/snapshot/status",
+    "permissions": "Owner TEACHER",
+    "tests": "socket integration + core E2E before harness failure",
+    "states": "NOT_STARTED/IN_PROGRESS/DISCONNECTED/SUBMITTED",
+    "dependencies": [
+      "PostgreSQL",
+      "Session",
+      "Socket.IO"
+    ],
+    "status": "PASS",
+    "limitations": "Large-class load not tested"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Essay grading",
+    "route": "/teacher/exams/:id/grading",
+    "api": "GET grading; PUT /teacher/answers/:answerId/grade",
+    "permissions": "Owner; submitted essay; score bounds",
+    "tests": "grading + grading-results integration; audit A-C; historical rollout",
+    "states": "partial/full/regrade/draft/retry/pagination",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Tracked core E2E feedback locator is stale"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Results/release/analytics",
+    "route": "/teacher/exams/:id/results",
+    "api": "GET results/analytics; POST release-results",
+    "permissions": "Owner",
+    "tests": "grading-results/exports integration + audit A-C",
+    "states": "pending/full/manual/after-close/immediate",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Excel/PDF export",
+    "route": "teacher results",
+    "api": "GET /teacher/exams/:id/export.xlsx; GET /students/:studentId/result.pdf",
+    "permissions": "Owner",
+    "tests": "exports integration + deployment smoke",
+    "states": "binary/Unicode/errors",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Buffers entire report in memory; large exports not benchmarked"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Live Quiz library/builder",
+    "route": "/teacher/quizzes; /teacher/quizzes/new|:id/edit",
+    "api": "/teacher/quizzes; PUT questions; POST rooms",
+    "permissions": "Owner; objective only",
+    "tests": "quiz integration + live lifecycle; prior hardening",
+    "states": "active/archived/paged/invalid",
+    "dependencies": [
+      "PostgreSQL",
+      "Session",
+      "Socket.IO"
+    ],
+    "status": "PARTIAL",
+    "limitations": "Bank picker first 100; room history latest 20"
+  },
+  {
+    "role": "TEACHER",
+    "feature": "Live Quiz host",
+    "route": "/teacher/quiz-rooms/:id/host",
+    "api": "GET /teacher/quiz-rooms/:id; quiz:host:start|next",
+    "permissions": "Room owner",
+    "tests": "quiz integration + 3-context lifecycle",
+    "states": "lobby/question/reveal/finish/reconnect",
+    "dependencies": [
+      "PostgreSQL",
+      "Session",
+      "Socket.IO"
+    ],
+    "status": "PASS",
+    "limitations": "REL-001 persisted participant presence may remain true after unclean crash; local scoring/expiry recovery PASS"
+  },
+  {
+    "role": "STUDENT",
+    "feature": "Exam discovery/eligibility",
+    "route": "/student; /student/exams; /student/exams/:id",
+    "api": "GET /student/exams[/id]; POST /exams/:id/attempts",
+    "permissions": "ACTIVE STUDENT + current class membership + schedule/attempt limits",
+    "tests": "attempts integration + audit A-C + core E2E",
+    "states": "scheduled/open/closed/exhausted/resume/paged",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  },
+  {
+    "role": "STUDENT",
+    "feature": "Take exam/autosave/submit",
+    "route": "/student/attempts/:id",
+    "api": "GET attempt; PUT answers; POST submit; presence socket",
+    "permissions": "Own attempt; persisted timer",
+    "tests": "attempts integration + core E2E + audit; historical Focus recovery",
+    "states": "saving/error/queued/reload/expired/submitted",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PASS",
+    "limitations": "Unsaved RAM queue cannot survive browser kill/offline reload; no offline durable store"
+  },
+  {
+    "role": "STUDENT",
+    "feature": "Results history/detail",
+    "route": "/student/results; /student/results/:id",
+    "api": "GET /student/exams?page; GET /student/exams/:id/results",
+    "permissions": "Own attempts; release + GRADED",
+    "tests": "grading-results integration + audit C/geometry",
+    "states": "pending/unreleased/released/attempt selection",
+    "dependencies": [
+      "PostgreSQL",
+      "Session"
+    ],
+    "status": "PARTIAL",
+    "limitations": "History index uses current class membership; former-class results need direct URL"
+  },
+  {
+    "role": "STUDENT",
+    "feature": "Live Quiz join/play/results",
+    "route": "/student/quiz/join; /student/quiz/:id/:screen",
+    "api": "by-code/state; quiz:room:join|leave; quiz:answer",
+    "permissions": "Authenticated; room participant; first valid answer only",
+    "tests": "quiz integration + 3-context lifecycle",
+    "states": "waiting/answer/reveal/leaderboard/finished/reconnect",
+    "dependencies": [
+      "PostgreSQL",
+      "Session",
+      "Socket.IO"
+    ],
+    "status": "PASS",
+    "limitations": ""
+  }
+]

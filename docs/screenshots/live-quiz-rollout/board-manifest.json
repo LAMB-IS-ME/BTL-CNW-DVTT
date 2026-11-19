@@ -1,0 +1,444 @@
+{
+  "captureRoot": "external-artifacts/live-quiz-rollout",
+  "pixelPolicy": "Crop/compose real screenshots only; no UI retouching or synthetic states.",
+  "items": [
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/teacher-entry-surface.png",
+      "sha256": "63af625fd010702e5bf10a9f0343b12fe888ba9abd344ecbf0d4ecbe7be05dbf",
+      "label": "01 Teacher / Thư viện Quiz",
+      "sourceSize": [
+        1136,
+        494
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        494
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-join-surface.png",
+      "sha256": "afb8f63602294fbb8521390162f477f7ef59727e72fd0b1805bde9a56c3a7ec3",
+      "label": "02 Student / Tham gia phòng",
+      "sourceSize": [
+        920,
+        319
+      ],
+      "crop": null,
+      "displaySize": [
+        920,
+        319
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/teacher-lobby-surface.png",
+      "sha256": "726d010e0be30b774563b3b527a31b85876ee1daed2d3465f91097172d7bfc2a",
+      "label": "03 Teacher / Mở phiên cùng lớp",
+      "sourceSize": [
+        1136,
+        619
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        619
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-waiting-surface.png",
+      "sha256": "2bd97a0c0b6b795c55aa6770309e9215aaa37ff81a71f01da66d344d3e8736eb",
+      "label": "04 Student / Phòng chờ",
+      "sourceSize": [
+        840,
+        476
+      ],
+      "crop": null,
+      "displaySize": [
+        840,
+        476
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/teacher-active-surface.png",
+      "sha256": "0832c1c84cbd460b46e88e12bce78878293ee34fcc85c590e916c1a9b4015181",
+      "label": "05 Teacher / Câu hỏi và điều phối",
+      "sourceSize": [
+        1136,
+        629
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        629
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-question-surface.png",
+      "sha256": "4e4af809cf1fc87559adc1f61d0f1bedbbbe4479ffeb88e7392beaa27d1bbe1b",
+      "label": "06 Student / Đọc và trả lời",
+      "sourceSize": [
+        840,
+        760
+      ],
+      "crop": null,
+      "displaySize": [
+        840,
+        760
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/teacher-leaderboard-surface.png",
+      "sha256": "ac0be9705e9bfb72cf3e20061898d5f8222bea28f806d31c0074ac507f22139d",
+      "label": "07 Teacher / Reveal và câu tiếp theo",
+      "sourceSize": [
+        1136,
+        1104
+      ],
+      "crop": null,
+      "displaySize": [
+        1136,
+        1104
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-finished-surface.png",
+      "sha256": "216e7dbe366ad8c5f406c114b8b9f2d31ea3d6934069df46c3da65290a56e9b7",
+      "label": "08 Student / Kết quả cuối cùng",
+      "sourceSize": [
+        840,
+        1218
+      ],
+      "crop": [
+        0,
+        0,
+        840,
+        541
+      ],
+      "displaySize": [
+        840,
+        541
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-join-surface.png",
+      "sha256": "f78a6633984a0b5ac2d901d2926cc71eb99c8a11109361afaad917e5f8ab9c38",
+      "label": "01 Tham gia",
+      "sourceSize": [
+        358,
+        483
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        483
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-waiting-surface.png",
+      "sha256": "aef02570d1803f6dc7bc84803aadf4422f06ebe874937eb7ad2925d0fb82beda",
+      "label": "02 Phòng chờ",
+      "sourceSize": [
+        358,
+        645
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        645
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-question-surface.png",
+      "sha256": "d07016e8fee88b50ecbc834e840bf24dd8c9cd71dbb846f8047939213185f51d",
+      "label": "03 Câu hỏi",
+      "sourceSize": [
+        358,
+        796
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        796
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-selected-surface.png",
+      "sha256": "b267c0eb6eb0794a573cb4bca569d424f2463948e57bfa94964ebc9f21377c70",
+      "label": "04 Đã chọn",
+      "sourceSize": [
+        358,
+        796
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        796
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-submitted-surface.png",
+      "sha256": "6353db762548526dde47a59a083315f6b203648de26f6bb25b397d7f09501ec7",
+      "label": "05 Server đã nhận",
+      "sourceSize": [
+        358,
+        786
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        786
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-leaderboard-surface.png",
+      "sha256": "394c1f3eca2ed1190121edddb759074ba7456a2acf52584c21ed1b1511dd2f21",
+      "label": "06 Reveal / Xếp hạng",
+      "sourceSize": [
+        358,
+        1303
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        1303
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-finished-surface.png",
+      "sha256": "57e74f0a5d051a6698abe3bd1da16da39782c2faf26870331b3ff1f1122fd32e",
+      "label": "07 Kết quả cuối cùng",
+      "sourceSize": [
+        358,
+        1187
+      ],
+      "crop": [
+        0,
+        0,
+        358,
+        521
+      ],
+      "displaySize": [
+        358,
+        521
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/teacher-leaderboard-surface.png",
+      "sha256": "2888f876f2a568f252436fc2d0d1f94d172cbd029d60ef9a1f34897c6edc6c4d",
+      "label": "08 Teacher / Chuyển câu",
+      "sourceSize": [
+        358,
+        1614
+      ],
+      "crop": [
+        0,
+        0,
+        358,
+        375
+      ],
+      "displaySize": [
+        358,
+        375
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/before/chromium/1440/teacher-active.png",
+      "sha256": "0f20ee8c373d105d75bbabaae1c80914cbedb1784b0d06e771bd18d4a6963e0b",
+      "label": "BEFORE / Teacher active",
+      "sourceSize": [
+        1440,
+        960
+      ],
+      "crop": [
+        144,
+        106,
+        1296,
+        768
+      ],
+      "displaySize": [
+        1000,
+        575
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/teacher-active.png",
+      "sha256": "1ddaf81032a80c95d23d24834404980e78201091f8204f22cd7e66b8ac6a3b6f",
+      "label": "AFTER / Teacher active",
+      "sourceSize": [
+        1440,
+        960
+      ],
+      "crop": [
+        144,
+        106,
+        1296,
+        768
+      ],
+      "displaySize": [
+        1000,
+        575
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/before/chromium/1440/student-question.png",
+      "sha256": "8562b2cc97489441ee026d5e53f5dab4194d5d621973fec2b6a440ff72863721",
+      "label": "BEFORE / Student question",
+      "sourceSize": [
+        1440,
+        996
+      ],
+      "crop": [
+        282,
+        106,
+        1158,
+        914
+      ],
+      "displaySize": [
+        876,
+        808
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-question.png",
+      "sha256": "7ec745de5ddd3772c2cbaff05eaa06e4e3edda92e12317f1ea4ef65abce31731",
+      "label": "AFTER / Student question",
+      "sourceSize": [
+        1440,
+        990
+      ],
+      "crop": [
+        282,
+        106,
+        1158,
+        914
+      ],
+      "displaySize": [
+        876,
+        808
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/before/chromium/1440/student-submitted.png",
+      "sha256": "8b5e31808e1b7ecb1a09fd4c4de76bc1f6110ac3bfa96e1351a6d8ede0c90713",
+      "label": "BEFORE / Submission acknowledgement",
+      "sourceSize": [
+        1440,
+        988
+      ],
+      "crop": [
+        282,
+        106,
+        1158,
+        914
+      ],
+      "displaySize": [
+        876,
+        808
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/1440/student-submitted.png",
+      "sha256": "afb3d26e29f9a1c321cb4b9d2944cdc393fd9e1b9249d4d77132307ade32f7f7",
+      "label": "AFTER / Submission acknowledgement",
+      "sourceSize": [
+        1440,
+        994
+      ],
+      "crop": [
+        282,
+        106,
+        1158,
+        914
+      ],
+      "displaySize": [
+        876,
+        808
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/hardening/join-pending-surface.png",
+      "sha256": "542cd636551bd4fa64593662226c8eea6c463558efcb1d79b86c3944568d900b",
+      "label": "01 Join / Chờ ACK",
+      "sourceSize": [
+        358,
+        711
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        711
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/hardening/join-timeout-surface.png",
+      "sha256": "8ffadfbbdd2e6f18a49841d9b04e36a6fb8ffda64da71e0b8733dddf91808fcf",
+      "label": "02 Join / Chưa xác nhận",
+      "sourceSize": [
+        358,
+        790
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        790
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/hardening/join-recovered-surface.png",
+      "sha256": "228ed99ba4372c9a25dbe8091ade936be294ae3fd895e17940d3f9db60216d08",
+      "label": "03 Join / Kết nối lại",
+      "sourceSize": [
+        358,
+        578
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        578
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/hardening/library-empty-surface.png",
+      "sha256": "a7ad93d98bd6a761f2c86cc72e9da6f3517e045ebeebc10f4e0ed06e12e9c1ce",
+      "label": "04 Library / Trống",
+      "sourceSize": [
+        358,
+        464
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        464
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/hardening/library-error-surface.png",
+      "sha256": "f2190870e9b89356a66f315d08ad026abbad07b0d7f819f1e24d717d42d0e977",
+      "label": "05 Library / Lỗi tải",
+      "sourceSize": [
+        358,
+        342
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        342
+      ]
+    },
+    {
+      "source": "external-artifacts/live-quiz-rollout/after/chromium/390/student-disconnected-surface.png",
+      "sha256": "adf450be7c2d0efad31e842713178fbe4cef91a4b885a9a73f50244b0178b66f",
+      "label": "06 Student / Mất kết nối",
+      "sourceSize": [
+        358,
+        929
+      ],
+      "crop": null,
+      "displaySize": [
+        358,
+        929
+      ]
+    }
+  ],
+  "cleanupProvenance": "Historical record. external-artifacts/ paths are logical identifiers for uncommitted scratch artifacts, no longer available locally. Original sha256 values refer to pre-cleanup records; current metadata integrity is recorded in live-quiz-final-verification.json. Approved PNG bytes are unchanged."
+}

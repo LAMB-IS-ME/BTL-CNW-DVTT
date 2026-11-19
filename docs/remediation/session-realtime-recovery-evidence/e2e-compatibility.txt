@@ -1,0 +1,112 @@
+[WebServer] (node:32048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32069) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:32131) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The following dependencies are imported but could not be resolved:
+[WebServer] 
+[WebServer]   @hookform/resolvers/zod (imported by /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx)
+[WebServer] 
+[WebServer] Are they installed?
+[WebServer]     at file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:28264:33
+[WebServer]     at async file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:35568:15
+[WebServer] 10:07:56 PM [vite] (client) Pre-transform error: Failed to resolve import "@hookform/resolvers/zod" from "src/features/auth.tsx". Does the file exist?
+[WebServer]   Plugin: vite:import-analysis
+[WebServer]   File: /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx:12:28
+[WebServer]   3  |  import { Navigate, useNavigate, Link } from "react-router-dom";
+[WebServer]   4  |  import { useForm } from "react-hook-form";
+[WebServer]   5  |  import { zodResolver } from "@hookform/resolvers/zod";
+[WebServer]      |                               ^
+[WebServer]   6  |  import { loginSchema, registerSchema } from "@exam/shared";
+[WebServer]   7  |  import { z } from "zod";
+[WebServer] 10:07:56 PM [vite] (client) Pre-transform error: Failed to resolve import "@hookform/resolvers/zod" from "src/features/auth.tsx". Does the file exist?
+[WebServer]   Plugin: vite:import-analysis
+[WebServer]   File: /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx:12:28
+[WebServer]   3  |  import { Navigate, useNavigate, Link } from "react-router-dom";
+[WebServer]   4  |  import { useForm } from "react-hook-form";
+[WebServer]   5  |  import { zodResolver } from "@hookform/resolvers/zod";
+[WebServer]      |                               ^
+[WebServer]   6  |  import { loginSchema, registerSchema } from "@exam/shared";
+[WebServer]   7  |  import { z } from "zod";
+
+Running 16 tests using 1 worker
+
+(node:32183) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 10:07:57 PM [vite] Internal server error: Failed to resolve import "@hookform/resolvers/zod" from "src/features/auth.tsx". Does the file exist?
+[WebServer]   Plugin: vite:import-analysis
+[WebServer]   File: /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx:12:28
+[WebServer]   3  |  import { Navigate, useNavigate, Link } from "react-router-dom";
+[WebServer]   4  |  import { useForm } from "react-hook-form";
+[WebServer]   5  |  import { zodResolver } from "@hookform/resolvers/zod";
+[WebServer]      |                               ^
+[WebServer]   6  |  import { loginSchema, registerSchema } from "@exam/shared";
+[WebServer]   7  |  import { z } from "zod";
+[WebServer]       at TransformPluginContext._formatLog (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:8736:39)
+[WebServer]       at TransformPluginContext.error (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:8733:14)
+[WebServer]       at normalizeUrl (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:26423:18)
+[WebServer]       at async file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:26493:30
+[WebServer]       at async Promise.all (index 4)
+[WebServer]       at async TransformPluginContext.transform (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:26459:4)
+[WebServer]       at async EnvironmentPluginContainer.transform (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:8515:14)
+[WebServer]       at async loadAndTransform (file:///home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/node/chunks/node.js:19998:26)
+[WebServer] 10:07:57 PM [vite] (client) Pre-transform error: Failed to resolve import "@hookform/resolvers/zod" from "src/features/auth.tsx". Does the file exist?
+[WebServer]   Plugin: vite:import-analysis
+[WebServer]   File: /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx:12:28
+[WebServer]   3  |  import { Navigate, useNavigate, Link } from "react-router-dom";
+[WebServer]   4  |  import { useForm } from "react-hook-form";
+[WebServer]   5  |  import { zodResolver } from "@hookform/resolvers/zod";
+[WebServer]      |                               ^
+[WebServer]   6  |  import { loginSchema, registerSchema } from "@exam/shared";
+[WebServer]   7  |  import { z } from "zod";
+[WebServer] 10:07:57 PM [vite] (client) Pre-transform error: Failed to resolve import "@hookform/resolvers/zod" from "src/features/auth.tsx". Does the file exist?
+[WebServer]   Plugin: vite:import-analysis
+[WebServer]   File: /tmp/examspace-session-recovery/source/apps/web/src/features/auth.tsx:12:28
+[WebServer]   3  |  import { Navigate, useNavigate, Link } from "react-router-dom";
+[WebServer]   4  |  import { useForm } from "react-hook-form";
+[WebServer]   5  |  import { zodResolver } from "@hookform/resolvers/zod";
+[WebServer]      |                               ^
+[WebServer]   6  |  import { loginSchema, registerSchema } from "@exam/shared";
+[WebServer]   7  |  import { z } from "zod";
+  ✘   1 tests/e2e/admin.spec.ts:33:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery (46.9s)
+
+
+  1) tests/e2e/admin.spec.ts:33:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery 
+
+    Test was interrupted.
+
+    Error: locator.fill: Test ended.
+    Call log:
+      - waiting for getByLabel('Email', { exact: true })
+
+
+      4 | async function login(page: Page, email: string) {
+      5 |   await page.goto("/login");
+    > 6 |   await page.getByLabel("Email", { exact: true }).fill(email);
+        |                                                   ^
+      7 |   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
+      8 |   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+      9 |   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
+        at login (/tmp/examspace-session-recovery/source/tests/e2e/admin.spec.ts:6:51)
+        at /tmp/examspace-session-recovery/source/tests/e2e/admin.spec.ts:37:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 interrupted
+    tests/e2e/admin.spec.ts:33:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery 
+  15 did not run

@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "auditStatus": "COMPLETE",
+  "auditDate": "2026-10-12",
+  "timezone": "Asia/Bangkok",
+  "baseline": {
+    "repository": "LAMB-IS-ME/BTL-CNW-DVTT",
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+    "initialWorkingTree": "CLEAN"
+  },
+  "scope": "AUDIT_ONLY",
+  "productChanges": false,
+  "releaseReady": false,
+  "confirmedFindings": [
+    {
+      "id": "ADMIN-001",
+      "severity": "P1",
+      "type": "CONFIRMED PRODUCT BUG",
+      "title": "Admin lock/unlock and role changes fail",
+      "releaseCategory": "RELEASE BLOCKER",
+      "evidence": "evidence/admin-probe.json"
+    },
+    {
+      "id": "SEC-001",
+      "severity": "P2",
+      "type": "SECURITY ADVISORY",
+      "title": "Three advisories affecting seven entries",
+      "releaseCategory": "RELEASE BLOCKER",
+      "evidence": "evidence/advisory-analysis.json"
+    },
+    {
+      "id": "QA-001",
+      "severity": "P2",
+      "type": "TEST HARNESS BUG",
+      "title": "Ambiguous feedback locator in tracked core E2E",
+      "releaseCategory": "RELEASE BLOCKER",
+      "evidence": "evidence/test-summary.json"
+    },
+    {
+      "id": "SYS-001",
+      "severity": "P2",
+      "type": "CONFIRMED PRODUCT BUG",
+      "title": "First-page-only management lists and bank picker",
+      "releaseCategory": "SHOULD FIX BEFORE HANDOFF",
+      "evidence": "evidence/pagination-probe.json"
+    },
+    {
+      "id": "SYS-002",
+      "severity": "P2",
+      "type": "CONFIRMED PRODUCT BUG",
+      "title": "Class query key collision across page sizes",
+      "releaseCategory": "SHOULD FIX BEFORE HANDOFF",
+      "evidence": "evidence/pagination-probe.json"
+    },
+    {
+      "id": "ASSET-001",
+      "severity": "P2",
+      "type": "CONFIRMED PRODUCT BUG",
+      "title": "Published question can retain deleted image reference",
+      "releaseCategory": "SHOULD FIX BEFORE HANDOFF",
+      "evidence": "evidence/asset-probe.json"
+    },
+    {
+      "id": "AUTH-001",
+      "severity": "P2",
+      "type": "CONFIRMED PRODUCT BUG",
+      "title": "Expired session does not recover cached SPA auth state",
+      "releaseCategory": "SHOULD FIX BEFORE HANDOFF",
+      "evidence": "evidence/test-summary.json"
+    },
+    {
+      "id": "DOC-001",
+      "severity": "P2",
+      "type": "DOCUMENTATION GAP",
+      "title": "Ignored source specs break fresh-clone handoff",
+      "releaseCategory": "SHOULD FIX BEFORE HANDOFF",
+      "evidence": "evidence/local-spec-review.json"
+    },
+    {
+      "id": "REL-001",
+      "severity": "P3",
+      "type": "ARCHITECTURAL LIMITATION",
+      "title": "Persisted Quiz presence remains stale after crash",
+      "releaseCategory": "ACCEPTANCE DECISION REQUIRED",
+      "evidence": "evidence/restart.json"
+    }
+  ],
+  "completedTests": [
+    {
+      "suite": "lint/typecheck/unit",
+      "result": "PASS",
+      "unitCount": 53,
+      "provenance": "prior-turn transcript, unchanged baseline; raw scratch logs lost",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "evidenceStatus": "FINAL transcript; raw scratch logs lost; not rerun"
+    },
+    {
+      "suite": "integration",
+      "passed": 33,
+      "failed": 0,
+      "provenance": "persisted log + command record",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "tracked-e2e",
+      "passed": 13,
+      "failed": 1,
+      "provenance": "persisted log",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "diagnostic": "tests/e2e/core.spec.ts:124 getByLabel('Nhận xét') matched feedback textarea and dialog aria-labelledby grading-leave-title (Điểm và nhận xét chưa lưu).",
+      "evidenceStatus": "FINAL: tracked suite remains FAIL"
+    },
+    {
+      "suite": "build/deployment-smoke",
+      "result": "PASS",
+      "provenance": "persisted logs",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "local production cookie probe",
+      "result": "PASS",
+      "provenance": "evidence/production-probe.json; simulated proxy HTTPS, not real TLS",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "restart recovery",
+      "result": "PASS_WITH_LIMITATION",
+      "provenance": "evidence/restart.json; stale participant isConnected after crash",
+      "executionPeriod": "earlier continuation of this audit, same baseline"
+    },
+    {
+      "suite": "Live Quiz chromium lifecycle",
+      "passed": 7,
+      "failed": 0,
+      "provenance": "persisted live-lifecycle.log final retry; initial 7 setup failures were missing DEMO_PASSWORD",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "seconds": 163.55
+    },
+    {
+      "suite": "separate core grading browser",
+      "passed": 1,
+      "provenance": "prior-turn final log visible in transcript; raw scratch lost",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "seconds": 8.4
+    },
+    {
+      "suite": "Admin create / Teacher author / Student four-type answer / grading / MANUAL release",
+      "result": "PASS_CORE_WITH_ADMIN_MUTATION_FAILURE",
+      "provenance": "prior-turn assertions and final log in transcript; Admin failure persisted separately",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "assertions": [
+        "Admin created Teacher and Student accounts",
+        "Membership upsert twice creates one member",
+        "Four question types; stable saved question IDs/deadline and no answer keys",
+        "Objective score6 plus essay1.5 =7.5/8",
+        "MANUAL result hidden before release and correct feedback after",
+        "Foreign teacher404, Student Admin API403, Admin Teacher API403"
+      ]
+    },
+    {
+      "suite": "representative geometry + role switch",
+      "result": "PASS",
+      "screens": 10,
+      "widths": [
+        1440,
+        1024,
+        820,
+        390,
+        320
+      ],
+      "provenance": "prior-turn final log + image inspection in transcript; geometry file/screenshots lost before checkpoint",
+      "executionPeriod": "earlier continuation of this audit, same baseline",
+      "evidenceStatus": "FINAL transcript; 50 geometry observations; no surviving original per-screen files"
+    },
+    {
+      "suite": "remaining audit reproductions",
+      "executionPeriod": "current final continuation",
+      "result": "COMPLETED",
+      "finalPassedAcrossRuns": 3,
+      "initialRun": {
+        "passed": 2,
+        "failed": 1,
+        "failureType": "audit heading locator"
+      },
+      "retry": {
+        "scope": "pagination only",
+        "passed": 1,
+        "failed": 0,
+        "seconds": 8.0
+      },
+      "productOutcome": "CONFIRMED failures, not product PASS",
+      "evidence": [
+        "remainder-run.json",
+        "pagination-probe.json",
+        "asset-probe.json",
+        "admin-browser-probe.json"
+      ]
+    },
+    {
+      "suite": "migration/seed to restore lost scratch fixture",
+      "executionPeriod": "current final continuation",
+      "result": "PASS",
+      "scope": "loopback examspace_audit_test only; setup, not a rerun of integration"
+    },
+    {
+      "suite": "expired-session browser observation",
+      "executionPeriod": "earlier continuation of same audit",
+      "result": "CONFIRMED UX FAILURE",
+      "evidenceStatus": "Completed observation and source inspection; transcript only, screenshot lost",
+      "serverAuthorization": "401 correctly enforced",
+      "finding": "AUTH-001"
+    }
+  ],
+  "remainingAuditTasks": [],
+  "authorization": {
+    "npmAuditMetadataTransfer": "explicitly approved",
+    "dependencyFixOrUpgrade": false,
+    "commit": false,
+    "push": false,
+    "deploy": false
+  },
+  "readinessVerdict": "NOT READY FOR RELEASE / HANDOFF",
+  "findingsBySeverity": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 7,
+    "P3": 1
+  },
+  "findingsByType": {
+    "CONFIRMED PRODUCT BUG": 5,
+    "SECURITY ADVISORY": 1,
+    "TEST HARNESS BUG": 1,
+    "DOCUMENTATION GAP": 1,
+    "ARCHITECTURAL LIMITATION": 1
+  },
+  "notTested": [
+    "Hosted Storage/TLS/DB pooling",
+    "Cross-site browser cookies",
+    "Cloud WSS/restart",
+    "Load/soak/multi-instance",
+    "Screen reader certification",
+    "Staging/production not deployed"
+  ],
+  "recommendedNextPhase": "Admin P1 + release-gate remediation, only after user review/approval",
+  "releaseGates": [
+    {
+      "id": "ADMIN-001",
+      "type": "CONFIRMED PRODUCT BUG",
+      "status": "FAIL"
+    },
+    {
+      "id": "SEC-001",
+      "type": "SECURITY ADVISORY",
+      "status": "FAIL"
+    },
+    {
+      "id": "QA-001",
+      "type": "TEST HARNESS BUG",
+      "status": "FAIL"
+    },
+    {
+      "id": "HOSTED-VERIFICATION",
+      "type": "NOT TESTED",
+      "status": "NOT SATISFIED",
+      "detail": "No staging/production deployment authorized or performed. Local production bundles are not hosted readiness."
+    }
+  ],
+  "deployment": {
+    "configurationReview": "COMPLETE",
+    "localProductionBuild": "PASS",
+    "localProductionBundleSmoke": "PASS with NODE_ENV=test",
+    "localProductionCookieProbe": "PASS with simulated HTTPS proxy header",
+    "realTlsBrowserCrossSite": "NOT TESTED",
+    "staging": "NOT TESTED",
+    "production": "NOT TESTED",
+    "recommendedTopology": "One persistent Node/Socket.IO instance + PostgreSQL/Supabase private Storage + static SPA; prefer same-site HTTPS app/API when feasible",
+    "environmentInventory": "evidence/environment-inventory.json"
+  },
+  "btl": {
+    "status": "PARTIAL",
+    "matrix": "evidence/btl-requirements.json",
+    "projectRequirementsSource": "Local MASTER_SPEC + tracked SRS; source spec excluded from Git",
+    "officialGradingRubric": "NOT PROVIDED / UNCLEAR",
+    "reportSlidesDemo": "MASTER_SPEC49 calls for technical report/slide/demo; final submission artifacts not verified",
+    "videoRequiredness": "UNCLEAR",
+    "noReportSlidesVideoCreated": true,
+    "matrixUniqueRequirements": 40,
+    "srsFunctionalRequirements": 32
+  },
+  "roadmap": [
+    {
+      "order": 1,
+      "scope": "ADMIN-001 then SEC-001/QA-001 release gates",
+      "acceptance": "Successful Admin mutations with concurrency/RBAC/session regressions; audit policy and tracked E2E green"
+    },
+    {
+      "order": 2,
+      "scope": "SYS-001/SYS-002/ASSET-001/AUTH-001 cross-module correctness",
+      "acceptance": "Boundary pagination/cache, image lifecycle and expiry recovery regression tests"
+    },
+    {
+      "order": 3,
+      "scope": "Narrow Admin UX and DOC-001 fresh-clone handoff",
+      "acceptance": "Clear states/labels plus tracked requirements links and accurate setup; preserve approved UI/history"
+    },
+    {
+      "order": 4,
+      "scope": "Deployment configuration and resources",
+      "acceptance": "Agreed auth topology, secret stores, migrations/private bucket/backup/demo runbook"
+    },
+    {
+      "order": 5,
+      "scope": "Authorized staging verification",
+      "acceptance": "Real HTTPS cookies, WSS/restart, all-role workflows, images, exports, deep links and restore drill"
+    },
+    {
+      "order": 6,
+      "scope": "BTL submission/demo",
+      "acceptance": "Stable demo dates/data and report/slides/video according to confirmed submission scope"
+    }
+  ],
+  "safety": {
+    "trackedSourceUnchanged": "See evidence/git-final.json",
+    "temporaryPostgres": "Stopped after final tests",
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "merged": false,
+    "prCreated": false,
+    "resetCheckoutDiscard": false,
+    "dependencyFixUpgrade": false,
+    "packageLockEdited": false
+  }
+}

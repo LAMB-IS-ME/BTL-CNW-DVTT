@@ -1,0 +1,20 @@
+{
+  "initial": {
+    "passed": 2,
+    "failed": 1,
+    "seconds": 19.0,
+    "failureType": "AUDIT HARNESS LOCATOR",
+    "detail": "Expected B\u00e0i thi; actual h1 B\u00e0i thi c\u1ee7a t\u00f4i. API pagination/cache/picker assertions completed and checkpointed before this failure.",
+    "passedTests": [
+      "published image deletion reproduction",
+      "Admin error screenshots"
+    ]
+  },
+  "retry": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 8.0,
+    "scope": "pagination only after audit heading correction",
+    "finalOutcome": "all three intended reproductions complete; product failures confirmed, not remediated"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "baselineHead": "d3e7cbadab88a3e4b8839941edaa9d590085e1ca",
+  "historicalArtifacts": 47,
+  "historicalHashMismatches": [],
+  "previousAutoReview": {
+    "command": "npm test (redirected to unit-complete.txt)",
+    "status": "NOT EXECUTED",
+    "reason": "automatic approval review could not complete because workspace credits were exhausted; not an unsafe-action decision",
+    "resumedWithNormalApprovalMechanism": true
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "actual": "401 enforced but cached identity and protected route remain",
+  "confirmed": true,
+  "expiry": "real PostgreSQL session expiration",
+  "url": "/teacher/quizzes"
+}

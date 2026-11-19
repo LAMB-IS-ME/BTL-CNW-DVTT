@@ -1,0 +1,2793 @@
+{
+  "head": "660038940008907a20dbdc8c0b2d730d7d7ee08d",
+  "branch": "ui/final-refinement-recovery",
+  "reviewDate": "2026-10-21",
+  "evidenceOrigin": "Fresh targeted recovery run. Original /tmp evidence no longer exists. Historical PASS counts below are conversation checkpoints, not reconstructed logs.",
+  "previousCheckpoint": {
+    "productionLocal": "6/6 rooms passed: full lifecycle plus simultaneous answers 3x, duplicate/disconnect, host offline/rejoin",
+    "unitAndIntegration": "17 unit/frontend + 5 Live Quiz integration passed",
+    "existingBrowserTests": "2 missing-ACK recovery tests passed",
+    "controlledDev": "2/2 stale Host reproductions with 500ms delayed leave",
+    "hostedStaging": "Not verified; untouched"
+  },
+  "freshChecks": {
+    "controlledBrowser": "1/1 reproduced with native WebSocket/polling observation, 1 Teacher and 2 independent Students",
+    "protocolOnly": "1/1 reproduced with real Socket.IO client and no React",
+    "fault": "500ms delay in test-only Socket.IO middleware for old leave; no application source changes",
+    "database": "Temporary loopback PostgreSQL 16; existing migrations; synthetic users only",
+    "server": "Existing createApp/createRealtime modules, unmodified authorization and quiz service; extra observation and test-only delayed middleware completion"
+  },
+  "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+  "originalHostSocket": "tKM3_ov-YpUiLwW3AAAC",
+  "browser": {
+    "outcome": "CONFIRMED_STALE_HOST",
+    "waitAfterAnswersMs": 10337,
+    "dbAnswers": [
+      {
+        "id": "e790eaa6-46e6-402d-a7d1-6f5e284183ea",
+        "participantId": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+        "pointsAwarded": 1499
+      },
+      {
+        "id": "21b1126e-eb90-4bc9-9c1f-07e16ca9c339",
+        "participantId": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+        "pointsAwarded": 1499
+      }
+    ],
+    "dbRoom": {
+      "status": "LIVE",
+      "currentQuestionIndex": 0,
+      "revealedAt": "2026-10-21T08:06:53.069Z"
+    },
+    "react": [
+      {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": null,
+        "ownAnswer": null,
+        "participants": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          }
+        ],
+        "leaderboard": []
+      },
+      {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ],
+        "participants": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          }
+        ],
+        "leaderboard": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 1
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 2
+          }
+        ]
+      },
+      {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ],
+        "participants": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          }
+        ],
+        "leaderboard": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 1
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 2
+          }
+        ]
+      }
+    ],
+    "hostMembership": [
+      "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+    ],
+    "hostTransportConnected": true,
+    "reload": {
+      "socketId": "gIOlooPhk6zSeSywAAAD",
+      "react": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null,
+        "participants": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "isConnected": true
+          }
+        ],
+        "leaderboard": [
+          {
+            "id": "42c93452-8b46-46f5-b070-66bdce1df6cd",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 1
+          },
+          {
+            "id": "e32ab5f9-9e0d-435e-9e1d-1bd019c2e4f0",
+            "fullName": "Nguyễn Hoàng Anh",
+            "score": 1499,
+            "rank": 2
+          }
+        ]
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    }
+  },
+  "protocolOnly": {
+    "outcome": "CONFIRMED_WITHOUT_REACT",
+    "socketId": "uZlaehQz6TScOQWuAAAE",
+    "membershipAfterJoin": [
+      "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+    ],
+    "membershipAfterLeave": [
+      "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+    ],
+    "browserHostStillJoined": true
+  },
+  "confirmedMechanism": [
+    "QuizRoom effect cleanup emits leave even before initial connection; Socket.IO buffers it. StrictMode development effect re-setup reuses the socket and emits join on connect.",
+    "Incoming leave and join each pass asynchronous authorization. Existing room/user transition queue begins in event handlers, after middleware; it serializes handler arrival, not packet arrival.",
+    "A newer join can complete and ACK before the older leave enters the transition queue. The older leave removes quiz-room membership on that same socket; transport stays connected and UI membership stays joined.",
+    "Host start returns a fresh command ACK despite lost subscription. Answer transactions and reveal persist correctly. Broadcast enumerates quiz-room members, omits the Host; React cannot apply an event it never receives.",
+    "Reload opens a different socket and restores state and room membership. A leave on an old different socket cannot directly delete the new socket membership; protocol-only test confirmed the other Host socket remains subscribed.",
+    "Explicit leave currently leaves the unused quiz-host adapter room behind until disconnect; quiz-room is the broadcast target. This does not mean Host is still subscribed to quiz-state."
+  ],
+  "limits": [
+    "Controlled delays prove scheduling susceptibility, not natural reproduction probability.",
+    "Fresh trace does not establish the cause of the original 16 October audit.",
+    "Normal production bundle PASS does not disprove server ordering weakness; controlled FAIL does not prove hosted staging FAIL.",
+    "Fresh run only reconstructs missing race evidence; production build and previously passing suites were not rerun."
+  ],
+  "proposedMinimalFix": [
+    {
+      "file": "apps/web/src/features/quiz.tsx",
+      "change": "Remove explicit quiz:room:leave from effect teardown; remove listeners and disconnect the component-owned socket. Existing server disconnect path handles real departure, including join interrupted by disconnect. Do not merely condition leave on socket.connected."
+    },
+    {
+      "file": "apps/api/src/sockets/quiz.ts",
+      "change": "In bind(), register a per-socket FIFO gate for quiz:room:join/leave before existing asynchronous authorization middleware (quiz.bind currently executes before socket.use in server.ts). Hold each gate until the full membership operation settles, including validation/auth/error paths. Keep existing per-room/user transition queue for cross-socket coordination. Clear queued work on disconnect and retain socket.connected guard. Legitimate leave removes both quiz-room and quiz-host memberships."
+    }
+  ],
+  "fixConstraints": [
+    "No new public event fields or API error contracts, DB schema, infrastructure, scoring, timer, UI design, RBAC or authorization decisions.",
+    "Server queue must preserve ingress order through async middleware AND DB work; serializing handlers alone or releasing immediately after next() is insufficient.",
+    "Reject/cancel queued work on disconnect; release gate in finally for operation errors and on authorization-triggered disconnect. Do not make all leave events no-ops."
+  ],
+  "regressionPlan": [
+    {
+      "file": "apps/api/test/quiz.integration.test.ts",
+      "cases": [
+        "Deterministically delay old leave middleware while newer join arrives on the same socket; final membership must reflect leave then join, and reveal must reach Host without reload.",
+        "Inverse sequence join then legitimate leave ends offline; duplicate join/leave is idempotent; one participant row per student.",
+        "Host and Student reconnect on new sockets; old socket leave/disconnect does not remove new membership; two tabs keep presence online until last disconnect.",
+        "Disconnect during queued/in-flight join, validation errors, and authorization-triggered disconnect release queues and create no ghost presence."
+      ]
+    },
+    {
+      "file": "apps/web/src/features/quiz.test.tsx",
+      "cases": [
+        "StrictMode setup/cleanup/setup sends no obsolete explicit leave; cleanup disconnects owned socket; obsolete ACK ignored."
+      ]
+    },
+    {
+      "file": "tests/ui/live-quiz-hardening.spec.ts",
+      "cases": [
+        "Three independent contexts: lobby, activation, both answers, server reveal observed on Host without reload; correlate DB, Socket.IO receive, React and UI.",
+        "Student disconnect after submit restores ownAnswer without extra answer/participant; Host reconnect during question and offline during reveal recovers deadline and latest state.",
+        "Run targeted regression on dev StrictMode and production build; preserve existing timer, scoring and lost-ACK checks."
+      ]
+    }
+  ],
+  "traceTimeUnit": "Milliseconds from start of fresh probe; browser receipt timestamps are observation completion times, not exact network arrival times.",
+  "trace": [
+    {
+      "ms": 1480.75,
+      "layer": "browser-sent",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "1",
+          "event": "quiz:room:join",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 1483.59,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "polling",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "0",
+          "event": null,
+          "data": {
+            "data": {
+              "left": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 1489.47,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 1503.24,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 1504.92,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "1",
+          "event": null,
+          "data": {
+            "data": {
+              "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+              "code": "657790",
+              "status": "LOBBY",
+              "currentIndex": null,
+              "reveal": null,
+              "ownAnswer": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2591.82,
+      "layer": "browser-sent",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "1",
+          "event": "quiz:room:join",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2594,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "polling",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "0",
+          "event": null,
+          "data": {
+            "data": {
+              "left": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2596.06,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 2606.74,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2610.96,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2611.49,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2612.24,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 2615.84,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "1",
+          "event": null,
+          "data": {
+            "data": {
+              "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+              "code": "657790",
+              "status": "LOBBY",
+              "currentIndex": null,
+              "reveal": null,
+              "ownAnswer": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3628.63,
+      "layer": "connected",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "userId": "3e572efb-a47b-48d1-ae04-310dfd501a22",
+      "role": "TEACHER"
+    },
+    {
+      "ms": 3632.55,
+      "layer": "server-received",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:leave",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": []
+    },
+    {
+      "ms": 3632.59,
+      "layer": "server-received",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:join",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": []
+    },
+    {
+      "ms": 3634.94,
+      "layer": "browser-sent",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "0",
+          "event": "quiz:room:leave",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3634.96,
+      "layer": "browser-sent",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "1",
+          "event": "quiz:room:join",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3635.39,
+      "layer": "handler-ready",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:join",
+      "membership": []
+    },
+    {
+      "ms": 3636.25,
+      "layer": "injected-delay",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:leave",
+      "delayMs": 500
+    },
+    {
+      "ms": 3638.23,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 3641.02,
+      "layer": "adapter",
+      "event": "join-room",
+      "room": "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC"
+    },
+    {
+      "ms": 3641.15,
+      "layer": "adapter",
+      "event": "join-room",
+      "room": "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC"
+    },
+    {
+      "ms": 3641.94,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3643.45,
+      "layer": "server-emitted",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LOBBY",
+        "index": null,
+        "reveal": null,
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 3643.49,
+      "layer": "server-ack",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:join",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LOBBY",
+          "index": null,
+          "reveal": null,
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 3644.15,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3644.26,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3644.37,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3644.42,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3646.35,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3646.38,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LOBBY",
+            "currentIndex": null,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 3646.77,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "1",
+          "event": null,
+          "data": {
+            "data": {
+              "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+              "code": "657790",
+              "status": "LOBBY",
+              "currentIndex": null,
+              "reveal": null,
+              "ownAnswer": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4136.16,
+      "layer": "handler-ready",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:leave",
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 4136.6,
+      "layer": "adapter",
+      "event": "leave-room",
+      "room": "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC"
+    },
+    {
+      "ms": 4139.09,
+      "layer": "server-ack",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:room:leave",
+      "response": {
+        "data": {
+          "left": true
+        }
+      },
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 4140.76,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "0",
+          "event": null,
+          "data": {
+            "data": {
+              "left": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4838.64,
+      "layer": "browser-membership-after-delayed-leave",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "transportConnected": true,
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ],
+      "uiMembership": "joined"
+    },
+    {
+      "ms": 4894.53,
+      "layer": "server-received",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:host:start",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 4899.07,
+      "layer": "handler-ready",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:host:start",
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 4909.23,
+      "layer": "browser-sent",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "2",
+          "event": "quiz:host:start",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4947.35,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "started"
+    },
+    {
+      "ms": 4955.49,
+      "layer": "server-ack",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "event": "quiz:host:start",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LIVE",
+          "index": 0,
+          "reveal": null,
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 4956.91,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "2",
+          "event": null,
+          "data": {
+            "data": {
+              "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+              "code": "657790",
+              "status": "LIVE",
+              "currentIndex": 0,
+              "reveal": null,
+              "ownAnswer": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4958.69,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4963.55,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4995.32,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:started",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4995.34,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:question",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4995.94,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:started",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 4995.95,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:question",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": null,
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5087.62,
+      "layer": "server-received",
+      "socketId": "7-zUiGX-s6H1lgedAAAA",
+      "event": "quiz:answer",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207",
+        "selectedOptionIds": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 5101.73,
+      "layer": "browser-sent",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "2",
+          "event": "quiz:answer",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5106.59,
+      "layer": "server-emitted",
+      "socketId": "7-zUiGX-s6H1lgedAAAA",
+      "event": "quiz:answer:accepted",
+      "state": {
+        "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+      }
+    },
+    {
+      "ms": 5107.23,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:answer:accepted",
+          "data": {
+            "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5107.27,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "2",
+          "event": null,
+          "data": {
+            "data": {
+              "accepted": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5185.25,
+      "layer": "server-received",
+      "socketId": "A9ntafS_TRAzlbLmAAAB",
+      "event": "quiz:answer",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207",
+        "selectedOptionIds": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 5199.15,
+      "layer": "browser-sent",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "2",
+          "event": "quiz:answer",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5204.53,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "reveal"
+    },
+    {
+      "ms": 5204.54,
+      "layer": "server-emitted",
+      "socketId": "A9ntafS_TRAzlbLmAAAB",
+      "event": "quiz:answer:accepted",
+      "state": {
+        "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+      }
+    },
+    {
+      "ms": 5205.35,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:answer:accepted",
+          "data": {
+            "questionId": "5c25396f-4ba8-491c-bf2f-fa0eee080207"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5205.45,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "2",
+          "event": null,
+          "data": {
+            "data": {
+              "accepted": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5208.95,
+      "layer": "server-emitted",
+      "socketId": "7-zUiGX-s6H1lgedAAAA",
+      "event": "quiz:reveal",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      }
+    },
+    {
+      "ms": 5208.96,
+      "layer": "server-emitted",
+      "socketId": "7-zUiGX-s6H1lgedAAAA",
+      "event": "quiz:leaderboard",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      }
+    },
+    {
+      "ms": 5210.94,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5214.75,
+      "layer": "server-emitted",
+      "socketId": "A9ntafS_TRAzlbLmAAAB",
+      "event": "quiz:reveal",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      }
+    },
+    {
+      "ms": 5214.76,
+      "layer": "server-emitted",
+      "socketId": "A9ntafS_TRAzlbLmAAAB",
+      "event": "quiz:leaderboard",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": [
+          "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+        ]
+      }
+    },
+    {
+      "ms": 5215.41,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5215.42,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:question:closed",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5242.31,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:reveal",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5242.32,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:leaderboard",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5243.46,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:question:closed",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5243.5,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:reveal",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 5243.51,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:leaderboard",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15360.71,
+      "layer": "adapter",
+      "event": "leave-room",
+      "room": "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC"
+    },
+    {
+      "ms": 15360.84,
+      "layer": "disconnect",
+      "socketId": "tKM3_ov-YpUiLwW3AAAC",
+      "reason": "transport close",
+      "membership": []
+    },
+    {
+      "ms": 15842.31,
+      "layer": "browser-sent",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": "1",
+          "event": "quiz:room:join",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15845.71,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "polling",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "0",
+          "event": null,
+          "data": {
+            "data": {
+              "left": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15846.62,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 15870.12,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15880.44,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15888.99,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15889.03,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15889.06,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15906.86,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15906.87,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 15927.03,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "ack",
+          "ackId": "1",
+          "event": null,
+          "data": {
+            "data": {
+              "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+              "code": "657790",
+              "status": "LIVE",
+              "currentIndex": 0,
+              "reveal": {
+                "correctOptionIds": [
+                  "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+                ],
+                "explanationMarkdown": null,
+                "answerCount": 2
+              },
+              "ownAnswer": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16369.9,
+      "layer": "connected",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "userId": "3e572efb-a47b-48d1-ae04-310dfd501a22",
+      "role": "TEACHER"
+    },
+    {
+      "ms": 16371.79,
+      "layer": "server-received",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": []
+    },
+    {
+      "ms": 16374.31,
+      "layer": "handler-ready",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "membership": []
+    },
+    {
+      "ms": 16377.08,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 16381.38,
+      "layer": "adapter",
+      "event": "join-room",
+      "room": "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "uZlaehQz6TScOQWuAAAE"
+    },
+    {
+      "ms": 16381.4,
+      "layer": "adapter",
+      "event": "join-room",
+      "room": "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "uZlaehQz6TScOQWuAAAE"
+    },
+    {
+      "ms": 16387.2,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16387.48,
+      "layer": "server-emitted",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16388.4,
+      "layer": "server-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LIVE",
+          "index": 0,
+          "reveal": {
+            "correctOptionIds": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ],
+            "explanationMarkdown": null,
+            "answerCount": 2
+          },
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16390.96,
+      "layer": "node-received",
+      "label": "protocol-only",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16391.31,
+      "layer": "node-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LIVE",
+          "index": 0,
+          "reveal": {
+            "correctOptionIds": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ],
+            "explanationMarkdown": null,
+            "answerCount": 2
+          },
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16395.35,
+      "layer": "server-received",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:leave",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16395.44,
+      "layer": "server-received",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "payload": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16401.81,
+      "layer": "injected-delay",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:leave",
+      "delayMs": 500
+    },
+    {
+      "ms": 16403.19,
+      "layer": "handler-ready",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16405.16,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16405.2,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16405.23,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16412.9,
+      "layer": "domain",
+      "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "kind": "joined"
+    },
+    {
+      "ms": 16414.4,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16414.42,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16416.56,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16424.2,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16425.13,
+      "layer": "server-emitted",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16425.25,
+      "layer": "server-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LIVE",
+          "index": 0,
+          "reveal": {
+            "correctOptionIds": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ],
+            "explanationMarkdown": null,
+            "answerCount": 2
+          },
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16425.89,
+      "layer": "node-received",
+      "label": "protocol-only",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16425.92,
+      "layer": "node-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:join",
+      "response": {
+        "data": {
+          "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+          "status": "LIVE",
+          "index": 0,
+          "reveal": {
+            "correctOptionIds": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ],
+            "explanationMarkdown": null,
+            "answerCount": 2
+          },
+          "ownAnswer": null
+        }
+      },
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16426.81,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16426.82,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16430.24,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16430.6,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16433.9,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:state",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16433.92,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16433.94,
+      "layer": "browser-received",
+      "actor": 1,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16438.63,
+      "layer": "server-emitted",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16438.96,
+      "layer": "server-emitted",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:lobby:snapshot",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16439.05,
+      "layer": "server-emitted",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:participant:joined",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16440.67,
+      "layer": "node-received",
+      "label": "protocol-only",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:state",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16440.7,
+      "layer": "node-received",
+      "label": "protocol-only",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:lobby:snapshot",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16440.73,
+      "layer": "node-received",
+      "label": "protocol-only",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:participant:joined",
+      "state": {
+        "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "status": "LIVE",
+        "index": 0,
+        "reveal": {
+          "correctOptionIds": [
+            "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+          ],
+          "explanationMarkdown": null,
+          "answerCount": 2
+        },
+        "ownAnswer": null
+      }
+    },
+    {
+      "ms": 16441.14,
+      "layer": "browser-received",
+      "actor": 2,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": [
+              "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16446.34,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:lobby:snapshot",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16446.37,
+      "layer": "browser-received",
+      "actor": 0,
+      "transport": "websocket",
+      "packets": [
+        {
+          "type": "event",
+          "ackId": null,
+          "event": "quiz:participant:joined",
+          "data": {
+            "roomId": "fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+            "code": "657790",
+            "status": "LIVE",
+            "currentIndex": 0,
+            "reveal": {
+              "correctOptionIds": [
+                "85c27615-d9b0-4e53-a457-f5d12aad6d55"
+              ],
+              "explanationMarkdown": null,
+              "answerCount": 2
+            },
+            "ownAnswer": null
+          }
+        }
+      ]
+    },
+    {
+      "ms": 16902.48,
+      "layer": "handler-ready",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:leave",
+      "membership": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16903.52,
+      "layer": "adapter",
+      "event": "leave-room",
+      "room": "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+      "socketId": "uZlaehQz6TScOQWuAAAE"
+    },
+    {
+      "ms": 16903.73,
+      "layer": "server-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:leave",
+      "response": {
+        "data": {
+          "left": true
+        }
+      },
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16905.5,
+      "layer": "node-ack",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "event": "quiz:room:leave",
+      "response": {
+        "data": {
+          "left": true
+        }
+      },
+      "membership": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ]
+    },
+    {
+      "ms": 16905.67,
+      "layer": "protocol-only-proof",
+      "outcome": "CONFIRMED_WITHOUT_REACT",
+      "socketId": "uZlaehQz6TScOQWuAAAE",
+      "membershipAfterJoin": [
+        "quiz-room:fbbff723-f87a-47f0-93de-8a8ea3eafd85",
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ],
+      "membershipAfterLeave": [
+        "quiz-host:fbbff723-f87a-47f0-93de-8a8ea3eafd85"
+      ],
+      "browserHostStillJoined": true
+    }
+  ],
+  "sourceEdited": false,
+  "cleanup": "Probe API/browser closed; temporary Vite and PostgreSQL stopped; ports 3000/5173/55439 verified free; task-owned /tmp/examspace-race-resume removed.",
+  "gitVerification": {
+    "branch": "ui/final-refinement-recovery",
+    "head": "660038940008907a20dbdc8c0b2d730d7d7ee08d",
+    "preExistingFilesComparedBySHA256": 598,
+    "preExistingFilesChanged": [],
+    "modifiedTrackedFiles": [
+      "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+      "docs/deployment/FREE_STAGING_RUNBOOK.md",
+      "docs/deployment/free-staging-verification.json"
+    ],
+    "historicalUntrackedPreserved": 182,
+    "newUntrackedEvidence": [
+      "docs/audit/evidence/live-quiz-race-review.json"
+    ]
+  }
+}

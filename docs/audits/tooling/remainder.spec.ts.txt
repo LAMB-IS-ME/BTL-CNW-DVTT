@@ -1,0 +1,81 @@
+// Audit-only reproduction. Copy to isolated tracked-source workspace/tests/audit.
+// DEMO_PASSWORD supplied in memory; writes only sanitized observations/screenshots.
+import { test, expect, type BrowserContext } from '@playwright/test';
+import { writeFileSync } from 'node:fs';
+import { createDb } from '../../apps/api/src/db/client';
+const base='http://localhost:3000/api/v1', origin='http://localhost:5173';
+const out=process.env.AUDIT_EVIDENCE_DIR!;
+function save(name:string,data:unknown){writeFileSync(`${out}/${name}.json`,JSON.stringify(data,null,2)+'\n');}
+async function mutate(c:BrowserContext,p:string,data:any={},method='POST'){
+ const token=(await(await c.request.get(base+'/auth/csrf')).json()).data.token;
+ const r=await c.request.fetch(base+p,{method,data,headers:{Origin:origin,'X-CSRF-Token':token}});
+ expect(r.ok(),`${method} ${p}: ${await r.text()}`).toBeTruthy();
+ return r.status()===204?null:(await r.json()).data;
+}
+async function login(c:BrowserContext,email:string){return mutate(c,'/auth/login',{email,password:process.env.DEMO_PASSWORD});}
+async function get(c:BrowserContext,p:string){const r=await c.request.get(base+p);expect(r.ok()).toBeTruthy();return (await r.json()).data;}
+test('pagination and shared class cache reproduce with valid excess records',async({browser})=>{
+ const db=createDb(process.env.TEST_DATABASE_URL!); const a=await browser.newContext(),t=await browser.newContext();
+ try {
+ await login(a,'admin@exam.local');
+ const u=await mutate(a,'/admin/users',{email:`pagination-audit-${Date.now()}@exam.local`,password:process.env.DEMO_PASSWORD,fullName:'Audit Pagination',role:'TEACHER'});
+ await login(t,u.email);
+ const oldDate=new Date(Date.now()-86400000);
+ const oldClass=await db.class.create({data:{teacherId:u.id,name:'Audit older class',createdAt:oldDate}});
+ const examData={teacherId:u.id,openAt:new Date(Date.now()-60000),closeAt:new Date(Date.now()+3600000),durationMinutes:30};
+ const oldExam=await db.exam.create({data:{...examData,title:'Audit older exam',createdAt:oldDate}});
+ await db.class.createMany({data:Array.from({length:21},(_,i)=>({teacherId:u.id,name:`Audit class ${i}`}))});
+ await db.exam.createMany({data:Array.from({length:21},(_,i)=>({...examData,title:`Audit exam ${i}`}))});
+ await db.questionBank.createMany({data:Array.from({length:102},(_,i)=>({ownerTeacherId:u.id,title:`Audit bank ${i}`}))});
+ const obs:any={provenance:'current continuation; actual loopback API and Chromium; synthetic fixture',counts:{classes:22,exams:22,banks:102}};
+ obs.api={classes:[(await get(t,'/teacher/classes')).length,(await get(t,'/teacher/classes?page=2')).length],exams:[(await get(t,'/teacher/exams')).length,(await get(t,'/teacher/exams?page=2')).length],banks:[(await get(t,'/teacher/question-banks?pageSize=100')).length,(await get(t,'/teacher/question-banks?pageSize=100&page=2')).length],adminClasses:[(await get(a,'/admin/classes')).length,(await get(a,'/admin/classes?page=2')).length]};
+ expect(obs.api.classes).toEqual([20,2]);expect(obs.api.exams).toEqual([20,2]);expect(obs.api.banks).toEqual([100,2]);save('pagination-probe',obs);
+ const p=await t.newPage();await p.goto('/teacher/classes');await expect(p.locator('a.card')).toHaveCount(20);
+ obs.classList={rendered:20,olderClassVisible:await p.locator(`a[href="/teacher/classes/${oldClass.id}"]`).count()};
+ await p.getByRole('link',{name:'Bài thi',exact:true}).click();
+ await p.getByRole('link',{name:/Tạo bài thi/}).click();
+ await expect(p.getByRole('heading',{name:'Tạo bài thi',exact:true,level:1})).toBeVisible();
+ await p.locator('.exam-steps button').nth(1).click();await expect(p.locator('.exam-class-list input')).toHaveCount(20);
+ obs.cache={afterSpaNavigation:20};save('pagination-probe',obs);
+ await p.reload();await p.locator('.exam-steps button').nth(1).click();await expect(p.locator('.exam-class-list input')).toHaveCount(22);
+ obs.cache.afterReload=22;
+ await p.locator('.exam-steps button').nth(2).click();await expect(p.getByLabel('Ngân hàng',{exact:true}).locator('option')).toHaveCount(101);
+ obs.bankPicker={selectableBanks:100,placeholder:1,validBanksNotOffered:2};save('pagination-probe',obs);
+ await p.goto('/teacher/exams');await expect(p.getByRole('heading',{name:'Bài thi của tôi',exact:true,level:1})).toBeVisible();
+ await expect(p.locator('.exam-list-row')).toHaveCount(20);
+ obs.examList={rendered:20,olderExamLinks:await p.locator(`a[href*="${oldExam.id}"]`).count(),paginationControls:await p.getByRole('button',{name:/Trang sau|Trang trước/}).count()};
+ const ap=await a.newPage();await ap.goto('/admin/classes');await expect(ap.locator('main .card')).toHaveCount(20);
+ obs.adminClassList={rendered:20,apiSecondPageRecords:obs.api.adminClasses[1]};obs.result='CONFIRMED';save('pagination-probe',obs);
+ }finally{await db.$disconnect();await a.close();await t.close();}
+});
+test('published image reference can be deleted before first attempt',async({browser})=>{
+ const t=await browser.newContext(),s=await browser.newContext();
+ try{
+ await login(t,'teacher1@exam.local');await login(s,'student1@exam.local');
+ const cl=await mutate(t,'/teacher/classes',{name:'Audit image class'});
+ const students=await get(t,'/teacher/students?search=student1@exam.local');await mutate(t,`/teacher/classes/${cl.id}/students`,{studentId:students[0].id});
+ const bank=await mutate(t,'/teacher/question-banks',{title:'Audit image bank'});
+ const qd={type:'SINGLE_CHOICE',promptMarkdown:'Image lifecycle',defaultPoints:1,options:[{contentMarkdown:'A',isCorrect:true},{contentMarkdown:'B',isCorrect:false}]};
+ const q=await mutate(t,`/teacher/question-banks/${bank.id}/questions`,qd);
+ const csrf=(await(await t.request.get(base+'/auth/csrf')).json()).data.token;
+ const uploaded=await t.request.post(base+`/teacher/questions/${q.id}/assets`,{headers:{Origin:origin,'X-CSRF-Token':csrf},multipart:{file:{name:'audit.png',mimeType:'image/png',buffer:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6teUAAAAASUVORK5CYII=','base64')},altText:'Audit fixture image'}});expect(uploaded.status()).toBe(201);const asset=(await uploaded.json()).data;
+ const prompt=`Question ![Audit fixture image](asset:${asset.id})`;
+ await mutate(t,`/teacher/questions/${q.id}`,{...qd,promptMarkdown:prompt},'PATCH');
+ const ex=await mutate(t,'/teacher/exams',{title:'Audit published asset',openAt:new Date(Date.now()-60000).toISOString(),closeAt:new Date(Date.now()+3600000).toISOString(),durationMinutes:30});
+ await mutate(t,`/teacher/exams/${ex.id}/classes`,{classIds:[cl.id]},'PUT');await mutate(t,`/teacher/exams/${ex.id}/questions`,{questions:[{questionId:q.id,points:1}]},'PUT');await mutate(t,`/teacher/exams/${ex.id}/publish`);
+ await mutate(t,`/teacher/questions/${q.id}/assets/${asset.id}`,{},'DELETE');
+ const attempt=await mutate(s,`/student/exams/${ex.id}/attempts`);
+ const full=await get(s,`/student/attempts/${attempt.id}`);
+ const missing=await s.request.get(base+`/assets/${asset.id}`);
+ const obs={provenance:'current continuation; real application/API/DB with audit-only local Supabase HTTP double supporting DELETE',published:true,deleteStatus:204,startSucceeded:true,snapshotStillReferencesDeletedAsset:JSON.stringify(full).includes(`asset:${asset.id}`),studentAssetStatus:missing.status(),result:'CONFIRMED'};
+ expect(obs.snapshotStillReferencesDeletedAsset).toBeTruthy();expect(obs.studentAssetStatus).toBe(404);save('asset-probe',obs);
+ }finally{await t.close();await s.close();}
+});
+test('Admin error screenshots for already confirmed mutation failure',async({browser})=>{
+ const a=await browser.newContext();await login(a,'admin@exam.local');const p=await a.newPage();
+ await p.goto('/admin/users');await p.getByLabel('Tìm user').fill('student1@exam.local');await expect(p.locator('tbody tr')).toHaveCount(1);
+ await p.getByRole('button',{name:'Khóa tài khoản',exact:true}).click();await p.getByRole('dialog').getByRole('button',{name:'Xác nhận',exact:true}).click();
+ await expect(p.getByRole('dialog').getByRole('alert')).toBeVisible();
+ for(const width of [1440,320]){await p.setViewportSize({width,height:1000});await p.screenshot({path:`${process.env.AUDIT_SCREENSHOT_DIR}/admin-lock-error-${width}.png`,fullPage:true,animations:'disabled'});}
+ save('admin-browser-probe',{lockErrorDialogVisible:true,screenshots:[1440,320],provenance:'current continuation; real browser and local API; synthetic seeded account'});await a.close();
+});

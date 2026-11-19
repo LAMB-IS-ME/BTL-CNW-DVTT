@@ -7,6 +7,10 @@ export function parseEnv(input: NodeJS.ProcessEnv) {
         .enum(["development", "test", "production"])
         .default("development"),
       PORT: z.coerce.number().int().min(1).max(65535).default(3000),
+      SERVE_WEB: z
+        .enum(["true", "false"])
+        .default("false")
+        .transform((v) => v === "true"),
       DATABASE_URL: z.string().min(1),
       SESSION_SECRET: z.string().min(32),
       CLIENT_ORIGIN: z.string().default("http://localhost:5173"),

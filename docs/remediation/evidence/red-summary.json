@@ -1,0 +1,37 @@
+{
+  "provenance": "Summarized original diagnostic evidence; original raw logs/DOM captures retained locally and not staged.",
+  "cases": [
+    {
+      "finding": "QA-001",
+      "locator": "getByLabel(\"Nhận xét\")",
+      "matches": [
+        "feedback textarea",
+        "dialog labelled Điểm và nhận xét chưa lưu"
+      ],
+      "result": "strict-mode failure before selector fix"
+    },
+    {
+      "finding": "QA-001",
+      "assertion": "4.5/5 · 90.0%",
+      "result": "not found in approved split-node score layout; replaced with exact score and percentage assertions plus published feedback"
+    },
+    {
+      "finding": "ADMIN-RETRY-STATE",
+      "result": "Role retry returned200 and displayed TEACHER but alert remained (expected0,actual1); fixed by clearing error after success"
+    },
+    {
+      "finding": "SEC-001/KaTeX",
+      "result": "Old nested renderer accepted inherited trust and emitted image; direct-consumer regression2 FAIL/4 PASS before resolution, final6 PASS"
+    }
+  ],
+  "rawEvidenceHashes": {
+    "evidence/before/admin-browser-verified.txt": "4fbcb8ae30816b84fd0266312622d822c765438c9229c14f0a6edbf8ae324248",
+    "evidence/before/grading-dom.md": "42c834da940d60f8a34d755071bf3ea44e620c32e57448f38ac7648cd5437f9a",
+    "evidence/before/e2e.txt": "bb0491a7e850414c28f10a1cb35c31ff13ef5f92043e060f888c195ba76d980f",
+    "evidence/before/e2e-score.txt": "21cb21648f167c7b9604aa48e878b2d665db2afa7589937c81d9f70b15962cd9",
+    "evidence/before/admin-stale-error-dom.md": "b1a290aa80f98754fd56c065a8535a71fd5e5badbda802712d891b238780eaa0",
+    "evidence/before/admin-browser-retry.txt": "404ea53639d2e8103322858d53e51b9ca41c6ca1bb0981f2009d39918525ed51",
+    "evidence/before/admin-browser-before.txt": "c6e83e3e2e720b782970a9b5272e4a941f11b37f559e9c1cba2857f9279161d1",
+    "evidence/before/admin-stale-error.txt": "47ddcce9cfdda24359672d8b3ede311e4cf6e5e615c39423175acaeac2b0f8e4"
+  }
+}

@@ -1,13 +1,20 @@
+import {
+  useCatalogPage,
+  CatalogControls,
+  CatalogPager,
+} from "./catalog-pagination";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { UserDto } from "@exam/shared";
 import { api } from "../lib/api";
+import "../styles/management-refinement.css";
 import {
   Field,
   ErrorBox,
   Loading,
   Pager,
   ConfirmButton,
+  Empty,
 } from "../components/ui";
 export function AdminUsers() {
   const [page, setPage] = useState(1),
@@ -27,7 +34,7 @@ export function AdminUsers() {
       <section className="card">
         <h2>Tạo tài khoản</h2>
         <form
-          className="grid"
+          className="management-form"
           onSubmit={async (e) => {
             e.preventDefault();
             const f = e.currentTarget;
@@ -42,23 +49,27 @@ export function AdminUsers() {
             }
           }}
         >
-          <Field label="Họ tên">
-            <input name="fullName" required minLength={2} />
-          </Field>
-          <Field label="Email">
-            <input type="email" name="email" required />
-          </Field>
-          <Field label="Mật khẩu">
-            <input type="password" name="password" minLength={10} required />
-          </Field>
-          <Field label="Role">
-            <select name="role">
-              <option>STUDENT</option>
-              <option>TEACHER</option>
-              <option>ADMIN</option>
-            </select>
-          </Field>
-          <button>Tạo tài khoản</button>
+          <div className="management-form-fields management-form-fields-account">
+            <Field label="Họ tên">
+              <input name="fullName" required minLength={2} />
+            </Field>
+            <Field label="Email">
+              <input type="email" name="email" required />
+            </Field>
+            <Field label="Mật khẩu">
+              <input type="password" name="password" minLength={10} required />
+            </Field>
+            <Field label="Role">
+              <select name="role">
+                <option>STUDENT</option>
+                <option>TEACHER</option>
+                <option>ADMIN</option>
+              </select>
+            </Field>
+          </div>
+          <div className="management-form-actions">
+            <button>Tạo tài khoản</button>
+          </div>
         </form>
       </section>
       <ErrorBox error={error || q.error} />
@@ -89,23 +100,40 @@ export function AdminUsers() {
       {q.isPending ? (
         <Loading />
       ) : (
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Họ tên</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Trạng thái</th>
-                <th>Thao tác</th>
+        <div className="table-wrap account-table">
+          <table role="table" aria-label="Danh sách tài khoản">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" scope="col">
+                  Họ tên
+                </th>
+                <th role="columnheader" scope="col">
+                  Email
+                </th>
+                <th role="columnheader" scope="col">
+                  Role
+                </th>
+                <th role="columnheader" scope="col">
+                  Trạng thái
+                </th>
+                <th role="columnheader" scope="col">
+                  Thao tác
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {q.data?.items.map((u) => (
-                <tr key={u.id}>
-                  <td>{u.fullName}</td>
-                  <td>{u.email}</td>
-                  <td>
+                <tr role="row" key={u.id}>
+                  <td role="cell" className="account-name">
+                    {u.fullName}
+                  </td>
+                  <td role="cell" className="account-email">
+                    {u.email}
+                  </td>
+                  <td role="cell">
+                    <span className="account-mobile-label" aria-hidden="true">
+                      Role
+                    </span>
                     <select
                       aria-label={`Role ${u.fullName}`}
                       value={u.role}
@@ -115,6 +143,7 @@ export function AdminUsers() {
                             role: e.target.value,
                           });
                           await q.refetch();
+                          setError(undefined);
                         } catch (e) {
                           setError(e);
                         }
@@ -125,8 +154,13 @@ export function AdminUsers() {
                       <option>STUDENT</option>
                     </select>
                   </td>
-                  <td>{u.status}</td>
-                  <td>
+                  <td role="cell">
+                    <span className="account-mobile-label" aria-hidden="true">
+                      Trạng thái
+                    </span>
+                    {u.status}
+                  </td>
+                  <td role="cell" className="account-action">
                     <ConfirmButton
                       onConfirm={async () => {
                         await api(`/admin/users/${u.id}/status`, "PATCH", {
@@ -140,49 +174,85 @@ export function AdminUsers() {
                   </td>
                 </tr>
               ))}
+              {!q.error && q.data?.items.length === 0 && (
+                <tr role="row" className="account-empty">
+                  <td role="cell" colSpan={5}>
+                    Không tìm thấy tài khoản phù hợp.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       )}
-      <Pager page={page} total={q.data?.total || 0} onChange={setPage} />
+      <Pager
+        className="management-pager"
+        page={page}
+        total={q.data?.total || 0}
+        onChange={setPage}
+      />
+    </>
+  );
+}
+function AdminClasses() {
+  const paging = useCatalogPage<{
+    id: string;
+    name: string;
+    teacher: UserDto;
+    _count: { members: number };
+  }>("admin-classes", "/admin/classes", true);
+  return (
+    <>
+      <h1>Tổng quan lớp học</h1>
+      <CatalogControls paging={paging} label="Tìm lớp" />
+      {paging.items.map((c) => (
+        <div className="card" key={c.id}>
+          <h2>{c.name}</h2>
+          <p>
+            {c.teacher.fullName} · {c._count.members} sinh viên
+          </p>
+        </div>
+      ))}
+      {paging.query.isSuccess &&
+        !paging.query.isFetching &&
+        !paging.waiting &&
+        paging.items.length === 0 && (
+          <Empty>
+            {paging.search.trim()
+              ? "Không tìm thấy lớp học phù hợp. Thử từ khóa khác."
+              : "Chưa có lớp học nào."}
+          </Empty>
+        )}
+      <CatalogPager paging={paging} />
     </>
   );
 }
 export function AdminOverview({ classes = false }: { classes?: boolean }) {
+  return classes ? <AdminClasses /> : <AdminStats />;
+}
+function AdminStats() {
+  const labels: Record<string, string> = {
+    users: "Tài khoản",
+    classes: "Lớp học",
+    exams: "Bài thi",
+    quizzes: "Live Quiz",
+  };
   const q = useQuery({
-    queryKey: ["admin", classes],
-    queryFn: () =>
-      api<
-        | Record<string, number>
-        | {
-            id: string;
-            name: string;
-            teacher: UserDto;
-            _count: { members: number };
-          }[]
-      >(classes ? "/admin/classes" : "/admin/stats"),
+    queryKey: ["admin", false],
+    queryFn: () => api<Record<string, number>>("/admin/stats"),
   });
   return (
     <>
-      <h1>{classes ? "Tổng quan lớp học" : "Tổng quan hệ thống"}</h1>
+      <h1>Tổng quan hệ thống</h1>
       <ErrorBox error={q.error} />
       {q.isPending ? (
         <Loading />
-      ) : Array.isArray(q.data) ? (
-        q.data.map((c) => (
-          <div className="card" key={c.id}>
-            <h2>{c.name}</h2>
-            <p>
-              {c.teacher.fullName} · {c._count.members} sinh viên
-            </p>
-          </div>
-        ))
       ) : (
         <div className="grid">
           {Object.entries(q.data || {}).map(([k, v]) => (
             <div className="card" key={k}>
               <h2>{v}</h2>
-              <p>{k}</p>
+              <p>{labels[k] || k}</p>
             </div>
           ))}
         </div>

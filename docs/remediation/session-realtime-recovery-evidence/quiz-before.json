@@ -1,0 +1,15 @@
+{
+  "crashAt": "2026-10-13T11:21:21.580Z",
+  "restoredAt": "2026-10-13T11:21:29.374Z",
+  "transport": "real Socket.IO, Teacher + Student A rejoined, B closed during outage",
+  "connected": 2,
+  "participants": 2,
+  "deadlinePreserved": true,
+  "answersPreserved": true,
+  "membershipAndScoresPreserved": true,
+  "automaticFinish": "FINISHED",
+  "leaderboardScores": [
+    1499,
+    0
+  ]
+}

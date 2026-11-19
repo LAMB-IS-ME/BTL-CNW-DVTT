@@ -1,0 +1,312 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "node": "22.23.2",
+  "npm": "10.9.8",
+  "checks": [
+    {
+      "name": "create-examspace_deploy_test",
+      "command": [
+        "<audit-scratch>/postgres/usr/lib/postgresql/16/bin/createdb",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "55449",
+        "-U",
+        "exam_audit",
+        "examspace_deploy_test"
+      ],
+      "exitCode": 0,
+      "seconds": 0.05,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "examspace_deploy_test-db-migrate",
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "exitCode": 0,
+      "seconds": 1.68,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "examspace_deploy_test-db-seed",
+      "command": [
+        "npm",
+        "run",
+        "db:seed"
+      ],
+      "exitCode": 0,
+      "seconds": 1.81,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "migration-rerun",
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "exitCode": 0,
+      "seconds": 1.36,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "seed-rerun",
+      "command": [
+        "npm",
+        "run",
+        "db:seed"
+      ],
+      "exitCode": 0,
+      "seconds": 1.32,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "create-examspace_integration_test",
+      "command": [
+        "<audit-scratch>/postgres/usr/lib/postgresql/16/bin/createdb",
+        "-h",
+        "127.0.0.1",
+        "-p",
+        "55449",
+        "-U",
+        "exam_audit",
+        "examspace_integration_test"
+      ],
+      "exitCode": 0,
+      "seconds": 0.04,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "examspace_integration_test-db-migrate",
+      "command": [
+        "npm",
+        "run",
+        "db:migrate"
+      ],
+      "exitCode": 0,
+      "seconds": 1.53,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "examspace_integration_test-db-seed",
+      "command": [
+        "npm",
+        "run",
+        "db:seed"
+      ],
+      "exitCode": 0,
+      "seconds": 1.44,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "integration",
+      "command": [
+        "npm",
+        "run",
+        "test:integration"
+      ],
+      "exitCode": 0,
+      "seconds": 42.91,
+      "status": "PASS",
+      "source": "untouched committed clone",
+      "tests": 62,
+      "files": 15
+    },
+    {
+      "name": "e2e",
+      "command": [
+        "npm",
+        "run",
+        "test:e2e"
+      ],
+      "exitCode": 0,
+      "seconds": 177.26,
+      "status": "PASS",
+      "source": "untouched committed clone",
+      "tests": 20
+    },
+    {
+      "name": "deployment",
+      "command": [
+        "npm",
+        "run",
+        "test:deployment"
+      ],
+      "exitCode": 0,
+      "seconds": 3.98,
+      "status": "PASS",
+      "source": "untouched committed clone"
+    },
+    {
+      "name": "install",
+      "command": "npm ci --cache <empty-audit-cache>",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "935a92b87eaf6339382b8ffe75a1f8eef6d04cb065efcb064dd0841ff99714ca"
+    },
+    {
+      "name": "dependency-tree",
+      "command": "npm ls --all",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "1f73cbd122712b14ecd0982071972a14ab92b5795b877fdec50e283017b47b9c"
+    },
+    {
+      "name": "generate",
+      "command": "npm run db:generate",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "ebea6b215b5ed6e9e1de949d04ad409f544221c34aadbeb73606d86f2a6bef1a"
+    },
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b"
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5"
+    },
+    {
+      "name": "unit",
+      "command": "npm test",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "9da812d1e9a4c50746ccab0d4dc0aa52b7c65120b49b956f410ec7ddfff020bb",
+      "tests": 78,
+      "files": 19
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "2a252e82f0f992534e542fd22bf5161aa92c86d2cd0d24f47f469fe46e57e00b"
+    },
+    {
+      "name": "npm-audit",
+      "command": "npm audit --audit-level=low --json",
+      "status": "PASS",
+      "source": "fresh committed clone",
+      "rawLogSha256": "e57f1dbae7d8b4ec6809675204b87b3af789f6f733fdce245f6773ba485de15f"
+    },
+    {
+      "name": "production-TLS-probe",
+      "command": "node tests/deployment/production-readiness.mjs",
+      "status": "PASS",
+      "source": "second fresh clone + explicit uncommitted candidate overlay",
+      "checks": 8,
+      "details": "production-probe.json"
+    },
+    {
+      "name": "invalid-env-probe",
+      "status": "PASS",
+      "source": "candidate runtime parser, unchanged from HEAD",
+      "details": "env-probe.json"
+    },
+    {
+      "name": "candidate-install-generate-build-lint",
+      "status": "PASS",
+      "source": "second clone + overlay; independent node_modules installed offline from phase npm cache"
+    },
+    {
+      "name": "candidate-typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "source": "prepared candidate before interruption; exit 0 recorded in execution transcript"
+    },
+    {
+      "name": "production-probe-remote-guard",
+      "status": "PASS",
+      "source": "before interruption; non-loopback TEST_DATABASE_URL rejected before startup"
+    }
+  ],
+  "initialNonPassingRuns": [
+    {
+      "name": "install sandbox",
+      "status": "BLOCKED",
+      "reason": "DNS denied; interrupted; new npm ci succeeded with approved network execution"
+    },
+    {
+      "name": "unit sandbox",
+      "status": "FAIL",
+      "reason": "77 pass/1 Supertest health socket failure; unchanged suite passed 78 with socket permission"
+    },
+    {
+      "name": "candidate offline install sandbox",
+      "status": "FAIL",
+      "reason": "esbuild install spawnSync EPERM; same offline npm ci passed with approved execution"
+    }
+  ],
+  "historicalPassReused": false,
+  "hostedStaging": "NOT TESTED",
+  "auditVulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "warnings": [
+    "dependency deprecations",
+    "pg overlapping query deprecation",
+    "web Markdown chunk >500 kB"
+  ],
+  "rawLogsInRepository": false,
+  "provenance": {
+    "execution": "2026-10-14 before workspace interruption, same deployment-preparation phase",
+    "resumedWork": "Documentation/static comparison only; runtime/install/test suites not rerun",
+    "scratchAtResume": "Original <audit-scratch> absent, including raw logs and databases",
+    "availableEvidence": "Sanitized repository summaries plus execution transcript",
+    "rawLogHashes": "Historical fingerprints only; originals no longer available to rehash",
+    "runtimeSourceContinuity": "Tracked runtime/config/migrations/dependencies equal audited HEAD; current new probe retained unchanged during resume",
+    "historicalRemediationPassSubstituted": false
+  },
+  "resumeTestReruns": false,
+  "databaseObservedBeforeInterruption": {
+    "provenance": "Read-only psql output recorded in execution transcript; scratch database.json not retained",
+    "postgresVersion": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "encoding": "UTF8",
+    "appliedMigrations": [
+      "20260930000000_initial",
+      "20260930010000_integrity"
+    ],
+    "rlsTableCount": 21,
+    "sessionTable": "session",
+    "extensions": [
+      "plpgsql"
+    ]
+  },
+  "cleanupReuse": {
+    "classification": "REUSED EVIDENCE",
+    "runtimeSuitesRerun": false,
+    "reason": "Only documentation/evidence portability cleanup; runtime, config, migrations, dependencies and tested production probe unchanged from approved checkpoint",
+    "freshChecks": "Candidate scope/security/spec/templates/docs, staged export and post-commit clone integrity; see cleanup gate and final handoff",
+    "limitations": [
+      "Hosted TLS/WSS",
+      "Cross-site cookies",
+      "Real Supabase Storage staging",
+      "Cloud restart/operations",
+      "Load testing",
+      "Full screen-reader certification"
+    ]
+  }
+}

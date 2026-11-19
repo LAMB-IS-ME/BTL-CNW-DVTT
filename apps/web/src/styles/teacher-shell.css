@@ -1,0 +1,44 @@
+/* Layout preference only: retains the approved Dashboard/Question Bank visuals. */
+.qb-shell-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.qb-shell .qb-sidebar-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  color: var(--qb-secondary);
+  border: 1px solid var(--qb-border);
+  border-radius: 4px;
+}
+.qb-shell .qb-sidebar-toggle:hover {
+  background: var(--qb-accent-soft);
+}
+/* Immediate reflow avoids moving form controls during keyboard interaction. */
+@media (min-width: 701px) {
+  .qb-shell > header {
+    justify-content: space-between;
+  }
+  .qb-shell.qb-sidebar-collapsed .qb-sidebar {
+    display: none;
+  }
+  .qb-shell.qb-sidebar-collapsed > header,
+  .qb-shell.qb-sidebar-collapsed > main,
+  .qb-shell.qb-sidebar-collapsed > footer {
+    margin-left: 0;
+  }
+  .qb-shell.qb-sidebar-collapsed > main {
+    max-width: none;
+  }
+}
+@media (max-width: 700px) {
+  .qb-shell .qb-shell-tools {
+    display: none;
+  }
+}

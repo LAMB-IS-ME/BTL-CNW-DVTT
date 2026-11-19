@@ -1,0 +1,24 @@
+
+ RUN  v5.0.2 <repository>
+
+(node:8804) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ apps/api/test/asset-integrity.integration.test.ts > protects a published image before first attempt and keeps the student's historical image after edits/archive 782ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > rejects dangling or foreign asset references on question writes 526ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > serializes deletion with reference writes and publish 234ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > removes unused draft assets, rejects unauthorized deletion, and reports remote failure without restoring a referenceable identity 401ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > guards prompt, options and explanation, including random pool candidates before any attempt 321ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > delete racing a new reference can only delete an unused asset or preserve a valid reference 243ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > preserves Live Quiz images before and after room snapshot and rejects legacy dangling sources at start 577ms
+stderr | apps/api/test/asset-integrity.integration.test.ts > retains legacy cross-question references and never calls Storage when metadata transaction fails
+{"event":"request_error","type":"Error"}
+
+ ✓ apps/api/test/asset-integrity.integration.test.ts > retains legacy cross-question references and never calls Storage when metadata transaction fails 246ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > rejects invalid assets at publish and Quiz start before writing published state or room snapshots 250ms
+ ✓ apps/api/test/asset-integrity.integration.test.ts > concurrent Student start and direct deletion retain the exact snapshot reference and storage bytes 240ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  07:13:27
+   Duration  5.39s (tests 74%, import 16%, transform 10%)
+

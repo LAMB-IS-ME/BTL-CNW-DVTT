@@ -2,7 +2,7 @@
 
 ## 1. Architecture overview
 
-Modular monolith: Express REST và Socket.IO cùng HTTP server, PostgreSQL giữ dữ liệu nghiệp vụ và Session. React chỉ trình bày và gửi ý định; API quyết định identity, quyền, thời hạn, answer acceptance và score. Module trong process phát domain events sau transaction commit, socket chuyển thành state gửi từng người được phép.
+Modular monolith: Express REST và Socket.IO cùng HTTP server; khi deploy, cùng process đó phục vụ SPA đã build (`SERVE_WEB=true`) nên frontend, API và WebSocket chung một origin. PostgreSQL giữ dữ liệu nghiệp vụ và Session. React chỉ trình bày và gửi ý định; API quyết định identity, quyền, thời hạn, answer acceptance và score. Module trong process phát domain events sau transaction commit, socket chuyển thành state gửi từng người được phép.
 
 ## 2. Technology stack và lựa chọn
 
@@ -27,7 +27,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  B[Browser React SPA - GitHub Pages] -->|HTTPS REST + Session cookie| A[Node Express - Render]
+  B[Browser React SPA] -->|HTTPS: SPA assets + REST /api/v1 + Session cookie| A[Node Express - Render, cùng origin]
   B <-->|Socket.IO WSS| A
   A -->|Prisma + pg| D[(PostgreSQL)]
   A -->|connect-pg-simple| SS[(session table)]
@@ -65,7 +65,7 @@ flowchart TB
 
 Migration integrity thêm CHECK số điểm/thời hạn hợp lệ, unique partial `(examId, studentId) WHERE status = 'IN_PROGRESS'`, bật RLS trên tất cả bảng ứng dụng. SQL bổ sung này phải giữ trong migrations vì Prisma schema không diễn đạt đầy đủ. Giao dịch start lock Exam; save/submit/grade lock Attempt; Quiz lock Room rồi Quiz nếu cần. Admin dùng advisory transaction lock để serialize thay đổi role/status và kiểm tra lại acting admin.
 
-Interactive transactions dùng cấu hình chung maxWait 5 giây/timeout 15 giây. Start batch-create snapshot; finalize batch-upsert autoScore và tái sử dụng trạng thái đã đọc dưới row lock để giảm round trips trên Supabase. Không thay isolation level/unique constraints. Chi tiết và regression: [SEED_RECOVERY](SEED_RECOVERY.md).
+Interactive transactions dùng cấu hình chung maxWait 5 giây/timeout 15 giây. Start batch-create snapshot; finalize batch-upsert autoScore và tái sử dụng trạng thái đã đọc dưới row lock để giảm round trips trên Supabase. Không thay isolation level/unique constraints. Chi tiết và regression: [SEED_RECOVERY](archive/SEED_RECOVERY.md).
 
 ## 6. ER Diagram
 
@@ -128,7 +128,9 @@ Session chứa userId trong JSON, không có FK tới User; auth luôn tra lại
 
 ## 8. Authentication/session design
 
-Argon2id hash có salt; login regenerate SID chống fixation, tạo CSRF mới, save Session trước response. Cookie HttpOnly, host-only, path `/`, maxAge mặc định 8 giờ, secure production. Session lưu PostgreSQL cả local lẫn production. Logout destroy phiên và disconnect socket trong `session:<sid>`. `/me` lấy người dùng bằng userId từ Session và kiểm tra ACTIVE.
+Argon2id hash có salt; login regenerate SID chống fixation, tạo CSRF mới, save Session trước response. Cookie HttpOnly, host-only, path `/`, maxAge mặc định 8 giờ, secure production, `SameSite=lax` khi cùng origin. Session lưu PostgreSQL cả local lẫn production. Logout destroy phiên và disconnect socket trong `session:<sid>`. `/me` lấy người dùng bằng userId từ Session và kiểm tra ACTIVE.
+
+Phía client: màn hình đăng nhập chờ lần kiểm tra `/me` đầu tiên xong mới cho gửi form. Chỉ `401 UNAUTHENTICATED`/`ACCOUNT_LOCKED` mới kết thúc phiên; khi đó client hủy query, xóa cache được bảo vệ, ngắt socket và hiện màn hình đăng nhập lại. `CSRF_INVALID` reset token rồi gọi `/auth/me` để xác nhận, không tự gửi lại mutation. Tab đang mở kiểm tra lại `/me` mỗi 30 giây.
 
 ## 9. RBAC/authorization và RLS
 
@@ -161,7 +163,7 @@ Presence đếm nhiều socket của cùng attempt, grace 10 giây tránh flicke
 ```mermaid
 stateDiagram-v2
   [*] --> DRAFT
-  DRAFT --> PUBLISHED: validate and publish
+  DRAFT --> PUBLISHED: validate configuration + assets, publish
   DRAFT --> ARCHIVED: archive
   PUBLISHED --> ARCHIVED: archive
   PUBLISHED --> PUBLISHED: closeAt elapsed, eligibility rejects start
@@ -251,6 +253,8 @@ sequenceDiagram
   A-->>Q: Saved
   Q-->>U: Saved status or retry/error
 ```
+
+Mỗi thay đổi được ghi trước vào bản nháp trong `localStorage` (`attempt-drafts.ts`), gắn theo user, attempt và câu hỏi. Khi server xác nhận thì bản nháp tương ứng bị xóa. Nếu tab đóng hoặc mất mạng trước khi lưu xong, lần mở lại hiển thị trạng thái "Cần kiểm tra bản nháp" để sinh viên xem và gửi lại khi attempt còn IN_PROGRESS; attempt đã đóng thì bản nháp chỉ được báo là không còn nộp được. Phản hồi của một bản sửa cũ không ghi đè bản sửa mới hơn; lần retry sau backoff luôn gửi giá trị mới nhất. Đăng xuất xóa toàn bộ bản nháp của user đó.
 
 ### Submit / Auto-submit
 
@@ -346,7 +350,7 @@ Analytics dùng final attempt theo strategy. Trung bình/cao/thấp/pass dùng p
 
 ## 20. Storage/file flow
 
-Teacher POST multipart → quyền question owner → giới hạn/signature → random storagePath → Supabase private bucket → QuestionAsset. Nếu ghi metadata lỗi, thử remove object bù. Markdown lưu `asset:<uuid>`; component gọi API để lấy URL có hạn 300 giây. Student được truy cập khi reference thực có trong snapshot được phép; explanation asset còn phải qua result/reveal policy. Không cấp quyền ảnh mới thêm sau snapshot. Asset đã có snapshot dùng bị chặn xóa để bảo toàn lịch sử. Không cấu hình Supabase trả503 rõ ràng; không lưu file local thay thế.
+Teacher POST multipart → quyền question owner → giới hạn/signature → random storagePath → Supabase private bucket → QuestionAsset. Nếu ghi metadata lỗi, thử remove object bù. Markdown lưu `asset:<uuid>`; component `QuestionImage` gọi API để lấy URL có hạn 300 giây, hiện trạng thái đang tải/lỗi và nút Thử lại (xin lại signed URL rồi tải lại ảnh; dùng được cả trong form chỉ đọc). Tạo/sửa câu hỏi từ chối reference không tồn tại hoặc thuộc câu khác (`400 INVALID_ASSET_REFERENCE`); publish, Start bài thi và Start Quiz kiểm tra asset trước khi tạo snapshot. Xóa asset đang được tham chiếu trả `409 ASSET_REFERENCED`; khi xóa, ghi DB trước rồi mới xóa object (`502 STORAGE_DELETE_FAILED` nếu Storage lỗi). Student được truy cập khi reference thực có trong snapshot được phép; explanation asset còn phải qua result/reveal policy. Không cấp quyền ảnh mới thêm sau snapshot. Asset đã có snapshot dùng bị chặn xóa để bảo toàn lịch sử. Không cấu hình Supabase trả503 rõ ràng; không lưu file local thay thế.
 
 ## 21. Export design
 
@@ -354,31 +358,34 @@ ExcelJS workbook có Results, Summary, Attempts; numeric cells, frozen header v�
 
 ## 22. Error handling và vận hành
 
-AppError chứa status/code/message; Zod trả400, Multer413/400, Prisma unique409/not-found404; lỗi bất ngờ500 với thông báo an toàn. Client có loading/error/empty, autosave retry 3 lần và cảnh báo pending khi rời trang. API/socket lỗi không log secret/answer body. Health chỉ kiểm tra process, không kiểm tra DB. SIGTERM/SIGINT đóng Socket.IO, HTTP, jobs, session pool và Prisma. Có log startup/request_error/job/broadcast error; chưa có tracing/metrics hoặc audit log bền vững.
+AppError chứa status/code/message; Zod trả400, Multer413/400, Prisma unique409/not-found404; lỗi bất ngờ500 với thông báo an toàn. Client có loading/error/empty, autosave retry 3 lần và cảnh báo pending khi rời trang.
+
+Cấu hình đề thi và Live Quiz được kiểm tra ở server (`exams/configuration.ts`, `live-quiz/configuration.ts`) trước khi lưu, publish hoặc start: lớp, ngân hàng, câu hỏi phải hợp lệ, không trùng, thuộc quyền giảng viên; khi publish, nguồn câu hỏi được materialize thử để bảo đảm đủ câu. Builder đề thi và Live Quiz dùng `useBuilderGuard` (`builder-guard.tsx`): so sánh giá trị form với bản đã lưu, chặn điều hướng trong SPA bằng `useBlocker` + dialog xác nhận và chặn đóng tab bằng `beforeunload` khi còn thay đổi chưa lưu. API/socket lỗi không log secret/answer body. Health chỉ kiểm tra process, không kiểm tra DB. SIGTERM/SIGINT đóng Socket.IO, HTTP, jobs, session pool và Prisma. Có log startup/request_error/job/broadcast error; chưa có tracing/metrics hoặc audit log bền vững.
 
 ## 23. Testing architecture
 
-Vitest unit và frontend jsdom; integration dùng Supertest, Socket.IO client, PostgreSQL test thật, không fallback memory. `TEST_DATABASE_URL` bắt buộc tên database chứa `test`. Một Storage test thay SDK provider để kiểm tra upload/signedURL/authorization (compensation có trong source), được ghi riêng; không đại diện Supabase network roundtrip. Export integration dùng ExcelJS đọc XLSX và pdftotext kiểm chứng Unicode. Playwright Chromium chạy API/Vite thật, Teacher/Student contexts độc lập, REST fixture thật. Test credentials đều synthetic local. [Kết quả và audit](VERIFICATION.md).
+Vitest unit và frontend jsdom; integration dùng Supertest, Socket.IO client, PostgreSQL test thật, không fallback memory. `TEST_DATABASE_URL` bắt buộc tên database chứa `test`. Một Storage test thay SDK provider để kiểm tra upload/signedURL/authorization (compensation có trong source), được ghi riêng; không đại diện Supabase network roundtrip. Export integration dùng ExcelJS đọc XLSX và pdftotext kiểm chứng Unicode. Playwright Chromium chạy API/Vite thật, Teacher/Student contexts độc lập, REST fixture thật. Test credentials đều synthetic local. `npm run test:e2e` chạy 4 nhóm Playwright với server và rate-limit store riêng: core, Student Exam, Session Recovery, Builder blockers. [Kết quả release](audits/FINAL_RELEASE_READINESS_20261103.md), [DoD](VERIFICATION.md).
 
 ## 24. Deployment architecture
 
-Frontend GitHub Pages static artifact gồm index.html, assets và404.html. BrowserRouter basename theo Vite base. Deep route nhận404.html rồi React render route, HTTP status ban đầu vẫn404. `configure-pages` xác định base path theo site metadata; custom domain quản lý ở GitHub Settings/DNS. Backend Render Node service một instance, shared HTTP/WSS, health `/api/health`, PORT từ platform. Migrations chạy trước start và không reset database. PostgreSQL/Storage Supabase tách khỏi filesystem Render. Hướng dẫn chi tiết và giới hạn cookie: [DEPLOYMENT](DEPLOYMENT.md).
+Một Render Web Service (`render.yaml`) build shared, API và web; khi start với `SERVE_WEB=true`, Express phục vụ `apps/web/dist` (asset trong `/assets/` cache 1 năm, các route khác trả `index.html` với `no-cache`), REST `/api/v1` và Socket.IO trên cùng origin và cùng port. `CLIENT_ORIGIN` lấy từ `RENDER_EXTERNAL_URL`; cookie `Secure` + `SameSite=lax`. Một instance, health `/api/health`, PORT từ platform. Start không chạy migrate/seed; migrations chạy riêng sau review. PostgreSQL/Storage ở Supabase, tách khỏi filesystem Render. Staging: https://examspace-staging-rc.onrender.com.
+
+Phương án phụ: frontend tĩnh trên GitHub Pages (`pages.yml`, `404.html` cho deep link, HTTP status ban đầu vẫn 404) và API riêng với `SameSite=none`. Hướng dẫn chi tiết: [DEPLOYMENT](DEPLOYMENT.md).
 
 ## 25. Environment/configuration
 
-Backend parse env bằng Zod khi startup: bắt buộc DATABASE_URL và SESSION_SECRET≥32 ký tự; HTTPS origin và secure cookie khi production; SameSite none cũng bắt buộc secure. DIRECT_URL dành Prisma CLI, DATABASE_URL cho runtime. Vite public URL được nhúng lúc build; thay backend URL cần build frontend lại. Pages workflow từ chối URL thiếu/không HTTPS; localhost chỉ fallback development. Bảng đầy đủ tại [DEPLOYMENT](DEPLOYMENT.md#environment-variables).
+Backend parse env bằng Zod khi startup: bắt buộc DATABASE_URL và SESSION_SECRET≥32 ký tự; HTTPS origin và secure cookie khi production; SameSite none cũng bắt buộc secure. DIRECT_URL dành Prisma CLI, DATABASE_URL cho runtime. Vite public URL được nhúng lúc build: cùng origin dùng `/api/v1` và socket URL rỗng (lấy `window.location.origin`); thay đổi cần build lại. Pages workflow từ chối URL thiếu/không HTTPS; localhost chỉ fallback development. Bảng đầy đủ tại [environment matrix](deployment/ENVIRONMENT_MATRIX.md).
 
 ## 26. Design tradeoffs và limitations
 
 - Một instance giúp presence/events đơn giản; horizontal scaling cần shared Socket adapter/presence/rate-limit và worker coordination, chưa có trong source.
 - Khóa cấu hình đề sau attempt đầu stricter hơn chỉnh live, đổi lại tránh thay eligibility/điểm giữa các lượt. Snapshot tách khỏi ngân hàng.
-- Không hỗ trợ offline submission; đáp án chưa save trước expiry không được nhận muộn. UI báo lỗi thay vì hứa đã lưu.
-- GitHub Pages không rewrite200;404 fallback xử lý UI nhưng crawler thấy404 khi mở deep link. Đây là SPA ứng dụng đăng nhập, không tối ưu SEO.
-- Cross-site cookie có thể bị browser chặn dù SameSite=None; custom app/API subdomain cùng site giải quyết vận hành.
+- Không hỗ trợ offline submission; đáp án chưa save trước expiry không được nhận muộn. Bản nháp `localStorage` chỉ giúp khôi phục trên cùng trình duyệt khi attempt còn hạn. UI báo lỗi thay vì hứa đã lưu.
+- Phương án phụ GitHub Pages: deep link trả HTTP 404 ban đầu và cookie cross-site có thể bị chặn dù `SameSite=None`; vì vậy cấu hình chính là cùng origin.
 - Render free có thể sleep; jobs không chạy trong lúc ngủ. Không dùng free sleeping service cho kỳ thi cần realtime liên tục.
 - Markdown/KaTeX/highlight lazy chunk còn cảnh báo kích thước >500 kB; chưa đặt mục tiêu performance benchmark. pg8 có deprecation warning queued queries trong integration; test pass, cần rà soát trước nâng major9.
 - Override deepmerge-ts/mysql2/uuid của ExcelJS/esbuild để vá transitive audit; lockfile và test bảo vệ reproducibility. npm còn deprecation notices của một số transitive ExcelJS packages, audit không phát hiện advisory tại lần kiểm tra.
-- Chưa xác minh Supabase Storage thật, Render runtime cloud hay GitHub Pages published URL vì thiếu credentials; readiness/source không đồng nghĩa đã deploy.
+- Kiểm thử hosted (HTTPS/WSS, Storage thật, restart) của source mới nhất trên staging chưa được ghi nhận; xem gate còn mở trong [báo cáo release](audits/FINAL_RELEASE_READINESS_20261103.md).
 
 ## 27. Future development
 

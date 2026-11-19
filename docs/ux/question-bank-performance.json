@@ -1,0 +1,189 @@
+{
+  "environment": "Vite dev + isolated loopback PostgreSQL 16 + local Storage HTTP double; warm Query cache; action/assertion overhead included; no Supabase timing",
+  "browser": "chromium",
+  "viewport": "1440x1000",
+  "samples": {
+    "list": [
+      97,
+      120,
+      99,
+      76,
+      98,
+      112,
+      114,
+      93,
+      86,
+      103
+    ],
+    "detail": [
+      95,
+      79,
+      93,
+      91,
+      101,
+      80,
+      93,
+      80,
+      87,
+      102
+    ],
+    "search": [
+      838,
+      838,
+      832,
+      832,
+      842,
+      839,
+      832,
+      833,
+      333,
+      827
+    ],
+    "save": [
+      91,
+      78,
+      106,
+      75,
+      86,
+      83,
+      63,
+      54,
+      61,
+      59
+    ],
+    "uploadWorkflow": [
+      181,
+      238,
+      275,
+      149,
+      144
+    ]
+  },
+  "searchDom": [
+    349,
+    347,
+    325,
+    323,
+    328,
+    327,
+    323,
+    323,
+    324,
+    321
+  ],
+  "searchDomSummary": {
+    "n": 10,
+    "min": 321,
+    "median": 324.5,
+    "max": 349
+  },
+  "summary": {
+    "list": {
+      "n": 10,
+      "min": 76,
+      "median": 98.5,
+      "max": 120
+    },
+    "detail": {
+      "n": 10,
+      "min": 79,
+      "median": 92,
+      "max": 102
+    },
+    "search": {
+      "n": 10,
+      "min": 333,
+      "median": 832.5,
+      "max": 842
+    },
+    "save": {
+      "n": 10,
+      "min": 54,
+      "median": 76.5,
+      "max": 106
+    },
+    "uploadWorkflow": {
+      "n": 5,
+      "min": 144,
+      "median": 181,
+      "max": 275
+    }
+  },
+  "apiSamples": {
+    "list": [
+      9.7,
+      10.4,
+      14.9
+    ],
+    "detail": [
+      10.2
+    ],
+    "search": [
+      14,
+      13.7,
+      12.5,
+      5.9
+    ],
+    "save": [
+      21.9,
+      14.7,
+      23.3,
+      18,
+      17.7,
+      19.2,
+      11.3,
+      13.9,
+      17.2,
+      10.8,
+      20.8,
+      9.2,
+      15.8,
+      12.2,
+      14.5,
+      15.1,
+      13.9,
+      11.4,
+      12.9,
+      15.7
+    ],
+    "upload": [
+      25,
+      17.6,
+      22.3,
+      15.8,
+      15.3
+    ]
+  },
+  "apiSummary": {
+    "list": {
+      "n": 3,
+      "min": 9.7,
+      "median": 10.4,
+      "max": 14.9
+    },
+    "detail": {
+      "n": 1,
+      "min": 10.2,
+      "median": 10.2,
+      "max": 10.2
+    },
+    "search": {
+      "n": 4,
+      "min": 5.9,
+      "median": 13.1,
+      "max": 14
+    },
+    "save": {
+      "n": 20,
+      "min": 9.2,
+      "median": 14.899999999999999,
+      "max": 23.3
+    },
+    "upload": {
+      "n": 5,
+      "min": 15.3,
+      "median": 17.6,
+      "max": 25
+    }
+  }
+}

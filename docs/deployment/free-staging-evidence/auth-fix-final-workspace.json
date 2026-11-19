@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "head": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "branch": "deploy/examspace-free-staging",
+  "trackedModified": 3,
+  "trackedPaths": [
+    "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "docs/deployment/FREE_STAGING_RUNBOOK.md",
+    "docs/deployment/free-staging-verification.json"
+  ],
+  "staged": 0,
+  "untracked": 164,
+  "historicalArtifacts": 85,
+  "historicalHashMismatches": [],
+  "scopedSecretScanFiles": 20,
+  "secretFindings": [],
+  "mainUnchanged": "2cda149838b20cb0c11c89ddf2203fb474a70f64",
+  "newTestOnlyCommits": 1,
+  "newPushes": 1,
+  "newDeployTriggers": 1,
+  "resetDiscardClean": false
+}

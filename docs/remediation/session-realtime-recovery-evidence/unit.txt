@@ -1,0 +1,77 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.2 /home/lamb/Project/BTL-CNW-DVTT
+
+ ❯ apps/api/src/foundation.test.ts (3 tests | 1 failed) 18ms
+   ❯ foundation (3)
+     × returns a secret-free health response 6ms
+ ❯ apps/web/src/features/catalog-pagination.test.tsx (7 tests | 7 failed) 61ms
+   × uses bounded pages with correct controls for 0 classes and ignores the legacy cache 39ms
+   × uses bounded pages with correct controls for 1 classes and ignores the legacy cache 7ms
+   × uses bounded pages with correct controls for 20 classes and ignores the legacy cache 5ms
+   × uses bounded pages with correct controls for 22 classes and ignores the legacy cache 2ms
+   × debounces search and refuses late old results 3ms
+   × corrects a page invalidated by mutation and isolates a changed user's query 2ms
+   × shows retry and retains an off-page bank selection by identity 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/api/src/foundation.test.ts > foundation > returns a secret-free health response
+TypeError: Cannot read properties of null (reading 'address')
+ ❯ Test.serverAddress node_modules/supertest/lib/test.js:104:21
+ ❯ new Test node_modules/supertest/lib/test.js:53:14
+ ❯ Object.obj.<computed> [as get] node_modules/supertest/index.js:45:18
+ ❯ apps/api/src/foundation.test.ts:7:42
+      5| describe("foundation", () => {
+      6|   it("returns a secret-free health response", async () => {
+      7|     const r = await request(createApp()).get("/api/health");
+       |                                          ^
+      8|     expect(r.status).toBe(200);
+      9|     expect(r.body).toEqual({ data: { status: "ok", service: "exam-api"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > uses bounded pages with correct controls for 0 classes and ignores the legacy cache
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > uses bounded pages with correct controls for 1 classes and ignores the legacy cache
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > uses bounded pages with correct controls for 20 classes and ignores the legacy cache
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > uses bounded pages with correct controls for 22 classes and ignores the legacy cache
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > debounces search and refuses late old results
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > corrects a page invalidated by mutation and isolates a changed user's query
+ FAIL  apps/web/src/features/catalog-pagination.test.tsx > shows retry and retains an off-page bank selection by identity
+Error: [vitest] No "isSessionFailure" export is defined on the "../lib/api" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../lib/api"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ AuthProvider apps/web/src/features/auth.tsx:85:15
+     83|     <AuthContext.Provider
+     84|       value={{
+     85|         user: isSessionFailure(q.error) ? null : q.data || null,
+       |               ^
+     86|         loading: q.isPending,
+     87|         error: isSessionFailure(q.error) ? undefined : q.error,
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+
+ Test Files  2 failed | 16 passed (18)
+      Tests  8 failed | 57 passed (65)
+   Start at  18:23:47
+   Duration  2.45s (environment 37%, import 27%, transform 20%, tests 16%, worker 1%)
+

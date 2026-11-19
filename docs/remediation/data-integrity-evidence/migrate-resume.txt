@@ -1,0 +1,64 @@
+
+> db:migrate
+> npm run db:migrate -w @exam/api
+
+
+> @exam/api@1.0.0 db:migrate
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "examspace_integrity_resume_test", schema "public" at "127.0.0.1:55439"
+
+2 migrations found in prisma/migrations
+
+Applying migration `20260930000000_initial`
+Applying migration `20260930010000_integrity`
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.0 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260930000000_initial/
+    └─ migration.sql
+  └─ 20260930010000_integrity/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+> db:migrate
+> npm run db:migrate -w @exam/api
+
+
+> @exam/api@1.0.0 db:migrate
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "examspace_asset_resume_test", schema "public" at "127.0.0.1:55439"
+
+2 migrations found in prisma/migrations
+
+Applying migration `20260930000000_initial`
+Applying migration `20260930010000_integrity`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260930000000_initial/
+    └─ migration.sql
+  └─ 20260930010000_integrity/
+    └─ migration.sql
+
+All migrations have been successfully applied.

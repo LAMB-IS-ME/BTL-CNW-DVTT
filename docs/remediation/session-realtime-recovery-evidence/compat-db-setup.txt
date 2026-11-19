@@ -1,0 +1,52 @@
+
+> db:migrate
+> npm run db:migrate -w @exam/api
+
+
+> @exam/api@1.0.0 db:migrate
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "examspace_recovery_compat_test", schema "public" at "127.0.0.1:55439"
+
+2 migrations found in prisma/migrations
+
+Applying migration `20260930000000_initial`
+Applying migration `20260930010000_integrity`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260930000000_initial/
+    └─ migration.sql
+  └─ 20260930010000_integrity/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+> db:seed
+> npm run db:seed -w @exam/api
+
+
+> @exam/api@1.0.0 db:seed
+> tsx prisma/seed.ts
+
+(node:15830) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{
+  users: 15,
+  classes: 2,
+  banks: 2,
+  questions: 24,
+  exams: 3,
+  quizzes: 1,
+  demoAttempt: {
+    id: 'abbb289a-9f5d-4f76-9ab8-0b38a9d807cf',
+    attemptNo: 1,
+    status: 'GRADED',
+    autoSubmitted: false,
+    totalScore: 3
+  }
+}

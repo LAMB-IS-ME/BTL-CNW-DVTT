@@ -1,0 +1,137 @@
+[WebServer] (node:28275) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 13 tests using 1 worker
+
+(node:28338) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/recovery/lifecycle.spec.ts:75:1 › session expiry before SPA navigation clears protected identity (870ms)
+  ✓   2 tests/recovery/lifecycle.spec.ts:120:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership (13.3s)
+  ✓   3 tests/recovery/lifecycle.spec.ts:297:3 › Admin: expired reload and protected route remain signed out (657ms)
+  ✓   4 tests/recovery/lifecycle.spec.ts:297:3 › Student: expired reload and protected route remain signed out (664ms)
+  ✓   5 tests/recovery/lifecycle.spec.ts:321:1 › idle expiry is detected without navigation; recovery is responsive and keyboard accessible (31.1s)
+  ✓   6 tests/recovery/lifecycle.spec.ts:379:1 › Teacher draft mutation: expired CSRF confirms auth, does not create or replay the draft (1.7s)
+  ✓   7 tests/recovery/lifecycle.spec.ts:419:1 › network failure and valid-session RBAC/CSRF rejection do not become expiry (3.7s)
+  ✘   8 tests/recovery/lifecycle.spec.ts:475:1 › logout in another tab revokes the shared session (1.5m)
+(node:29772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 tests/recovery/lifecycle.spec.ts:501:1 › Question Bank editor expiry leaves stored question intact and does not bypass its leave guard (1.5s)
+  ✓  10 tests/recovery/lifecycle.spec.ts:545:1 › Grading expiry preserves submitted status, grade and result release policy (1.5s)
+  ✓  11 tests/recovery/lifecycle.spec.ts:588:1 › Student autosave expiry retains accepted answer and does not submit or replay unsaved answer (4.2s)
+  ✘  12 tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header (11.3s)
+(node:29980) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 tests/recovery/lifecycle.spec.ts:673:1 › reconnect attempts during a blocked startup cannot race presence reconciliation (3.9s)
+
+
+  1) tests/recovery/lifecycle.spec.ts:475:1 › logout in another tab revokes the shared session ─────
+
+    Test timeout of 90000ms exceeded.
+
+    Error: browserContext.close: Test ended.
+    Browser logs:
+
+    <launching> /home/lamb/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/tmp/playwright_chromiumdev_profile-Nz6mJ3 --remote-debugging-pipe --no-startup-window
+    <launched> pid=28444
+    [pid=28444][err] [1013/215939.343116:WARNING:components/dbus/xdg/portal.cc:126] Failed to register with org.freedesktop.host.portal.Registry
+    [pid=28444][err] [1013/215939.383462:WARNING:sandbox/policy/linux/sandbox_linux.cc:405] InitializeSandbox() called with multiple threads in process gpu-process.
+    [pid=28444][err] [1013/215939.615473:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215939.622431:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215939.685732:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215941.390268:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215941.397013:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215941.551503:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215941.640102:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215941.649321:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215941.824181:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215942.939800:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215942.948116:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215943.071433:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215953.848510:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215953.855477:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215953.948652:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215954.067160:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215954.071076:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215954.077738:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215954.457725:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215954.468501:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215954.577205:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215954.727445:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215954.734028:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215954.739851:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/215955.074570:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/215955.113808:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/215955.205429:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220025.622089:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220025.645425:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220025.650159:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220025.898134:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220025.904146:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220025.916714:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220026.307345:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220026.327891:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220026.412246:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220027.447011:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220027.462033:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220027.475844:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220027.941621:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220027.965746:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220028.041393:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220029.968092:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220029.977423:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220029.989888:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220030.429522:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220030.433547:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220030.501047:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220031.713623:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220031.717472:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220031.822658:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444][err] [1013/220031.988243:INFO:CONSOLE:883] "[vite] connecting...", source: http://localhost:5173/@vite/client (883)
+    [pid=28444][err] [1013/220032.000355:INFO:CONSOLE:996] "[vite] connected.", source: http://localhost:5173/@vite/client (996)
+    [pid=28444][err] [1013/220032.064914:INFO:CONSOLE:15805] "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold", source: http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=9be2f5c1 (15805)
+    [pid=28444] <gracefully close start>
+
+      495 |     );
+      496 |   } finally {
+    > 497 |     await context.close();
+          |     ^
+      498 |   }
+      499 | });
+      500 |
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/recovery/lifecycle.spec.ts:497:5
+
+    Error Context: test-results/lifecycle-logout-in-another-tab-revokes-the-shared-session/error-context.md
+
+    Error Context: test-results/lifecycle-logout-in-another-tab-revokes-the-shared-session/error-context.md
+
+  2) tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })
+
+
+      662 |     await expect(
+      663 |       page.getByRole("heading", { name: "Phiên đăng nhập đã kết thúc" }),
+    > 664 |     ).toBeVisible();
+          |       ^
+      665 |     await expect(page.getByRole("button", { name: "Đăng xuất" })).toHaveCount(
+      666 |       0,
+      667 |     );
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/recovery/lifecycle.spec.ts:664:7
+
+    Error Context: test-results/lifecycle-clicking-logout--7ee81-of-retaining-a-stale-header/error-context.md
+
+    Error Context: test-results/lifecycle-clicking-logout--7ee81-of-retaining-a-stale-header/error-context.md
+
+  2 failed
+    tests/recovery/lifecycle.spec.ts:475:1 › logout in another tab revokes the shared session ──────
+    tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header 
+  11 passed (2.8m)

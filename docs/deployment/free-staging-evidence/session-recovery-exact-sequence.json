@@ -1,0 +1,367 @@
+{
+  "scope": "FRESH_HOSTED_AUTH_FIX",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "origin": "https://examspace-staging.onrender.com",
+  "startedAt": "2026-10-15T15:16:43.324Z",
+  "status": "COMPLETE",
+  "checks": [],
+  "pageErrors": [],
+  "failedAssets": [],
+  "fixturesReused": "STAGING-20261015021944",
+  "businessContentMutations": 0,
+  "sqlExecuted": false,
+  "limitations": [
+    "Controlled network-delay/abort injection is marked explicitly",
+    "Session expiry uses expired browser cookie and server logout revocation; no database TTL mutation",
+    "Exam/Quiz smoke reads completed fixtures; full lifecycle evidence from prior commit is reused separately"
+  ],
+  "timeline": [
+    {
+      "source": "browser-request-start",
+      "phase": "initial",
+      "path": "/api/v1/auth/me",
+      "at": 1792077404451
+    },
+    {
+      "source": "browser-tab",
+      "phase": "initial",
+      "at": 1792077404715,
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-tab",
+      "phase": "initial",
+      "at": 1792077405534,
+      "path": "/api/v1/auth/csrf",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "initial",
+      "at": 1792077407596,
+      "path": "/api/v1/auth/login",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "initial",
+      "at": 1792077410139,
+      "path": "/api/v1/student/exams",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-state",
+      "label": "first-login",
+      "at": 1792077410652,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Bài thi được giao",
+        "STAGING-20261015021944 valid image",
+        "STAGING-20261015021944 exam"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": "STUDENT",
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-request-start",
+      "phase": "cookie-expiry",
+      "path": "/api/v1/auth/me",
+      "at": 1792077437601
+    },
+    {
+      "source": "browser-tab",
+      "phase": "cookie-expiry",
+      "at": 1792077437786,
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-state",
+      "label": "cookie-expired-browser-detected",
+      "at": 1792077438141,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Phiên đăng nhập đã kết thúc"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": null,
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-request-start",
+      "phase": "relogin",
+      "path": "/api/v1/auth/me",
+      "at": 1792077438344
+    },
+    {
+      "source": "browser-tab",
+      "phase": "relogin",
+      "at": 1792077438506,
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-tab",
+      "phase": "relogin",
+      "at": 1792077439202,
+      "path": "/api/v1/auth/csrf",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "relogin",
+      "at": 1792077442500,
+      "path": "/api/v1/auth/login",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "relogin",
+      "at": 1792077443624,
+      "path": "/api/v1/student/exams",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-state",
+      "label": "after-relogin",
+      "at": 1792077444548,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Bài thi được giao",
+        "STAGING-20261015021944 valid image",
+        "STAGING-20261015021944 exam"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": "STUDENT",
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "external-test-client",
+      "phase": "server-revoke-external",
+      "path": "/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "source": "browser-request-start",
+      "phase": "server-revoke-external",
+      "path": "/api/v1/auth/me",
+      "at": 1792077472501
+    },
+    {
+      "source": "browser-request-failed",
+      "phase": "server-revoke-external",
+      "path": "/api/v1/auth/me",
+      "at": 1792077472625,
+      "error": "net::ERR_CONNECTION_CLOSED"
+    },
+    {
+      "source": "browser-state",
+      "label": "after-45s-without-user-action",
+      "at": 1792077490795,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Bài thi được giao",
+        "STAGING-20261015021944 valid image",
+        "STAGING-20261015021944 exam"
+      ],
+      "me": {
+        "status": "error",
+        "fetchStatus": "idle",
+        "role": "STUDENT",
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": true,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-state",
+      "label": "after-window-focus",
+      "at": 1792077492303,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Bài thi được giao",
+        "STAGING-20261015021944 valid image",
+        "STAGING-20261015021944 exam"
+      ],
+      "me": {
+        "status": "error",
+        "fetchStatus": "idle",
+        "role": "STUDENT",
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": true,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-request-start",
+      "phase": "visibility",
+      "path": "/api/v1/auth/me",
+      "at": 1792077492307
+    },
+    {
+      "source": "browser-tab",
+      "phase": "visibility",
+      "at": 1792077492570,
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-tab",
+      "phase": "visibility",
+      "at": 1792077492572,
+      "path": "/api/v1/student/exams",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-state",
+      "label": "after-visibility-event",
+      "at": 1792077494815,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Phiên đăng nhập đã kết thúc"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": null,
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-request-start",
+      "phase": "reload",
+      "path": "/api/v1/auth/me",
+      "at": 1792077494963
+    },
+    {
+      "source": "browser-tab",
+      "phase": "reload",
+      "at": 1792077495122,
+      "path": "/api/v1/auth/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "source": "browser-state",
+      "label": "after-reload",
+      "at": 1792077495176,
+      "path": "/login",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Đăng nhập vào ExamSpace"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": null,
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    },
+    {
+      "source": "browser-tab",
+      "phase": "subsequent-login",
+      "at": 1792077495852,
+      "path": "/api/v1/auth/csrf",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "subsequent-login",
+      "at": 1792077497896,
+      "path": "/api/v1/auth/login",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "source": "browser-tab",
+      "phase": "subsequent-login",
+      "at": 1792077499023,
+      "path": "/api/v1/student/exams",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "source": "browser-state",
+      "label": "subsequent-login-success",
+      "at": 1792077499659,
+      "path": "/student",
+      "visibility": "visible",
+      "focused": true,
+      "headings": [
+        "Bài thi được giao",
+        "STAGING-20261015021944 valid image",
+        "STAGING-20261015021944 exam"
+      ],
+      "me": {
+        "status": "success",
+        "fetchStatus": "idle",
+        "role": "STUDENT",
+        "observers": 1,
+        "active": true,
+        "disabled": false,
+        "stale": false,
+        "errorCode": null
+      }
+    }
+  ]
+}

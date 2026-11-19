@@ -1,3 +1,5 @@
+import { validateSourceAssets } from "../storage/references.js";
+import { lockCatalog } from "../question-banks/lock.js";
 import { EventEmitter } from "node:events";
 import { randomInt } from "node:crypto";
 import { transactionOptions, type Db } from "../../db/client.js";
@@ -12,6 +14,7 @@ import {
   gradeObjective,
 } from "../attempts/logic.js";
 import { quizPoints } from "./logic.js";
+import { lockQuiz, validateQuizDefinition } from "./configuration.js";
 export const quizEvents = new EventEmitter();
 export type QuizChange = "joined" | "left" | "started" | "question" | "reveal";
 export async function lockRoom(tx: Tx, id: string) {
@@ -28,6 +31,8 @@ export async function roomState(
   roomId: string,
   actor?: UserDto,
 ): Promise<QuizState> {
+  // Capture before reading: a slow older snapshot must not look newer on arrival.
+  const serverNow = new Date().toISOString();
   const r = await db.quizRoom.findUnique({
     where: { id: roomId },
     include: roomInclude,
@@ -71,7 +76,7 @@ export async function roomState(
     status: r.status,
     currentIndex: r.currentQuestionIndex,
     total: r.questions.length,
-    serverNow: new Date().toISOString(),
+    serverNow,
     closesAt: r.questionClosesAt?.toISOString() || null,
     participants: r.participants.map((p) => ({
       id: p.id,
@@ -116,13 +121,15 @@ export async function roomState(
   };
 }
 export async function createRoom(db: Db, quizId: string, teacherId: string) {
-  const q = await db.liveQuiz.findUnique({ where: { id: quizId } });
-  check(q && q.teacherId === teacherId, 404, "NOT_FOUND");
-  check(!q.isArchived, 409, "QUIZ_ARCHIVED");
   for (let i = 0; i < 10; i++) {
     const code = randomInt(100000, 1000000).toString();
     try {
-      return await db.quizRoom.create({ data: { quizId, teacherId, code } });
+      return await db.$transaction(async (tx) => {
+        await lockQuiz(tx, quizId);
+        await lockCatalog(tx, teacherId);
+        await validateQuizDefinition(tx, quizId, teacherId, true);
+        return tx.quizRoom.create({ data: { quizId, teacherId, code } });
+      });
     } catch (error) {
       if (
         typeof error === "object" &&
@@ -161,11 +168,11 @@ export async function joinRoom(db: Db, roomId: string, actor: UserDto) {
   return roomState(db, roomId, actor);
 }
 export async function leaveRoom(db: Db, roomId: string, studentId: string) {
-  await db.quizParticipant.updateMany({
-    where: { roomId, studentId },
+  const changed = await db.quizParticipant.updateMany({
+    where: { roomId, studentId, isConnected: true },
     data: { isConnected: false, lastSeenAt: new Date() },
   });
-  quizEvents.emit("changed", roomId, "left");
+  if (changed.count) quizEvents.emit("changed", roomId, "left");
 }
 export async function startRoom(db: Db, roomId: string, actor: UserDto) {
   await db.$transaction(async (tx) => {
@@ -175,7 +182,8 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
       select: { quizId: true },
     });
     check(ref, 404, "QUIZ_ROOM_NOT_FOUND");
-    await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${ref.quizId}::uuid FOR UPDATE`;
+    await lockQuiz(tx, ref.quizId);
+    await lockCatalog(tx, actor.id);
     const r = await tx.quizRoom.findUnique({
       where: { id: roomId },
       include: {
@@ -184,7 +192,10 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
             questions: {
               include: {
                 question: {
-                  include: { options: { orderBy: { orderIndex: "asc" } } },
+                  include: {
+                    bank: true,
+                    options: { orderBy: { orderIndex: "asc" } },
+                  },
                 },
               },
               orderBy: { orderIndex: "asc" },
@@ -200,11 +211,21 @@ export async function startRoom(db: Db, roomId: string, actor: UserDto) {
       "FORBIDDEN",
     );
     check(r.status === "LOBBY", 409, "QUIZ_ALREADY_STARTED");
+    check(!r.quiz.isArchived, 409, "QUIZ_ARCHIVED");
     check(r._count.participants > 0, 409, "QUIZ_NO_PARTICIPANTS");
     const qs = r.quiz.questions;
+    await validateSourceAssets(
+      tx,
+      qs.map((q) => q.question),
+    );
     check(
       qs.length > 0 &&
-        qs.every((q) => q.question.type !== "ESSAY" && !q.question.isArchived),
+        qs.every(
+          (q) =>
+            q.question.type !== "ESSAY" &&
+            !q.question.isArchived &&
+            !q.question.bank.isArchived,
+        ),
       400,
       "QUIZ_INVALID_QUESTIONS",
     );

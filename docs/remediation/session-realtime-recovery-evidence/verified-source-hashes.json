@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-13",
+  "note": "Final changed source/tests hashes; scratch compatibility differs only in test ports and Vite filesystem allowance, product source identical",
+  "sha256": {
+    "apps/api/src/modules/live-quiz/service.ts": "bb71f9616adc3ef6a7326c11cb2adcdaf393d5ea32c2e5eeb497abfb00a55b41",
+    "apps/api/src/server.ts": "e4a7f96146acdc7b93fe2ea51a59bccf4bfa2bc291ec5828ac51c9969667eafe",
+    "apps/api/src/sockets/quiz.ts": "dd0a9f4bf8832045080e7089d7497e0b75cf6f7bb60e875e3d4ce83ae6410d35",
+    "apps/api/test/auth.integration.test.ts": "626542128cf7d4a71ffa485d1b90c77a1de2d79695c4f40e9814d8bc1ef49c5a",
+    "apps/api/test/quiz.integration.test.ts": "106a10cbc088a68c31cbec434877e540aaffc71f46ec6f4de2d223ddaedf86fe",
+    "apps/api/test/socket.integration.test.ts": "38b64e49500be43cdbda334c661a05908ee39e3ccd41fc991e3d5920fc8b6d6b",
+    "apps/web/src/App.tsx": "28d9ad351dcf9b9cab61b3ae53de3b5f884c8692da49c3676d5c0189397731be",
+    "apps/web/src/features/attempts.tsx": "46394078d6505967ad222756df9cfee06c46fc340918da3daba112d8136b6eda",
+    "apps/web/src/features/auth.tsx": "31af3c8636e18042cde12eca15b76e0cb79352719f4c7ba5056523b15737198d",
+    "apps/web/src/features/catalog-pagination.test.tsx": "c2f62692114b56efba95df9b1a289fe6dba62acbbf717e3670aff0c95c8f4393",
+    "apps/web/src/features/quiz.test.tsx": "a0aaa72d70f92044460b4d2a84fc614a7ac993638bb472ab4d873e627f5f261f",
+    "apps/web/src/features/quiz.tsx": "b79f0ed07f5a6c8620d8c289c3a47937b54264a1127f28942fa4b0d718120524",
+    "apps/web/src/lib/api.test.ts": "d0cc379a88a3f77209ce782dd543af5afbb6f2fce52d7c8dfea7e92fd4066ab1",
+    "apps/web/src/lib/api.ts": "69b42cb2ecd632bb4f09dcedea4fdceb4e940fce93c4dabc0aaacdc269646bb4",
+    "apps/web/src/lib/socket.ts": "a72038c1192e5d2a04d7f24a9cbb915736e78e2bb8c02afb640a7fa79a2ae83c",
+    "apps/web/src/features/session-lifecycle.test.tsx": "c81e35d0aa9b033ec35876f56810b7226742c4309947b45b0706450d8653df87",
+    "apps/web/src/lib/session.ts": "ea006396cde881e2cdf31677e4849a3ee70d3a170c1b874dd01ac0b3ee4a5b18",
+    "playwright.recovery.config.ts": "0b5f600c25b45958001b97b61ca0de26281a39b6764844d110f727a0d6a98e4e",
+    "tests/recovery/lifecycle.spec.ts": "c771cfe8f56b4d94795c85a84c58da56c8821cb86ff575aba63a8cb0b2f34664"
+  }
+}

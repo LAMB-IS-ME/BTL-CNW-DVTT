@@ -91,7 +91,7 @@ export function createRealtime(
   examEvents.on("submitted", submitted);
   const quiz = attachQuiz(io, db);
   io.on("connection", (socket) => {
-    quiz.bind(socket);
+    const sequenceMembership = quiz.bind(socket);
     const req = socket.request as Request;
     void socket.join(`user:${socket.data.user.id}`);
     void socket.join(`session:${req.session.id}`);
@@ -103,13 +103,19 @@ export function createRealtime(
     }, 30000);
     interval.unref();
     socket.use((_packet, next) => {
-      if (++messages > 180) {
-        next(new Error("RATE_LIMITED"));
-        return;
-      }
-      authorize(socket, true)
-        .then(() => next())
-        .catch(() => socket.disconnect(true));
+      // Count at ingress as before; queue only Live Quiz membership operations.
+      const limited = ++messages > 180;
+      sequenceMembership(_packet[0], (failed) => {
+        if (limited) {
+          const error = new Error("RATE_LIMITED");
+          failed(error);
+          next(error);
+          return;
+        }
+        authorize(socket, true)
+          .then(() => next())
+          .catch(() => socket.disconnect(true));
+      });
     });
     const run = <T>(ack: SocketAck<T> | undefined, fn: () => Promise<T>) => {
       void fn()

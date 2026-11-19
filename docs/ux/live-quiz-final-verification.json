@@ -1,0 +1,2394 @@
+{
+  "phase": "Live Quiz final cleanup and verification",
+  "generatedAt": "2026-10-12T00:53:51.327385+00:00",
+  "approval": "User approved all Live Quiz UI and authorized one local commit; no push/deploy/merge/PR.",
+  "baseline": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "e236cb87221f2596aed424b833f281d6e34be66b",
+    "trackedModified": 2,
+    "untrackedFiles": 30
+  },
+  "testResults": [
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "exitCode": 0,
+      "durationSeconds": 4.46,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/lint.log",
+        "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b",
+        "committed": false
+      }
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "durationSeconds": 16.46,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/typecheck.log",
+        "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5",
+        "committed": false
+      }
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationSeconds": 9.3,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/build.log",
+        "sha256": "9c9400fd76eb7375b31cd39d1318f0bf2da43b40bdcb6812a98e3b8c40963b76",
+        "committed": false
+      }
+    },
+    {
+      "name": "unit",
+      "command": "npm test",
+      "exitCode": 0,
+      "durationSeconds": 4.03,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/unit.log",
+        "sha256": "56fc3a412137abba9a61f032474063929fe585a7df1b99faface57ad0bea12b0",
+        "committed": false
+      },
+      "passed": 53,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "Tests  53 passed (53)"
+    },
+    {
+      "name": "integration",
+      "command": "npm run test:integration",
+      "exitCode": 0,
+      "durationSeconds": 31.52,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/integration.log",
+        "sha256": "2197639abea77eddd632188601f7cca7ded537a918c1bd3ac59bfd433ac40b23",
+        "committed": false
+      },
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "Tests  33 passed (33)"
+    },
+    {
+      "name": "seed",
+      "command": "npm run db:seed",
+      "exitCode": 0,
+      "durationSeconds": 1.42,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/seed.log",
+        "sha256": "2210ad4a76dd31ed491d1a944e7036dbed427709c9146b6ec795d36fddbefb9d",
+        "committed": false
+      }
+    },
+    {
+      "name": "chromium-lifecycle",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz.spec.ts --project chromium",
+      "exitCode": 0,
+      "durationSeconds": 169.09,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/chromium-lifecycle.log",
+        "sha256": "e4b51e953fa64a7eb88436d13f6ddf463797bf27e406bdff38ae19131a805817",
+        "committed": false
+      },
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "7 passed (2.8m)"
+    },
+    {
+      "name": "chromium-hardening",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz-hardening.spec.ts --project chromium",
+      "exitCode": 0,
+      "durationSeconds": 46.36,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/chromium-hardening.log",
+        "sha256": "9123d97761ff9ae0b865c8d91fad47c452a98ac153ec8dd4c59325b0a6544504",
+        "committed": false
+      },
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "4 passed (45.4s)"
+    },
+    {
+      "name": "firefox-lifecycle",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz.spec.ts --project firefox",
+      "exitCode": 0,
+      "durationSeconds": 177.43,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/firefox-lifecycle.log",
+        "sha256": "e3f0aa92520dd22a635eb332f7db0a4eeecece4cdc6bdfb2c4a5994b0700cace",
+        "committed": false
+      },
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "7 passed (2.9m)"
+    },
+    {
+      "name": "firefox-hardening",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz-hardening.spec.ts --project firefox",
+      "exitCode": 0,
+      "durationSeconds": 48.12,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/firefox-hardening.log",
+        "sha256": "560c2dc1c46cf0032380d7c7e5fb38e018f5b089dc9eddc0065e7390958812ce",
+        "committed": false
+      },
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "4 passed (47.1s)"
+    },
+    {
+      "name": "webkit-lifecycle",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz.spec.ts --project webkit",
+      "exitCode": 0,
+      "durationSeconds": 169.27,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/webkit-lifecycle.log",
+        "sha256": "40ffe5e710bfc0bea4c2181dc3c4819c7c5f755162093ad98bbab6627b93a661",
+        "committed": false
+      },
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "7 passed (2.8m)"
+    },
+    {
+      "name": "webkit-hardening",
+      "command": "npx playwright test --config playwright.live-quiz.config.ts tests/ui/live-quiz-hardening.spec.ts --project webkit",
+      "exitCode": 0,
+      "durationSeconds": 48.75,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/webkit-hardening.log",
+        "sha256": "216145788aae5803cdf404fae87d87cb3ffb37cf68d3724d5333553c993f4cc9",
+        "committed": false
+      },
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "4 passed (47.8s)"
+    },
+    {
+      "name": "compatibility",
+      "command": "npx playwright test --config playwright.ui.config.ts tests/ui/live-quiz-compat.spec.ts",
+      "exitCode": 0,
+      "durationSeconds": 10.84,
+      "log": {
+        "artifactId": "external-artifacts/live-quiz-final/compatibility.log",
+        "sha256": "73c74dfe4f0c0f0a8416929c588b7ea1419c572f7eab4d415320d2bdcb9ea7d5",
+        "committed": false
+      },
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "summary": "1 passed (9.8s)"
+    }
+  ],
+  "browserEvidence": {
+    "chromium": {
+      "lifecycle": [
+        {
+          "width": 1440,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "baa8132f02676c343b40503aa0482e569ab1f14fd407e12333c1dd13dd542125"
+        },
+        {
+          "width": 1024,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "f0157432d2cd6be07b90f9e8e65e1749356065359a64c1bbbfc22b518916e7cf"
+        },
+        {
+          "width": 820,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "5471ba076e472db26e8763bb5b64d0fdd859d0e40c2b867c35cb3bbb653a18b1"
+        },
+        {
+          "width": 390,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "d68b2b3a357bb61d06da77b02f99cca23e48b8e56c570652c7d734111073abcb"
+        },
+        {
+          "width": 320,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "bf981ce3e76b08648a6661951b906f495e88d7b20243885040be6bbcc72800c8"
+        }
+      ],
+      "accessibility": {
+        "metrics": [
+          {
+            "width": 1440,
+            "targets": [
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 1024,
+            "targets": [
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 820,
+            "targets": [
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 390,
+            "targets": [
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 48,
+                "width": 324
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 320,
+            "targets": [
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 48,
+                "width": 254
+              }
+            ],
+            "timerErrorSeconds": 0
+          }
+        ],
+        "colors": {
+          "fg": "rgb(255, 255, 255)",
+          "bg": "rgb(36, 87, 78)"
+        },
+        "contrast": 8.24077735628291,
+        "polishContrast": [
+          {
+            "label": "control h2",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 9.561968049247884
+          },
+          {
+            "label": "control .lq-label",
+            "fg": "rgb(212, 228, 216)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 7.300819177205201
+          },
+          {
+            "label": "control button",
+            "fg": "rgb(32, 76, 67)",
+            "bg": "rgb(241, 243, 223)",
+            "ratio": 8.558763114253583
+          },
+          {
+            "label": "leading rank",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(36, 87, 78)",
+            "ratio": 8.165884355128915
+          },
+          {
+            "label": "leading name",
+            "fg": "rgb(37, 44, 42)",
+            "bg": "rgb(224, 235, 222)",
+            "ratio": 11.61908025296797
+          }
+        ],
+        "selectionBoundsUnchanged": true,
+        "keyboard": true,
+        "promptRetained": true
+      },
+      "hardening": {
+        "answer-fault": {
+          "lostRealAcknowledgements": 1,
+          "committedBeforeReload": true,
+          "recoveredOwnAnswer": true,
+          "nextQuestionFocus": true,
+          "hostTransportRecovered": true,
+          "deadlineUnchanged": true,
+          "answers": 2
+        },
+        "join-fault": {
+          "droppedRealAcknowledgements": 1,
+          "recovered": true,
+          "participants": 1,
+          "timeoutPendingCopyAbsent": true,
+          "joinedOnlyAfterValidAck": true
+        },
+        "library": {
+          "empty": true,
+          "failedRequestRetry": true,
+          "pages": [
+            20,
+            1
+          ],
+          "longTitleLength": 200,
+          "widths": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        },
+        "rich-content": {
+          "titleLength": 200,
+          "longName": true,
+          "markdown": [
+            "paragraph",
+            "code",
+            "math",
+            "table"
+          ],
+          "landscape": true,
+          "answered": true,
+          "longLeaderboardAndHostControls": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        }
+      }
+    },
+    "firefox": {
+      "lifecycle": [
+        {
+          "width": 1440,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "834840258654e92946dde105079f307879634ac5f468d6a257d810f205c18b58"
+        },
+        {
+          "width": 1024,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "8ba5678019cf881f56888d8148f2401c8dfc5a421ae5678854930553782b3422"
+        },
+        {
+          "width": 820,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "2b602226a316886f9d2187f6dca0dff438499f98d8be46ad979268f390f6f10f"
+        },
+        {
+          "width": 390,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "f3540a8cff78f5b4da25ff79c36d601eb01cddf3886932e8950b8435c6e7a8be"
+        },
+        {
+          "width": 320,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "0125c8eddcf4631f5b4644fc404fa106ad8c543ff7210f36db0b2395a7cd9dec"
+        }
+      ],
+      "accessibility": {
+        "metrics": [
+          {
+            "width": 1440,
+            "targets": [
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 48,
+                "width": 148.18333435058594
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 1024,
+            "targets": [
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 48,
+                "width": 148.18333435058594
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 820,
+            "targets": [
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 48,
+                "width": 148.18333435058594
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 390,
+            "targets": [
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 48,
+                "width": 324
+              }
+            ],
+            "timerErrorSeconds": 1
+          },
+          {
+            "width": 320,
+            "targets": [
+              {
+                "height": 81.19999694824219,
+                "width": 240
+              },
+              {
+                "height": 81.19999694824219,
+                "width": 240
+              },
+              {
+                "height": 81.19999694824219,
+                "width": 240
+              },
+              {
+                "height": 81.20001220703125,
+                "width": 240
+              },
+              {
+                "height": 48,
+                "width": 254
+              }
+            ],
+            "timerErrorSeconds": 0
+          }
+        ],
+        "colors": {
+          "fg": "rgb(255, 255, 255)",
+          "bg": "rgb(36, 87, 78)"
+        },
+        "contrast": 8.24077735628291,
+        "polishContrast": [
+          {
+            "label": "control h2",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 9.561968049247884
+          },
+          {
+            "label": "control .lq-label",
+            "fg": "rgb(212, 228, 216)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 7.300819177205201
+          },
+          {
+            "label": "control button",
+            "fg": "rgb(32, 76, 67)",
+            "bg": "rgb(241, 243, 223)",
+            "ratio": 8.558763114253583
+          },
+          {
+            "label": "leading rank",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(36, 87, 78)",
+            "ratio": 8.165884355128915
+          },
+          {
+            "label": "leading name",
+            "fg": "rgb(37, 44, 42)",
+            "bg": "rgb(224, 235, 222)",
+            "ratio": 11.61908025296797
+          }
+        ],
+        "selectionBoundsUnchanged": true,
+        "keyboard": true,
+        "promptRetained": true
+      },
+      "hardening": {
+        "answer-fault": {
+          "lostRealAcknowledgements": 1,
+          "committedBeforeReload": true,
+          "recoveredOwnAnswer": true,
+          "nextQuestionFocus": true,
+          "hostTransportRecovered": true,
+          "deadlineUnchanged": true,
+          "answers": 2
+        },
+        "join-fault": {
+          "droppedRealAcknowledgements": 1,
+          "recovered": true,
+          "participants": 1,
+          "timeoutPendingCopyAbsent": true,
+          "joinedOnlyAfterValidAck": true
+        },
+        "library": {
+          "empty": true,
+          "failedRequestRetry": true,
+          "pages": [
+            20,
+            1
+          ],
+          "longTitleLength": 200,
+          "widths": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        },
+        "rich-content": {
+          "titleLength": 200,
+          "longName": true,
+          "markdown": [
+            "paragraph",
+            "code",
+            "math",
+            "table"
+          ],
+          "landscape": true,
+          "answered": true,
+          "longLeaderboardAndHostControls": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        }
+      }
+    },
+    "webkit": {
+      "lifecycle": [
+        {
+          "width": 1440,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "2e72fc990b78f620a0bcec9ff77e8a354de9ea814c5431fec6a61d7dc3d2be7c"
+        },
+        {
+          "width": 1024,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "6adfd008380668c8d24865566af03f71d59fe7c9487fe7ee72910c93a4dcd1a4"
+        },
+        {
+          "width": 820,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "c85fa5181e1fb3c3f103e5919a3d436b06c16c8871a4873676b556e50b702fd8"
+        },
+        {
+          "width": 390,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "d3ca2eb39dc54ac853c0432eb425e1637e04cf9a0a0effcc0eb705250871dff4"
+        },
+        {
+          "width": 320,
+          "finalStatus": "FINISHED",
+          "participants": 2,
+          "captures": [
+            {
+              "name": "teacher-entry",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-builder",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby-empty",
+              "overflow": 0
+            },
+            {
+              "name": "student-join",
+              "overflow": 0
+            },
+            {
+              "name": "student-invalid-code",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-lobby",
+              "overflow": 0
+            },
+            {
+              "name": "student-waiting",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-active",
+              "overflow": 0
+            },
+            {
+              "name": "student-question",
+              "overflow": 0
+            },
+            {
+              "name": "student-selected",
+              "overflow": 0
+            },
+            {
+              "name": "student-submitted",
+              "overflow": 0
+            },
+            {
+              "name": "student-disconnected",
+              "overflow": 0
+            },
+            {
+              "name": "student-reconnected",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-leaderboard",
+              "overflow": 0
+            },
+            {
+              "name": "student-deadline",
+              "overflow": 0
+            },
+            {
+              "name": "teacher-finished",
+              "overflow": 0
+            },
+            {
+              "name": "student-finished",
+              "overflow": 0
+            }
+          ],
+          "pageErrors": [],
+          "rawEvidenceSha256": "6960a3660283ffacebd4d843dc7ee903b1f39e067caa739d8f6fad83ed777e2d"
+        }
+      ],
+      "accessibility": {
+        "metrics": [
+          {
+            "width": 1440,
+            "targets": [
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 64,
+                "width": 752
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 1024,
+            "targets": [
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 64,
+                "width": 776
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 820,
+            "targets": [
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 64,
+                "width": 692
+              },
+              {
+                "height": 48,
+                "width": 148.1875
+              }
+            ],
+            "timerErrorSeconds": 0
+          },
+          {
+            "width": 390,
+            "targets": [
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 64,
+                "width": 310
+              },
+              {
+                "height": 48,
+                "width": 324
+              }
+            ],
+            "timerErrorSeconds": 1
+          },
+          {
+            "width": 320,
+            "targets": [
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 81.1875,
+                "width": 240
+              },
+              {
+                "height": 48,
+                "width": 254
+              }
+            ],
+            "timerErrorSeconds": 0
+          }
+        ],
+        "colors": {
+          "fg": "rgb(255, 255, 255)",
+          "bg": "rgb(36, 87, 78)"
+        },
+        "contrast": 8.24077735628291,
+        "polishContrast": [
+          {
+            "label": "control h2",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 9.561968049247884
+          },
+          {
+            "label": "control .lq-label",
+            "fg": "rgb(212, 228, 216)",
+            "bg": "rgb(32, 76, 67)",
+            "ratio": 7.300819177205201
+          },
+          {
+            "label": "control button",
+            "fg": "rgb(32, 76, 67)",
+            "bg": "rgb(241, 243, 223)",
+            "ratio": 8.558763114253583
+          },
+          {
+            "label": "leading rank",
+            "fg": "rgb(255, 254, 250)",
+            "bg": "rgb(36, 87, 78)",
+            "ratio": 8.165884355128915
+          },
+          {
+            "label": "leading name",
+            "fg": "rgb(37, 44, 42)",
+            "bg": "rgb(224, 235, 222)",
+            "ratio": 11.61908025296797
+          }
+        ],
+        "selectionBoundsUnchanged": true,
+        "keyboard": true,
+        "promptRetained": true
+      },
+      "hardening": {
+        "answer-fault": {
+          "lostRealAcknowledgements": 1,
+          "committedBeforeReload": true,
+          "recoveredOwnAnswer": true,
+          "nextQuestionFocus": true,
+          "hostTransportRecovered": true,
+          "deadlineUnchanged": true,
+          "answers": 2
+        },
+        "join-fault": {
+          "droppedRealAcknowledgements": 1,
+          "recovered": true,
+          "participants": 1,
+          "timeoutPendingCopyAbsent": true,
+          "joinedOnlyAfterValidAck": true
+        },
+        "library": {
+          "empty": true,
+          "failedRequestRetry": true,
+          "pages": [
+            20,
+            1
+          ],
+          "longTitleLength": 200,
+          "widths": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        },
+        "rich-content": {
+          "titleLength": 200,
+          "longName": true,
+          "markdown": [
+            "paragraph",
+            "code",
+            "math",
+            "table"
+          ],
+          "landscape": true,
+          "answered": true,
+          "longLeaderboardAndHostControls": [
+            1440,
+            1024,
+            820,
+            390,
+            320
+          ]
+        }
+      }
+    }
+  },
+  "compatibility": {
+    "teacherExamStylesUnchanged": true,
+    "studentCatalogStylesUnchanged": true,
+    "libraryItems": 3
+  },
+  "boards": [
+    {
+      "path": "docs/screenshots/live-quiz-polish/evidence-states.png",
+      "sha256": "849404bbe280a82320e7dc182b2c7f21ae4edd395d746f46dc1f569df278b8fa",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/review-board-desktop.png",
+      "sha256": "d4bccf2234e86880435f80d7d55dc1e18be555684777926b2a3c9f8c588dff45",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/review-board-mobile.png",
+      "sha256": "be248a5369d378b4920416b5cb7d4e552d62029f0216a4ea465d15bbcf1ff9c5",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/visual-before-after.png",
+      "sha256": "de15ef93485460b4e4527c20d49146c56d1fa18683d6b2731235ccebd9255d77",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/evidence-states.png",
+      "sha256": "eeb6337bc417d43ed583466b32c2ccefe216a988fedaddc6442b2d525a0a99a1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-desktop.png",
+      "sha256": "f78b5578348320ea8084493aaa19a907865e5fe1fee7e3f164105b43b12f99e0",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-mobile.png",
+      "sha256": "ec24088254fda742a8d253cdcc510c635794c3e11f579ed5121d73de74dd7565",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/evidence-states.png",
+      "sha256": "a4e259daba551860682d84409e04195dc8d45bc564d688501bac4ef704ddb351",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/review-board-desktop.png",
+      "sha256": "9ad6e09ad3ef156f8256898411f83d1338fa9cf32c6715de340923470c1d04c5",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/review-board-mobile.png",
+      "sha256": "5f5b074e915fc8fc2dc33f526345166b4974d9b2db46837eda4c3bc1705ef4de",
+      "unchanged": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/visual-before-after.png",
+      "sha256": "774af33ba1fbc0e97bae964277c562abdf1529ebda391da64cac90e125e1bd84",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/api/test/quiz.integration.test.ts",
+      "sha256": "f5ec9a4f3ca56bf5f283b6b0f1f7bb9b6a98541b370f440af34803efc4713a36",
+      "originalBeforeCleanupSha256": "f5ec9a4f3ca56bf5f283b6b0f1f7bb9b6a98541b370f440af34803efc4713a36",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "apps/web/src/features/quiz.test.tsx",
+      "sha256": "c33481d91b25d594256d2dbf930e5810650b174db53f33978231b8ec849e6143",
+      "originalBeforeCleanupSha256": "c33481d91b25d594256d2dbf930e5810650b174db53f33978231b8ec849e6143",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "apps/web/src/features/quiz.tsx",
+      "sha256": "3aeb7d07bdd4a6c0b16448f9de6847ac8a6b3c1cabe422e2c8be1eee8de9ff2b",
+      "originalBeforeCleanupSha256": "3aeb7d07bdd4a6c0b16448f9de6847ac8a6b3c1cabe422e2c8be1eee8de9ff2b",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "apps/web/src/styles/live-quiz.css",
+      "sha256": "1791e07060e38cd5092b0318a4a2536cb13f773139492e3204173c03533bf115",
+      "originalBeforeCleanupSha256": "1791e07060e38cd5092b0318a4a2536cb13f773139492e3204173c03533bf115",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/board-manifest.json",
+      "sha256": "856dec56d7d93236efcc896a74fd106a2e83cc42fb05d4f8e4b07b1c780245df",
+      "originalBeforeCleanupSha256": "b95947ce62cbd2f8e790fbdfe943272185770a882294d0aca8d78d1eaa907609",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/evidence-states.png",
+      "sha256": "849404bbe280a82320e7dc182b2c7f21ae4edd395d746f46dc1f569df278b8fa",
+      "originalBeforeCleanupSha256": "849404bbe280a82320e7dc182b2c7f21ae4edd395d746f46dc1f569df278b8fa",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/review-board-desktop.png",
+      "sha256": "d4bccf2234e86880435f80d7d55dc1e18be555684777926b2a3c9f8c588dff45",
+      "originalBeforeCleanupSha256": "d4bccf2234e86880435f80d7d55dc1e18be555684777926b2a3c9f8c588dff45",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/review-board-mobile.png",
+      "sha256": "be248a5369d378b4920416b5cb7d4e552d62029f0216a4ea465d15bbcf1ff9c5",
+      "originalBeforeCleanupSha256": "be248a5369d378b4920416b5cb7d4e552d62029f0216a4ea465d15bbcf1ff9c5",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/visual-before-after.png",
+      "sha256": "de15ef93485460b4e4527c20d49146c56d1fa18683d6b2731235ccebd9255d77",
+      "originalBeforeCleanupSha256": "de15ef93485460b4e4527c20d49146c56d1fa18683d6b2731235ccebd9255d77",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/board-manifest.json",
+      "sha256": "f18056d567683bc29f92f4720881faf569eac715d5d30a8327a85ec481c2ebd0",
+      "originalBeforeCleanupSha256": "694d00c18fcf7562fa16851f19e73fea2011a9b5abdfc78ebca7d1b3ba54eda0",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/evidence-states.png",
+      "sha256": "eeb6337bc417d43ed583466b32c2ccefe216a988fedaddc6442b2d525a0a99a1",
+      "originalBeforeCleanupSha256": "eeb6337bc417d43ed583466b32c2ccefe216a988fedaddc6442b2d525a0a99a1",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-desktop.png",
+      "sha256": "f78b5578348320ea8084493aaa19a907865e5fe1fee7e3f164105b43b12f99e0",
+      "originalBeforeCleanupSha256": "f78b5578348320ea8084493aaa19a907865e5fe1fee7e3f164105b43b12f99e0",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/review-board-mobile.png",
+      "sha256": "ec24088254fda742a8d253cdcc510c635794c3e11f579ed5121d73de74dd7565",
+      "originalBeforeCleanupSha256": "ec24088254fda742a8d253cdcc510c635794c3e11f579ed5121d73de74dd7565",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/board-manifest.json",
+      "sha256": "1eb486ab86f9e34d3dd4c76bdd959e174052676e7860a346bfd6f08c7b56d456",
+      "originalBeforeCleanupSha256": "76654fb27ec5934d7b4c1b138f58ae927a94dea954281de0bd6e570a27155333",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/evidence-states.png",
+      "sha256": "a4e259daba551860682d84409e04195dc8d45bc564d688501bac4ef704ddb351",
+      "originalBeforeCleanupSha256": "a4e259daba551860682d84409e04195dc8d45bc564d688501bac4ef704ddb351",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/review-board-desktop.png",
+      "sha256": "9ad6e09ad3ef156f8256898411f83d1338fa9cf32c6715de340923470c1d04c5",
+      "originalBeforeCleanupSha256": "9ad6e09ad3ef156f8256898411f83d1338fa9cf32c6715de340923470c1d04c5",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/review-board-mobile.png",
+      "sha256": "5f5b074e915fc8fc2dc33f526345166b4974d9b2db46837eda4c3bc1705ef4de",
+      "originalBeforeCleanupSha256": "5f5b074e915fc8fc2dc33f526345166b4974d9b2db46837eda4c3bc1705ef4de",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/visual-before-after.png",
+      "sha256": "774af33ba1fbc0e97bae964277c562abdf1529ebda391da64cac90e125e1bd84",
+      "originalBeforeCleanupSha256": "774af33ba1fbc0e97bae964277c562abdf1529ebda391da64cac90e125e1bd84",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_FINAL_VERIFICATION.md",
+      "sha256": "d6f19264b4516b845a5446e71986fc748911284f1ad6206b9b77bfaf63024a52",
+      "originalBeforeCleanupSha256": null,
+      "changedDuringCleanup": null
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_PROTOTYPE_REPORT.md",
+      "sha256": "5968337fcec4fd3f6e816ad3a7df156fd4f4acf1cf17e16697d4283f8863b195",
+      "originalBeforeCleanupSha256": "d166c5b418be1bae617956774859f7e691d4bae84e3930cce7db596c7c681510",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_ROLLOUT_REPORT.md",
+      "sha256": "356603b9d7da22c89aed4fa108137b2c31df17f8ae2a5cad71d959e9df143a77",
+      "originalBeforeCleanupSha256": "b1daa209f5292ac5dc88d282b6bd9680c415f6ba9b3b86a1f152abd51030ee52",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_VISUAL_POLISH_REPORT.md",
+      "sha256": "9fd31b81ebac0ebc22dfab834ee02c17c9e1730ee14dea51a0ac5d156ed9dfa2",
+      "originalBeforeCleanupSha256": "f233f0ad058fa09a41fccbad3cf6f74860c7cab7de76e0734516af97d071ac0c",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/ux/live-quiz-polish-verification.json",
+      "sha256": "209634a2047bcd5ab63f9a7f3174795983f523549b4787bdb338c02845021eb2",
+      "originalBeforeCleanupSha256": "727a9ae437264556ddb3151116f5f3181272a4d8ce552a95a88ceff550366dad",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/ux/live-quiz-prototype-verification.json",
+      "sha256": "111daaac854bf79fdb87ae093d72c7ab5a35271a5ccecb715233a15f2c511185",
+      "originalBeforeCleanupSha256": "64d0b2fa56182ece0d7ca1c523b3ad6b0ccea59780301095895442ba47f019fb",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "docs/ux/live-quiz-rollout-verification.json",
+      "sha256": "122d95be9b0261a2f0fbbba69b7ccfe5ba4c3d3ba4de22bf620d7fa4e1e073ad",
+      "originalBeforeCleanupSha256": "cdff1be654afb7f7b254301a366c3337c100b31b304a9e826928d3ea480629c1",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "playwright.live-quiz.config.ts",
+      "sha256": "d8f319d63355da1bb1c94205dd1a1553ddfdc098253aff17cbf0a23980178020",
+      "originalBeforeCleanupSha256": "d8f319d63355da1bb1c94205dd1a1553ddfdc098253aff17cbf0a23980178020",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "tests/ui/live-quiz-boards.py",
+      "sha256": "c5f1486b321fe653761f930594d401f30d14e971cf37018c701ceeac78a464e6",
+      "originalBeforeCleanupSha256": "7a3527a04a03279ef6547083a7b2e1b31d2a99099de9392d66efc5a158709f33",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "tests/ui/live-quiz-compat.spec.ts",
+      "sha256": "4a73accc5be5abb383a81001676a6190d611bc2e64180b3fb85189d9a3bceb1f",
+      "originalBeforeCleanupSha256": "f3cea653f2241a5e214145eaa327642e5d3ee3be4760bf4d379ffed9c4a970b8",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "tests/ui/live-quiz-fixtures.ts",
+      "sha256": "5c92da65d04e97b80fc1385e56cb8a8a920a0b6539e8be6186fba4ce31fea385",
+      "originalBeforeCleanupSha256": "5c92da65d04e97b80fc1385e56cb8a8a920a0b6539e8be6186fba4ce31fea385",
+      "changedDuringCleanup": false
+    },
+    {
+      "path": "tests/ui/live-quiz-hardening.spec.ts",
+      "sha256": "4e2e54f00473caf2899ac4ac8f104074e87ef3de92716b5556a6e0f637ba873a",
+      "originalBeforeCleanupSha256": "9b3b1e1f72a06b1dcc32c9394647b3f07ace9e611e454466d45dd8bcf8e5466a",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "tests/ui/live-quiz-polish-boards.py",
+      "sha256": "3a1989ac8d38a57103931d07aeee203c77da30972c0a7882f51b15726a39bd85",
+      "originalBeforeCleanupSha256": "8aa3e118dbcdd7315d1b5b07944668c5f1a0cf66f8df8180954edcc4b83aaddc",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "tests/ui/live-quiz-rollout-boards.py",
+      "sha256": "f22365ee8a9e227e7f9433d5d736c558a618bf7c2442dac2d2f5a9bf3ab508ae",
+      "originalBeforeCleanupSha256": "ed1007a83719436bb98c3cebcf445b6fab22fe13618d178a4208b2da99b1b01f",
+      "changedDuringCleanup": true
+    },
+    {
+      "path": "tests/ui/live-quiz.spec.ts",
+      "sha256": "1df736a5bd87cb943cea8c49db2bad5aa8fa022f4b2cccd5a398f85cc4ad3f11",
+      "originalBeforeCleanupSha256": "4a20d919ad72cc090eb4b1aa69410444c4c6a8347edd2b7504f8e31c1f7d0aa8",
+      "changedDuringCleanup": true
+    }
+  ],
+  "hashNote": "This final record excludes its own hash to avoid circularity. Original hashes preserve pre-cleanup provenance. Historical records are not rewritten to claim new tests; their external-artifacts identifiers do not imply raw captures still exist. Final scratch logs/captures are uncommitted, with compact measured outcomes retained here.",
+  "cleanup": {
+    "deletedRepositoryArtifacts": 0,
+    "preservedApprovedBoards": 11,
+    "sourceAndStylesMatchApprovedPolishHashes": true,
+    "portableAutomationDefaults": true,
+    "historicalRawEvidenceAvailable": false,
+    "pythonCompositorSyntax": "PASS; not rerun against approved boards"
+  },
+  "audit": {
+    "security": "No real credentials, auth tokens, cookies, database dumps, environment files or raw logs included. Synthetic test data only.",
+    "scope": "32 existing Live Quiz files plus final report and this verification record. No unrelated changes.",
+    "documentationLinks": "All local Markdown file links resolve. Historical external-artifacts identifiers are explicitly non-repository references.",
+    "whitespace": "git diff --check PASS"
+  },
+  "limitations": [
+    "No full screen-reader certification",
+    "No multi-instance/server restart/large-class load or soak tests",
+    "Snapshot protocol has no sequence/version; architecture unchanged",
+    "Existing build chunk-size and pg query-concurrency deprecation warnings remain"
+  ]
+}

@@ -1,0 +1,733 @@
+{
+  "head": "04f99e305c89f17e6ee98ed1ea78124c260d601d",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "62c341c2e5184de1efb967cc8885da92765bd48aad8efb415ae33b6f5b40cf66"
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha256": "f15e1ee1fda24d6ce14974115e1882e5bca04deea91b5e48d82e70dd61ab9eac"
+    },
+    {
+      "path": "EXAMSPACE_UX_REWORK_SPEC.md",
+      "sha256": "48417fa40e38dd9e7feb38a230a405515198eafe41c54087740731c379360eed"
+    },
+    {
+      "path": "README.md",
+      "sha256": "a14f6276c18d3320b304bb680d4fc8e579a36071aec492c617342e11f5e548a1"
+    },
+    {
+      "path": "apps/api/package.json",
+      "sha256": "fc09aa1e72d1c47c91e2fea81382c0489ec57f118fc23373c8950601246dbf08"
+    },
+    {
+      "path": "apps/api/prisma.config.ts",
+      "sha256": "11403e5209ebacede65996db0d86e5888675531f24de9b0081fea45648ade8b4"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20260930000000_initial/migration.sql",
+      "sha256": "750fbc779875222485e05e370e1d4e1f87e0fe3498fc0ddc8c917c180c9f67ea"
+    },
+    {
+      "path": "apps/api/prisma/migrations/20260930010000_integrity/migration.sql",
+      "sha256": "2eb8144e460ef70e41f122c240a4601d370fbe3c451edd0c06f54bad6afe9c61"
+    },
+    {
+      "path": "apps/api/prisma/schema.prisma",
+      "sha256": "a435c6e426486da9729f8b4ecb2b3934720bdaca9835eed8d7cb1fee4141eabb"
+    },
+    {
+      "path": "apps/api/prisma/seed.ts",
+      "sha256": "bc0e377a912151832537f2992f7f01f94d7372814fd182a64a3fec7413421e77"
+    },
+    {
+      "path": "apps/api/src/app.ts",
+      "sha256": "593a1e626602cc60f40a58262f7b50c1edb010bdf4316f0b14618ae8056d910d"
+    },
+    {
+      "path": "apps/api/src/config/env.ts",
+      "sha256": "9ad32c9836fa1d6f2d1d0e7b88cbde208557eea7390db476fe849a891bb238ab"
+    },
+    {
+      "path": "apps/api/src/db/client.ts",
+      "sha256": "7a09664b39b1060f7c1b0e367d8bae6bc0df541d676c5f83523f5573025eb8ac"
+    },
+    {
+      "path": "apps/api/src/foundation.test.ts",
+      "sha256": "10cbbde59b148d99a09a5ebbfbbc11d53aee96d3ed70eeb5fdeb06332f314edc"
+    },
+    {
+      "path": "apps/api/src/jobs/expiry.ts",
+      "sha256": "bda880e3fadd4246f01b18d66c0fd4ff372c1157bc86ba7cf3f5cf9b0d3b947a"
+    },
+    {
+      "path": "apps/api/src/middleware/auth.ts",
+      "sha256": "bfbc4e985872f51eb04f9996e852787a5ef14a8b875fcac83191f3b4c1889a4c"
+    },
+    {
+      "path": "apps/api/src/middleware/security.ts",
+      "sha256": "e480de71326339aa797df7ed8fe43464e69687faf8e620c5f90d298c451b5f2b"
+    },
+    {
+      "path": "apps/api/src/modules/admin/routes.ts",
+      "sha256": "61cd820e70f908d925fbb3b46ac7adc881919c9e4303cc53f088a2e0470808ca"
+    },
+    {
+      "path": "apps/api/src/modules/analytics/routes.ts",
+      "sha256": "e4359d78c26e139ecfec5570b4a1b9815ac9f8c8c8d2e39fa54ec54f355aa47d"
+    },
+    {
+      "path": "apps/api/src/modules/analytics/service.ts",
+      "sha256": "b72f4aef90904c91c52aeac7c935839d720836f50b4f3e4048003e04a2c5271b"
+    },
+    {
+      "path": "apps/api/src/modules/attempts/logic.test.ts",
+      "sha256": "b11812f8df1b0b8c7ccf6a3e41795038f8afadfd7bcbb7d746751bcca5a8d8f7"
+    },
+    {
+      "path": "apps/api/src/modules/attempts/logic.ts",
+      "sha256": "39a5683465fa2e205074cf81d8148efdc81053f9fc37c50f7661953689b2013f"
+    },
+    {
+      "path": "apps/api/src/modules/attempts/routes.ts",
+      "sha256": "8657e312936e464059fd0a860d7d8afed3236a41422a3dbde4a64d2a39c83982"
+    },
+    {
+      "path": "apps/api/src/modules/attempts/service.ts",
+      "sha256": "ac9ceccade7d1545b1b6a536a41244ebac2bde2d02ffa210a13f79328780f23e"
+    },
+    {
+      "path": "apps/api/src/modules/auth/password.test.ts",
+      "sha256": "6139ae5df3aa803cfe45a6d50df97b342168783523d334c01602548307a72ddf"
+    },
+    {
+      "path": "apps/api/src/modules/auth/password.ts",
+      "sha256": "2238983dc41864fd42db311367af69f1724989821587ea08ba5ab0d77407d013"
+    },
+    {
+      "path": "apps/api/src/modules/auth/routes.ts",
+      "sha256": "e6153a87820d92a1b842899e0b2308f7bbf0b0e8a33eb8c5c72717e956983d48"
+    },
+    {
+      "path": "apps/api/src/modules/classes/routes.ts",
+      "sha256": "75bd0b61cd40e27c310d6dd5d3d44e05aa24490db27c6fa1393db9935002fed7"
+    },
+    {
+      "path": "apps/api/src/modules/exams/routes.ts",
+      "sha256": "77632fcd78a0ae8ddbe975a5cf8a298fb87070023ae7184520911343027b2fda"
+    },
+    {
+      "path": "apps/api/src/modules/exams/selection.test.ts",
+      "sha256": "c5b9639d4990f7faf0e4668a489fc428d17207356ca07cd6e9fc50d6debe59b4"
+    },
+    {
+      "path": "apps/api/src/modules/exams/selection.ts",
+      "sha256": "9e5b908502f6cbc22200c0f3ce116a634e62a2ef1e83edf6d4e5a15beb574034"
+    },
+    {
+      "path": "apps/api/src/modules/exams/service.ts",
+      "sha256": "4f018e0ca6c7f875f73bc2cd2e7b1c43d116bbdba33a32467f63e05017d8c05f"
+    },
+    {
+      "path": "apps/api/src/modules/exports/reports.ts",
+      "sha256": "9d23b441e61e92ae5db285a847df4255bb94b8d95ff50de06082914def49cd1a"
+    },
+    {
+      "path": "apps/api/src/modules/grading/routes.ts",
+      "sha256": "9348fa7712f85d745bea38b0c022fab01feae4647eb84e5f3deb9bc94eb2d4b9"
+    },
+    {
+      "path": "apps/api/src/modules/live-quiz/logic.test.ts",
+      "sha256": "d3d22ed34d798e90c542b0fb433cb4257354138ec21d3d255a974ebea01e1305"
+    },
+    {
+      "path": "apps/api/src/modules/live-quiz/logic.ts",
+      "sha256": "9a77fb59fc043c3792688e44010a253e00112991bbe17d42fcefd67b94f5a930"
+    },
+    {
+      "path": "apps/api/src/modules/live-quiz/routes.ts",
+      "sha256": "16ac7b6bfc848ea73cc897c8883253695e9f3c80ae73861ad453ec5e8a39cd88"
+    },
+    {
+      "path": "apps/api/src/modules/live-quiz/service.ts",
+      "sha256": "22d70f5afc002f1c314213e5124e4155f642bfa5b771ac6409137221bdc05725"
+    },
+    {
+      "path": "apps/api/src/modules/question-banks/lifecycle.ts",
+      "sha256": "ab738c1b82455ae85f7c4265ac99e06dc61c56485d6aeac1c229b114e8f8c791"
+    },
+    {
+      "path": "apps/api/src/modules/question-banks/lock.ts",
+      "sha256": "1f4f1d41babdba0f6433d7c8748cc338e37c8c9f4cc08232ded9a3417bcefcb6"
+    },
+    {
+      "path": "apps/api/src/modules/question-banks/routes.ts",
+      "sha256": "b6aa3f11e2d3b89c157f11ca32b6e82e384e6592ad582c1f57b3d95fd509aa14"
+    },
+    {
+      "path": "apps/api/src/modules/results/logic.test.ts",
+      "sha256": "c1978596b538eecdf49a3494b21f356cc091ac2e8620dc37e33ddb08d1dfabf1"
+    },
+    {
+      "path": "apps/api/src/modules/results/logic.ts",
+      "sha256": "8769d3b29e923ca9a6a2f45621a4644f84f68cd468a3b875b9389f327fff4aea"
+    },
+    {
+      "path": "apps/api/src/modules/results/service.ts",
+      "sha256": "512ca95898ab71cde0d430111d194cbc027ae22412133430c071bc91023e1e34"
+    },
+    {
+      "path": "apps/api/src/modules/storage/routes.ts",
+      "sha256": "85f49b4575d35f7045d095fddf82d1ea165adfed616003208202290b343fb3a7"
+    },
+    {
+      "path": "apps/api/src/server.ts",
+      "sha256": "b1f42f84930f8853891c686d47cd8d297fec290160363dae807c8359490292af"
+    },
+    {
+      "path": "apps/api/src/sockets/presence.ts",
+      "sha256": "6e633144e55efb630c62ef94fa9462fabf1a34324dd4fa9b0493309cfa7855db"
+    },
+    {
+      "path": "apps/api/src/sockets/quiz.ts",
+      "sha256": "2aecff5c6503be44973c0f964dea05940eeba1d20aa6d5ff6da858d785e5fdff"
+    },
+    {
+      "path": "apps/api/src/sockets/server.ts",
+      "sha256": "a0b3d3f51440fedd5b34a593bc8c7682217a607889d1757625ec7a275359848a"
+    },
+    {
+      "path": "apps/api/src/utils/errors.ts",
+      "sha256": "63519b8d7a37d8c94b3dcbe7f357807d6a2f14421c2ebb9273b33d5dc20bc549"
+    },
+    {
+      "path": "apps/api/src/utils/pagination.ts",
+      "sha256": "0fd29323a910d9e958d4137113ac727f5d1edf89a41f4e751ab65988f549ffc3"
+    },
+    {
+      "path": "apps/api/test/attempts.integration.test.ts",
+      "sha256": "4441105449404b752c347aad9c8a545e55b148fc80c6e59673c495dff2d5d44a"
+    },
+    {
+      "path": "apps/api/test/auth.integration.test.ts",
+      "sha256": "648b0a10ebfe964511a0fe04b3fa42944067ae9b421e1b206caf24bb6ebb75c6"
+    },
+    {
+      "path": "apps/api/test/catalog.integration.test.ts",
+      "sha256": "6375eafd6d17121d63bea631cef940f46ca56117dbbae834c1e88364ff4c5619"
+    },
+    {
+      "path": "apps/api/test/exams.integration.test.ts",
+      "sha256": "7bab44207c95e1aad529fd3b561e66375dd8170486b2a8d1e321319b8c09ae55"
+    },
+    {
+      "path": "apps/api/test/exports.integration.test.ts",
+      "sha256": "7943ec7089d59346ba9ee1331287ab756486c84dd39f8eed1f8eac233ae1451d"
+    },
+    {
+      "path": "apps/api/test/fixture.ts",
+      "sha256": "f65874ab7f48cde61668e4be7395d7fad50c4343875ddfecd166cf97d2dc9afe"
+    },
+    {
+      "path": "apps/api/test/grading-results.integration.test.ts",
+      "sha256": "161a5bd997659aa714d11e545a41d2eaa8b3629bcae307fb470b3ba4b29b6baa"
+    },
+    {
+      "path": "apps/api/test/grading.integration.test.ts",
+      "sha256": "952a83c5da0f3bd5663a8b1854912b804d9f899d4cefbe769715ac8005dedeb9"
+    },
+    {
+      "path": "apps/api/test/helpers.ts",
+      "sha256": "fdb6f1089bfa830937221e8e6ae376f1b51178f96fa2f784ab6831528259bf6f"
+    },
+    {
+      "path": "apps/api/test/question-lifecycle.integration.test.ts",
+      "sha256": "170ac564b84ac967ced52f64691ee5bb890db1011007e39a29896bc520b963a2"
+    },
+    {
+      "path": "apps/api/test/quiz.integration.test.ts",
+      "sha256": "f5ec9a4f3ca56bf5f283b6b0f1f7bb9b6a98541b370f440af34803efc4713a36"
+    },
+    {
+      "path": "apps/api/test/seed.integration.test.ts",
+      "sha256": "3721f7eaf651f21259458f3332cc87adcb94197e1c2abb6896693882be81f98a"
+    },
+    {
+      "path": "apps/api/test/socket.integration.test.ts",
+      "sha256": "3c7f05197d6b4babfb62886fd22b1985bffe7812d1e3ac386f70f0cc15da09ab"
+    },
+    {
+      "path": "apps/api/test/storage.integration.test.ts",
+      "sha256": "416897424035c5cdf5f0f7eea8fc07bab971d268f4d3aa86a0a5f171bdad86d0"
+    },
+    {
+      "path": "apps/api/tsconfig.json",
+      "sha256": "c967004fb9be18248956b073996f063938d05f8daea702ca699e22de604b59e3"
+    },
+    {
+      "path": "apps/api/tsup.config.ts",
+      "sha256": "5ec4bf7436e666a08a1ccda73ffe17b9812ec5d4f9a8928ea35ffdade4c893d5"
+    },
+    {
+      "path": "apps/web/package.json",
+      "sha256": "7c82d5684c3a7ddba4342506c74a6eae1a6d9a348308ba9651ebc086913a5786"
+    },
+    {
+      "path": "apps/web/src/App.tsx",
+      "sha256": "7904c958fcb2b7fddd73f4d505b8a2c1be556f09ca38c17da666727f7558b37e"
+    },
+    {
+      "path": "apps/web/src/components/ApplicationSidebar.tsx",
+      "sha256": "74ae938d4bdf432ff5a510868be09eae7412defe88e80a40377726bb083a357d"
+    },
+    {
+      "path": "apps/web/src/components/Icon.tsx",
+      "sha256": "9b31fcf88cb3699ff0fc3f4e41519af568fe30c69fe51a9f9178aac6dff720fd"
+    },
+    {
+      "path": "apps/web/src/components/Markdown.test.tsx",
+      "sha256": "a497a3522b0ff55b71a313424b23e04c3e032a60021aa8404fb3b86fe74b496b"
+    },
+    {
+      "path": "apps/web/src/components/Markdown.tsx",
+      "sha256": "b3776214e37a510ef456bc3426400d3473849c3681dceff30f47ba83dcc1a308"
+    },
+    {
+      "path": "apps/web/src/components/ui.tsx",
+      "sha256": "f74ba818a2daaf90b3ae6a4a55bf6417f525ccc17ebf114c4a62a05c3b2065b2"
+    },
+    {
+      "path": "apps/web/src/features/admin.tsx",
+      "sha256": "c7c056b6130ef2fdcb2291ce8a20a3ea0a71d0b8074f4b6edf56427ee44299b3"
+    },
+    {
+      "path": "apps/web/src/features/analytics.tsx",
+      "sha256": "00ed5a9d7fd88391e7b03e8b6499369f8e7d277e2c531d92f6177faebf004243"
+    },
+    {
+      "path": "apps/web/src/features/attempts.tsx",
+      "sha256": "e11624624d4807b59ab5f44fbfc34849e7e76701731636198dafdb4c95fe0379"
+    },
+    {
+      "path": "apps/web/src/features/auth.test.tsx",
+      "sha256": "822f2f4dc9cd8d4c324208f41968819969cb7ff2f96b69f94da5551ab5b88bef"
+    },
+    {
+      "path": "apps/web/src/features/auth.tsx",
+      "sha256": "8c9322c0d905237c456c890f89585e2259c16d76f48008dcdf719b39d2e9a125"
+    },
+    {
+      "path": "apps/web/src/features/catalog.tsx",
+      "sha256": "9df8e6209898afeff77ab928baed563abacfa4a244d05c314de5ba7faab4c8c5"
+    },
+    {
+      "path": "apps/web/src/features/critical.test.tsx",
+      "sha256": "ef7369c650bf6736804efa0b7c120a3aaf9be71c3d96fc7b79fd7a6d9f9e2816"
+    },
+    {
+      "path": "apps/web/src/features/exams.tsx",
+      "sha256": "a564699206fef28194fdc56db817c2820f5bcebf27515eab3a08850687ae2662"
+    },
+    {
+      "path": "apps/web/src/features/grading-draft.test.ts",
+      "sha256": "b51475787668aba4dab76f3e79fa19458b80902519ee50798cf54e6153383629"
+    },
+    {
+      "path": "apps/web/src/features/grading-draft.ts",
+      "sha256": "7430c4df004cd3f223554ca2e5c5de1a4ae65bc7439e48d2ab4e33315e382bf2"
+    },
+    {
+      "path": "apps/web/src/features/grading-leave.tsx",
+      "sha256": "2a5f0f354feebdff555b5b8fae455e2929dc922035898cf13e56d484d52d37fb"
+    },
+    {
+      "path": "apps/web/src/features/grading-results.test.tsx",
+      "sha256": "9477deae1e4948c1118cd686eddaec0802314552073a48b60001f61bb0b8c518"
+    },
+    {
+      "path": "apps/web/src/features/question-bank/banks.tsx",
+      "sha256": "ed3055307782e0db308c7968a5993fd829df0366d426871f3a0f8e395214e1c4"
+    },
+    {
+      "path": "apps/web/src/features/question-bank/editor.tsx",
+      "sha256": "9faf3454394426932dac706bcba8945f5ed99a0d7865aa005612155ee63e3533"
+    },
+    {
+      "path": "apps/web/src/features/question-bank/ui.tsx",
+      "sha256": "91ff2e1a48e595bf8d338f539237e128c3040b5481ab4bc3dcf4468ac7af9cfd"
+    },
+    {
+      "path": "apps/web/src/features/quiz.test.tsx",
+      "sha256": "c33481d91b25d594256d2dbf930e5810650b174db53f33978231b8ec849e6143"
+    },
+    {
+      "path": "apps/web/src/features/quiz.tsx",
+      "sha256": "3aeb7d07bdd4a6c0b16448f9de6847ac8a6b3c1cabe422e2c8be1eee8de9ff2b"
+    },
+    {
+      "path": "apps/web/src/features/record-pagination.tsx",
+      "sha256": "6ca5ce4457f0b8f91ac0bbf95f86cef877d19d97cae9ceb972a5f809fbcfc8eb"
+    },
+    {
+      "path": "apps/web/src/features/result-presentation.tsx",
+      "sha256": "84141223d893fa4e220c97de7d9f5c04c21edfe4e32e080fdb9880311e9c4f45"
+    },
+    {
+      "path": "apps/web/src/features/results.tsx",
+      "sha256": "bd25de0d99c97cb2f1928490ee2cb7ae9c5ac3dacce49721c22b87a1d378cd7a"
+    },
+    {
+      "path": "apps/web/src/features/student-exam-state.test.ts",
+      "sha256": "9cdc8e9bb33e4bdd34fa6499811481f030114ddf56e2792c18fcae8dc5229f07"
+    },
+    {
+      "path": "apps/web/src/features/student-exam-state.ts",
+      "sha256": "bfdf51eda13bb097e9f78e58c4c9265c0e155102a7cb0e842a9c5450789ebdb5"
+    },
+    {
+      "path": "apps/web/src/features/teacher-dashboard.tsx",
+      "sha256": "fc93862d7e4ba25d161c02cda0f1fe7b6cc5b937022a575d6d5bbedcafd75bbd"
+    },
+    {
+      "path": "apps/web/src/lib/api.test.ts",
+      "sha256": "d96fdba1042c9482a29e6ab811f1b0f3d212ad666990d50688f01ec4dba6610c"
+    },
+    {
+      "path": "apps/web/src/lib/api.ts",
+      "sha256": "e202d46c184b2e28d3e3d5c0a3dd80a1841505617eb9b93d72167c2a6e1125ee"
+    },
+    {
+      "path": "apps/web/src/lib/socket.ts",
+      "sha256": "a7415c94e2cae921b419fd08181b52917c177f493628940050acdfb3278dd5b8"
+    },
+    {
+      "path": "apps/web/src/lib/timer.test.ts",
+      "sha256": "4d5bd5ff6f1000158ff4486ab6bf7515c305a76176126155234b10d94a90d3ee"
+    },
+    {
+      "path": "apps/web/src/lib/timer.ts",
+      "sha256": "958621dd50d7e6e6d2131162d292cb4bc220c92cfa3894d2ff18ece728a354d6"
+    },
+    {
+      "path": "apps/web/src/main.tsx",
+      "sha256": "9dcc2ce2b59010a7b5ed66d13e798d2a15dc75ffabc5fe7ee8a9c8ebff07664d"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "sha256": "4c305e53ee040f33c08cb6f29be93d82e5384b3b1ef694116d571705cd89372a"
+    },
+    {
+      "path": "apps/web/vite.config.ts",
+      "sha256": "3758b53212fa42567e77814b13447877361768ba1601e3824fad704ee2958f92"
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "sha256": "dfb667dcbc7f1cc014cdd08782e45780b90fbc53954d3c295a54fed01103dfd8"
+    },
+    {
+      "path": "docs/IMPLEMENTATION_CHECKLIST.md",
+      "sha256": "e84aa348d9b8eaa20df3b17d0b1aa47a906611c50c26b1c88e2f69b5686d7255"
+    },
+    {
+      "path": "docs/SDD.md",
+      "sha256": "142ffb60d55723171735ec176084d0dce42bb5c13626278050c6ecc0bd255c44"
+    },
+    {
+      "path": "docs/SEED_RECOVERY.md",
+      "sha256": "92e3f8f9b7cddffd5679ae380b231ab4c70da48e613d0e143c79b09b9178c51e"
+    },
+    {
+      "path": "docs/SRS.md",
+      "sha256": "8d0528f6ec2f1726ed2af51cdff8d347753b787b18bc1e821c357d9051e5b1eb"
+    },
+    {
+      "path": "docs/VERIFICATION.md",
+      "sha256": "2a1e0d6469ae42f3c9bba8d4dd459eb80cfa0565ad9b567f17385b74bc7e5022"
+    },
+    {
+      "path": "docs/screenshots/live-quiz-polish/board-manifest.json",
+      "sha256": "856dec56d7d93236efcc896a74fd106a2e83cc42fb05d4f8e4b07b1c780245df"
+    },
+    {
+      "path": "docs/screenshots/live-quiz-prototype/board-manifest.json",
+      "sha256": "f18056d567683bc29f92f4720881faf569eac715d5d30a8327a85ec481c2ebd0"
+    },
+    {
+      "path": "docs/screenshots/live-quiz-rollout/board-manifest.json",
+      "sha256": "1eb486ab86f9e34d3dd4c76bdd959e174052676e7860a346bfd6f08c7b56d456"
+    },
+    {
+      "path": "docs/ux/DESIGN_SYSTEM.md",
+      "sha256": "d4d507a2205520b3d822c9c3777ceb1f01291da3fca2f4e9075a9f7e2318425e"
+    },
+    {
+      "path": "docs/ux/EXAMSPACE_VISUAL_IDENTITY.md",
+      "sha256": "0906306ce28d4f9aa31886c3851f272755522f0acc4a07976805516c3777ecf9"
+    },
+    {
+      "path": "docs/ux/EXAM_FOLIO_FINAL_REPORT.md",
+      "sha256": "ac6831b4e3dc503dd110eb2a0b58e8f177c281d095c437e8812c4b96dd088cf4"
+    },
+    {
+      "path": "docs/ux/GRADING_RESULTS_PROTOTYPE_REPORT.md",
+      "sha256": "c181bc0df38d4ab90a24365d2d050ec71f85623261ecd099452703b97a153e27"
+    },
+    {
+      "path": "docs/ux/GRADING_RESULTS_ROLLOUT_REPORT.md",
+      "sha256": "f89c717275727abb3d50b753f359a7e48a4321f2a7fb1b0a11968841d73965ce"
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_FINAL_VERIFICATION.md",
+      "sha256": "d6f19264b4516b845a5446e71986fc748911284f1ad6206b9b77bfaf63024a52"
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_PROTOTYPE_REPORT.md",
+      "sha256": "5968337fcec4fd3f6e816ad3a7df156fd4f4acf1cf17e16697d4283f8863b195"
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_ROLLOUT_REPORT.md",
+      "sha256": "356603b9d7da22c89aed4fa108137b2c31df17f8ae2a5cad71d959e9df143a77"
+    },
+    {
+      "path": "docs/ux/LIVE_QUIZ_VISUAL_POLISH_REPORT.md",
+      "sha256": "9fd31b81ebac0ebc22dfab834ee02c17c9e1730ee14dea51a0ac5d156ed9dfa2"
+    },
+    {
+      "path": "docs/ux/QUESTION_BANK_AUDIT.md",
+      "sha256": "555359540cfed169382fa6c3d3d7b023a7c92692c92d2de9e880ca74bde4cca5"
+    },
+    {
+      "path": "docs/ux/QUESTION_BANK_PILOT_REPORT.md",
+      "sha256": "b585f603c49ee2f8b7e5934dab2b46f507f98fa71c519cb33834e2e65daa8295"
+    },
+    {
+      "path": "docs/ux/STUDENT_FOCUS_PROTOTYPE_REPORT.md",
+      "sha256": "803c8ccfb72797e386d8be8f5b97c1af3571fa72e24c6eff433a19e9eeb16666"
+    },
+    {
+      "path": "docs/ux/STUDENT_FOCUS_ROLLOUT_REPORT.md",
+      "sha256": "d79a91666e7c652be2f63b80a911d2e5ea791303dc28a2db46048873b763d50e"
+    },
+    {
+      "path": "docs/ux/UI_PILOT_AUTOMATION.md",
+      "sha256": "2005dfdefcf6b605f88c08a5aed90f9dd9ca4b962df13ffb1f3e9b6f5209992d"
+    },
+    {
+      "path": "docs/ux/UI_POLISH_V2_REPORT.md",
+      "sha256": "60dc2ebfd7b91907772dddeffe461397e03f6fd2a145063a076d77aacd535f76"
+    },
+    {
+      "path": "docs/ux/UI_REDESIGN_DESIGN_SYSTEM.md",
+      "sha256": "0f4d486d8b750e4a816c670f46abd4787c53dfd212eb1a61008051c622530dc1"
+    },
+    {
+      "path": "docs/ux/VISUAL_IDENTITY_AUDIT.md",
+      "sha256": "48d67f25e57333b005182f6c08ebf475c891e321fd74b4cbdb5c1750f93b5a3c"
+    },
+    {
+      "path": "docs/ux/grading-results-rollout-verification.json",
+      "sha256": "8089020ef154578c493f40ead693a284945e32ce7c577f3521dd90227cced317"
+    },
+    {
+      "path": "docs/ux/grading-results-verification.json",
+      "sha256": "2ac7d42a1b848e5e8d58ae54810f1ae494ce7ac39ecf0256a0f5b6a79a91f677"
+    },
+    {
+      "path": "docs/ux/live-quiz-final-verification.json",
+      "sha256": "871d16532866bf95ee15ab328f5ed4c59f7da1260c8038985fb45ace0b93af56"
+    },
+    {
+      "path": "docs/ux/live-quiz-polish-verification.json",
+      "sha256": "209634a2047bcd5ab63f9a7f3174795983f523549b4787bdb338c02845021eb2"
+    },
+    {
+      "path": "docs/ux/live-quiz-prototype-verification.json",
+      "sha256": "111daaac854bf79fdb87ae093d72c7ab5a35271a5ccecb715233a15f2c511185"
+    },
+    {
+      "path": "docs/ux/live-quiz-rollout-verification.json",
+      "sha256": "122d95be9b0261a2f0fbbba69b7ccfe5ba4c3d3ba4de22bf620d7fa4e1e073ad"
+    },
+    {
+      "path": "docs/ux/question-bank-baseline.json",
+      "sha256": "7e25f5b9b44c2fae333ad1878a1b5f691b4335b060e00ea96fe66263436dc923"
+    },
+    {
+      "path": "docs/ux/question-bank-db-performance.json",
+      "sha256": "320b0b3441b578f1fd95203b38ef81b734d1b5ba4d79b002f43e39d023d72c7f"
+    },
+    {
+      "path": "docs/ux/question-bank-performance.json",
+      "sha256": "f85b5e8f380272742f31cc0ee8d4e6229507adf5cb5b1ab066aa3ea12bfc1fbc"
+    },
+    {
+      "path": "docs/ux/student-focus-rollout-verification.json",
+      "sha256": "3c9a3fec8faf51260ee1166f42c6ab73247c2345e3d3bb32aae95e6fa3197871"
+    },
+    {
+      "path": "docs/ux/student-focus-verification.json",
+      "sha256": "043df8d04e66771add5f66e607b31b519065663f5ec1ddca97774a3aa43218a2"
+    },
+    {
+      "path": "docs/ux/ui-polish-v2-verification.json",
+      "sha256": "36d0e4266b5d39b2786569b49125468ff55f46e67ad756e1c242c1236275e27f"
+    },
+    {
+      "path": "docs/ux/ui-redesign-contrast.json",
+      "sha256": "a975dfa8fb4533954c55b2a6829a779c5dbeb7aa729e417b4e7ddedde17fd7ae"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "e68c95b3fd8b8d0d8c58ccf21b0e8c0d92f8e52e644f14265b0a797cdca94da0"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a1d65c34c73361ff5f4cebeaacdcd606a8851ac696596af1777851dc2e7860b8"
+    },
+    {
+      "path": "packages/shared/package.json",
+      "sha256": "6cb4005b355fe54e85d421d575058606703fd999131eb27194719022ae0b46d5"
+    },
+    {
+      "path": "packages/shared/src/auth.test.ts",
+      "sha256": "bc9fadd24d9aad6018944728f52ed7960f41d529b4f98a09cbe188bd36a14b9b"
+    },
+    {
+      "path": "packages/shared/src/index.ts",
+      "sha256": "7c8c3b2f35d2b76316f62500bb432a8ed040636dc80fb7dad3e2ae348e114d65"
+    },
+    {
+      "path": "packages/shared/src/question.test.ts",
+      "sha256": "be888e060aba82908cd6832c52a6ccca8af0adc821c14b4ab4dbc5a9e18148e8"
+    },
+    {
+      "path": "packages/shared/tsconfig.json",
+      "sha256": "b254841e7dba369ee2aab48eb4bdca5a6d880a5b9f8db3c46e290d5476866c1e"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "e5c21c3d8561fbb842239b0d6d975ee12882cb995d548ac2d4732c6a4e0b2379"
+    },
+    {
+      "path": "playwright.live-quiz.config.ts",
+      "sha256": "d8f319d63355da1bb1c94205dd1a1553ddfdc098253aff17cbf0a23980178020"
+    },
+    {
+      "path": "playwright.ui.config.ts",
+      "sha256": "d09bc4e2e66f1f84164599d9d1f1bee61937d8b2b9c88097370842f5cc4d5ddc"
+    },
+    {
+      "path": "render.yaml",
+      "sha256": "e928e54bb3062793070597bf48b1f7d1a3cf3c01d1ea0b90bb15919a7964c8d3"
+    },
+    {
+      "path": "tests/e2e/core.spec.ts",
+      "sha256": "d361d117daf5363700941262d69c2adeb3491136b68889c45bb7fcd5b213dd50"
+    },
+    {
+      "path": "tests/e2e/question-bank.spec.ts",
+      "sha256": "a5f97ba9407a5dea9e4a0a71dd208476ddcfbefa80d6fceaee470ca5c59d9536"
+    },
+    {
+      "path": "tests/ui/exam-folio.spec.ts",
+      "sha256": "4fd016fc31726ec53fd21bb2c1354c64797b06812464527a1154828a648fc053"
+    },
+    {
+      "path": "tests/ui/exam.spec.ts",
+      "sha256": "5741166405eddb1aebaff9354c17e8153e9e10a5434d90cc213a1511694999ab"
+    },
+    {
+      "path": "tests/ui/feedback.spec.ts",
+      "sha256": "7c1a6039f6376e426114852bc8014ceb34d0bf8755f46c5443c9c9e15fd40fd7"
+    },
+    {
+      "path": "tests/ui/grading-results-before.spec.ts",
+      "sha256": "09009d72c3ff6f1dafea754714e79905599774550c0a8215234d356e91c2f4ee"
+    },
+    {
+      "path": "tests/ui/grading-results-fixtures.ts",
+      "sha256": "27da66ae222def43b6147a3d494fdba24305a322384ad1fcdfa4eb848f5d005a"
+    },
+    {
+      "path": "tests/ui/grading-results-recovery.spec.ts",
+      "sha256": "c5030e755861d7e4617267bab08146a9a7adb01a4c38387b2182ac3976690f4e"
+    },
+    {
+      "path": "tests/ui/grading-results-rollout-fixtures.ts",
+      "sha256": "5a1ab5e47214e2f73f4d034237082701c4d7c0a583333481f156a121b7ac3929"
+    },
+    {
+      "path": "tests/ui/grading-results-rollout.spec.ts",
+      "sha256": "8193debc64969ddb20d348aa0a4a63a1ea6b00850c45c5322d86dabc3645af10"
+    },
+    {
+      "path": "tests/ui/grading-results.spec.ts",
+      "sha256": "0aa70cfd7f0025520356899c36a1a0608ac123c6743260050c38a4526913d7a7"
+    },
+    {
+      "path": "tests/ui/inventory.spec.ts",
+      "sha256": "041771017960651c9a70511f2878472391846eb4b93a5fd2e2c5f45073cea28a"
+    },
+    {
+      "path": "tests/ui/live-quiz-compat.spec.ts",
+      "sha256": "4a73accc5be5abb383a81001676a6190d611bc2e64180b3fb85189d9a3bceb1f"
+    },
+    {
+      "path": "tests/ui/live-quiz-fixtures.ts",
+      "sha256": "5c92da65d04e97b80fc1385e56cb8a8a920a0b6539e8be6186fba4ce31fea385"
+    },
+    {
+      "path": "tests/ui/live-quiz-hardening.spec.ts",
+      "sha256": "4e2e54f00473caf2899ac4ac8f104074e87ef3de92716b5556a6e0f637ba873a"
+    },
+    {
+      "path": "tests/ui/live-quiz.spec.ts",
+      "sha256": "1df736a5bd87cb943cea8c49db2bad5aa8fa022f4b2cccd5a398f85cc4ad3f11"
+    },
+    {
+      "path": "tests/ui/student-focus-fixtures.ts",
+      "sha256": "79460ab646a9aaf3190be821277d2ae0cb6d66fa08daae3378ee4e4edc1a808f"
+    },
+    {
+      "path": "tests/ui/student-focus-rollout.spec.ts",
+      "sha256": "da3545475c09660e51d827c37fa132a1a99c3dbb7d70b8139f3052ea92c96a14"
+    },
+    {
+      "path": "tests/ui/student-focus.spec.ts",
+      "sha256": "9ecbdd16c8bb3bb42d96729ae372a48f09e50e32110e1f000fb641ae97b6c30c"
+    },
+    {
+      "path": "tests/ui/teacher-sidebar.spec.ts",
+      "sha256": "f835065e2815eeb7dd24a642c56ffc262bbf63ea1ae3e95d3d5f44b714bf7d3e"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "sha256": "80c4b466d60333ac7f9a12ab8b832cad8645889e71478c642e4288142a58c367"
+    },
+    {
+      "path": "tsconfig.tests.json",
+      "sha256": "f309fcdc824f22633d8f323921694cd3d314fb3474a39214b4a750b47ed3e891"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "ff9c0892d5d86408685ea69c9fd2e3a61923bd2d83c94c31fa150338b8777521"
+    },
+    {
+      "path": "vitest.integration.config.ts",
+      "sha256": "59739eb9a81095bf7de48ff752374c2488657f3e4f135a60ead5f0f944c60a08"
+    }
+  ],
+  "localRequirementSources": [
+    {
+      "path": "MASTER_SPEC.md",
+      "tracked": false,
+      "sha256": "62c3c699fa41ca119b9ffeb58235e2413de70451624df3babc9d623ece2d888f"
+    },
+    {
+      "path": "ASTRA_MASTER_PROMPT.md",
+      "tracked": false,
+      "sha256": "22c23358ba3891d576f62e6848e9c5d81225180cdafc24dad933c8587ea71852"
+    }
+  ]
+}

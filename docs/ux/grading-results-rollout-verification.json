@@ -1,0 +1,1038 @@
+{
+  "commands": {
+    "static": [
+      "npm run lint",
+      "npm run typecheck",
+      "npm run build"
+    ],
+    "unit": "npx vitest run",
+    "integration": "TEST_DATABASE_URL=<isolated-loopback-test-db> npx vitest run --config vitest.integration.config.ts apps/api/test/grading.integration.test.ts apps/api/test/grading-results.integration.test.ts apps/api/test/exports.integration.test.ts apps/api/test/attempts.integration.test.ts",
+    "combined_browser": "npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts tests/ui/grading-results-rollout.spec.ts tests/ui/grading-results-recovery.spec.ts tests/ui/teacher-sidebar.spec.ts tests/ui/student-focus.spec.ts --grep 'grading-results|real attempt, persistence|Teacher sidebar|Teacher mobile|Exam outline'",
+    "phase_continuation": "npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts tests/ui/teacher-sidebar.spec.ts tests/ui/student-focus.spec.ts --grep 'responsive (820|390|320)|release action|long content|real attempt, persistence|Teacher sidebar|Teacher mobile|Exam outline'",
+    "fresh_db_compatibility": "npx playwright test --config playwright.ui.config.ts tests/ui/teacher-sidebar.spec.ts tests/ui/student-focus.spec.ts --grep 'real attempt, persistence|Teacher sidebar|Teacher mobile|Exam outline'",
+    "capture": "npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts --grep 'long content'",
+    "boards": "python3 tests/ui/grading-results-rollout-boards.py",
+    "browser_environment": "TEST_DATABASE_URL=<isolated-loopback-test-db>; GRADING_SCREENSHOT_DIR=/tmp/grading-rollout/after; EXAM_SCREENSHOT_DIR=/tmp/grading-rollout/compat-teacher; FOCUS_SCREENSHOT_DIR=/tmp/grading-rollout/compat-student"
+  },
+  "phase": "Grading & Results full rollout + UX/functional hardening",
+  "date": "2026-10-10",
+  "status": "User-approved; final cleanup and verification complete; prepared for authorized local commit",
+  "git": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "2444199f7ca3a0113d5ea3aad7567e70d0677df0",
+    "tracked_modified": 2,
+    "untracked_files": 26,
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "merge": false,
+    "pr": false,
+    "diff_check": "PASS",
+    "head_label": "Parent HEAD before the authorized closeout commit",
+    "commit_message": "feat(ui): roll out grading and results experience",
+    "commit_note": "This manifest is prepared before commit. Actual commit identity is Git history; no self-referential commit hash."
+  },
+  "scope": {
+    "source": 7,
+    "tests_and_automation": 11,
+    "docs_and_screenshots": 10,
+    "backend_runtime_changed": false,
+    "schema_changed": false,
+    "dependencies_changed": false,
+    "shared_components_changed": false
+  },
+  "tests": {
+    "baseline": {
+      "unit_frontend": 34,
+      "integration": 8,
+      "chromium": 12
+    },
+    "static": {
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS"
+    },
+    "unit_frontend": {
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0,
+      "files": 16
+    },
+    "integration": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "files": 4,
+      "suites": [
+        "grading",
+        "grading-results",
+        "exports",
+        "attempts"
+      ]
+    },
+    "chromium": {
+      "passed_unique": 39,
+      "failed_remaining": 0,
+      "skipped_remaining": 0,
+      "phase_passed": 32,
+      "compatibility_passed": 7,
+      "phase_cases": [
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "grading, lookahead, exam context, results and analytics retry the failed request"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "student history and detail loading/error recover without exposing cached protected details"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "dirty dialog keyboard, focus restoration and overflow 1440"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "dirty dialog keyboard, focus restoration and overflow 1024"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "dirty dialog keyboard, focus restoration and overflow 820"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "dirty dialog keyboard, focus restoration and overflow 390"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "dirty dialog keyboard, focus restoration and overflow 320"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "exports retry, have correct filenames and MIME, and retain full exam scope on page two"
+        },
+        {
+          "file": "tests/ui/grading-results-recovery.spec.ts",
+          "name": "empty grading uses the real endpoint and has no false next page"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "dirty route navigation requires confirmation and cancel keeps the draft"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "saving grading invalidates an already visited Results Register"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 1 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 20 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 21 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 30 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 100 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "all 105 grading submissions are reachable without losing drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "pending save, independent students, failure and retry preserve exact drafts"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "student history has 0 isolated records and preserves return page"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "student history has 1 isolated records and preserves return page"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "student history has 20 isolated records and preserves return page"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "student history has 25 isolated records and preserves return page"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "two essays remain partial until both saved; retry recovers each results region"
+        },
+        {
+          "file": "tests/ui/grading-results-rollout.spec.ts",
+          "name": "a completed save finishes a blocked navigation when no other draft remains"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "grading/results real workflow and responsive 1440"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "grading/results real workflow and responsive 1024"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "grading/results real workflow and responsive 820"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "grading/results real workflow and responsive 390"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "grading/results real workflow and responsive 320"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "release action, export errors, data errors, empty and loading states"
+        },
+        {
+          "file": "tests/ui/grading-results.spec.ts",
+          "name": "long content, touch targets, contrast and role guards"
+        }
+      ],
+      "compatibility_cases": [
+        {
+          "file": "tests/ui/student-focus.spec.ts",
+          "name": "Focus Desk: real attempt, persistence and responsive desktop"
+        },
+        {
+          "file": "tests/ui/student-focus.spec.ts",
+          "name": "Focus Desk: real attempt, persistence and responsive tablet"
+        },
+        {
+          "file": "tests/ui/student-focus.spec.ts",
+          "name": "Focus Desk: real attempt, persistence and responsive mobile"
+        },
+        {
+          "file": "tests/ui/teacher-sidebar.spec.ts",
+          "name": "Teacher sidebar reflows workspace and persists 1440"
+        },
+        {
+          "file": "tests/ui/teacher-sidebar.spec.ts",
+          "name": "Teacher sidebar reflows workspace and persists 820"
+        },
+        {
+          "file": "tests/ui/teacher-sidebar.spec.ts",
+          "name": "Teacher mobile navigation remains visible with a collapsed desktop preference"
+        },
+        {
+          "file": "tests/ui/teacher-sidebar.spec.ts",
+          "name": "Exam outline distinguishes missing prerequisites from configured steps"
+        }
+      ],
+      "execution_note": "Closeout rerun after cleanup: batch A 25/25 phase, batch B 7/7 phase, fresh seeded compatibility DB 7/7. Zero failed, skipped, flaky or retried cases in all three batches.",
+      "previous_review_execution_note": "Aggregated successful latest-source cases, not a claim that one 39-case invocation passed. Original combined invocation: 30 passed/9 failed (7 login timeouts after rate limiting, 2 legacy seed-bank selection timeouts with accumulated fixtures). Phase continuation: 5 phase passes; fresh seeded compatibility database: all 7 pass. Interrupted compatibility attempt superseded by complete compatibility run. Long-content capture rerun 1 pass; repeats excluded from unique count."
+    },
+    "reproduced_bugs": {
+      "route_dirty_and_stale_results_before": {
+        "failed": 2
+      },
+      "route_dirty_and_stale_results_after": {
+        "passed": 2
+      },
+      "essay_ordering": "Reproduced out-of-order questions; frontend sorts snapshot orderIndex and preserves answer identity; unit and two-essay browser regression PASS"
+    }
+  },
+  "pagination": {
+    "grading_test_counts": [
+      0,
+      1,
+      20,
+      21,
+      30,
+      100,
+      105
+    ],
+    "student_history_test_counts": [
+      0,
+      1,
+      20,
+      25
+    ],
+    "page_size": 20,
+    "real_api_100_then_5": true,
+    "array_lookahead": true,
+    "teacher_results_20_then_4": true,
+    "stable_fixture_unique_records": true
+  },
+  "security": {
+    "policies": [
+      "IMMEDIATE",
+      "AFTER_CLOSE",
+      "MANUAL"
+    ],
+    "teacher_ownership": "PASS incl page 2",
+    "student_isolation": "PASS",
+    "partial_pending_unreleased_disclosure": "PASS",
+    "independent_detail_score_keys_explanations": "PASS"
+  },
+  "exports": {
+    "pdf": "PASS filename/MIME/signature/content/student+exam scope/error+retry",
+    "xlsx": "PASS filename/MIME/signature/workbook content/error+retry",
+    "page_2_scope": {
+      "assigned_students": 24,
+      "attempts": 22
+    }
+  },
+  "responsive": [
+    {
+      "width": 1440,
+      "page_errors": [],
+      "capture_count": 11,
+      "raw_evidence": "/tmp/grading-rollout/after/evidence-1440.json",
+      "sha256": "dd8da5c58d2c6aacd742b9c8988d2ef3a2a5a29b17e1ed990e9f2787e7f76740"
+    },
+    {
+      "width": 1024,
+      "page_errors": [],
+      "capture_count": 11,
+      "raw_evidence": "/tmp/grading-rollout/after/evidence-1024.json",
+      "sha256": "625752bd261272fd817081e102186321449ebce890d195c031ca75d8ebe3c84f"
+    },
+    {
+      "width": 820,
+      "page_errors": [],
+      "capture_count": 12,
+      "raw_evidence": "/tmp/grading-rollout/after/evidence-820.json",
+      "sha256": "ef82d64d261c234538e457bae08c39f92aab76f14f5296271bc0cb644c84788e"
+    },
+    {
+      "width": 390,
+      "page_errors": [],
+      "capture_count": 12,
+      "raw_evidence": "/tmp/grading-rollout/after/evidence-390.json",
+      "sha256": "72c15e015837374ab47336b1eac5af7c9e3fd3ac892d3a8bcb3a3de1e5b200d4"
+    },
+    {
+      "width": 320,
+      "page_errors": [],
+      "capture_count": 11,
+      "raw_evidence": "/tmp/grading-rollout/after/evidence-320.json",
+      "sha256": "c2374e19ee08955075278b949b5fd75f785040743b5687631e336808f89bced8"
+    }
+  ],
+  "boards": [
+    {
+      "path": "docs/screenshots/grading-results-rollout/evidence-states.png",
+      "size": [
+        1544,
+        2527
+      ],
+      "sha256": "64d452bd086db264ff29ac684f09278e7534a7d8f7e5dce6e373472277875ced",
+      "visually_inspected": true
+    },
+    {
+      "path": "docs/screenshots/grading-results-rollout/review-board-desktop.png",
+      "size": [
+        2952,
+        2360
+      ],
+      "sha256": "6320eee377df6f2ca42a268fd4722e66b22c733cc15d01a9030f805b6b4901c7",
+      "visually_inspected": true
+    },
+    {
+      "path": "docs/screenshots/grading-results-rollout/review-board-mobile.png",
+      "size": [
+        1266,
+        2360
+      ],
+      "sha256": "59527afa6512e578c0182f44f7dee8315b7c93f16f40b2ef6ce9a5892449da89",
+      "visually_inspected": true
+    }
+  ],
+  "protected_prototype": [
+    {
+      "path": "docs/screenshots/grading-results-prototype/evidence-states.png",
+      "sha256": "09162ab5ff6e03e1057775566251b546c96babf1e10574b887a7a9e8d55af2e2",
+      "unchanged_since_rollout_start": true
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-mobile.png",
+      "sha256": "ae4dc402aa0af727cb1c923313319ac2d05da022bc0ef5ec7da6c22970eb72d5",
+      "unchanged_since_rollout_start": true
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-desktop.png",
+      "sha256": "35690d09fd39003c506c14503c5ec9803fc144d905aa2e75d136bcb3b6bb4674",
+      "unchanged_since_rollout_start": true
+    },
+    {
+      "path": "docs/ux/GRADING_RESULTS_PROTOTYPE_REPORT.md",
+      "sha256": "c181bc0df38d4ab90a24365d2d050ec71f85623261ecd099452703b97a153e27",
+      "unchanged_since_rollout_start": false,
+      "historical_sha256": "443ec8777d9de55349cdef4ad9a6abbb5a29bccaf02979665bdc7805bffbbb1b",
+      "closeout_change": "Documentation only: historical checkpoint annotation and/or redaction of local database connection identifiers. Approved PNGs unchanged."
+    },
+    {
+      "path": "docs/ux/grading-results-verification.json",
+      "sha256": "2ac7d42a1b848e5e8d58ae54810f1ae494ce7ac39ecf0256a0f5b6a79a91f677",
+      "unchanged_since_rollout_start": false,
+      "historical_sha256": "3c579d18d4117c1904df6d25842533742aec3619e791ad025962e225eed9371a",
+      "closeout_change": "Documentation only: historical checkpoint annotation and/or redaction of local database connection identifiers. Approved PNGs unchanged."
+    }
+  ],
+  "environment": {
+    "database": "isolated loopback PostgreSQL 16 / examspace_focus_test",
+    "compatibility_database": "isolated loopback PostgreSQL 16 / examspace_grading_compat_test",
+    "production_access": false,
+    "login_rate_limit_unchanged": true,
+    "destructive_cleanup": false,
+    "raw_capture_root": "/tmp/grading-rollout/after"
+  },
+  "limitations": [
+    "Drafts are in memory; browser crash/force-close/OS termination may bypass beforeunload.",
+    "No cross-tab version/conflict detection; existing API unchanged.",
+    "Offset pages can move while new records arrive; uniqueness verified on stable fixtures.",
+    "Student history index follows current membership through existing student/exams API.",
+    "Legacy Teacher Exam bank selector retrieves first 100 banks; accumulated fixtures exceeded it, outside this rollout scope.",
+    "Targeted accessibility checks, not a complete WCAG/screen-reader audit."
+  ],
+  "logs": [
+    {
+      "path": "/tmp/grading-rollout/final-lint.log",
+      "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-types.log",
+      "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-build.log",
+      "sha256": "cc51c833052adfc9cb9583625fe6c029ba2452c4ccb3ad86db9f9964dea0740a"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-unit.log",
+      "sha256": "4af90890d24af120ac42b4098185f5cd98392202152c03e7d526d210b462e2e6"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-integration.log",
+      "sha256": "1913006e43594cb739070e3deba49db1c5e7a5294b4bc544c47861d185ac1f5a"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-browser.log",
+      "sha256": "04a098325c83e071dccd0701ab00e2a51d6212e627caf8ca56e7f3552165d976"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-browser-remaining.log",
+      "sha256": "0615e91923db78bec7fc8eb153b1b0e1ddb6e94da133b83a9369c92108e6b58a"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-compatibility.log",
+      "sha256": "919dab62a1434b6a38bb14d8c0824df584c94ce78db6b6b01037db2501bc5872"
+    },
+    {
+      "path": "/tmp/grading-rollout/final-board-capture.log",
+      "sha256": "cfbfb8bd3c1af14ce7efad908aa5943e058a3a12e4dfba24d43e64d345c52aea"
+    },
+    {
+      "path": "/tmp/grading-rollout/regression-before.log",
+      "sha256": "d11fb9f8cf6c43ae1f35c446273c3226e1c4dfa12e94775149cc90289661d544"
+    },
+    {
+      "path": "/tmp/grading-rollout/regression-after.log",
+      "sha256": "113b951185c84e67d761c86228d82246e32e43da46663ef8982b2cf6f14eb6d8"
+    },
+    {
+      "path": "/tmp/grading-rollout/focused.log",
+      "sha256": "62b8765c094daabe2d8c404dcb2ca447608f50d0db021d49d7b468229f8392a4"
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/api/test/grading-results.integration.test.ts",
+      "sha256": "161a5bd997659aa714d11e545a41d2eaa8b3629bcae307fb470b3ba4b29b6baa"
+    },
+    {
+      "path": "apps/web/src/features/analytics.tsx",
+      "sha256": "00ed5a9d7fd88391e7b03e8b6499369f8e7d277e2c531d92f6177faebf004243"
+    },
+    {
+      "path": "apps/web/src/features/grading-draft.test.ts",
+      "sha256": "b51475787668aba4dab76f3e79fa19458b80902519ee50798cf54e6153383629"
+    },
+    {
+      "path": "apps/web/src/features/grading-draft.ts",
+      "sha256": "7430c4df004cd3f223554ca2e5c5de1a4ae65bc7439e48d2ab4e33315e382bf2"
+    },
+    {
+      "path": "apps/web/src/features/grading-leave.tsx",
+      "sha256": "2a5f0f354feebdff555b5b8fae455e2929dc922035898cf13e56d484d52d37fb"
+    },
+    {
+      "path": "apps/web/src/features/grading-results.test.tsx",
+      "sha256": "9477deae1e4948c1118cd686eddaec0802314552073a48b60001f61bb0b8c518"
+    },
+    {
+      "path": "apps/web/src/features/record-pagination.tsx",
+      "sha256": "6ca5ce4457f0b8f91ac0bbf95f86cef877d19d97cae9ceb972a5f809fbcfc8eb"
+    },
+    {
+      "path": "apps/web/src/features/result-presentation.tsx",
+      "sha256": "84141223d893fa4e220c97de7d9f5c04c21edfe4e32e080fdb9880311e9c4f45"
+    },
+    {
+      "path": "apps/web/src/features/results.tsx",
+      "sha256": "bd25de0d99c97cb2f1928490ee2cb7ae9c5ac3dacce49721c22b87a1d378cd7a"
+    },
+    {
+      "path": "apps/web/src/styles/grading-results.css",
+      "sha256": "2c41b6d1cf90dd7b94c8312d6ea2c0151e125fcf4a6beecc26a7706252a4c71a"
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/evidence-states.png",
+      "sha256": "09162ab5ff6e03e1057775566251b546c96babf1e10574b887a7a9e8d55af2e2"
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-desktop.png",
+      "sha256": "35690d09fd39003c506c14503c5ec9803fc144d905aa2e75d136bcb3b6bb4674"
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-mobile.png",
+      "sha256": "ae4dc402aa0af727cb1c923313319ac2d05da022bc0ef5ec7da6c22970eb72d5"
+    },
+    {
+      "path": "docs/screenshots/grading-results-rollout/evidence-states.png",
+      "sha256": "64d452bd086db264ff29ac684f09278e7534a7d8f7e5dce6e373472277875ced"
+    },
+    {
+      "path": "docs/screenshots/grading-results-rollout/review-board-desktop.png",
+      "sha256": "6320eee377df6f2ca42a268fd4722e66b22c733cc15d01a9030f805b6b4901c7"
+    },
+    {
+      "path": "docs/screenshots/grading-results-rollout/review-board-mobile.png",
+      "sha256": "59527afa6512e578c0182f44f7dee8315b7c93f16f40b2ef6ce9a5892449da89"
+    },
+    {
+      "path": "docs/ux/GRADING_RESULTS_PROTOTYPE_REPORT.md",
+      "sha256": "c181bc0df38d4ab90a24365d2d050ec71f85623261ecd099452703b97a153e27"
+    },
+    {
+      "path": "docs/ux/GRADING_RESULTS_ROLLOUT_REPORT.md",
+      "sha256": "f89c717275727abb3d50b753f359a7e48a4321f2a7fb1b0a11968841d73965ce"
+    },
+    {
+      "path": "docs/ux/grading-results-rollout-verification.json",
+      "sha256": null
+    },
+    {
+      "path": "docs/ux/grading-results-verification.json",
+      "sha256": "2ac7d42a1b848e5e8d58ae54810f1ae494ce7ac39ecf0256a0f5b6a79a91f677"
+    },
+    {
+      "path": "tests/ui/grading-results-before.spec.ts",
+      "sha256": "09009d72c3ff6f1dafea754714e79905599774550c0a8215234d356e91c2f4ee"
+    },
+    {
+      "path": "tests/ui/grading-results-boards.py",
+      "sha256": "262cd8460c52e7d3b928688e0a0529c46c758e0748f408b6458bab12d5326ffe"
+    },
+    {
+      "path": "tests/ui/grading-results-fixtures.ts",
+      "sha256": "27da66ae222def43b6147a3d494fdba24305a322384ad1fcdfa4eb848f5d005a"
+    },
+    {
+      "path": "tests/ui/grading-results-recovery.spec.ts",
+      "sha256": "c5030e755861d7e4617267bab08146a9a7adb01a4c38387b2182ac3976690f4e"
+    },
+    {
+      "path": "tests/ui/grading-results-rollout-boards.py",
+      "sha256": "71f8fbe6a4e395c47405f0a30990acd5b563b7f78284657b946d4f1d2baf34d7"
+    },
+    {
+      "path": "tests/ui/grading-results-rollout-fixtures.ts",
+      "sha256": "5a1ab5e47214e2f73f4d034237082701c4d7c0a583333481f156a121b7ac3929"
+    },
+    {
+      "path": "tests/ui/grading-results-rollout.spec.ts",
+      "sha256": "8193debc64969ddb20d348aa0a4a63a1ea6b00850c45c5322d86dabc3645af10"
+    },
+    {
+      "path": "tests/ui/grading-results.spec.ts",
+      "sha256": "0aa70cfd7f0025520356899c36a1a0608ac123c6743260050c38a4526913d7a7"
+    }
+  ],
+  "self_hash_note": "This manifest omits its own hash to avoid a circular digest.",
+  "closeout": {
+    "date": "2026-10-10",
+    "source_unchanged": true,
+    "approved_boards_unchanged": 6,
+    "removed_artifacts": [
+      "test-results/.last-run.json (previous local output; regenerated by verification, excluded from commit)"
+    ],
+    "credential_cleanup": "3 new browser-test files use DEMO_PASSWORD from environment; historical local database URLs redacted; no credential values committed",
+    "test_environment": "Two fresh isolated loopback PostgreSQL test databases; production untouched; same existing test configs; fresh server per browser batch",
+    "unit_environment_failure": "First sandbox run 37 passed/1 failed: Supertest could not bind localhost. Full authorized loopback rerun 38/38 passed without code changes.",
+    "static": {
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "build": "PASS"
+    },
+    "unit": {
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0
+    },
+    "integration": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "phase_passed": 32,
+      "compatibility_passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "retries": 0
+    },
+    "browser_commands": [
+      "npx playwright test --config playwright.ui.config.ts tests/ui/grading-results-rollout.spec.ts tests/ui/grading-results-recovery.spec.ts",
+      "npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts",
+      "npx playwright test --config playwright.ui.config.ts tests/ui/teacher-sidebar.spec.ts tests/ui/student-focus.spec.ts --grep 'real attempt, persistence|Teacher sidebar|Teacher mobile|Exam outline'"
+    ],
+    "environment_variables": [
+      "TEST_DATABASE_URL=<isolated-loopback-test-db>",
+      "DEMO_PASSWORD=<same value supplied to phase DB seed>",
+      "GRADING_SCREENSHOT_DIR=<temporary capture directory>",
+      "EXAM_SCREENSHOT_DIR=<temporary compatibility directory>",
+      "FOCUS_SCREENSHOT_DIR=<temporary compatibility directory>"
+    ],
+    "evidence_note": "Local /tmp paths are ephemeral run provenance, not repository links or required checkout artifacts. Summaries, hashes and six approved boards are durable evidence.",
+    "security_review": "Explicit 28-file scope; no environment files, credential values, DB dumps, raw logs or unrelated modules; synthetic fixtures only",
+    "logs": [
+      {
+        "path": "/tmp/grading-results-closeout/lint.log",
+        "sha256": "6ba41d3386946f3480608c0bcb80bb893d785c187db4178012a840ea9081d89b"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/typecheck.log",
+        "sha256": "63035b988df6a90289a364f049a8b409f281707d912ec5b56fb301f710ab38c5"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/build.log",
+        "sha256": "8c35ed45ed64ce8fbda2c616cc4de084214c28480227ebb37a9d4642f9564016"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/unit.log",
+        "sha256": "4c08d31744d2e934a2b867f57dd608294d17994d9c9226b71c1ebbb56e1fc770"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/unit-final.log",
+        "sha256": "19431644a7d64fddef502ce1b38136e10cb9e646e07cbca1f588acfc28e3ec03"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/integration.log",
+        "sha256": "b8d7b2a28a78ee7657444e248b00f5cda32a8f90e6592542be8f6dcf5fcd37bf"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/browser-a.log",
+        "sha256": "a7679c814f04abfaf7b7ed802d45ffc81e184c6b3a2ccb237ba4dda03090f43c"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/browser-b.log",
+        "sha256": "1d0020c886626bfccb1cd1d62bc52157441c9b1695b3f08a70fb0b65cb124abf"
+      },
+      {
+        "path": "/tmp/grading-results-closeout/compatibility.log",
+        "sha256": "230e00fff5531a0a203b035453d759935d2df9b6a5bfda3883f3ca67af77885a"
+      }
+    ],
+    "responsive_evidence": [
+      {
+        "evidence": [
+          {
+            "name": "grading-entry",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/grading",
+            "pageWidth": 1440
+          },
+          {
+            "name": "grading-workspace",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/grading",
+            "pageWidth": 1440
+          },
+          {
+            "name": "grading-error",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/grading",
+            "pageWidth": 1440
+          },
+          {
+            "name": "grading-saved",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/grading",
+            "pageWidth": 1440
+          },
+          {
+            "name": "teacher-results",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/results",
+            "pageWidth": 1440,
+            "tableTop": 490.171875
+          },
+          {
+            "name": "analytics",
+            "width": 1440,
+            "route": "/teacher/exams/ad1d101a-2745-41be-b243-d259541fa7c4/results",
+            "pageWidth": 1440,
+            "tableTop": -1687.828125
+          },
+          {
+            "name": "student-pending",
+            "width": 1440,
+            "route": "/student/results/ad1d101a-2745-41be-b243-d259541fa7c4",
+            "pageWidth": 1440
+          },
+          {
+            "name": "student-hidden",
+            "width": 1440,
+            "route": "/student/results/ad1d101a-2745-41be-b243-d259541fa7c4",
+            "pageWidth": 1440
+          },
+          {
+            "name": "student-released",
+            "width": 1440,
+            "route": "/student/results/ad1d101a-2745-41be-b243-d259541fa7c4",
+            "pageWidth": 1440
+          },
+          {
+            "name": "student-feedback",
+            "width": 1440,
+            "route": "/student/results/ad1d101a-2745-41be-b243-d259541fa7c4",
+            "pageWidth": 1440
+          },
+          {
+            "name": "student-entry",
+            "width": 1440,
+            "route": "/student/results",
+            "pageWidth": 1440
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "evidence": [
+          {
+            "name": "grading-entry",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/grading",
+            "pageWidth": 1024
+          },
+          {
+            "name": "grading-workspace",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/grading",
+            "pageWidth": 1024
+          },
+          {
+            "name": "grading-error",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/grading",
+            "pageWidth": 1024
+          },
+          {
+            "name": "grading-saved",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/grading",
+            "pageWidth": 1024
+          },
+          {
+            "name": "teacher-results",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/results",
+            "pageWidth": 1024,
+            "tableTop": 490.171875
+          },
+          {
+            "name": "analytics",
+            "width": 1024,
+            "route": "/teacher/exams/634007df-0975-40b2-99ea-c2669d7ad48d/results",
+            "pageWidth": 1024,
+            "tableTop": -1687.828125
+          },
+          {
+            "name": "student-pending",
+            "width": 1024,
+            "route": "/student/results/634007df-0975-40b2-99ea-c2669d7ad48d",
+            "pageWidth": 1024
+          },
+          {
+            "name": "student-hidden",
+            "width": 1024,
+            "route": "/student/results/634007df-0975-40b2-99ea-c2669d7ad48d",
+            "pageWidth": 1024
+          },
+          {
+            "name": "student-released",
+            "width": 1024,
+            "route": "/student/results/634007df-0975-40b2-99ea-c2669d7ad48d",
+            "pageWidth": 1024
+          },
+          {
+            "name": "student-feedback",
+            "width": 1024,
+            "route": "/student/results/634007df-0975-40b2-99ea-c2669d7ad48d",
+            "pageWidth": 1024
+          },
+          {
+            "name": "student-entry",
+            "width": 1024,
+            "route": "/student/results",
+            "pageWidth": 1024
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "evidence": [
+          {
+            "name": "grading-entry",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/grading",
+            "pageWidth": 820
+          },
+          {
+            "name": "grading-workspace",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/grading",
+            "pageWidth": 820
+          },
+          {
+            "name": "grading-error",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/grading",
+            "pageWidth": 820
+          },
+          {
+            "name": "grading-saved",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/grading",
+            "pageWidth": 820
+          },
+          {
+            "name": "teacher-results",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/results",
+            "pageWidth": 820,
+            "tableTop": 624.96875
+          },
+          {
+            "name": "results-scroll",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/results",
+            "pageWidth": 820,
+            "tableTop": -693.03125
+          },
+          {
+            "name": "analytics",
+            "width": 820,
+            "route": "/teacher/exams/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63/results",
+            "pageWidth": 820,
+            "tableTop": -1688.03125
+          },
+          {
+            "name": "student-pending",
+            "width": 820,
+            "route": "/student/results/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63",
+            "pageWidth": 820
+          },
+          {
+            "name": "student-hidden",
+            "width": 820,
+            "route": "/student/results/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63",
+            "pageWidth": 820
+          },
+          {
+            "name": "student-released",
+            "width": 820,
+            "route": "/student/results/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63",
+            "pageWidth": 820
+          },
+          {
+            "name": "student-feedback",
+            "width": 820,
+            "route": "/student/results/494a3fa3-1eb8-45aa-92a5-24a7ca8aaa63",
+            "pageWidth": 820
+          },
+          {
+            "name": "student-entry",
+            "width": 820,
+            "route": "/student/results",
+            "pageWidth": 820
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "evidence": [
+          {
+            "name": "grading-entry",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/grading",
+            "pageWidth": 390
+          },
+          {
+            "name": "grading-workspace",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/grading",
+            "pageWidth": 390
+          },
+          {
+            "name": "grading-error",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/grading",
+            "pageWidth": 390
+          },
+          {
+            "name": "grading-saved",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/grading",
+            "pageWidth": 390
+          },
+          {
+            "name": "teacher-results",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/results",
+            "pageWidth": 390,
+            "tableTop": 0
+          },
+          {
+            "name": "results-records",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/results",
+            "pageWidth": 390,
+            "tableTop": 0
+          },
+          {
+            "name": "analytics",
+            "width": 390,
+            "route": "/teacher/exams/496afb43-f881-4546-b331-cb34a347275f/results",
+            "pageWidth": 390,
+            "tableTop": 0
+          },
+          {
+            "name": "student-pending",
+            "width": 390,
+            "route": "/student/results/496afb43-f881-4546-b331-cb34a347275f",
+            "pageWidth": 390
+          },
+          {
+            "name": "student-hidden",
+            "width": 390,
+            "route": "/student/results/496afb43-f881-4546-b331-cb34a347275f",
+            "pageWidth": 390
+          },
+          {
+            "name": "student-released",
+            "width": 390,
+            "route": "/student/results/496afb43-f881-4546-b331-cb34a347275f",
+            "pageWidth": 390
+          },
+          {
+            "name": "student-feedback",
+            "width": 390,
+            "route": "/student/results/496afb43-f881-4546-b331-cb34a347275f",
+            "pageWidth": 390
+          },
+          {
+            "name": "student-entry",
+            "width": 390,
+            "route": "/student/results",
+            "pageWidth": 390
+          }
+        ],
+        "pageErrors": []
+      },
+      {
+        "evidence": [
+          {
+            "name": "grading-entry",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/grading",
+            "pageWidth": 320
+          },
+          {
+            "name": "grading-workspace",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/grading",
+            "pageWidth": 320
+          },
+          {
+            "name": "grading-error",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/grading",
+            "pageWidth": 320
+          },
+          {
+            "name": "grading-saved",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/grading",
+            "pageWidth": 320
+          },
+          {
+            "name": "teacher-results",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/results",
+            "pageWidth": 320,
+            "tableTop": 0
+          },
+          {
+            "name": "analytics",
+            "width": 320,
+            "route": "/teacher/exams/37cb311b-5922-4b1a-923a-2d667e650e0b/results",
+            "pageWidth": 320,
+            "tableTop": 0
+          },
+          {
+            "name": "student-pending",
+            "width": 320,
+            "route": "/student/results/37cb311b-5922-4b1a-923a-2d667e650e0b",
+            "pageWidth": 320
+          },
+          {
+            "name": "student-hidden",
+            "width": 320,
+            "route": "/student/results/37cb311b-5922-4b1a-923a-2d667e650e0b",
+            "pageWidth": 320
+          },
+          {
+            "name": "student-released",
+            "width": 320,
+            "route": "/student/results/37cb311b-5922-4b1a-923a-2d667e650e0b",
+            "pageWidth": 320
+          },
+          {
+            "name": "student-feedback",
+            "width": 320,
+            "route": "/student/results/37cb311b-5922-4b1a-923a-2d667e650e0b",
+            "pageWidth": 320
+          },
+          {
+            "name": "student-entry",
+            "width": 320,
+            "route": "/student/results",
+            "pageWidth": 320
+          }
+        ],
+        "pageErrors": []
+      }
+    ]
+  }
+}

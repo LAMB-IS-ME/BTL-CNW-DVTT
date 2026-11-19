@@ -1,0 +1,49 @@
+[WebServer] (node:12667) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:12753) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/recovery/lifecycle.spec.ts:73:1 › session expiry before SPA navigation clears protected identity (1.0s)
+  ✘  2 tests/recovery/lifecycle.spec.ts:118:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership (18.3s)
+(node:13196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 tests/recovery/lifecycle.spec.ts:260:3 › Admin: expired reload and protected route remain signed out (694ms)
+  ✓  4 tests/recovery/lifecycle.spec.ts:260:3 › Student: expired reload and protected route remain signed out (570ms)
+  ✓  5 tests/recovery/lifecycle.spec.ts:284:1 › idle expiry is detected without navigation; recovery is responsive and keyboard accessible (1.3s)
+  ✓  6 tests/recovery/lifecycle.spec.ts:341:1 › Teacher draft mutation: expired CSRF confirms auth, does not create or replay the draft (1.6s)
+  ✓  7 tests/recovery/lifecycle.spec.ts:381:1 › network failure and valid-session RBAC/CSRF rejection do not become expiry (4.2s)
+  ✓  8 tests/recovery/lifecycle.spec.ts:437:1 › logout in another tab revokes the shared session and stops privileged socket actions (874ms)
+
+
+  1) tests/recovery/lifecycle.spec.ts:118:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Kết quả cuối cùng' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Kết quả cuối cùng' }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Kết quả cuối cùng' })
+
+
+      223 |     await expect(
+      224 |       tp!.getByRole("heading", { name: "Kết quả cuối cùng" }),
+    > 225 |     ).toBeVisible();
+          |       ^
+      226 |     const final = await snapshot(teacher, room.id);
+      227 |     expect(final.status).toBe("FINISHED");
+      228 |     expect(final.leaderboard[0].score).toBe(answers[0]!.pointsAwarded);
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/recovery/lifecycle.spec.ts:225:7
+
+    Error Context: test-results/lifecycle-SIGKILL-restart--6441e-conciles-offline-membership/error-context.md
+
+    Error Context: test-results/lifecycle-SIGKILL-restart--6441e-conciles-offline-membership/error-context.md
+
+  1 failed
+    tests/recovery/lifecycle.spec.ts:118:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership 
+  7 passed (39.4s)

@@ -1,0 +1,222 @@
+.qb-shell .teacher-dashboard .qb-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-transform: none;
+}
+.dashboard-welcome {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: center;
+  gap: var(--qb-space-6);
+  padding: 32px 40px;
+  margin-bottom: 32px;
+  border-radius: var(--qb-radius-hero);
+  background: #eeedfc;
+}
+.dashboard-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #59529d;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.qb-shell .dashboard-welcome h2 {
+  font-size: 34px;
+  line-height: 1.22;
+  letter-spacing: -1px;
+  margin: 16px 0 12px;
+  font-weight: 750;
+}
+.qb-shell .dashboard-welcome p {
+  max-width: 420px;
+  color: var(--qb-secondary);
+  margin-bottom: 24px;
+}
+.dashboard-illustration {
+  width: 100%;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+}
+.dashboard-library {
+  padding-bottom: 8px;
+}
+.qb-shell .dashboard-library .qb-section-title {
+  padding: 24px 24px 8px;
+  border: 0;
+}
+.qb-shell .dashboard-library .qb-kicker {
+  margin-bottom: 6px;
+}
+.qb-shell .dashboard-library-meta {
+  font-size: 12px;
+  color: var(--qb-muted);
+  padding: 0 24px 12px;
+  margin: 0;
+}
+.qb-shell .dashboard-bank {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  color: var(--qb-ink);
+  text-decoration: none;
+  border-top: 1px solid #f0f1f6;
+  transition: background var(--qb-motion);
+}
+.dashboard-bank > span:nth-child(2),
+.dashboard-workflow-link > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.dashboard-bank strong,
+.dashboard-workflow-link strong {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.dashboard-bank small,
+.dashboard-workflow-link small {
+  color: var(--qb-muted);
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.dashboard-bank > svg,
+.dashboard-workflow-link > svg {
+  color: var(--qb-muted);
+  flex-shrink: 0;
+}
+.qb-shell .dashboard-bank:hover {
+  background: #f7f6ff;
+}
+.dashboard-bank .qb-book-icon {
+  background: #e7f0ed;
+  color: #356656;
+}
+.dashboard-bank > svg,
+.dashboard-workflow-link > svg {
+  transition:
+    color var(--qb-motion),
+    transform var(--qb-motion);
+}
+.dashboard-bank:hover > svg,
+.dashboard-workflow-link:hover > svg {
+  color: var(--qb-accent);
+  transform: translateX(2px);
+}
+.dashboard-workflow {
+  padding: 16px 0 0;
+}
+.qb-shell .dashboard-workflow h2 {
+  margin-bottom: 12px;
+}
+.qb-shell .dashboard-workflow-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--qb-ink);
+  padding: 16px 0;
+  text-decoration: none;
+  border-bottom: 1px solid var(--qb-border);
+  transition: background var(--qb-motion);
+}
+.dashboard-workflow-link:hover strong {
+  color: var(--qb-accent);
+}
+.dashboard-workflow-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: #e9edf9;
+  color: #4b548b;
+  flex-shrink: 0;
+}
+.dashboard-workflow-icon.people {
+  background: #e7f0ed;
+  color: #356656;
+}
+.dashboard-workflow-icon.bolt {
+  background: #faf0da;
+  color: #835e17;
+}
+.dashboard-note {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 24px 0 0;
+  padding: 16px 0;
+  color: var(--qb-muted);
+}
+.dashboard-note svg {
+  color: var(--qb-success);
+  flex-shrink: 0;
+}
+.qb-shell .dashboard-note p {
+  font-size: 12px;
+  margin: 0;
+}
+.dashboard-note strong {
+  color: var(--qb-secondary);
+}
+@media (max-width: 1190px) {
+  .dashboard-welcome {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    padding: 28px;
+  }
+  .qb-shell .dashboard-welcome h2 {
+    font-size: 30px;
+  }
+  .dashboard-grid {
+    gap: 24px;
+  }
+}
+@media (max-width: 960px) {
+  .dashboard-welcome {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dashboard-illustration {
+    display: none;
+  }
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dashboard-workflow {
+    padding-top: 0;
+  }
+}
+@media (max-width: 700px) {
+  .dashboard-welcome {
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 18px;
+  }
+  .qb-shell .dashboard-welcome h2 {
+    font-size: 28px;
+  }
+  .dashboard-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .qb-shell .dashboard-library .qb-section-title {
+    padding: 20px 16px 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .qb-shell .dashboard-library-meta {
+    padding: 0 16px 12px;
+  }
+  .qb-shell .dashboard-bank {
+    padding: 16px;
+    gap: 12px;
+  }
+}

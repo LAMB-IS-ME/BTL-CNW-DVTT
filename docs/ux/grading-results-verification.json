@@ -1,0 +1,484 @@
+{
+  "phase": "Grading & Results UX audit + thin-slice prototype, review stop",
+  "verifiedDate": "2026-10-10",
+  "timezone": "Asia/Bangkok",
+  "git": {
+    "branch": "ux/education-saas-redesign-pilot",
+    "head": "2444199f7ca3a0113d5ea3aad7567e70d0677df0",
+    "workingTree": "Prototype changes uncommitted",
+    "commit": false,
+    "push": false,
+    "deploy": false,
+    "pr": false
+  },
+  "recovery": {
+    "interruptedCommandExecuted": false,
+    "reason": "Automatic approval review could not complete because workspace was out of credits, not a test failure or unsafe-action determination.",
+    "resolved": "Explicit escalation approved on resumed turn; portable PostgreSQL test environment restored.",
+    "tmpLost": true,
+    "productionTouched": false
+  },
+  "database": "Isolated loopback PostgreSQL examspace_focus_test, port 55432; dotenv disabled for setup; no production Supabase",
+  "baseline": {
+    "provenance": "Recovered from earlier tool outputs in this conversation (2026-10-09); raw /tmp logs/screenshots were lost on restart. Not rerun against changed source.",
+    "head": "2444199f7ca3a0113d5ea3aad7567e70d0677df0",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "unitPassed": 31,
+    "integrationPassed": 5,
+    "chromiumBeforePassed": 1,
+    "initialHealthTestFailure": "Sandbox localhost restriction; approved rerun passed all 31.",
+    "resultsTableTop": {
+      "1440": 1728.671875,
+      "820": 2115.671875,
+      "390": 2974.71875
+    },
+    "gradingPageHeight": {
+      "1440": 19552,
+      "820": 20655,
+      "390": 25087
+    },
+    "staleSaveBugObserved": "Saved success remained visible after unsaved score edit; reload retained prior server value."
+  },
+  "finalChecks": [
+    {
+      "command": "npm run lint",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "result": "PASS",
+      "warnings": [
+        "Existing bundle chunk >500kB warning"
+      ]
+    },
+    {
+      "command": "npx vitest run",
+      "result": "PASS",
+      "files": 15,
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "TEST_DATABASE_URL=<isolated-loopback-test-db> npx vitest run --config vitest.integration.config.ts apps/api/test/grading.integration.test.ts apps/api/test/grading-results.integration.test.ts apps/api/test/exports.integration.test.ts apps/api/test/attempts.integration.test.ts",
+      "result": "PASS",
+      "files": 4,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "GRADING_SCREENSHOT_DIR=/tmp/grading-results-after EXAM_SCREENSHOT_DIR=/tmp/grading-compat-teacher TEST_DATABASE_URL=<isolated-loopback-test-db> npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts tests/ui/teacher-sidebar.spec.ts",
+      "result": "PASS",
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "groups": {
+        "gradingResults": 5,
+        "teacherCompatibility": 4
+      }
+    },
+    {
+      "command": "GRADING_SCREENSHOT_DIR=/tmp/grading-results-after FOCUS_SCREENSHOT_DIR=/tmp/grading-compat-student TEST_DATABASE_URL=<isolated-loopback-test-db> npx playwright test --config playwright.ui.config.ts tests/ui/grading-results.spec.ts tests/ui/student-focus.spec.ts --grep 'grading/results|release action|long content|real attempt, persistence'",
+      "result": "PASS",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "groups": {
+        "gradingResults": 5,
+        "studentCompatibility": 3
+      },
+      "note": "Final fixture correction: IN_PROGRESS has no manual/total score or auto-graded answers. Repeats the five prototype checks; these are counted once in unique totals."
+    },
+    {
+      "command": "python3 tests/ui/grading-results-boards.py",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "uniqueChromiumTests": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "gradingResults": 5,
+    "teacherCompatibility": 4,
+    "studentCompatibility": 3
+  },
+  "responsiveEvidence": [
+    {
+      "evidence": [
+        {
+          "name": "grading-entry",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/grading",
+          "pageWidth": 1440
+        },
+        {
+          "name": "grading-workspace",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/grading",
+          "pageWidth": 1440
+        },
+        {
+          "name": "grading-error",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/grading",
+          "pageWidth": 1440
+        },
+        {
+          "name": "grading-saved",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/grading",
+          "pageWidth": 1440
+        },
+        {
+          "name": "teacher-results",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/results",
+          "pageWidth": 1440,
+          "tableTop": 490.171875
+        },
+        {
+          "name": "analytics",
+          "width": 1440,
+          "route": "/teacher/exams/59c2df51-430e-4d84-8733-79743d5cbc44/results",
+          "pageWidth": 1440,
+          "tableTop": -1687.828125
+        },
+        {
+          "name": "student-pending",
+          "width": 1440,
+          "route": "/student/results/59c2df51-430e-4d84-8733-79743d5cbc44",
+          "pageWidth": 1440
+        },
+        {
+          "name": "student-hidden",
+          "width": 1440,
+          "route": "/student/results/59c2df51-430e-4d84-8733-79743d5cbc44",
+          "pageWidth": 1440
+        },
+        {
+          "name": "student-released",
+          "width": 1440,
+          "route": "/student/results/59c2df51-430e-4d84-8733-79743d5cbc44",
+          "pageWidth": 1440
+        },
+        {
+          "name": "student-feedback",
+          "width": 1440,
+          "route": "/student/results/59c2df51-430e-4d84-8733-79743d5cbc44",
+          "pageWidth": 1440
+        },
+        {
+          "name": "student-entry",
+          "width": 1440,
+          "route": "/student/results",
+          "pageWidth": 1440
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "evidence": [
+        {
+          "name": "grading-entry",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/grading",
+          "pageWidth": 820
+        },
+        {
+          "name": "grading-workspace",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/grading",
+          "pageWidth": 820
+        },
+        {
+          "name": "grading-error",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/grading",
+          "pageWidth": 820
+        },
+        {
+          "name": "grading-saved",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/grading",
+          "pageWidth": 820
+        },
+        {
+          "name": "teacher-results",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/results",
+          "pageWidth": 820,
+          "tableTop": 624.96875
+        },
+        {
+          "name": "results-scroll",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/results",
+          "pageWidth": 820,
+          "tableTop": -545.03125
+        },
+        {
+          "name": "analytics",
+          "width": 820,
+          "route": "/teacher/exams/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea/results",
+          "pageWidth": 820,
+          "tableTop": -1688.03125
+        },
+        {
+          "name": "student-pending",
+          "width": 820,
+          "route": "/student/results/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea",
+          "pageWidth": 820
+        },
+        {
+          "name": "student-hidden",
+          "width": 820,
+          "route": "/student/results/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea",
+          "pageWidth": 820
+        },
+        {
+          "name": "student-released",
+          "width": 820,
+          "route": "/student/results/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea",
+          "pageWidth": 820
+        },
+        {
+          "name": "student-feedback",
+          "width": 820,
+          "route": "/student/results/3a252b0f-46b8-43e6-ab9d-6e0b0b2076ea",
+          "pageWidth": 820
+        },
+        {
+          "name": "student-entry",
+          "width": 820,
+          "route": "/student/results",
+          "pageWidth": 820
+        }
+      ],
+      "pageErrors": []
+    },
+    {
+      "evidence": [
+        {
+          "name": "grading-entry",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/grading",
+          "pageWidth": 390
+        },
+        {
+          "name": "grading-workspace",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/grading",
+          "pageWidth": 390
+        },
+        {
+          "name": "grading-error",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/grading",
+          "pageWidth": 390
+        },
+        {
+          "name": "grading-saved",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/grading",
+          "pageWidth": 390
+        },
+        {
+          "name": "teacher-results",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/results",
+          "pageWidth": 390,
+          "tableTop": 0
+        },
+        {
+          "name": "results-records",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/results",
+          "pageWidth": 390,
+          "tableTop": 0
+        },
+        {
+          "name": "analytics",
+          "width": 390,
+          "route": "/teacher/exams/88a4a225-9915-4c21-b69d-98b9f33a39a3/results",
+          "pageWidth": 390,
+          "tableTop": 0
+        },
+        {
+          "name": "student-pending",
+          "width": 390,
+          "route": "/student/results/88a4a225-9915-4c21-b69d-98b9f33a39a3",
+          "pageWidth": 390
+        },
+        {
+          "name": "student-hidden",
+          "width": 390,
+          "route": "/student/results/88a4a225-9915-4c21-b69d-98b9f33a39a3",
+          "pageWidth": 390
+        },
+        {
+          "name": "student-released",
+          "width": 390,
+          "route": "/student/results/88a4a225-9915-4c21-b69d-98b9f33a39a3",
+          "pageWidth": 390
+        },
+        {
+          "name": "student-feedback",
+          "width": 390,
+          "route": "/student/results/88a4a225-9915-4c21-b69d-98b9f33a39a3",
+          "pageWidth": 390
+        },
+        {
+          "name": "student-entry",
+          "width": 390,
+          "route": "/student/results",
+          "pageWidth": 390
+        }
+      ],
+      "pageErrors": []
+    }
+  ],
+  "coverage": {
+    "save": [
+      "native range/step/required validation",
+      "dirty",
+      "held real PUT pending",
+      "success",
+      "failure injection",
+      "retry",
+      "reload score and feedback",
+      "distinct submission values"
+    ],
+    "security": [
+      "Teacher non-owner 404",
+      "Student teacher-route 403",
+      "Teacher student-route 403",
+      "unassigned student 404",
+      "same-class different student returns own empty attempts",
+      "partial essay grading hides total/questions",
+      "IMMEDIATE",
+      "AFTER_CLOSE before/after deadline",
+      "MANUAL before/after release",
+      "independent key/explanation/detail-score fields"
+    ],
+    "export": [
+      "PDF and Excel browser downloads, nonempty signatures",
+      "export failure feedback",
+      "Excel workbook parse",
+      "Vietnamese PDF text extraction"
+    ],
+    "accessibility": [
+      "native summary keyboard Enter",
+      "score label and min/max/step",
+      "Tab to feedback",
+      "3px focus ring",
+      "release dialog Escape/focus restoration",
+      "form controls >=44px",
+      "save button contrast >=4.5",
+      "reduced motion",
+      "semantic desktop table and mobile list"
+    ],
+    "excluded": [
+      "Full system Chromium",
+      "Firefox/WebKit",
+      "screen reader audit",
+      "Admin UI rollout",
+      "all state permutations"
+    ]
+  },
+  "protectedWork": {
+    "protectedTrackedFilesChecked": 105,
+    "changed": [],
+    "approvedBoardHashes": {
+      "docs/screenshots/exam-folio-final/review-board-desktop.png": "d6e0e113ca39ff79e0fb65d60f140d470e4d0704c646a23fd1db025ae32c11be",
+      "docs/screenshots/exam-folio-final/review-board-mobile.png": "bb550c9238ed9f7334d8ad0e39fa80f8f283329ba351ef289412bbc68b9e25c6",
+      "docs/screenshots/exam-folio-final/sidebar-open-vs-collapsed.png": "8099e3ed7632368f1a9f11d6fe230b7737b79a4b6113b30fc4ff21d47e14565a",
+      "docs/screenshots/student-focus-prototype/review-board-desktop.png": "e8ba113450df50adfcc3bf17527a7162838971d2cb1cc449c9c4a22d476b30c1",
+      "docs/screenshots/student-focus-prototype/review-board-mobile.png": "bd7cd22c50c09b1545612be55f22fe2c3ce54e61cb41f4f2e0cc046753a4e237",
+      "docs/screenshots/student-focus-rollout/review-board-desktop.png": "98a9d41864f88a174834a44338b375914f2d66f3aa5292eddb1419b5b7c4f6b8",
+      "docs/screenshots/student-focus-rollout/review-board-mobile.png": "1d5a4ea04bae69dc130034993872216abb57cdd0440b24450b6ba6fae8711b18",
+      "docs/screenshots/ui-redesign/review-board-v2-desktop.png": "245b502bf9fcec5131b8dd49db1992452d455d7062e10f93bba8397e91412173",
+      "docs/screenshots/ui-redesign/review-board-v2-mobile.png": "c04143efbc1ec1f61e05d92fabfd9f6881ec5cc860977609a725bec4842da86a"
+    }
+  },
+  "boards": [
+    {
+      "path": "docs/screenshots/grading-results-prototype/evidence-states.png",
+      "size": [
+        2172,
+        2110
+      ],
+      "sha256": "09162ab5ff6e03e1057775566251b546c96babf1e10574b887a7a9e8d55af2e2",
+      "agentInspected": true,
+      "source": "Real Chromium screenshots, unretouched, 1:1 pixels; caption/crop composition only"
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-desktop.png",
+      "size": [
+        2952,
+        2360
+      ],
+      "sha256": "35690d09fd39003c506c14503c5ec9803fc144d905aa2e75d136bcb3b6bb4674",
+      "agentInspected": true,
+      "source": "Real Chromium screenshots, unretouched, 1:1 pixels; caption/crop composition only"
+    },
+    {
+      "path": "docs/screenshots/grading-results-prototype/review-board-mobile.png",
+      "size": [
+        1234,
+        1881
+      ],
+      "sha256": "ae4dc402aa0af727cb1c923313319ac2d05da022bc0ef5ec7da6c22970eb72d5",
+      "agentInspected": true,
+      "source": "Real Chromium screenshots, unretouched, 1:1 pixels; caption/crop composition only"
+    }
+  ],
+  "fileManifest": [
+    "apps/web/src/features/results.tsx",
+    "apps/web/src/features/analytics.tsx",
+    "apps/web/src/features/result-presentation.tsx",
+    "apps/web/src/styles/grading-results.css",
+    "apps/web/src/features/grading-results.test.tsx",
+    "apps/api/test/grading-results.integration.test.ts",
+    "tests/ui/grading-results.spec.ts",
+    "tests/ui/grading-results-before.spec.ts",
+    "tests/ui/grading-results-fixtures.ts",
+    "tests/ui/grading-results-boards.py",
+    "docs/ux/GRADING_RESULTS_PROTOTYPE_REPORT.md",
+    "docs/ux/grading-results-verification.json",
+    "docs/screenshots/grading-results-prototype/evidence-states.png",
+    "docs/screenshots/grading-results-prototype/review-board-desktop.png",
+    "docs/screenshots/grading-results-prototype/review-board-mobile.png"
+  ],
+  "sha256": {
+    "apps/web/src/features/results.tsx": "1e5e43b3a27ddf48077fd89c2b1374174366b6053744af0a27180849d2d3faca",
+    "apps/web/src/features/analytics.tsx": "1e1cc99111652c4aa35751144e92a288445d27dccc1f5e0afa2afb00afdb69f5",
+    "apps/web/src/features/result-presentation.tsx": "51ce842d84be6de62d65fda5d082253b1e695f5e8eadca57b21ad59714501cd4",
+    "apps/web/src/styles/grading-results.css": "09a3b675bba639d9dec1255cedb90804209dcbf4cc98a1a8ea24c7dbd2f24e5a",
+    "apps/web/src/features/grading-results.test.tsx": "c364e604869f8014627f5928f0c3a6bdadc8cb9b2e749c21a6ef597eac4180e2",
+    "apps/api/test/grading-results.integration.test.ts": "2fe0a03a1167f24e90cbcba78dea385e0d281d590c541e5197b258d89a63d97d",
+    "tests/ui/grading-results.spec.ts": "1ff1030412b8e6e0075f87be618c066128e252ec3cfcb03b768160fbde451949",
+    "tests/ui/grading-results-before.spec.ts": "09009d72c3ff6f1dafea754714e79905599774550c0a8215234d356e91c2f4ee",
+    "tests/ui/grading-results-fixtures.ts": "2cb2dc2494b03d4a95703cdd8ca0ea2c29b420f09bc9c585d022034f27409a4a",
+    "tests/ui/grading-results-boards.py": "262cd8460c52e7d3b928688e0a0529c46c758e0748f408b6458bab12d5326ffe",
+    "docs/ux/GRADING_RESULTS_PROTOTYPE_REPORT.md": "443ec8777d9de55349cdef4ad9a6abbb5a29bccaf02979665bdc7805bffbbb1b"
+  },
+  "limitations": [
+    "Unsaved grading drafts are in mounted forms only; route exit/reload can lose edits.",
+    "Grading fetch capped at 100; Student Results entry retains existing first-page 20 exam limit.",
+    "No new search/sort, teacher result-detail screen, rubric, moderation, unrelease or analytics feature.",
+    "Before raw artifacts lost on restart; after artifacts regenerated and inspected."
+  ],
+  "unresolvedBlockers": [],
+  "historical_note": "Prototype checkpoint only. Source hashes and test counts describe that checkpoint, not the final rollout. See grading-results-rollout-verification.json for the final manifest. Local database connection identifiers were redacted during closeout; approved boards are unchanged."
+}

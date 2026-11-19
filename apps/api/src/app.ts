@@ -23,6 +23,7 @@ import { authenticate } from "./middleware/auth.js";
 import { authRoutes } from "./modules/auth/routes.js";
 import { adminRoutes } from "./modules/admin/routes.js";
 import { AppError, errorHandler } from "./utils/errors.js";
+import { webRoutes } from "./web.js";
 export function createApp(deps?: { db: Db; config: Config }) {
   const app = express();
   app.disable("x-powered-by");
@@ -33,6 +34,7 @@ export function createApp(deps?: { db: Db; config: Config }) {
   if (deps) {
     const { db, config } = deps;
     app.set("trust proxy", config.TRUST_PROXY);
+    if (config.SERVE_WEB) app.use(webRoutes(config));
     app.use(
       cors({
         origin: (origin, callback) =>

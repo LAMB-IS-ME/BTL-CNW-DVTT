@@ -1,0 +1,14 @@
+{
+  "mode": "production",
+  "proxyHttpsSimulated": true,
+  "csrfStatus": 200,
+  "cookieFlags": {
+    "secure": true,
+    "httpOnly": true,
+    "sameSiteNone": true
+  },
+  "foreignOriginStatus": 403,
+  "healthStatus": 200,
+  "realTls": false,
+  "crossSiteBrowser": false
+}

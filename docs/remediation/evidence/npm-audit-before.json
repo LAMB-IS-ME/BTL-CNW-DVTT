@@ -1,0 +1,190 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "concurrently": {
+      "name": "concurrently",
+      "severity": "critical",
+      "isDirect": true,
+      "via": [
+        "shell-quote"
+      ],
+      "effects": [],
+      "range": "9.2.3 - 9.2.4 || 10.0.0 - 10.0.5",
+      "nodes": [
+        "node_modules/concurrently"
+      ],
+      "fixAvailable": true
+    },
+    "katex": {
+      "name": "katex",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241206,
+          "name": "katex",
+          "dependency": "katex",
+          "title": "KaTeX: Existing prototype pollution can bypass trust restrictions",
+          "url": "https://github.com/advisories/GHSA-238p-pmpm-9mq7",
+          "severity": "low",
+          "cwe": [
+            "CWE-807"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=0.11.0 <0.18.2"
+        }
+      ],
+      "effects": [
+        "micromark-extension-math",
+        "rehype-katex"
+      ],
+      "range": "0.11.0 - 0.18.1",
+      "nodes": [
+        "node_modules/micromark-extension-math/node_modules/katex",
+        "node_modules/rehype-katex/node_modules/katex"
+      ],
+      "fixAvailable": {
+        "name": "rehype-katex",
+        "version": "1.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "micromark-extension-math": {
+      "name": "micromark-extension-math",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "katex"
+      ],
+      "effects": [
+        "remark-math"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/micromark-extension-math"
+      ],
+      "fixAvailable": {
+        "name": "remark-math",
+        "version": "3.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "rehype-katex": {
+      "name": "rehype-katex",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "katex"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/rehype-katex"
+      ],
+      "fixAvailable": {
+        "name": "rehype-katex",
+        "version": "1.2.0",
+        "isSemVerMajor": true
+      }
+    },
+    "remark-math": {
+      "name": "remark-math",
+      "severity": "low",
+      "isDirect": true,
+      "via": [
+        "micromark-extension-math"
+      ],
+      "effects": [],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/remark-math"
+      ],
+      "fixAvailable": {
+        "name": "remark-math",
+        "version": "3.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "shell-quote": {
+      "name": "shell-quote",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241332,
+          "name": "shell-quote",
+          "dependency": "shell-quote",
+          "title": "shell-quote: `quote()` command injection via a line terminator in a token after a `{ comment }` token",
+          "url": "https://github.com/advisories/GHSA-pqg4-j6r4-53mv",
+          "severity": "critical",
+          "cwe": [
+            "CWE-78"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=1.8.4 <1.11.0"
+        }
+      ],
+      "effects": [
+        "concurrently"
+      ],
+      "range": "1.8.4 - 1.10.0",
+      "nodes": [
+        "node_modules/shell-quote"
+      ],
+      "fixAvailable": true
+    },
+    "source-map-js": {
+      "name": "source-map-js",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1241209,
+          "name": "source-map-js",
+          "dependency": "source-map-js",
+          "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+          "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+          "severity": "high",
+          "cwe": [
+            "CWE-1284"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=1.0.0 <1.2.2"
+        }
+      ],
+      "effects": [],
+      "range": "1.0.0 - 1.2.1",
+      "nodes": [
+        "node_modules/source-map-js"
+      ],
+      "fixAvailable": true
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 4,
+      "moderate": 0,
+      "high": 1,
+      "critical": 2,
+      "total": 7
+    },
+    "dependencies": {
+      "prod": 553,
+      "dev": 380,
+      "optional": 105,
+      "peer": 40,
+      "peerOptional": 0,
+      "total": 936
+    }
+  }
+}

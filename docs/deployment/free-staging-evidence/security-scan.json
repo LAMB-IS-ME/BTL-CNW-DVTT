@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "scope": "Current tracked tree, new phase files, frontend JavaScript bundle, all outgoing history blobs relative to remote main",
+  "configuredSecretsCheckedWithoutDisclosure": 4,
+  "currentFiles": 420,
+  "outgoingHistoryBlobs": 332,
+  "findings": [],
+  "historicalArtifacts": 85,
+  "historicalHashMismatches": [],
+  "limitations": "Pattern scan and known-secret matching; not a mathematical guarantee for unknown credentials."
+}

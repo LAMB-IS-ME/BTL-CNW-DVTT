@@ -1,0 +1,136 @@
+{
+  "environment": "Recovered previous-session local PostgreSQL/Vite baseline at 2cda149; historical measurements, not rerun",
+  "flow": [
+    {
+      "name": "bank-list-cold",
+      "ms": 74
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 259
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 77
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 115
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 42
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 123
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 48
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 122
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 42
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 132
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 72
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 117
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 47
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 124
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 39
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 125
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 42
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 121
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 45
+    },
+    {
+      "name": "bank-detail-warm",
+      "ms": 126
+    },
+    {
+      "name": "bank-list-warm",
+      "ms": 41
+    },
+    {
+      "name": "create-editor",
+      "ms": 182
+    },
+    {
+      "name": "create-save",
+      "ms": 117
+    },
+    {
+      "name": "question-reload",
+      "ms": 872
+    },
+    {
+      "name": "upload-baseline",
+      "result": "Chưa cấu hình Supabase Storage."
+    },
+    {
+      "name": "archive-discovery",
+      "result": "Only editor has archive; archived question disappears; no restore/filter."
+    },
+    {
+      "name": "exam-list",
+      "ms": 128
+    },
+    {
+      "name": "student-start-attempt",
+      "ms": 189
+    },
+    {
+      "name": "longtasks-last-page",
+      "ms": []
+    }
+  ],
+  "searchApi": {
+    "searchRequests": 8,
+    "api": [
+      12,
+      10,
+      10,
+      14,
+      17,
+      18,
+      13,
+      6,
+      4,
+      4
+    ]
+  }
+}

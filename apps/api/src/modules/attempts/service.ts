@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Prisma } from "../../generated/prisma/client.js";
 import { EventEmitter } from "node:events";
+import { z } from "zod";
 import type { Db } from "../../db/client.js";
 import type { Tx } from "../exams/service.js";
 import { lockExam, examInclude, materializeSources } from "../exams/service.js";
@@ -16,6 +17,11 @@ import {
   validateAnswer,
 } from "./logic.js";
 export const examEvents = new EventEmitter();
+const revisionSchema = z.iso.datetime().nullable();
+const answerRevisionSchema = z.object({ expectedSavedAt: revisionSchema });
+const submitRevisionSchema = z.object({
+  expectedVersions: z.record(z.uuid(), revisionSchema),
+});
 export const attemptInclude = {
   exam: true,
   questions: {
@@ -196,7 +202,19 @@ export async function saveAnswer(
     const q = a.questions.find((q) => q.id === questionId);
     check(q, 404, "NOT_FOUND");
     const answer = validateAnswer(snapshotSchema.parse(q.snapshotJson), input);
-    const savedAt = new Date();
+    const { expectedSavedAt } = answerRevisionSchema.parse(input);
+    check(
+      expectedSavedAt === (q.answer?.savedAt.toISOString() ?? null),
+      409,
+      "ANSWER_CONFLICT",
+      "Đáp án đã thay đổi ở tab khác. Hãy kiểm tra đáp án trên máy chủ trước khi tiếp tục.",
+    );
+    // savedAt is also the answer revision. The attempt lock protects both an
+    // absent answer (null revision) and updates. Advance even within the same
+    // millisecond, so concurrent/retried requests cannot reuse an old revision.
+    const savedAt = new Date(
+      Math.max(Date.now(), (q.answer?.savedAt.getTime() ?? -1) + 1),
+    );
     await tx.attemptAnswer.upsert({
       where: { attemptQuestionId: questionId },
       create: {
@@ -226,11 +244,32 @@ export async function saveAnswer(
   );
   return { savedAt: result.savedAt };
 }
-export async function submitAttempt(db: Db, id: string, studentId: string) {
+export async function submitAttempt(
+  db: Db,
+  id: string,
+  studentId: string,
+  input: unknown,
+) {
   const a = await db.$transaction(async (tx) => {
     await lockAttempt(tx, id);
     const a = await readAttempt(tx, id);
     check(a && a.studentId === studentId, 404, "NOT_FOUND");
+    // Repeated submission remains idempotent. Expiration always uses the
+    // server deadline; only an early manual submission needs a current view.
+    if (a.status === "IN_PROGRESS" && a.expiresAt > new Date()) {
+      const { expectedVersions } = submitRevisionSchema.parse(input);
+      check(
+        Object.keys(expectedVersions).length === a.questions.length &&
+          a.questions.every(
+            (q) =>
+              expectedVersions[q.id] ===
+              (q.answer?.savedAt.toISOString() ?? null),
+          ),
+        409,
+        "ATTEMPT_CONFLICT",
+        "Đáp án đã thay đổi ở tab khác. Hãy kiểm tra trước khi nộp bài.",
+      );
+    }
     return finalizeLockedTx(tx, a, a.expiresAt <= new Date());
   });
   examEvents.emit("changed", a.examId);

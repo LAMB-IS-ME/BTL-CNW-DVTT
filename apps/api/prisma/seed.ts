@@ -249,6 +249,7 @@ export async function completeDemoAttempt(
       const snap = snapshotSchema.parse(q.snapshotJson);
       try {
         await saveAnswer(db, attempt.id, q.id, studentId, {
+          expectedSavedAt: null,
           selectedOptionIds: snap.options
             .filter((o) => o.isCorrect)
             .map((o) => o.id),
@@ -265,9 +266,17 @@ export async function completeDemoAttempt(
     }
     const current = await db.examAttempt.findUniqueOrThrow({
       where: { id: attempt.id },
+      include: { questions: { include: { answer: true } } },
     });
     if (current.status === "IN_PROGRESS")
-      await submitAttempt(db, attempt.id, studentId);
+      await submitAttempt(db, attempt.id, studentId, {
+        expectedVersions: Object.fromEntries(
+          current.questions.map((q) => [
+            q.id,
+            q.answer?.savedAt.toISOString() ?? null,
+          ]),
+        ),
+      });
   }
   return db.examAttempt.findUniqueOrThrow({
     where: { id: attempt.id },

@@ -1,0 +1,52 @@
+{
+  "scope": "FRESH_HOSTED_AUTH_FIX",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "origin": "https://examspace-staging.onrender.com",
+  "startedAt": "2026-10-15T14:35:38.698Z",
+  "status": "FAIL",
+  "checks": [],
+  "pageErrors": [],
+  "failedAssets": [],
+  "fixturesReused": "STAGING-20261015021944",
+  "businessContentMutations": 0,
+  "sqlExecuted": false,
+  "limitations": [
+    "Controlled network-delay/abort injection is marked explicitly",
+    "Session expiry uses expired browser cookie and server logout revocation; no database TTL mutation",
+    "Exam/Quiz smoke reads completed fixtures; full lifecycle evidence from prior commit is reused separately"
+  ],
+  "diagnostic": {
+    "before": {
+      "visibility": "visible",
+      "focused": true
+    },
+    "revokedMeStatus": 401,
+    "events": [
+      {
+        "event": "browser-me",
+        "status": 401,
+        "at": 1792074939986
+      },
+      {
+        "event": "browser-me",
+        "status": 401,
+        "at": 1792074974086
+      },
+      {
+        "event": "browser-me",
+        "status": 401,
+        "at": 1792074974903
+      }
+    ],
+    "pathname": "/student",
+    "headings": [
+      "Bài thi được giao",
+      "STAGING-20261015021944 valid image",
+      "STAGING-20261015021944 exam"
+    ],
+    "after": {
+      "visibility": "visible",
+      "focused": true
+    }
+  }
+}

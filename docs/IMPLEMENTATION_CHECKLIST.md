@@ -1,6 +1,8 @@
 # Implementation checklist
 
-Nguồn yêu cầu: MASTER_SPEC.md và ASTRA_MASTER_PROMPT.md (đã đọc đầy đủ).
+Nguồn yêu cầu: [MASTER_SPEC](spec/MASTER_SPEC_BASELINE.md). (Prompt điều phối ban đầu `ASTRA_MASTER_PROMPT.md` chỉ lưu local, không có trong repo.)
+
+Tài liệu này ghi tiến độ xây dựng Core theo phase (09/2026). Các đợt sau Phase 9 được tóm tắt ở mục "Sau Phase 9" bên dưới.
 Repository ban đầu: LICENSE và hai tài liệu; chưa có ứng dụng. Runtime hiện có Node 22.23.2 LTS.
 
 Mỗi phase phải qua lint, typecheck và relevant tests trước phase tiếp theo. Không đánh dấu hoàn tất khi chưa có bằng chứng.
@@ -15,6 +17,15 @@ Mỗi phase phải qua lint, typecheck và relevant tests trước phase tiếp 
 - [x] Phase 7: Quiz builder, room codes/lobby, snapshot/state machine, deadlines/scoring/reveal/leaderboard/reconnect, UI animation.
 - [x] Phase 8: security review, unit/API/socket/frontend/E2E tests, responsive/accessibility/error UX, full verification và DoD audit.
 - [x] Phase 9: GitHub Pages SPA fallback/workflow, Render readiness, README, docs/SRS.md, docs/SDD.md, docs/DEPLOYMENT.md.
+
+## Sau Phase 9
+
+- [x] Làm lại giao diện: Question Bank, Dashboard, Exam Folio, Focus Desk, chấm điểm và kết quả, Live Quiz, điều hướng mobile ([design system](ux/DESIGN_SYSTEM.md)).
+- [x] Audit hệ thống 12/10 và ba đợt khắc phục lỗi ([lịch sử](remediation/REMEDIATION_HISTORY.md)).
+- [x] Deploy một Render Web Service phục vụ SPA + API cùng origin; staging https://examspace-staging-rc.onrender.com.
+- [x] Chống đáp án cũ ghi đè và nộp bài sớm; khôi phục đáp án nháp của sinh viên.
+- [x] Kiểm tra cấu hình đề/Quiz ở server; chặn rời builder khi chưa lưu; nút thử lại khi ảnh lỗi.
+- [ ] Kiểm thử hosted đầy đủ cho source mới nhất ([gate còn mở](audits/FINAL_RELEASE_READINESS_20261103.md)).
 
 ## Verification log
 

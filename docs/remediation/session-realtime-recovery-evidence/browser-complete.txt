@@ -1,0 +1,51 @@
+[WebServer] (node:16509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:16558) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/recovery/lifecycle.spec.ts:75:1 › session expiry before SPA navigation clears protected identity (930ms)
+  ✓   2 tests/recovery/lifecycle.spec.ts:120:1 › SIGKILL restart preserves answers and deadline, reconciles offline membership (15.3s)
+  ✓   3 tests/recovery/lifecycle.spec.ts:297:3 › Admin: expired reload and protected route remain signed out (475ms)
+  ✓   4 tests/recovery/lifecycle.spec.ts:297:3 › Student: expired reload and protected route remain signed out (516ms)
+  ✓   5 tests/recovery/lifecycle.spec.ts:321:1 › idle expiry is detected without navigation; recovery is responsive and keyboard accessible (31.0s)
+  ✓   6 tests/recovery/lifecycle.spec.ts:379:1 › Teacher draft mutation: expired CSRF confirms auth, does not create or replay the draft (1.5s)
+  ✓   7 tests/recovery/lifecycle.spec.ts:419:1 › network failure and valid-session RBAC/CSRF rejection do not become expiry (3.7s)
+  ✓   8 tests/recovery/lifecycle.spec.ts:475:1 › logout in another tab revokes the shared session (818ms)
+  ✓   9 tests/recovery/lifecycle.spec.ts:501:1 › Question Bank editor expiry leaves stored question intact and does not bypass its leave guard (1.4s)
+  ✓  10 tests/recovery/lifecycle.spec.ts:545:1 › Grading expiry preserves submitted status, grade and result release policy (1.4s)
+  ✓  11 tests/recovery/lifecycle.spec.ts:588:1 › Student autosave expiry retains accepted answer and does not submit or replay unsaved answer (4.3s)
+  ✘  12 tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header (11.2s)
+
+
+  1) tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })
+
+
+      656 |     await expect(
+      657 |       page.getByRole("heading", { name: "Phiên đăng nhập đã kết thúc" }),
+    > 658 |     ).toBeVisible();
+          |       ^
+      659 |     await expect(page.getByRole("button", { name: "Đăng xuất" })).toHaveCount(
+      660 |       0,
+      661 |     );
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/recovery/lifecycle.spec.ts:658:7
+
+    Error Context: test-results/lifecycle-clicking-logout--7ee81-of-retaining-a-stale-header/error-context.md
+
+    Error Context: test-results/lifecycle-clicking-logout--7ee81-of-retaining-a-stale-header/error-context.md
+
+  1 failed
+    tests/recovery/lifecycle.spec.ts:643:1 › clicking logout after expiration recovers instead of retaining a stale header 
+  11 passed (1.2m)

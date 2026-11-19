@@ -1,0 +1,68 @@
+[WebServer] (node:17767) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:17789) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:17800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:17868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:17909) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:17800) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.woff2" is outside of Vite serving allow list.
+[WebServer] 
+[WebServer] - /tmp/examspace-remediation/workspace
+[WebServer] - /home/lamb/Project/BTL-CNW-DVTT/node_modules/vite/dist/client
+[WebServer] 
+[WebServer] Refer to docs https://vite.dev/config/server-options.html#server-fs-allow for configurations and more details.
+[WebServer] 
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.ttf" is outside of Vite serving allow list.
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.woff2" is outside of Vite serving allow list.
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.woff" is outside of Vite serving allow list.
+[WebServer] The request id "/home/lamb/Project/BTL-CNW-DVTT/node_modules/katex/dist/fonts/KaTeX_Main-Regular.ttf" is outside of Vite serving allow list.
+  ✘  1 tests/e2e/core.spec.ts:51:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result (6.7s)
+
+
+  1) tests/e2e/core.spec.ts:51:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result 
+
+    Error: locator.fill: Error: strict mode violation: getByLabel('Nhận xét') resolved to 2 elements:
+        1) <dialog class="grading-leave" aria-labelledby="grading-leave-title" aria-describedby="grading-leave-description">…</dialog> aka getByLabel('Điểm và nhận xét chưa lưu')
+        2) <textarea rows="5" name="feedback" maxlength="10000"></textarea> aka getByRole('textbox', { name: 'Nhận xét' })
+
+    Call log:
+      - waiting for getByLabel('Nhận xét')
+
+
+      122 |   await tp.goto(`/teacher/exams/${exam.id}/grading`);
+      123 |   await tp.getByLabel("Điểm (0–3)").fill("2.5");
+    > 124 |   await tp.getByLabel("Nhận xét").fill("Lập luận tốt, cần thêm ví dụ.");
+          |                                   ^
+      125 |   await tp.getByRole("button", { name: "Lưu điểm", exact: true }).click();
+      126 |   await expect(tp.getByText("Đã lưu điểm", { exact: true })).toBeVisible();
+      127 |   await sp.reload();
+        at /tmp/examspace-remediation/workspace/tests/e2e/core.spec.ts:124:35
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/e2e/core.spec.ts:51:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result 

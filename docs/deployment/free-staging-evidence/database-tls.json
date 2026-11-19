@@ -1,0 +1,14 @@
+{
+  "target": "zhdxuqcbvhcnujcdbkgw",
+  "connectionMode": "session_pooler_ipv4",
+  "sslmode": "verify-full",
+  "clientToPooler": {
+    "encrypted": true,
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  },
+  "poolerToPostgres": {
+    "ssl": false,
+    "version": null
+  }
+}

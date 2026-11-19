@@ -1,0 +1,25 @@
+
+> db:seed
+> npm run db:seed -w @exam/api
+
+
+> @exam/api@1.0.0 db:seed
+> tsx prisma/seed.ts
+
+(node:17671) DeprecationWarning: Calling client.query() when the client is already executing a query is deprecated and will be removed in pg@9.0. Use async/await or an external async flow control mechanism instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+{
+  users: 15,
+  classes: 2,
+  banks: 2,
+  questions: 24,
+  exams: 3,
+  quizzes: 1,
+  demoAttempt: {
+    id: 'de8048ab-423c-445b-b322-8a52c36ed028',
+    attemptNo: 1,
+    status: 'GRADED',
+    autoSubmitted: false,
+    totalScore: 3
+  }
+}

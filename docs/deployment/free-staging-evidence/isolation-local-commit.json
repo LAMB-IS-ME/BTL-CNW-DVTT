@@ -1,0 +1,41 @@
+{
+  "status": "LOCAL_COMMIT_COMPLETE",
+  "commit": "ede7cea7cdfab61d3acdfff1c3074e3988783cff",
+  "parent": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "message": "test(e2e): isolate session recovery rate limits",
+  "committedFiles": [
+    "package.json",
+    "playwright.config.ts",
+    "playwright.session-recovery.config.ts",
+    "apps/api/test/auth-rate-limit.integration.test.ts",
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "tests/e2e/session-recovery.spec.ts"
+  ],
+  "candidateHashMismatches": [],
+  "historicalArtifacts": 85,
+  "historicalHashMismatches": [],
+  "trackedModified": 3,
+  "trackedPaths": [
+    "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "docs/deployment/FREE_STAGING_RUNBOOK.md",
+    "docs/deployment/free-staging-verification.json"
+  ],
+  "untrackedFiles": 182,
+  "staged": 0,
+  "ciCompatibility": "PASS_WORKFLOW_CALLS_NPM_ORCHESTRATION_WITH_BOTH_GROUPS",
+  "candidateGitHubCI": "NOT_RUN_NOT_PUSHED",
+  "verification": "REUSED_HASH_IDENTICAL_20_PLUS_3_E2E_101_UNIT_16_INTEGRATION_PLUS_1_BOUNDARY_LINT_TYPECHECK_BUILD_HOSTED_PASS",
+  "freshChecks": [
+    "Full staged diff review",
+    "Scope and secret scan",
+    "Candidate and historical SHA256 integrity",
+    "CI workflow and Playwright teardown/reuse policy review",
+    "Render deployed SHA readback"
+  ],
+  "renderDeployedSha": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "renderDeployId": "dep-db8e5ig473hc739etsbg",
+  "renderStatus": "live",
+  "commitsCreated": 1,
+  "pushes": 0,
+  "deploys": 0
+}

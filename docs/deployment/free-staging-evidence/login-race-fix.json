@@ -1,0 +1,17 @@
+{
+  "scope": "LOCAL_LOGIN_RACE_REGRESSION",
+  "negativeControl": "Bypass new initial-auth loading gate; otherwise same source",
+  "negativeControlExit": 1,
+  "negativeControlFailedTests": 2,
+  "candidateTests": {
+    "status": "PASS",
+    "tests": 16,
+    "files": 3
+  },
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "build": "PASS",
+  "databaseTests": "NOT_RERUN_FRONTEND_ONLY",
+  "hostedFixedCode": "NOT_DEPLOYED_PENDING_REVIEW",
+  "sourceRestoredExactly": true
+}

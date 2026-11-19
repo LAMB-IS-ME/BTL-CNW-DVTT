@@ -1,0 +1,368 @@
+{
+  "date": "2026-10-16",
+  "status": "HOSTED_PASS_FULL_SUITE_TEST_ISOLATION_BLOCKED",
+  "rootCause": {
+    "classification": "FALSE_BLOCKER_TEST_SIGNAL_EXPECTATION",
+    "external401": "External Playwright APIRequestContext /auth/me; not delivered to page API client",
+    "browserRequest": "Real page /auth/me started but failed net::ERR_CONNECTION_CLOSED; no HTTP status",
+    "queryStateAt45s": {
+      "status": "error",
+      "fetchStatus": "idle",
+      "role": "STUDENT"
+    },
+    "whyDashboardRemained": "Network failure deliberately preserves known identity; no confirmed browser session-invalid response",
+    "revalidation": "Existing window visibilitychange triggered real browser /auth/me 401; auth cache became null and expired UI replaced protected content",
+    "pendingOldResponseOverwrite": "Not observed; session generation guards and hosted old Teacher response race PASS",
+    "socket": "No socket notification required on dashboard; separate active Quiz WSS sibling logout disconnect and browser verification PASS",
+    "transportFailureUnderlyingCause": "Not established; no attribution to Render/Supabase/application server"
+  },
+  "productionChanges": false,
+  "newPolling": false,
+  "newCommitPushDeploy": false,
+  "proposedCommitFiles": [
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "tests/e2e/session-recovery.spec.ts"
+  ],
+  "candidateHashes": {
+    "apps/web/src/features/session-lifecycle.test.tsx": "b3de07a2fb9d9a07b9c569cc65b279a8e86915c6260c3a7d258b767b28d9508c",
+    "tests/e2e/session-recovery.spec.ts": "8f83ee3aa0588a309889033a7b54c1d0e08da6242cc5323479a10deecd74b059"
+  },
+  "reusedVerification": {
+    "unit": {
+      "passed": 101,
+      "failed": 0,
+      "files": 21
+    },
+    "integration": {
+      "passed": 16,
+      "failed": 0,
+      "files": 4,
+      "scope": [
+        "auth",
+        "socket",
+        "attempts",
+        "exams"
+      ],
+      "database": "isolated loopback PostgreSQL"
+    },
+    "targetedBrowser": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "lint": "PASS_CANDIDATE_SCRATCH_AND_SCOPED_NEW_HARNESSES",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "provenance": "Prior tool outputs retained in conversation and user-confirmed resume; original /tmp logs removed by environment restart; tests/config unchanged; not rerun"
+  },
+  "workspaceWideLint": "Earlier eslint . included unrelated pre-existing untracked diagnostic harnesses with unused variables; preserved those artifacts. Candidate clean scratch lint PASS. No lint rule disabled.",
+  "fullBrowser": {
+    "status": "FAIL",
+    "passed": 22,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 149013.52,
+    "retriesAdded": false,
+    "tests": [
+      {
+        "file": "admin.spec.ts",
+        "title": "Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "admin.spec.ts",
+        "title": "Admin role dependency error keeps the original role and clears after successful retry",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "admin.spec.ts",
+        "title": "Teacher and Student cannot enter Admin or mutate accounts through direct APIs",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "core.spec.ts",
+        "title": "Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "core.spec.ts",
+        "title": "Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "core.spec.ts",
+        "title": "mobile login and server-backed role guard",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "data-integrity.spec.ts",
+        "title": "Classes → Builder: page boundaries, SPA cache and reload",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "data-integrity.spec.ts",
+        "title": "Published image survives delete, Student start/reload/submit and bank replacement",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "data-integrity.spec.ts",
+        "title": "Management paging, search, class mutations, student discovery and admin boundaries",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Question Bank discoverability: four types, reload/edit/cancel, archive/restore, bank filters and lifecycle",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Images through API/DB and local Storage boundary: stage/upload/reload/replace/remove, validation and retry",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Pilot UI: keyboard/dialog focus, slow/loading, validation, network error, mobile/reduced motion and dirty Back",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "JPEG/WebP persist, actual replace control, invalid signature, interrupted linking resumes without duplicate upload",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Search debounces eight keys, final query wins over late response, filters persist on reload",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "List/detail failures retry; archive and restore errors preserve state and dialogs allow retry",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Dirty editor protects sidebar navigation and reload; saved editor has no false warning",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Responsive real controls 1440px: navigation, menu, keyboard, editor preview and dialogs",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Responsive real controls 820px: navigation, menu, keyboard, editor preview and dialogs",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Responsive real controls 390px: navigation, menu, keyboard, editor preview and dialogs",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "question-bank.spec.ts",
+        "title": "Pilot evidence: desktop screenshots and warm local performance samples",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "session-recovery.spec.ts",
+        "title": "Cookie expiry, relogin and revoke reconcile on a browser 401; reload and another login recover",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "session-recovery.spec.ts",
+        "title": "Revocation with a failed browser probe preserves identity until visibility revalidation receives 401",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "session-recovery.spec.ts",
+        "title": "Logout in another tab is reconciled by the next protected SPA request",
+        "status": "unexpected",
+        "results": [
+          {
+            "status": "failed",
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "environment": "Isolated scratch workspace; local PostgreSQL 16.15; no real .env",
+    "reasonForRerun": "Prior final suite evidence lost with /tmp reset"
+  },
+  "hosted": {
+    "status": "PASS",
+    "deployedCommit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+    "authGroups": 13,
+    "signalGroups": 3,
+    "evidence": [
+      "session-recovery-hosted.json",
+      "session-recovery-signals.json",
+      "session-recovery-exact-sequence.json"
+    ],
+    "sourceFixStatus": "NOT_APPLICABLE_NO_PRODUCTION_CHANGE"
+  },
+  "render": {
+    "service": "[redacted]",
+    "deployment": "dep-db8e5ig473hc739etsbg",
+    "status": "live",
+    "plan": "free",
+    "autoDeploy": "off",
+    "rechecked": "2026-10-16"
+  },
+  "earlierVerificationIssues": [
+    {
+      "kind": "TEST_SETUP",
+      "targetedBrowserFirstRun": "2 PASS / 1 FAIL; only me aborted, other protected refetch correctly received 401",
+      "correction": "Abort all revalidation requests during controlled network failure; restore network before browser 401 assertion; same assertions kept"
+    },
+    {
+      "kind": "SANDBOX",
+      "unitFirstRun": "Supertest loopback bind blocked; 16 failures",
+      "correction": "Authorized loopback-enabled run 101 PASS"
+    }
+  ],
+  "limitations": [
+    "No guarantee of revocation recognition within 45s without browser response/notification",
+    "Native window focus alone is not a promised request trigger; existing visibility revalidation verified with explicit synthetic event",
+    "Network failure root at transport layer not diagnosed",
+    "Hosted Exam/Quiz smoke uses completed fixtures; full mutation lifecycle remains local E2E or historical hosted evidence",
+    "No new hosted upload, load test, or cloud restart; prior historical results retain original scope"
+  ],
+  "historicalResultsPreserved": true,
+  "remainingBlocker": "session-recovery-full-suite-blocker.json",
+  "commitRecommendation": "NOT_READY: review isolated test execution to preserve auth rate limit and all assertions"
+}

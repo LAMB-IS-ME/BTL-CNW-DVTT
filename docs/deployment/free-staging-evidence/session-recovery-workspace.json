@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "head": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "branch": "deploy/examspace-free-staging",
+  "trackedModified": 4,
+  "trackedPaths": [
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "docs/deployment/FREE_STAGING_RUNBOOK.md",
+    "docs/deployment/free-staging-verification.json"
+  ],
+  "untrackedFiles": 180,
+  "staged": 0,
+  "productionChanges": [],
+  "sourceTestScope": [
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "tests/e2e/session-recovery.spec.ts"
+  ],
+  "historicalArtifacts": 85,
+  "historicalHashMismatches": [],
+  "scopedSecretScanFindings": [],
+  "scannedFiles": 16,
+  "commits": 0,
+  "pushes": 0,
+  "deployments": 0,
+  "resetDiscardClean": false,
+  "temporaryLogs": "/tmp only; raw traces/JSON not copied to repository",
+  "untrackedRegressionLines": 116
+}

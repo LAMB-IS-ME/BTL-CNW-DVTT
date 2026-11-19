@@ -1,0 +1,156 @@
+[WebServer] (node:19333) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:19355) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:19366) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:19410) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 3 tests using 1 worker
+
+(node:19462) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] node:internal/modules/cjs/loader:1433
+[WebServer]   throw err;
+[WebServer]   ^
+[WebServer] 
+[WebServer] Error: Cannot find module '/tmp/examspace-remediation/workspace/node_modules/tsx/dist/preflight.cjs'
+[WebServer] Require stack:
+[WebServer] - internal/preload
+[WebServer]     at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)
+[WebServer]     at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)
+[WebServer]     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)
+[WebServer]     at Function._load (node:internal/modules/cjs/loader:1216:25)
+[WebServer]     at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+[WebServer]     at Module.require (node:internal/modules/cjs/loader:1527:12)
+[WebServer]     at node:internal/modules/cjs/loader:2071:12
+[WebServer]     at loadPreloadModules (node:internal/process/pre_execution:756:5)
+[WebServer]     at setupUserModules (node:internal/process/pre_execution:231:5)
+[WebServer]     at prepareExecution (node:internal/process/pre_execution:159:5) {
+[WebServer]   code: 'MODULE_NOT_FOUND',
+[WebServer]   requireStack: [ 'internal/preload' ]
+[WebServer] }
+[WebServer] 
+[WebServer] Node.js v22.23.2
+  ✘  1 tests/e2e/admin.spec.ts:32:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery (1.0m)
+(node:19926) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry (10.9s)
+(node:20111) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/e2e/admin.spec.ts:201:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs (10.7s)
+
+
+  1) tests/e2e/admin.spec.ts:32:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 60000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Role', { exact: true })
+
+
+      40 |   await page.getByLabel("Email", { exact: true }).fill(email);
+      41 |   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
+    > 42 |   await page.getByLabel("Role", { exact: true }).selectOption("STUDENT");
+         |                                                  ^
+      43 |   await page
+      44 |     .getByRole("button", { name: "Tạo tài khoản", exact: true })
+      45 |     .click();
+        at /tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:42:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-Admin-creates-locks--7700a--and-pending-error-recovery/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Đăng xuất' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Đăng xuất' }) with timeout 10000ms
+      - waiting for getByRole('button', { name: 'Đăng xuất' })
+
+
+       6 |   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
+       7 |   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+    >  8 |   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
+         |                                                                 ^
+       9 | }
+      10 | async function mutate(
+      11 |   ctx: BrowserContext,
+        at login (/tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:8:65)
+        at /tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:160:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) tests/e2e/admin.spec.ts:201:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Đăng xuất' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Đăng xuất' }) with timeout 10000ms
+      - waiting for getByRole('button', { name: 'Đăng xuất' })
+
+
+       6 |   await page.getByLabel("Mật khẩu", { exact: true }).fill("DevOnly!2026");
+       7 |   await page.getByRole("button", { name: "Đăng nhập", exact: true }).click();
+    >  8 |   await expect(page.getByRole("button", { name: "Đăng xuất" })).toBeVisible();
+         |                                                                 ^
+       9 | }
+      10 | async function mutate(
+      11 |   ctx: BrowserContext,
+        at login (/tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:8:65)
+        at /tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:207:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/admin-Teacher-and-Student--f0598-ccounts-through-direct-APIs/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-Teacher-and-Student--f0598-ccounts-through-direct-APIs/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-Teacher-and-Student--f0598-ccounts-through-direct-APIs/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-Teacher-and-Student--f0598-ccounts-through-direct-APIs/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    tests/e2e/admin.spec.ts:32:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery 
+    tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry 
+    tests/e2e/admin.spec.ts:201:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs 

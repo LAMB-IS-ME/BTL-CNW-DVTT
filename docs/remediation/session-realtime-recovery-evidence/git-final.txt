@@ -1,0 +1,149 @@
+ M apps/api/src/modules/live-quiz/service.ts
+ M apps/api/src/server.ts
+ M apps/api/src/sockets/quiz.ts
+ M apps/api/test/auth.integration.test.ts
+ M apps/api/test/quiz.integration.test.ts
+ M apps/api/test/socket.integration.test.ts
+ M apps/web/src/App.tsx
+ M apps/web/src/features/attempts.tsx
+ M apps/web/src/features/auth.tsx
+ M apps/web/src/features/catalog-pagination.test.tsx
+ M apps/web/src/features/quiz.test.tsx
+ M apps/web/src/features/quiz.tsx
+ M apps/web/src/lib/api.test.ts
+ M apps/web/src/lib/api.ts
+ M apps/web/src/lib/socket.ts
+?? apps/web/src/features/session-lifecycle.test.tsx
+?? apps/web/src/lib/session.ts
+?? docs/remediation/SESSION_REALTIME_RECOVERY_REPORT.md
+?? docs/remediation/data-integrity-evidence/asset-before.txt
+?? docs/remediation/data-integrity-evidence/asset-resume.txt
+?? docs/remediation/data-integrity-evidence/browser-before.txt
+?? docs/remediation/data-integrity-evidence/browser-remaining.txt
+?? docs/remediation/data-integrity-evidence/build-final.txt
+?? docs/remediation/data-integrity-evidence/compatibility-final.txt
+?? docs/remediation/data-integrity-evidence/compatibility-harness-before.txt
+?? docs/remediation/data-integrity-evidence/git-final.json
+?? docs/remediation/data-integrity-evidence/integration-final.txt
+?? docs/remediation/data-integrity-evidence/lint-final.txt
+?? docs/remediation/data-integrity-evidence/lint-resume.txt
+?? docs/remediation/data-integrity-evidence/migrate-resume.txt
+?? docs/remediation/data-integrity-evidence/recovery-source-hashes.json
+?? docs/remediation/data-integrity-evidence/typecheck-final.txt
+?? docs/remediation/data-integrity-evidence/typecheck-resume.txt
+?? docs/remediation/data-integrity-evidence/unit-final.txt
+?? docs/remediation/evidence/before/admin-browser-before.txt
+?? docs/remediation/evidence/before/admin-browser-retry.txt
+?? docs/remediation/evidence/before/admin-browser-verified.txt
+?? docs/remediation/evidence/before/admin-stale-error-dom.md
+?? docs/remediation/evidence/before/admin-stale-error.txt
+?? docs/remediation/evidence/before/e2e-score.txt
+?? docs/remediation/evidence/before/e2e.txt
+?? docs/remediation/evidence/before/grading-dom.md
+?? docs/remediation/evidence/git-final.json
+?? docs/remediation/evidence/npm-audit-candidate.json
+?? docs/remediation/evidence/security-gate.txt
+?? docs/remediation/evidence/verification/admin-after.txt
+?? docs/remediation/evidence/verification/admin-final-db.txt
+?? docs/remediation/evidence/verification/build-final.txt
+?? docs/remediation/evidence/verification/db-generate.txt
+?? docs/remediation/evidence/verification/deployment-smoke.txt
+?? docs/remediation/evidence/verification/e2e-final.txt
+?? docs/remediation/evidence/verification/grading-live-compat.txt
+?? docs/remediation/evidence/verification/integration.txt
+?? docs/remediation/evidence/verification/lint-final.txt
+?? docs/remediation/evidence/verification/lint-workspace-final.txt
+?? docs/remediation/evidence/verification/math-before-consumers.txt
+?? docs/remediation/evidence/verification/math-final.txt
+?? docs/remediation/evidence/verification/migrate.txt
+?? docs/remediation/evidence/verification/npm-ci-final.txt
+?? docs/remediation/evidence/verification/npm-ci-workspace.txt
+?? docs/remediation/evidence/verification/seed.txt
+?? docs/remediation/evidence/verification/typecheck-final.txt
+?? docs/remediation/evidence/verification/typecheck-workspace-final.txt
+?? docs/remediation/evidence/verification/unit-complete.txt
+?? docs/remediation/evidence/verification/unit-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/after-browser.txt
+?? docs/remediation/session-realtime-recovery-evidence/baseline.json
+?? docs/remediation/session-realtime-recovery-evidence/before-browser.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-complete.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-expanded.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-latest.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/browser-verified.txt
+?? docs/remediation/session-realtime-recovery-evidence/build-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/build-complete.txt
+?? docs/remediation/session-realtime-recovery-evidence/build-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/build-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/build.txt
+?? docs/remediation/session-realtime-recovery-evidence/compat-db-setup.txt
+?? docs/remediation/session-realtime-recovery-evidence/e2e-compatibility.txt
+?? docs/remediation/session-realtime-recovery-evidence/e2e-verified.txt
+?? docs/remediation/session-realtime-recovery-evidence/format-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/geometry.json
+?? docs/remediation/session-realtime-recovery-evidence/git-final.json
+?? docs/remediation/session-realtime-recovery-evidence/git-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/integration-db-setup.txt
+?? docs/remediation/session-realtime-recovery-evidence/integration-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/integration-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/integration.txt
+?? docs/remediation/session-realtime-recovery-evidence/join-race-before.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint-complete.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint-verified.txt
+?? docs/remediation/session-realtime-recovery-evidence/lint.txt
+?? docs/remediation/session-realtime-recovery-evidence/live-browser-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/logout-verified.txt
+?? docs/remediation/session-realtime-recovery-evidence/module-compatibility-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/module-compatibility-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/quiz-after.json
+?? docs/remediation/session-realtime-recovery-evidence/quiz-before.json
+?? docs/remediation/session-realtime-recovery-evidence/recovery-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/resume-checkpoint.json
+?? docs/remediation/session-realtime-recovery-evidence/sanitization-check.json
+?? docs/remediation/session-realtime-recovery-evidence/session-before.json
+?? docs/remediation/session-realtime-recovery-evidence/shutdown.txt
+?? docs/remediation/session-realtime-recovery-evidence/startup-barrier.json
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-complete.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-second.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck-verified.txt
+?? docs/remediation/session-realtime-recovery-evidence/typecheck.txt
+?? docs/remediation/session-realtime-recovery-evidence/unit-accepted.txt
+?? docs/remediation/session-realtime-recovery-evidence/unit-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/unit-resume-final.txt
+?? docs/remediation/session-realtime-recovery-evidence/unit-second.txt
+?? docs/remediation/session-realtime-recovery-evidence/unit.txt
+?? docs/remediation/session-realtime-recovery-evidence/verified-source-hashes.json
+?? docs/remediation/session-realtime-recovery-verification.json
+?? docs/screenshots/session-realtime-recovery/expired-1024.png
+?? docs/screenshots/session-realtime-recovery/expired-1440.png
+?? docs/screenshots/session-realtime-recovery/expired-320.png
+?? docs/screenshots/session-realtime-recovery/expired-390.png
+?? docs/screenshots/session-realtime-recovery/expired-820.png
+?? playwright.recovery.config.ts
+?? tests/recovery/lifecycle.spec.ts
+
+ apps/api/src/modules/live-quiz/service.ts         |  10 +-
+ apps/api/src/server.ts                            |   6 +
+ apps/api/src/sockets/quiz.ts                      |  64 +++++++---
+ apps/api/test/auth.integration.test.ts            |  29 +++++
+ apps/api/test/quiz.integration.test.ts            | 127 ++++++++++++++++++-
+ apps/api/test/socket.integration.test.ts          |  29 +++++
+ apps/web/src/App.tsx                              |  11 +-
+ apps/web/src/features/attempts.tsx                |   6 +-
+ apps/web/src/features/auth.tsx                    |  98 ++++++++++++--
+ apps/web/src/features/catalog-pagination.test.tsx |   5 +-
+ apps/web/src/features/quiz.test.tsx               |  20 +++
+ apps/web/src/features/quiz.tsx                    |   1 +
+ apps/web/src/lib/api.test.ts                      | 148 ++++++++++++++++++++++
+ apps/web/src/lib/api.ts                           |  89 +++++++++++--
+ apps/web/src/lib/socket.ts                        |  10 +-
+ 15 files changed, 604 insertions(+), 49 deletions(-)
+
+Diff check: PASS

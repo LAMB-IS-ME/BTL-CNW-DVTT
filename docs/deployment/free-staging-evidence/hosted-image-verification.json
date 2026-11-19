@@ -1,0 +1,45 @@
+{
+  "scope": "FRESH_HOSTED_VALID_PNG",
+  "prefix": "STAGING-20261015021944",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "Valid PNG upload, student image decode, reload persistence and five widths",
+      "status": "PASS",
+      "width": 160,
+      "height": 80
+    }
+  ],
+  "fixtures": {
+    "question": "6683d4ae-c23b-43b2-894e-ee4ebec51a6c",
+    "asset": "07f04ba9-8948-4ac1-9b38-dbcde8235f1e",
+    "exam": "730bdfd0-e5bb-4e3b-8725-8324b4f36244"
+  },
+  "responsive": [
+    {
+      "page": "valid-image",
+      "width": 1440,
+      "overflow": 0
+    },
+    {
+      "page": "valid-image",
+      "width": 1024,
+      "overflow": 0
+    },
+    {
+      "page": "valid-image",
+      "width": 820,
+      "overflow": 0
+    },
+    {
+      "page": "valid-image",
+      "width": 390,
+      "overflow": 0
+    },
+    {
+      "page": "valid-image",
+      "width": 320,
+      "overflow": 0
+    }
+  ]
+}

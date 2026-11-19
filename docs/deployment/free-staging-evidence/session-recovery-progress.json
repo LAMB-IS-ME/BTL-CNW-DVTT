@@ -1,0 +1,23 @@
+{
+  "status": "HOSTED_PASS_FULL_SUITE_TEST_ISOLATION_BLOCKED",
+  "head": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "historicalArtifacts": 85,
+  "mismatches": 0,
+  "commitPushDeployAuthorized": false,
+  "productionSourceChanged": false,
+  "findings": [
+    "Old post-revocation 401 was external test client; browser receipt not established",
+    "Fresh hosted actual browser 401 clears auth query and protected UI",
+    "Detailed request-start/response timing investigation in progress"
+  ],
+  "evidence": [
+    "session-recovery-exact-sequence.json"
+  ],
+  "rootCause": "External client 401 confused with browser receipt; actual browser me probe failed net::ERR_CONNECTION_CLOSED; visibility revalidation then received real 401 and removed UI",
+  "frontendRegressionPassed": 20,
+  "resumeDate": "2026-10-16",
+  "summaryEvidence": "session-recovery-final.json",
+  "fullBrowserPassed": 22,
+  "fullBrowserFailed": 1,
+  "nextAction": "USER_REVIEW_TEST_ONLY_SCOPE_NO_REDEPLOY_NEEDED"
+}

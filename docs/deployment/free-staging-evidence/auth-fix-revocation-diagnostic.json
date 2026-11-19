@@ -1,0 +1,45 @@
+{
+  "scope": "FRESH_HOSTED_AUTH_FIX",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "origin": "https://examspace-staging.onrender.com",
+  "startedAt": "2026-10-15T14:34:09.202Z",
+  "status": "PASS",
+  "checks": [],
+  "pageErrors": [],
+  "failedAssets": [],
+  "fixturesReused": "STAGING-20261015021944",
+  "businessContentMutations": 0,
+  "sqlExecuted": false,
+  "limitations": [
+    "Controlled network-delay/abort injection is marked explicitly",
+    "Session expiry uses expired browser cookie and server logout revocation; no database TTL mutation",
+    "Exam/Quiz smoke reads completed fixtures; full lifecycle evidence from prior commit is reused separately"
+  ],
+  "diagnostic": {
+    "before": {
+      "visibility": "visible",
+      "focused": true
+    },
+    "revokedMeStatus": 401,
+    "events": [
+      {
+        "event": "browser-me",
+        "status": 401,
+        "at": 1792074850793
+      },
+      {
+        "event": "browser-me",
+        "status": 401,
+        "at": 1792074885112
+      }
+    ],
+    "pathname": "/student",
+    "headings": [
+      "Phiên đăng nhập đã kết thúc"
+    ],
+    "after": {
+      "visibility": "visible",
+      "focused": true
+    }
+  }
+}

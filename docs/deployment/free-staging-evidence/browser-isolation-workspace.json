@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "head": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "branch": "deploy/examspace-free-staging",
+  "trackedModified": 6,
+  "trackedPaths": [
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "docs/deployment/FREE_STAGING_DEPLOYMENT_REPORT.md",
+    "docs/deployment/FREE_STAGING_RUNBOOK.md",
+    "docs/deployment/free-staging-verification.json",
+    "package.json",
+    "playwright.config.ts"
+  ],
+  "untrackedFiles": 184,
+  "staged": 0,
+  "proposedCommitFiles": [
+    "package.json",
+    "playwright.config.ts",
+    "playwright.session-recovery.config.ts",
+    "apps/api/test/auth-rate-limit.integration.test.ts",
+    "apps/web/src/features/session-lifecycle.test.tsx",
+    "tests/e2e/session-recovery.spec.ts"
+  ],
+  "productionChanges": [],
+  "historicalArtifacts": 85,
+  "historicalHashMismatches": [],
+  "scopedSecretFindings": [],
+  "commits": 0,
+  "pushes": 0,
+  "deployments": 0,
+  "resetDiscardClean": false,
+  "temporaryLogs": "/tmp only",
+  "scope": "Includes preserved prior report/runbook changes; no modifications to those historical artifacts"
+}

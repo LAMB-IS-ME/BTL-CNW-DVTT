@@ -1,0 +1,27 @@
+
+> db:migrate
+> npm run db:migrate -w @exam/api
+
+
+> @exam/api@1.0.0 db:migrate
+> prisma migrate deploy
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+Datasource "db": PostgreSQL database "examspace_staging_test", schema "public" at "127.0.0.1:55459"
+
+2 migrations found in prisma/migrations
+
+Applying migration `20260930000000_initial`
+Applying migration `20260930010000_integrity`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260930000000_initial/
+    └─ migration.sql
+  └─ 20260930010000_integrity/
+    └─ migration.sql
+
+All migrations have been successfully applied.

@@ -1,0 +1,93 @@
+{
+  "status": "FULL_SUITE_TEST_ISOLATION_BLOCKER",
+  "fullSuite": {
+    "passed": 22,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "failedTest": "Logout in another tab is reconciled by the next protected SPA request",
+  "failedStep": "Final login(other), after cross-tab logout and browser 401 recovery assertions had passed",
+  "cause": "Final auth/login returns 429 RATE_LIMITED; shared process/IP rate budget exhausted",
+  "configuredPolicy": {
+    "limit": 30,
+    "windowMs": 900000,
+    "source": "apps/api/src/modules/auth/routes.ts:16"
+  },
+  "productionRegression": false,
+  "requestEvidence": [
+    {
+      "origin": "browser-tab",
+      "path": "/auth/me",
+      "method": "GET",
+      "status": 401,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/csrf",
+      "method": "GET",
+      "status": 200,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/login",
+      "method": "POST",
+      "status": 200,
+      "rateLimitHeaders": {
+        "RateLimit": "\"30-in-15min\"; r=0; t=767",
+        "RateLimit-Policy": "\"30-in-15min\"; q=30; w=900"
+      }
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/me",
+      "method": "GET",
+      "status": 200,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/logout",
+      "method": "POST",
+      "status": 204,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/me",
+      "method": "GET",
+      "status": 401,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/me",
+      "method": "GET",
+      "status": 401,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/csrf",
+      "method": "GET",
+      "status": 200,
+      "rateLimitHeaders": {}
+    },
+    {
+      "origin": "browser-tab",
+      "path": "/auth/login",
+      "method": "POST",
+      "status": 429,
+      "rateLimitHeaders": {
+        "RateLimit": "\"30-in-15min\"; r=0; t=766",
+        "RateLimit-Policy": "\"30-in-15min\"; q=30; w=900",
+        "Retry-After": "766"
+      }
+    }
+  ],
+  "changesMadeToPolicyOrAssertions": false,
+  "nextReview": "Approve test-run isolation strategy before adding these tests to the aggregate CI command; no production change or redeploy needed",
+  "rawTrace": "Temporary scratch only; not copied into repository"
+}

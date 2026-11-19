@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "scope": [
+    "tests/e2e/data-integrity.spec.ts"
+  ],
+  "productionSourceChanged": false,
+  "database": "ISOLATED_LOOPBACK_POSTGRES_16_15_UTF8_exam_pagination_test",
+  "workspace": "SCRATCH_TMP_NO_ENV_FILES",
+  "targetedFailingCase": "PASS_1_OF_1",
+  "targetedCatalogRequests": {
+    "catalogRequests": 16,
+    "paths": [
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "/api/v1/teacher/classes?view=manage&page=2&pageSize=20&search=&status=active",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=class%2022&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=2&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=3&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=4&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=5&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=6&pageSize=20&search=&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20101&status=active",
+      "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20001&status=active",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active"
+    ]
+  },
+  "relevantManagementCase": "PASS_1_OF_1_AFTER_DEPENDENCY_PATH_CORRECTION",
+  "lint": "PASS",
+  "testTypecheck": "PASS",
+  "assertionsPreserved": true,
+  "nonemptyAssertionAdded": true,
+  "retriesAdded": false,
+  "earlierRuns": [
+    {
+      "scope": "full E2E with external dependency symlinks",
+      "passed": 19,
+      "failed": 1,
+      "failure": "Management navigation/pagination timing; browser remained on Classes while asserting Exam link",
+      "environmentWarnings": "KaTeX fonts outside Vite allowlist"
+    },
+    {
+      "scope": "management with symlink renamed node_modules-local",
+      "failed": 1,
+      "failure": "Vite CommonJS export resolution prevented login from loading",
+      "kind": "SCRATCH_ENVIRONMENT_SETUP"
+    },
+    {
+      "scope": "full E2E with corrected local dependencies",
+      "passed": 19,
+      "failed": 1,
+      "failure": "Management test clicked shared pagination before Exam view mounted",
+      "classification": "TEST_SYNCHRONIZATION",
+      "minimalFix": "Wait for visible Tìm bài thi before Trang sau, same approved E2E file"
+    },
+    {
+      "scope": "accidental old scratch source run",
+      "status": "INTERRUPTED_NOT_VALIDATION",
+      "passedBeforeInterrupt": 4,
+      "reason": "Relative copy path did not update candidate; stopped and corrected absolute copy"
+    }
+  ],
+  "additionalNavigationAssertion": "Wait for Exam view before shared pagination selector",
+  "fullSuite": {
+    "passed": 20,
+    "failed": 0,
+    "source": "Recovered final full unfiltered Playwright invocation completion from .last-run.json; suite discovery 20 tests",
+    "lastRun": {
+      "status": "passed",
+      "failedTests": []
+    }
+  },
+  "candidateSha256": "97e5095bbdd0049b4210f8bcb9b35dde7d76df1f2db153ed8bbf01fdbbdeed8b",
+  "historicalArtifacts": {
+    "total": 85,
+    "mismatches": 0
+  },
+  "secretScanFindings": 0
+}

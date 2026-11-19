@@ -1,0 +1,76 @@
+{
+  "scope": "FRESH_HOSTED_AUTH_FIX",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "origin": "https://examspace-staging.onrender.com",
+  "startedAt": "2026-10-15T14:29:53.289Z",
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "ADMIN: immediate login, one mutation, verified identity, reload and Secure/HttpOnly/Lax cookie",
+      "status": "PASS"
+    },
+    {
+      "name": "TEACHER: immediate login, one mutation, verified identity, reload and Secure/HttpOnly/Lax cookie",
+      "status": "PASS"
+    },
+    {
+      "name": "STUDENT: immediate login, one mutation, verified identity, reload and Secure/HttpOnly/Lax cookie",
+      "status": "PASS"
+    },
+    {
+      "name": "Pending initial check blocks early form input; real delayed 401 releases login without stale state",
+      "status": "PASS",
+      "controlledResponseDelayMs": 3000
+    },
+    {
+      "name": "Initial network failure does not trap login in loading",
+      "status": "PASS",
+      "controlledInitialRequestAbort": true
+    },
+    {
+      "name": "Invalid session cookie rejected; login after completed initial check succeeds",
+      "status": "PASS"
+    },
+    {
+      "name": "Valid initial session permits login; delayed old Teacher response cannot overwrite new Student identity",
+      "status": "PASS",
+      "controlledOldResponseDelay": true
+    },
+    {
+      "name": "CSRF/RBAC preserved; anonymous and wrong-origin WSS rejected; authenticated WSS connects",
+      "status": "PASS"
+    },
+    {
+      "name": "Existing graded Exam/results/monitor and finished Live Quiz reconstruct and reconnect over WSS",
+      "status": "PASS",
+      "businessContentMutations": 0,
+      "fullLifecycle": "PRIOR_COMMIT_EVIDENCE_NOT_RERUN"
+    },
+    {
+      "name": "Existing protected Storage download and PDF/Excel export smoke",
+      "status": "PASS",
+      "readOnlyContent": true
+    },
+    {
+      "name": "UI logout revokes HTTP/WSS; same-page re-login restores correct identity",
+      "status": "PASS"
+    },
+    {
+      "name": "Expired browser session cookie causes expiry UI and permits re-login",
+      "status": "PASS",
+      "expiryMethod": "BROWSER_COOKIE_EXPIRED_NO_DATABASE_MUTATION"
+    }
+  ],
+  "pageErrors": [],
+  "failedAssets": [],
+  "fixturesReused": "STAGING-20261015021944",
+  "businessContentMutations": 0,
+  "sqlExecuted": false,
+  "limitations": [
+    "Controlled network-delay/abort injection is marked explicitly",
+    "Session expiry uses expired browser cookie and server logout revocation; no database TTL mutation",
+    "Exam/Quiz smoke reads completed fixtures; full lifecycle evidence from prior commit is reused separately"
+  ],
+  "failedPhase": "server-revocation",
+  "failure": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })\nExpected: visible\nTimeout: 45000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' }) with timeout 45000ms\n  - waiting for getByRole('heading', { name: 'Phiên đăng nhập đã kết thúc' })\n"
+}

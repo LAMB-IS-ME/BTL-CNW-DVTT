@@ -1,0 +1,17 @@
+{
+  "runId": 38750653237,
+  "headSha": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/LAMB-IS-ME/BTL-CNW-DVTT/actions/runs/38750653237",
+  "unitPassed": 98,
+  "integrationPassed": 62,
+  "e2ePassed": 20,
+  "e2eFailed": 0,
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "build": "PASS",
+  "deploymentSmoke": "PASS",
+  "auditVulnerabilities": 0,
+  "database": "CI_LOOPBACK_POSTGRES_17"
+}

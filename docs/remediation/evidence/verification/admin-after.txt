@@ -1,0 +1,9 @@
+
+ RUN  v5.0.2 /tmp/examspace-remediation/workspace
+
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  19:18:07
+   Duration  2.66s (tests 71%, import 19%, transform 10%)
+

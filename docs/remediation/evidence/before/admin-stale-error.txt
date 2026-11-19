@@ -1,0 +1,69 @@
+[WebServer] (node:21522) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:21543) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:21554) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:21580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 3 tests using 1 worker
+
+(node:21651) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/3] tests/e2e/admin.spec.ts:32:1 › Admin creates, locks/unlocks and changes role with persisted state and pending/error recovery
+[2/3] tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry
+  1) tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('alert')
+    Expected: 0
+    Received: 1
+    Timeout:  10000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('alert') with timeout 10000ms
+      - waiting for getByRole('alert')
+        24 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      197 |   await response;
+      198 |   await expect(row.getByRole("combobox")).toHaveValue("TEACHER");
+    > 199 |   await expect(page.getByRole("alert")).toHaveCount(0);
+          |                                         ^
+      200 | });
+      201 | test("Teacher and Student cannot enter Admin or mutate accounts through direct APIs", async ({
+      202 |   browser,
+        at /tmp/examspace-remediation/workspace/tests/e2e/admin.spec.ts:199:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/admin-Admin-role-dependenc-78bc4-ears-after-successful-retry/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:21983) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/3] tests/e2e/admin.spec.ts:201:1 › Teacher and Student cannot enter Admin or mutate accounts through direct APIs
+  1 failed
+    tests/e2e/admin.spec.ts:156:1 › Admin role dependency error keeps the original role and clears after successful retry 
+  2 passed (22.8s)

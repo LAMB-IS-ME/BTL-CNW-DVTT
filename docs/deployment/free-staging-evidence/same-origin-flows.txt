@@ -1,0 +1,87 @@
+
+Running 3 tests using 1 worker
+
+(node:9686) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/core.spec.ts:53:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result (14.0s)
+(node:9841) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/e2e/core.spec.ts:159:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard (12.0s)
+(node:9977) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 tests/e2e/core.spec.ts:228:1 › mobile login and server-backed role guard (489ms)
+
+
+  1) tests/e2e/core.spec.ts:53:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Đang thi', { exact: true })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Đang thi', { exact: true }) with timeout 10000ms
+      - waiting for getByText('Đang thi', { exact: true })
+
+
+      110 |   await sp.reload();
+      111 |   await expect(sp.getByRole("radio", { name: "8", exact: true })).toBeChecked();
+    > 112 |   await expect(tp.getByText("Đang thi", { exact: true })).toBeVisible();
+          |                                                           ^
+      113 |   await sp.getByRole("button", { name: "Câu tiếp", exact: true }).click();
+      114 |   await sp
+      115 |     .getByLabel("Bài làm tự luận")
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/e2e/core.spec.ts:112:59
+
+    Error Context: ../../../../tmp/examspace-free-staging/browser-results/core-Exam-login-start-auto-f72a4-say-grading-released-result/error-context.md
+
+  2) tests/e2e/core.spec.ts:159:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: '1 người tham gia' })
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: '1 người tham gia' }) with timeout 10000ms
+      - waiting for getByRole('heading', { name: '1 người tham gia' })
+
+
+      192 |   await expect(
+      193 |     tp.getByRole("heading", { name: "1 người tham gia" }),
+    > 194 |   ).toBeVisible();
+          |     ^
+      195 |   await tp.getByRole("button", { name: "Bắt đầu Quiz" }).click();
+      196 |   await expect(sp.getByRole("radio", { name: "8", exact: true })).toBeVisible();
+      197 |   await sp.getByRole("radio", { name: "8", exact: true }).check();
+        at /home/lamb/Project/BTL-CNW-DVTT/tests/e2e/core.spec.ts:194:5
+
+    Error Context: ../../../../tmp/examspace-free-staging/browser-results/core-Live-Quiz-authenticat-ca33e-eveal-and-final-leaderboard/error-context.md
+
+  2 failed
+    tests/e2e/core.spec.ts:53:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result 
+    tests/e2e/core.spec.ts:159:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard 
+  1 passed (27.9s)
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Same-origin production Exam/Quiz browser flows
+
+1 !== 0
+
+    at file:///home/lamb/Project/BTL-CNW-DVTT/tests/deployment/production-readiness.mjs:377:12
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.2

@@ -1,0 +1,26 @@
+
+Running 3 tests using 1 worker
+
+(node:10728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/core.spec.ts:53:1 › Exam: login, start, autosave, refresh, realtime monitor, submit, essay grading, released result (6.7s)
+  ✓  2 tests/e2e/core.spec.ts:159:1 › Live Quiz: authenticated join, realtime lobby, start, answer, reveal and final leaderboard (3.2s)
+  ✓  3 tests/e2e/core.spec.ts:228:1 › mobile login and server-backed role guard (386ms)
+
+  3 passed (10.7s)
+{
+  "status": "PASS",
+  "scope": "LOCAL_SINGLE_ORIGIN_TLS_ONLY",
+  "checks": [
+    "NODE_ENV=production bundle startup and health",
+    "HTTPS same-origin browser login, production assets, HTTP200 SPA deep-link and refresh",
+    "Secure HttpOnly SameSite=Lax host-only session cookie",
+    "Credentialed exact CORS; wrong origin, absent origin and absent CSRF rejected",
+    "Authenticated WSS monitor ACK; anonymous and untrusted-origin WSS rejected",
+    "Graceful SIGTERM exit 0; database session survives restart with same secret",
+    "Session survives unexpected process death and restart",
+    "CSRF-valid logout revokes HTTP session and disconnects WSS",
+    "Production HTTPS Teacher/Student Exam, autosave, grading, results and Live Quiz browser flows with WSS"
+  ],
+  "hostedStagingVerified": false
+}

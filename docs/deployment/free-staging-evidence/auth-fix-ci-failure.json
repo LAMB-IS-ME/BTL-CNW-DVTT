@@ -1,0 +1,121 @@
+{
+  "ciRunId": 38672813047,
+  "commit": "11e897fe6116002b0068612ed45634071d6f792a",
+  "e2e": {
+    "passed": 19,
+    "failed": 1
+  },
+  "failure": "tests/e2e/data-integrity.spec.ts:173: all catalog requests expected pageSize=20",
+  "observedCatalogRequests": [
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&status=active&sort=updated&pageSize=3",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=2&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=class%2022&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=2&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=3&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=4&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=5&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=6&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20101&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&page=1&pageSize=20&search=bank%20001&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/teacher/classes?view=manage&page=1&pageSize=20&search=&status=active",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "non20Requests": [
+    {
+      "path": "/api/v1/teacher/question-banks?view=manage&status=active&sort=updated&pageSize=3",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "sourceFinding": "Request observer starts before login and records TeacherDashboard intentional recent-bank request pageSize=3, not only classes/builder pagination",
+  "applicationFilesChangedByAuthCommit": [
+    "apps/web/src/App.tsx",
+    "apps/web/src/features/auth.tsx"
+  ],
+  "deploymentTriggered": false,
+  "rawTraceSavedInRepository": false,
+  "proposedFix": {
+    "path": "auth-fix-ci-test-scope.patch",
+    "files": [
+      "tests/e2e/data-integrity.spec.ts"
+    ],
+    "applied": false,
+    "sourceFileSha256": "05fa18a261b9e7dba98c5b8fe6d693f6dc6196f586c05fbb0c0b96de37d3bfe1",
+    "change": "Start request observer after login/dashboard document is closed via about:blank; keep all pagination assertions unchanged",
+    "validation": "Patch applicability plus CI trace: 16 Classes/Builder requests all pageSize=20; browser candidate not run",
+    "approvalRequired": "One additional test-only commit/push, CI and deployment of resulting commit containing the auth fix"
+  }
+}

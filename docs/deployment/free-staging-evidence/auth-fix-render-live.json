@@ -1,0 +1,22 @@
+{
+  "serviceId": "[redacted]",
+  "deployId": "dep-db8e5ig473hc739etsbg",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "status": "live",
+  "finishedAt": "2026-10-15T14:29:00.374506Z",
+  "plan": "free",
+  "autoDeploy": "off",
+  "triggerCount": 1,
+  "startup": {
+    "event": "server_started",
+    "port": 10000
+  },
+  "platformHealthCheck": "DEFAULT_TCP",
+  "httpHealthCheck": "PASS_200_STATUS_OK_IN_HOSTED_HARNESS",
+  "runtimeErrorWarnLogs": {
+    "count": 0,
+    "from": "2026-10-15T14:27:22Z",
+    "through": "2026-10-15T14:38:00.741408055Z"
+  },
+  "supabaseStatus": "ACTIVE_HEALTHY"
+}

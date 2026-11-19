@@ -1,0 +1,34 @@
+[WebServer] (node:11971) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:11993) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12028) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 19 tests using 1 worker
+
+(node:12079) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/ui/grading-results-rollout.spec.ts:8:1 › dirty route navigation requires confirmation and cancel keeps the draft (4.3s)
+  ✓   2 tests/ui/grading-results-rollout.spec.ts:31:1 › saving grading invalidates an already visited Results Register (4.4s)
+  ✓   3 tests/ui/grading-results-rollout.spec.ts:57:3 › all 1 grading submissions are reachable without losing drafts (2.4s)
+  ✓   4 tests/ui/grading-results-rollout.spec.ts:57:3 › all 20 grading submissions are reachable without losing drafts (3.2s)
+  ✓   5 tests/ui/grading-results-rollout.spec.ts:57:3 › all 21 grading submissions are reachable without losing drafts (3.8s)
+  ✓   6 tests/ui/grading-results-rollout.spec.ts:57:3 › all 30 grading submissions are reachable without losing drafts (4.1s)
+  ✓   7 tests/ui/grading-results-rollout.spec.ts:57:3 › all 100 grading submissions are reachable without losing drafts (7.5s)
+  ✓   8 tests/ui/grading-results-rollout.spec.ts:57:3 › all 105 grading submissions are reachable without losing drafts (8.0s)
+  ✓   9 tests/ui/grading-results-rollout.spec.ts:123:1 › reload, close, Back and Forward cancel preserve drafts; confirmed leave never autosaves (3.6s)
+  ✓  10 tests/ui/grading-results-rollout.spec.ts:182:1 › pending save, independent students, failure and retry preserve exact drafts (7.4s)
+  ✓  11 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 0 isolated records and preserves return page (2.1s)
+  ✓  12 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 1 isolated records and preserves return page (2.3s)
+  ✓  13 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 20 isolated records and preserves return page (2.6s)
+  ✓  14 tests/ui/grading-results-rollout.spec.ts:261:3 › student history has 25 isolated records and preserves return page (3.0s)
+  ✓  15 tests/ui/grading-results-rollout.spec.ts:306:1 › two essays remain partial until both saved; retry recovers each results region (3.3s)
+  ✓  16 tests/ui/grading-results-rollout.spec.ts:380:1 › a completed save finishes a blocked navigation when no other draft remains (6.3s)
+  ✓  17 tests/ui/live-quiz.spec.ts:20:3 › 1440: real three-context lifecycle, recovery, deadline and results (28.5s)
+  ✓  18 tests/ui/live-quiz.spec.ts:286:1 › rejected join is not presented as room membership (10.1s)
+  ✓  19 tests/ui/live-quiz.spec.ts:364:1 › keyboard, timer, touch targets, contrast and reduced motion at five widths (3.5s)
+
+  19 passed (1.9m)

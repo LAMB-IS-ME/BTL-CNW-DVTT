@@ -1,0 +1,32 @@
+
+ RUN  v5.0.2 /home/lamb/Project/BTL-CNW-DVTT
+
+ ❯ apps/web/src/components/Markdown.test.tsx (6 tests | 2 failed) 119ms
+   × rehype-katex resolves a renderer that rejects inherited trust before HTML sanitization 23ms
+   × micromark-extension-math resolves a renderer that rejects inherited trust before HTML sanitization 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/web/src/components/Markdown.test.tsx > rehype-katex resolves a renderer that rejects inherited trust before HTML sanitization
+ FAIL  apps/web/src/components/Markdown.test.tsx > micromark-extension-math resolves a renderer that rejects inherited trust before HTML sanitization
+AssertionError: expected '<span class="katex"><span class="kate…' not to contain '<img'
+
+Expected: "<img"
+Received: "<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mglyph alt="probe" height="0.9em" src="https://example.invalid/probe.png"></mglyph></mrow><annotation encoding="application/x-tex">\includegraphics{https://example.invalid/probe.png}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9em;"></span><img src="https://example.invalid/probe.png" alt="probe" style="height:0.9em;"'/></span></span></span>"
+
+ ❯ apps/web/src/components/Markdown.test.tsx:41:22
+     39|       Object.assign(Object.create({ trust: true }), { strict: "ignore"…
+     40|     );
+     41|     expect(html).not.toContain("<img");
+       |                      ^
+     42|   },
+     43| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  19:24:23
+   Duration  439ms (import 50%, tests 33%, transform 16%, worker 1%)
+

@@ -1,0 +1,48 @@
+{
+  "scope": "HOSTED_NETWORK_AND_MULTI_TAB_SESSION_SIGNALS",
+  "commit": "bf3c1f5e4133d00d6e463516b5af571d86e3852d",
+  "origin": "https://examspace-staging.onrender.com",
+  "startedAt": "2026-10-15T15:23:20.444Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "External 401 plus controlled browser network failure does not falsely log out",
+      "status": "PASS",
+      "controlledAbort": true,
+      "external401IsNotBrowser401": true
+    },
+    {
+      "name": "Existing visibility revalidation receives real browser 401 and removes protected UI",
+      "status": "PASS",
+      "controlledVisibilityEvent": true,
+      "newPolling": false
+    },
+    {
+      "name": "Logout in sibling tab disconnects existing Quiz WSS, confirms browser 401, clears UI and permits login",
+      "status": "PASS"
+    }
+  ],
+  "pageErrors": [],
+  "failedAssets": [],
+  "fixturesReused": "STAGING-20261015021944",
+  "businessContentMutations": 0,
+  "sqlExecuted": false,
+  "limitations": [
+    "Controlled network-delay/abort injection is marked explicitly",
+    "Session expiry uses expired browser cookie and server logout revocation; no database TTL mutation",
+    "Exam/Quiz smoke reads completed fixtures; full lifecycle evidence from prior commit is reused separately"
+  ],
+  "events": [
+    {
+      "source": "external-client",
+      "path": "/auth/me",
+      "status": 401
+    },
+    {
+      "source": "browser-tab",
+      "path": "/auth/me",
+      "event": "network-failure",
+      "reason": "net::ERR_CONNECTION_CLOSED"
+    }
+  ]
+}

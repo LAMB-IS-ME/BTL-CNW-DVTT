@@ -1,0 +1,13 @@
+
+> test
+> vitest run
+
+
+ RUN  v5.0.2 /tmp/examspace-remediation/workspace
+
+
+ Test Files  17 passed (17)
+      Tests  58 passed (58)
+   Start at  23:36:05
+   Duration  2.17s (import 32%, environment 30%, tests 21%, transform 16%, worker 1%)
+

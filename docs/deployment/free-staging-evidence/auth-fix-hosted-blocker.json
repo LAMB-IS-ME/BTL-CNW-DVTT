@@ -1,0 +1,26 @@
+{
+  "status": "BLOCKED_HOSTED_SESSION_REVOCATION",
+  "sequence": [
+    "Login Student",
+    "Expire browser session cookie",
+    "Observe expiry UI",
+    "Re-login Student",
+    "Revoke session with valid CSRF via API logout",
+    "Server /auth/me returns 401",
+    "Visible/focused browser still shows Student dashboard after 45 seconds"
+  ],
+  "reproduced": true,
+  "standaloneRevocation": "PASS",
+  "combinedSequence": "FAIL",
+  "browserSessionPollAfterSecondLogin": "No subsequent /auth/me response observed within assertion window",
+  "rootCause": "NOT_CONFIRMED; investigate session query/poll lifecycle after expiry and re-login",
+  "introducedByAuthFix": "NOT_ESTABLISHED",
+  "productionSourceChanged": false,
+  "furtherCommits": 0,
+  "furtherDeploys": 0,
+  "evidence": [
+    "auth-fix-hosted-first-run.json",
+    "auth-fix-revocation-diagnostic.json",
+    "auth-fix-revocation-sequence.json"
+  ]
+}

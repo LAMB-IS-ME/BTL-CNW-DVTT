@@ -8,7 +8,7 @@ ExamSpace deploy thành **một Render Web Service** (`render.yaml`):
 - Khi start, Express phục vụ SPA (`SERVE_WEB=true`), REST `/api/v1` và Socket.IO trên cùng một origin và cùng một port.
 - PostgreSQL (dữ liệu và session) và Storage (ảnh câu hỏi) dùng Supabase.
 
-**Staging hiện tại:** https://examspace-staging-rc.onrender.com
+**Staging hiện tại:** https://examspace-staging-rc.onrender.com: service `examspace-staging-rc`, tạo từ **Public Git Repository** `LAMB-IS-ME/BTL-CNW-DVTT`, branch `main`, auto-deploy tắt, deploy bằng **Manual Deploy** trên dashboard. Commit đang chạy: `8afb7b2`; `/api/health` trả ok (20/11/2026).
 
 Các bước thao tác deploy nằm trong [runbook](deployment/FREE_STAGING_RUNBOOK.md); bảng biến môi trường chi tiết nằm trong [environment matrix](deployment/ENVIRONMENT_MATRIX.md). GitHub Pages chỉ là [phương án phụ](#phương-án-phụ-github-pages--api-tách-origin).
 
@@ -58,7 +58,7 @@ Thiếu cấu hình Supabase Storage thì các luồng không có ảnh vẫn ch
 | NODE_EXTRA_CA_CERTS | Trên Render: `/opt/render/project/src/apps/api/assets/certs/supabase-prod-ca-2021.crt` |
 | ALLOW_PRODUCTION_SEED | `false`. Chỉ bật tạm khi cố ý seed môi trường demo |
 | DEMO_PASSWORD | Tùy chọn: mật khẩu cho tài khoản **mới** khi seed. Để trống thì dùng `DevOnly!2026` (chỉ cho development) |
-| NODE_VERSION | Blueprint ghim `22.23.2` |
+| NODE_VERSION | `22.23.2` (đặt trên service và trong `render.yaml`) |
 | TEST_DATABASE_URL | Chỉ dùng khi chạy test: DB riêng có chữ `test` trong tên |
 
 ### Frontend (biến public, đóng vào bundle lúc build)
@@ -103,7 +103,7 @@ npm run db:seed
 
 ## Render: SPA + API cùng origin
 
-Tạo service bằng **New → Blueprint** từ `render.yaml`, hoặc nhập thủ công với root directory để trống (root monorepo):
+Service staging `examspace-staging-rc` được tạo bằng **New → Web Service → Public Git Repository** (`https://github.com/LAMB-IS-ME/BTL-CNW-DVTT`), branch `main`, root directory để trống (root monorepo). `render.yaml` ghi lại đúng cấu hình đó để tham khảo; service **không** đồng bộ từ Blueprint, nên khi đổi cấu hình phải sửa cả hai nơi.
 
 ```text
 Build:        npm ci --include=dev && npm run db:generate && npm run build
@@ -111,10 +111,10 @@ Start:        CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
 Health check: /api/health
 ```
 
-- Blueprint đặt sẵn `NODE_ENV=production`, `SERVE_WEB=true`, `COOKIE_SECURE=true`, `COOKIE_SAME_SITE=lax`, `TRUST_PROXY=1`, `VITE_API_BASE_URL=/api/v1`, `VITE_SOCKET_URL=""`, `VITE_BASE_PATH=/`, `NODE_EXTRA_CA_CERTS`, và tự sinh `SESSION_SECRET` cho service mới.
+- Biến đã đặt trên service (giống `render.yaml`): `NODE_ENV=production`, `SERVE_WEB=true`, `COOKIE_SECURE=true`, `COOKIE_SAME_SITE=lax`, `TRUST_PROXY=1`, `VITE_API_BASE_URL=/api/v1`, `VITE_SOCKET_URL=""`, `VITE_BASE_PATH=/`, `NODE_EXTRA_CA_CERTS`, `SESSION_SECRET` (giữ nguyên, không tạo lại).
 - **Chỉ cần nhập:** `DATABASE_URL`, `DIRECT_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
 - Lệnh start **không** migrate hay seed; chạy migrate riêng sau khi đã review. Giữ dev dependencies trong bước build, vì Prisma CLI và Vite cần chúng. Giữ `apps/api/assets/fonts` để xuất PDF.
-- Auto-deploy đang tắt và Blueprint trỏ tới branch `deploy/examspace-free-staging`. Trước mỗi lần deploy, cập nhật branch đó hoặc chọn đúng commit trên dashboard.
+- Auto-deploy tắt. Merge vào `main` xong, vào dashboard và bấm **Manual Deploy → Deploy latest commit**; nếu cần, chọn một commit cụ thể.
 - Gói free ngủ sau 15 phút không có truy cập: jobs và realtime dừng cho tới khi có request mới. Kỳ thi thật cần instance chạy liên tục. Xem [Render free](https://render.com/docs/free) và [Blueprint spec](https://render.com/docs/blueprint-spec).
 
 **Cookie khi cùng origin:** session cookie là host-only, `HttpOnly`, `Secure`, `SameSite=lax`. Socket.IO dùng chung origin nên trình duyệt tự nâng lên WSS. Không dùng `Access-Control-Allow-Origin: *`.

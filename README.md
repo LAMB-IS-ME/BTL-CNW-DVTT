@@ -29,7 +29,7 @@ packages/shared/   Schemas, DTOs, enums, typed socket events
 tests/             Playwright E2E, UI suites, deployment smoke và probes
 docs/              SRS, SDD, deployment, audits, design system, archive
 .github/workflows/ CI (ci.yml) và Pages thủ công (pages.yml)
-render.yaml        Render Blueprint: một Web Service phục vụ SPA + API
+render.yaml        Cấu hình Render, khớp service examspace-staging-rc
 ```
 
 ## Chạy local
@@ -107,10 +107,11 @@ Chụp bằng Playwright với API và PostgreSQL thật.
 ## Deployment
 
 - **Kiến trúc:** một Render Web Service (`render.yaml`) build cả API và web, rồi Express phục vụ SPA, REST và WebSocket trên cùng origin. Cookie `Secure`, `SameSite=lax`. PostgreSQL và Storage dùng Supabase.
-- **Staging hiện tại:** https://examspace-staging-rc.onrender.com.
+- **Staging hiện tại:** https://examspace-staging-rc.onrender.com: service `examspace-staging-rc`, tạo từ **Public Git Repository** `LAMB-IS-ME/BTL-CNW-DVTT`, branch `main`, auto-deploy tắt, deploy bằng **Manual Deploy** trên dashboard. Commit đang chạy: `8afb7b2` (merge PR #1); `/api/health` trả ok (20/11/2026).
 - **Hướng dẫn:** [runbook deploy](docs/deployment/FREE_STAGING_RUNBOOK.md) là tài liệu thao tác chính; [DEPLOYMENT](docs/DEPLOYMENT.md) có hướng dẫn đầy đủ và troubleshooting; [environment matrix](docs/deployment/ENVIRONMENT_MATRIX.md) là bảng biến môi trường.
 - **Lưu ý:**
-  - Blueprint đang để auto-deploy tắt; mỗi lần deploy phải chọn đúng branch/commit trên dashboard.
+  - Auto-deploy tắt: push lên `main` không tự deploy; vào dashboard và bấm **Manual Deploy → Deploy latest commit**.
+  - Service được cấu hình trên dashboard, không đồng bộ từ Blueprint. Khi sửa `render.yaml`, phải sửa tay trên dashboard cho khớp.
   - Lệnh start không chạy migrate hay seed.
   - Gói free sẽ ngủ sau 15 phút không có truy cập, nên không dùng cho kỳ thi thật.
 

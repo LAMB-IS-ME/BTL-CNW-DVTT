@@ -6,16 +6,18 @@ Hướng dẫn thao tác để deploy ExamSpace lên Render (gói free) + Supaba
 | --- | --- |
 | URL staging | https://examspace-staging-rc.onrender.com |
 | Kiến trúc | Một Render Web Service phục vụ SPA + REST + Socket.IO cùng origin |
-| Region / plan | Singapore / Free, auto-deploy **tắt** |
-| Branch Blueprint | `deploy/examspace-free-staging` |
-| Source mới nhất | `ui/final-refinement-recovery`, commit source cuối `7f38176` |
+| Service | `examspace-staging-rc` |
+| Nguồn | Public Git Repository `https://github.com/LAMB-IS-ME/BTL-CNW-DVTT`, branch `main` |
+| Region / plan | Singapore / Free |
+| Deploy | Auto-deploy **tắt**; deploy bằng **Manual Deploy** trên dashboard |
+| Commit đang chạy | `8afb7b2` (merge PR #1); `/api/health` trả ok ngày 20/11/2026 |
 | DB / Storage | Supabase PostgreSQL (session pooler) + bucket private `question-assets` |
 
 Luôn lấy URL thật của service từ dashboard Render.
 
 ## 1. Build và start
 
-Các lệnh khớp với `render.yaml`, chạy ở root monorepo:
+Các lệnh khớp với `render.yaml` và cấu hình trên dashboard, chạy ở root monorepo:
 
 ```sh
 npm ci --include=dev
@@ -25,7 +27,7 @@ npm run build
 CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
 ```
 
-- Node ≥22.12; Blueprint ghim `22.23.2`.
+- Node ≥22.12; service và `render.yaml` ghim `22.23.2`.
 - API chạy từ `apps/api/dist/server.js`; SPA nằm ở `apps/web/dist`, được Express phục vụ khi `SERVE_WEB=true`.
 - HTTP và WSS dùng chung port do Render cấp.
 - `/api/health` chỉ cho biết process còn sống, không kiểm tra DB.
@@ -38,7 +40,7 @@ CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api
 | NODE_ENV / SERVE_WEB | `production` / `true` |
 | DATABASE_URL | Secret. Session pooler của Supabase; giữ xác minh TLS |
 | DIRECT_URL | Secret. Kết nối cho Prisma CLI khi migrate |
-| SESSION_SECRET | Blueprint tự sinh. **Không tạo lại** khi redeploy service đang chạy |
+| SESSION_SECRET | Đã đặt trên service. **Không tạo lại** khi redeploy |
 | CLIENT_ORIGIN | Không nhập; lệnh start lấy từ `RENDER_EXTERNAL_URL` |
 | COOKIE_SECURE / COOKIE_SAME_SITE / TRUST_PROXY | `true` / `lax` / `1` |
 | SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY | URL project / service role key, chỉ để ở backend |
@@ -59,7 +61,7 @@ Chỉ cần nhập tay 4 secret: `DATABASE_URL`, `DIRECT_URL`, `SUPABASE_URL`, `
 ## 4. Các bước deploy
 
 1. Chạy `npm run lint`, `npm run typecheck`, `npm test` và để CI chạy xanh trên commit định deploy.
-2. Đưa commit đó lên branch `deploy/examspace-free-staging`, hoặc chọn commit cụ thể khi bấm **Manual Deploy** trên dashboard.
+2. Merge vào `main` (qua PR), rồi trên dashboard service `examspace-staging-rc` bấm **Manual Deploy → Deploy latest commit**, hoặc chọn commit cụ thể.
 3. Kiểm tra biến môi trường như mục 2, rồi migrate nếu cần (mục 3).
 4. Deploy, theo dõi log build và start, đợi health check xanh.
 5. Kiểm tra sau deploy:

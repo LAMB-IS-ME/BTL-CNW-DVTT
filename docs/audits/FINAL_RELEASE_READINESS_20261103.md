@@ -6,9 +6,9 @@
 
 | Mục | Giá trị |
 | --- | --- |
-| Branch | `ui/final-refinement-recovery` |
+| Branch | `ui/final-refinement-recovery`, đã merge vào `main` qua PR #1 (`8afb7b2`) |
 | Commit source | `09a0b17` (builder blockers), `7f38176` (ảnh câu hỏi) trên nền `51251ac` |
-| Staging | https://examspace-staging-rc.onrender.com, một Render Web Service phục vụ SPA + API cùng origin |
+| Staging | https://examspace-staging-rc.onrender.com: service `examspace-staging-rc`, nguồn `LAMB-IS-ME/BTL-CNW-DVTT` branch `main`, đang chạy `8afb7b2`, `/api/health` trả ok (20/11/2026) |
 | Migration mới | Không có; vẫn là hai migrations `initial` và `integrity` |
 
 ## 2. Các lỗi đã sửa
@@ -49,7 +49,7 @@ Ba test âm chạy trên renderer cũ đều thất bại đúng như mong đợ
 
 - Build: `npm ci --include=dev && npm run db:generate && npm run build`.
 - Start: `CLIENT_ORIGIN="$RENDER_EXTERNAL_URL" npm run start -w @exam/api`, với `SERVE_WEB=true`. Start không migrate, không seed.
-- Blueprint `render.yaml` trỏ branch `deploy/examspace-free-staging` và tắt auto-deploy. Trước khi deploy phải đưa đúng commit lên branch này hoặc chọn commit trên dashboard.
+- Service `examspace-staging-rc` deploy từ Public Git Repository `LAMB-IS-ME/BTL-CNW-DVTT`, branch `main`. Auto-deploy tắt; deploy bằng **Manual Deploy** trên dashboard. `render.yaml` khớp với cấu hình service, nhưng không đồng bộ tự động.
 - Giữ nguyên `SESSION_SECRET` của service đang chạy.
 - Các bước chi tiết xem trong [runbook](../deployment/FREE_STAGING_RUNBOOK.md).
 
@@ -65,7 +65,7 @@ Ba test âm chạy trên renderer cũ đều thất bại đúng như mong đợ
 
 ## 6. Việc cần làm trước go-live
 
-1. Để CI chạy trên đúng commit sẽ deploy; build lại từ `npm ci` trên máy sạch.
+1. Xác nhận CI xanh trên `main` (`8afb7b2`); build lại từ `npm ci` trên máy sạch.
 2. Kiểm tra DB đích: role, số kết nối, `_prisma_migrations`, backup. Chỉ migrate sau khi đã review; không reset, không seed dữ liệu thật.
 3. Kiểm thử trên staging theo checklist trong runbook: đăng nhập, hết hạn và đăng nhập lại, đăng xuất, CSRF/CORS, WSS, ảnh (upload, ký URL, lỗi, thử lại, chặn truy cập public), thi, Quiz, chấm, xuất file, refresh route sâu, restart.
 4. Chọn thời điểm bảo trì và phương án rollback; không deploy trong ca thi hoặc Quiz.

@@ -22,7 +22,7 @@ Mỗi phase phải qua lint, typecheck và relevant tests trước phase tiếp 
 
 - [x] Làm lại giao diện: Question Bank, Dashboard, Exam Folio, Focus Desk, chấm điểm và kết quả, Live Quiz, điều hướng mobile ([design system](ux/DESIGN_SYSTEM.md)).
 - [x] Audit hệ thống 12/10 và ba đợt khắc phục lỗi ([lịch sử](remediation/REMEDIATION_HISTORY.md)).
-- [x] Deploy một Render Web Service phục vụ SPA + API cùng origin; staging https://examspace-staging-rc.onrender.com.
+- [x] Deploy một Render Web Service phục vụ SPA + API cùng origin: service `examspace-staging-rc`, branch `main`, Manual Deploy; staging https://examspace-staging-rc.onrender.com đang chạy `8afb7b2`, `/api/health` trả ok.
 - [x] Chống đáp án cũ ghi đè và nộp bài sớm; khôi phục đáp án nháp của sinh viên.
 - [x] Kiểm tra cấu hình đề/Quiz ở server; chặn rời builder khi chưa lưu; nút thử lại khi ảnh lỗi.
 - [ ] Kiểm thử hosted đầy đủ cho source mới nhất ([gate còn mở](audits/FINAL_RELEASE_READINESS_20261103.md)).

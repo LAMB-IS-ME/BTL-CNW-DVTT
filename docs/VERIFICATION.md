@@ -178,7 +178,7 @@ Implementation: Repository, scripts, workflows và docs. Bằng chứng: Full ve
 - [x] tests pass.
 - [x] build pass.
 - [x] GitHub Pages workflow. — pages.yml workflow_dispatch; production build + subpath404/refresh smoke local. Hiện chỉ là phương án phụ; deploy chính phục vụ SPA từ Express cùng origin.
-- [x] Render-ready API. — render.yaml: một Web Service phục vụ SPA + REST + WSS cùng origin (`SERVE_WEB=true`), 0.0.0.0/PORT, health, cookie `Secure`/`lax`. Staging: https://examspace-staging-rc.onrender.com.
+- [x] Render-ready API. — render.yaml: một Web Service phục vụ SPA + REST + WSS cùng origin (`SERVE_WEB=true`), 0.0.0.0/PORT, health, cookie `Secure`/`lax`. Staging: https://examspace-staging-rc.onrender.com (service `examspace-staging-rc`, branch `main`, Manual Deploy), đang chạy `8afb7b2`, `/api/health` trả ok.
 - [x] README complete. — README.md: quick start, demo, commands, screenshots, deploy/docs links.
 - [x] docs/SRS.md. — SRS 15 phần, FR IDs và traceability.
 - [x] docs/SDD.md. — SDD 27 phần, Context/Container/Component/ERD/sequences/state diagrams.

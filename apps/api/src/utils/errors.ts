@@ -22,6 +22,12 @@ const messages: Record<string, string> = {
   ATTEMPT_LIMIT_REACHED: "Bạn đã dùng hết số lượt thi.",
   ATTEMPT_ALREADY_SUBMITTED: "Bài đã nộp, không thể đổi đáp án.",
   EXAM_HAS_ATTEMPTS: "Bài thi đã có lượt làm; cấu hình đã được khóa.",
+  INVALID_CLASS:
+    "Lớp được giao không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
+  INVALID_BANK:
+    "Ngân hàng câu hỏi không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
+  INVALID_QUESTION:
+    "Câu hỏi không hợp lệ, đã lưu trữ hoặc không thuộc tài khoản này.",
   CLASS_REQUIRED: "Cần chọn ít nhất một lớp trước khi công bố.",
   INVALID_EXAM_QUESTIONS: "Cần ít nhất một câu hỏi có điểm hợp lệ.",
   INVALID_SCHEDULE: "Lịch thi không hợp lệ hoặc đã hết hạn.",

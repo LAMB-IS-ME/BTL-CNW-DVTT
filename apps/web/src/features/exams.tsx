@@ -5,11 +5,12 @@ import {
   BankPicker,
 } from "./catalog-pagination";
 import { useAuth } from "./auth";
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useRef, useState } from "react";
+import { useBuilderGuard } from "./builder-guard";
+import { Link, useParams } from "react-router-dom";
 import { useQuery, useQueryClient, useQueries } from "@tanstack/react-query";
 import type { ExamDto, ExamInput, QuestionDto } from "@exam/shared";
-import { api } from "../lib/api";
+import { api, ApiFailure } from "../lib/api";
 import {
   Field,
   ErrorNotice,
@@ -196,7 +197,6 @@ const localDate = (iso: string) => {
     .slice(0, 16);
 };
 function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
-  const nav = useNavigate();
   const cache = useQueryClient();
   const refreshExam = (id: string) =>
     Promise.all([
@@ -221,8 +221,20 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
     [page, setPage] = useState(1),
     [search, setSearch] = useState(""),
     [error, setError] = useState<unknown>(),
-    [notice, setNotice] = useState(""),
-    [busy, setBusy] = useState(false);
+    [notice, setNotice] = useState("");
+  const activeId = useRef(exam?.id);
+  const configuration = {
+    exam: d,
+    classIds: classes,
+    questions: fixed.map((q) => ({
+      questionId: q.questionId,
+      points: q.points,
+    })),
+    pools,
+  };
+  const serialized = JSON.stringify(configuration);
+  const guard = useBuilderGuard(serialized);
+  const busy = guard.saving;
   const classPaging = useCatalogPage<{
     id: string;
     name: string;
@@ -263,30 +275,27 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
     setD({ ...d, ...v });
   };
   async function save(publish = false) {
-    setBusy(true);
+    if (!guard.beginSave()) return;
     setError(undefined);
+    setNotice("");
+    let destination: string | undefined;
     try {
       const e = await api<ExamDto>(
-        exam ? `/teacher/exams/${exam.id}` : "/teacher/exams",
-        exam ? "PATCH" : "POST",
-        d,
+        activeId.current
+          ? `/teacher/exams/${activeId.current}/configuration`
+          : "/teacher/exams/configuration",
+        activeId.current ? "PUT" : "POST",
+        { ...configuration, publish },
       );
-      await api(`/teacher/exams/${e.id}/classes`, "PUT", { classIds: classes });
-      await api(`/teacher/exams/${e.id}/questions`, "PUT", {
-        questions: fixed.map((q) => ({
-          questionId: q.questionId,
-          points: q.points,
-        })),
-      });
-      await api(`/teacher/exams/${e.id}/pools`, "PUT", { pools });
-      if (publish) await api(`/teacher/exams/${e.id}/publish`, "POST");
+      activeId.current = e.id;
+      guard.markSaved(serialized);
       await refreshExam(e.id);
       setNotice(publish ? "Đã công bố bài thi" : "Đã lưu cấu hình");
-      if (!exam || publish) nav("/teacher/exams");
+      if (!exam || publish) destination = "/teacher/exams";
     } catch (e) {
       setError(e);
     } finally {
-      setBusy(false);
+      guard.finishSave(destination);
     }
   }
   const randomCount = pools.reduce((n, p) => n + p.pickCount, 0);
@@ -355,6 +364,7 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
         : "Trong khung giờ mở";
   return (
     <div className="exam-page exam-editor">
+      {guard.leave}
       <nav className="qb-breadcrumb" aria-label="Đường dẫn">
         <Link to="/teacher">Giảng viên</Link>
         <span>/</span>
@@ -430,9 +440,9 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
           if (bank) void qs.refetch();
         }}
       />
-      {notice && (
+      {(notice || guard.dirty) && (
         <p className="exam-notice" role="status">
-          {notice}
+          {guard.dirty ? "Có thay đổi chưa lưu" : notice}
         </p>
       )}
       <div
@@ -441,7 +451,7 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
         <div className="exam-main-panel">
           <fieldset
             className="exam-fields"
-            disabled={exam?.status === "ARCHIVED"}
+            disabled={busy || preview || exam?.status === "ARCHIVED"}
           >
             {step === 0 && (
               <section className="exam-section exam-document-front">
@@ -1299,9 +1309,21 @@ function BuilderForm({ exam, preview }: { exam?: ExamDto; preview: boolean }) {
             title="Lưu trữ bài thi?"
             disabled={busy}
             onConfirm={async () => {
-              await api(`/teacher/exams/${exam.id}/archive`, "POST");
-              await refreshExam(exam.id);
-              nav("/teacher/exams");
+              if (guard.dirty)
+                throw new ApiFailure(
+                  "UNSAVED_BUILDER",
+                  "Hãy lưu hoặc bỏ thay đổi trước khi lưu trữ.",
+                  409,
+                );
+              if (!guard.beginSave()) return;
+              let destination: string | undefined;
+              try {
+                await api(`/teacher/exams/${exam.id}/archive`, "POST");
+                await refreshExam(exam.id);
+                destination = "/teacher/exams";
+              } finally {
+                guard.finishSave(destination);
+              }
             }}
           >
             <p>

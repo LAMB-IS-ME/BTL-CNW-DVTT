@@ -5,6 +5,7 @@ import { allow, userSelect } from "../../middleware/auth.js";
 import { check, param } from "../../utils/errors.js";
 import type { Prisma } from "../../generated/prisma/client.js";
 import { pagination, pageData } from "../../utils/pagination.js";
+import { lockCatalog } from "../question-banks/lock.js";
 const schema = z.object({
   name: z.string().trim().min(1).max(150),
   code: z.string().max(40).nullable().optional(),
@@ -94,10 +95,25 @@ export function classRoutes(db: Db) {
     });
   });
   r.delete("/classes/:id", async (req, res) => {
-    await own(param(req), req.user.id);
-    await db.class.update({
-      where: { id: param(req) },
-      data: { archivedAt: new Date() },
+    await db.$transaction(async (tx) => {
+      await lockCatalog(tx, req.user.id);
+      const c = await tx.class.findUnique({ where: { id: param(req) } });
+      check(c && c.teacherId === req.user.id, 404, "NOT_FOUND");
+      check(
+        (await tx.examClass.count({
+          where: {
+            classId: c.id,
+            exam: { status: "PUBLISHED", closeAt: { gt: new Date() } },
+          },
+        })) === 0,
+        409,
+        "CLASS_IN_USE",
+        "Lớp đang được giao bài thi đã công bố. Hãy cập nhật hoặc lưu trữ bài thi trước.",
+      );
+      await tx.class.update({
+        where: { id: c.id },
+        data: { archivedAt: new Date() },
+      });
     });
     res.status(204).end();
   });

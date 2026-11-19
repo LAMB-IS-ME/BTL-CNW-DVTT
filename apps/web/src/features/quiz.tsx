@@ -1,9 +1,10 @@
+import { useBuilderGuard } from "./builder-guard";
 import { BankPicker } from "./catalog-pagination";
 import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { QuestionDto, QuizState, AnswerInput } from "@exam/shared";
-import { api } from "../lib/api";
+import { api, ApiFailure } from "../lib/api";
 import { connectSocket } from "../lib/socket";
 import {
   Field,
@@ -150,7 +151,6 @@ export function QuizBuilder() {
   return <QuizForm key={id || "new"} initial={q.data} />;
 }
 function QuizForm({ initial }: { initial?: Quiz }) {
-  const nav = useNavigate();
   const [title, setTitle] = useState(initial?.title || ""),
     [description, setDescription] = useState(
       initial?.descriptionMarkdown || "",
@@ -160,6 +160,17 @@ function QuizForm({ initial }: { initial?: Quiz }) {
     [page, setPage] = useState(1),
     [error, setError] = useState<unknown>(),
     [notice, setNotice] = useState("");
+  const activeId = useRef(initial?.id);
+  const configuration = {
+    quiz: { title, descriptionMarkdown: description },
+    questions: questions.map((q) => ({
+      questionId: q.questionId,
+      timeLimitSeconds: q.timeLimitSeconds,
+      basePoints: q.basePoints,
+    })),
+  };
+  const serialized = JSON.stringify(configuration);
+  const guard = useBuilderGuard(serialized);
   const qs = useQuery({
     queryKey: ["quiz-questions", bank, page],
     queryFn: () =>
@@ -168,166 +179,189 @@ function QuizForm({ initial }: { initial?: Quiz }) {
       ),
     enabled: !!bank,
   });
-  async function save() {
-    const q = await api<Quiz>(
-      initial ? `/teacher/quizzes/${initial.id}` : "/teacher/quizzes",
-      initial ? "PATCH" : "POST",
-      { title, descriptionMarkdown: description },
-    );
-    await api(`/teacher/quizzes/${q.id}/questions`, "PUT", {
-      questions: questions.map((q) => ({
-        questionId: q.questionId,
-        timeLimitSeconds: q.timeLimitSeconds,
-        basePoints: q.basePoints,
-      })),
-    });
-    setNotice("Đã lưu Quiz");
-    if (!initial) nav(`/teacher/quizzes/${q.id}/edit`);
-    return q;
+  async function save(createRoom = false) {
+    if (!guard.beginSave()) return;
+    setError(undefined);
+    setNotice("");
+    let destination: string | undefined;
+    try {
+      const quiz = await api<Quiz>(
+        activeId.current
+          ? `/teacher/quizzes/${activeId.current}/configuration`
+          : "/teacher/quizzes/configuration",
+        activeId.current ? "PUT" : "POST",
+        configuration,
+      );
+      activeId.current = quiz.id;
+      guard.markSaved(serialized);
+      setNotice("Đã lưu Quiz");
+      if (createRoom) {
+        const room = await api<{ id: string }>(
+          `/teacher/quizzes/${quiz.id}/rooms`,
+          "POST",
+        );
+        destination = `/teacher/quiz-rooms/${room.id}/host`;
+      } else if (!initial) destination = `/teacher/quizzes/${quiz.id}/edit`;
+    } catch (e) {
+      setError(e);
+    } finally {
+      guard.finishSave(destination);
+    }
   }
   return (
     <div className="lq lq-builder">
+      {guard.leave}
       <h1>{initial ? "Chỉnh sửa" : "Tạo"} Live Quiz</h1>
       <ErrorBox error={error || qs.error} />
-      <p role="status">{notice}</p>
-      <section className="card">
-        <Field label="Tên Quiz">
-          <input value={title} onChange={(e) => setTitle(e.target.value)} />
-        </Field>
-        <Field label="Mô tả">
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+      <p role="status">{guard.dirty ? "Có thay đổi chưa lưu" : notice}</p>
+      <fieldset
+        className="builder-fields"
+        disabled={guard.saving || initial?.isArchived}
+      >
+        <section className="card">
+          <Field label="Tên Quiz">
+            <input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </Field>
+          <Field label="Mô tả">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Field>
+          <BankPicker
+            value={bank}
+            onChange={(id) => {
+              setBank(id);
+              setPage(1);
+            }}
           />
-        </Field>
-        <BankPicker
-          value={bank}
-          onChange={(id) => {
-            setBank(id);
-            setPage(1);
-          }}
-        />
-        {qs.data?.items
-          .filter((q) => q.type !== "ESSAY")
-          .map((q) => (
-            <label className="choice" key={q.id}>
-              <input
-                type="checkbox"
-                checked={questions.some((v) => v.questionId === q.id)}
-                onChange={(e) =>
-                  setQuestions(
-                    e.target.checked
-                      ? [
-                          ...questions,
-                          {
-                            questionId: q.id,
-                            timeLimitSeconds: 20,
-                            basePoints: 1000,
-                            question: q,
-                          },
-                        ]
-                      : questions.filter((v) => v.questionId !== q.id),
-                  )
+          {qs.data?.items
+            .filter((q) => q.type !== "ESSAY")
+            .map((q) => (
+              <label className="choice" key={q.id}>
+                <input
+                  type="checkbox"
+                  checked={questions.some((v) => v.questionId === q.id)}
+                  onChange={(e) =>
+                    setQuestions(
+                      e.target.checked
+                        ? [
+                            ...questions,
+                            {
+                              questionId: q.id,
+                              timeLimitSeconds: 20,
+                              basePoints: 1000,
+                              question: q,
+                            },
+                          ]
+                        : questions.filter((v) => v.questionId !== q.id),
+                    )
+                  }
+                />
+                <Markdown>{q.promptMarkdown}</Markdown>
+              </label>
+            ))}
+          {bank && (
+            <Pager page={page} total={qs.data?.total || 0} onChange={setPage} />
+          )}
+        </section>
+        <h2>Câu hỏi trong Quiz</h2>
+        {questions.map((q, i) => (
+          <section className="card" key={q.questionId}>
+            <p className="eyebrow">CÂU {i + 1}</p>
+            <Markdown>{q.question.promptMarkdown}</Markdown>
+            <div className="grid">
+              <Field label="Thời gian (5–300 giây)">
+                <input
+                  type="number"
+                  min="5"
+                  max="300"
+                  value={q.timeLimitSeconds}
+                  onChange={(e) =>
+                    setQuestions(
+                      questions.map((v, j) =>
+                        i === j
+                          ? { ...v, timeLimitSeconds: Number(e.target.value) }
+                          : v,
+                      ),
+                    )
+                  }
+                />
+              </Field>
+              <Field label="Điểm cơ bản">
+                <input
+                  type="number"
+                  min="1"
+                  value={q.basePoints}
+                  onChange={(e) =>
+                    setQuestions(
+                      questions.map((v, j) =>
+                        i === j
+                          ? { ...v, basePoints: Number(e.target.value) }
+                          : v,
+                      ),
+                    )
+                  }
+                />
+              </Field>
+            </div>
+            <div className="actions">
+              <button
+                className="secondary"
+                disabled={i === 0}
+                onClick={() => {
+                  const list = [...questions];
+                  [list[i - 1], list[i]] = [list[i]!, list[i - 1]!];
+                  setQuestions(list);
+                }}
+              >
+                Lên
+              </button>
+              <button
+                className="secondary"
+                onClick={() =>
+                  setQuestions(questions.filter((_, j) => j !== i))
                 }
-              />
-              <Markdown>{q.promptMarkdown}</Markdown>
-            </label>
-          ))}
-        {bank && (
-          <Pager page={page} total={qs.data?.total || 0} onChange={setPage} />
-        )}
-      </section>
-      <h2>Câu hỏi trong Quiz</h2>
-      {questions.map((q, i) => (
-        <section className="card" key={q.questionId}>
-          <p className="eyebrow">CÂU {i + 1}</p>
-          <Markdown>{q.question.promptMarkdown}</Markdown>
-          <div className="grid">
-            <Field label="Thời gian (5–300 giây)">
-              <input
-                type="number"
-                min="5"
-                max="300"
-                value={q.timeLimitSeconds}
-                onChange={(e) =>
-                  setQuestions(
-                    questions.map((v, j) =>
-                      i === j
-                        ? { ...v, timeLimitSeconds: Number(e.target.value) }
-                        : v,
-                    ),
-                  )
+              >
+                Bỏ câu
+              </button>
+            </div>
+          </section>
+        ))}
+        <div className="actions">
+          <button disabled={guard.saving} onClick={() => void save()}>
+            Lưu Quiz
+          </button>
+          <button
+            disabled={guard.saving || !questions.length}
+            onClick={() => void save(true)}
+          >
+            Lưu & tạo phòng
+          </button>
+          {initial && (
+            <ConfirmButton
+              onConfirm={async () => {
+                if (guard.dirty)
+                  throw new ApiFailure(
+                    "UNSAVED_BUILDER",
+                    "Hãy lưu hoặc bỏ thay đổi trước khi lưu trữ.",
+                    409,
+                  );
+                if (!guard.beginSave()) return;
+                let destination: string | undefined;
+                try {
+                  await api(`/teacher/quizzes/${initial.id}`, "DELETE");
+                  destination = "/teacher/quizzes";
+                } finally {
+                  guard.finishSave(destination);
                 }
-              />
-            </Field>
-            <Field label="Điểm cơ bản">
-              <input
-                type="number"
-                min="1"
-                value={q.basePoints}
-                onChange={(e) =>
-                  setQuestions(
-                    questions.map((v, j) =>
-                      i === j
-                        ? { ...v, basePoints: Number(e.target.value) }
-                        : v,
-                    ),
-                  )
-                }
-              />
-            </Field>
-          </div>
-          <div className="actions">
-            <button
-              className="secondary"
-              disabled={i === 0}
-              onClick={() => {
-                const list = [...questions];
-                [list[i - 1], list[i]] = [list[i]!, list[i - 1]!];
-                setQuestions(list);
               }}
             >
-              Lên
-            </button>
-            <button
-              className="secondary"
-              onClick={() => setQuestions(questions.filter((_, j) => j !== i))}
-            >
-              Bỏ câu
-            </button>
-          </div>
-        </section>
-      ))}
-      <div className="actions">
-        <button onClick={() => void save().catch(setError)}>Lưu Quiz</button>
-        <button
-          disabled={!questions.length}
-          onClick={async () => {
-            try {
-              const q = await save();
-              const room = await api<{ id: string }>(
-                `/teacher/quizzes/${q.id}/rooms`,
-                "POST",
-              );
-              nav(`/teacher/quiz-rooms/${room.id}/host`);
-            } catch (e) {
-              setError(e);
-            }
-          }}
-        >
-          Lưu & tạo phòng
-        </button>
-        {initial && (
-          <ConfirmButton
-            onConfirm={async () => {
-              await api(`/teacher/quizzes/${initial.id}`, "DELETE");
-              nav("/teacher/quizzes");
-            }}
-          >
-            Lưu trữ Quiz
-          </ConfirmButton>
-        )}
-      </div>
+              Lưu trữ Quiz
+            </ConfirmButton>
+          )}
+        </div>
+      </fieldset>
       {initial?.rooms.length ? (
         <section className="card">
           <h2>Phòng gần đây</h2>

@@ -732,13 +732,16 @@ function AttemptWorkspace({
           409,
         );
       while (pending.current.size && active.current && !conflict.current) {
-        const [id, value] = pending.current.entries().next().value!;
-        const sentEdit = drafts.latest.get(id)?.editId;
+        const id = pending.current.keys().next().value!;
+        let value = pending.current.get(id)!;
         setStatus("Đang lưu…");
         let last: unknown;
         for (let n = 0; n < 3; n++) {
           try {
             ensureLive();
+            // An edit made during backoff supersedes the failed payload.
+            value = pending.current.get(id) ?? value;
+            const sentEdit = drafts.latest.get(id)?.editId;
             const saved = await api<{ savedAt: string }>(
               `/student/attempts/${initial.id}/answers/${id}`,
               "PUT",

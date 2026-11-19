@@ -6,7 +6,18 @@ import type { Db } from "../../db/client.js";
 import { allow } from "../../middleware/auth.js";
 import { check, param } from "../../utils/errors.js";
 import { pagination, pageData } from "../../utils/pagination.js";
-import { ownExam, lockExam, materializeSources, type Tx } from "./service.js";
+import { ownExam, lockExam, type Tx } from "./service.js";
+import {
+  classesSchema,
+  fixedQuestionsSchema,
+  poolsSchema,
+  configurationSchema,
+  replaceClasses,
+  replaceQuestions,
+  replacePools,
+  validatePublishedExam,
+  writeConfiguration,
+} from "./configuration.js";
 export function examRoutes(db: Db) {
   const r = Router();
   r.use(allow("TEACHER"));
@@ -26,7 +37,10 @@ export function examRoutes(db: Db) {
         "EXAM_HAS_ATTEMPTS",
         "Đề đã có lượt thi; không thể sửa cấu trúc/cấu hình.",
       );
-      return fn(tx);
+      const result = await fn(tx);
+      if ((await ownExam(tx, id, teacherId)).status === "PUBLISHED")
+        await validatePublishedExam(tx, id, teacherId);
+      return result;
     });
   r.get("/exams", async (req, res) => {
     const p = pagination(req.query);
@@ -56,6 +70,25 @@ export function examRoutes(db: Db) {
       }),
     }),
   );
+  r.post("/exams/configuration", async (req, res) => {
+    const data = configurationSchema.parse(req.body);
+    const exam = await db.$transaction(async (tx) => {
+      await lockCatalog(tx, req.user.id);
+      const created = await tx.exam.create({
+        data: { ...data.exam, teacherId: req.user.id },
+      });
+      return writeConfiguration(tx, created.id, req.user.id, data);
+    });
+    res.status(201).json({ data: exam });
+  });
+  r.put("/exams/:id/configuration", async (req, res) => {
+    const data = configurationSchema.parse(req.body);
+    res.json({
+      data: await edit(param(req), req.user.id, (tx) =>
+        writeConfiguration(tx, param(req), req.user.id, data),
+      ),
+    });
+  });
   r.get("/exams/:id", async (req, res) =>
     res.json({ data: await ownExam(db, param(req), req.user.id) }),
   );
@@ -77,116 +110,35 @@ export function examRoutes(db: Db) {
     res.status(204).end();
   });
   r.post("/exams/:id/archive", async (req, res) => {
-    await ownExam(db, param(req), req.user.id);
-    res.json({
-      data: await db.exam.update({
+    const exam = await db.$transaction(async (tx) => {
+      await lockExam(tx, param(req));
+      await ownExam(tx, param(req), req.user.id);
+      return tx.exam.update({
         where: { id: param(req) },
         data: { status: "ARCHIVED" },
-      }),
-    });
-  });
-  r.put("/exams/:id/classes", async (req, res) => {
-    const { classIds } = z
-      .object({ classIds: z.array(z.uuid()).max(100) })
-      .parse(req.body);
-    check(new Set(classIds).size === classIds.length, 400, "DUPLICATE_CLASS");
-    await edit(param(req), req.user.id, async (tx) => {
-      check(
-        (await tx.class.count({
-          where: {
-            id: { in: classIds },
-            teacherId: req.user.id,
-            archivedAt: null,
-          },
-        })) === classIds.length,
-        400,
-        "INVALID_CLASS",
-      );
-      await tx.examClass.deleteMany({ where: { examId: param(req) } });
-      await tx.examClass.createMany({
-        data: classIds.map((classId) => ({ classId, examId: param(req) })),
       });
     });
+    res.json({ data: exam });
+  });
+  r.put("/exams/:id/classes", async (req, res) => {
+    const { classIds } = classesSchema.parse(req.body);
+    await edit(param(req), req.user.id, (tx) =>
+      replaceClasses(tx, param(req), req.user.id, classIds),
+    );
     res.json({ data: { saved: true } });
   });
   r.put("/exams/:id/questions", async (req, res) => {
-    const { questions } = z
-      .object({
-        questions: z
-          .array(
-            z.object({
-              questionId: z.uuid(),
-              points: z.number().positive().max(10000),
-            }),
-          )
-          .max(500),
-      })
-      .parse(req.body);
-    check(
-      new Set(questions.map((q) => q.questionId)).size === questions.length,
-      400,
-      "DUPLICATE_QUESTION",
+    const { questions } = fixedQuestionsSchema.parse(req.body);
+    await edit(param(req), req.user.id, (tx) =>
+      replaceQuestions(tx, param(req), req.user.id, questions),
     );
-    await edit(param(req), req.user.id, async (tx) => {
-      check(
-        (await tx.question.count({
-          where: {
-            id: { in: questions.map((q) => q.questionId) },
-            isArchived: false,
-            bank: { ownerTeacherId: req.user.id, isArchived: false },
-          },
-        })) === questions.length,
-        400,
-        "INVALID_QUESTION",
-      );
-      await tx.examQuestion.deleteMany({ where: { examId: param(req) } });
-      await tx.examQuestion.createMany({
-        data: questions.map((q, orderIndex) => ({
-          ...q,
-          examId: param(req),
-          orderIndex,
-        })),
-      });
-    });
     res.json({ data: { saved: true } });
   });
   r.put("/exams/:id/pools", async (req, res) => {
-    const { pools } = z
-      .object({
-        pools: z
-          .array(
-            z.object({
-              questionBankId: z.uuid(),
-              pickCount: z.number().int().min(1).max(100),
-              pointsEach: z.number().positive().max(10000),
-              difficultyFilter: z
-                .enum(["EASY", "MEDIUM", "HARD"])
-                .nullable()
-                .optional(),
-              tagFilter: z.array(z.string()).max(20).default([]),
-            }),
-          )
-          .max(20),
-      })
-      .parse(req.body);
-    await edit(param(req), req.user.id, async (tx) => {
-      const bankIds = [...new Set(pools.map((p) => p.questionBankId))];
-      check(
-        (await tx.questionBank.count({
-          where: {
-            id: { in: bankIds },
-            ownerTeacherId: req.user.id,
-            isArchived: false,
-          },
-        })) === bankIds.length,
-        400,
-        "INVALID_BANK",
-      );
-      await tx.examQuestionPool.deleteMany({ where: { examId: param(req) } });
-      await tx.examQuestionPool.createMany({
-        data: pools.map((p) => ({ ...p, examId: param(req) })),
-      });
-    });
+    const { pools } = poolsSchema.parse(req.body);
+    await edit(param(req), req.user.id, (tx) =>
+      replacePools(tx, param(req), req.user.id, pools),
+    );
     res.json({ data: { saved: true } });
   });
   r.post("/exams/:id/publish", async (req, res) => {
@@ -194,13 +146,8 @@ export function examRoutes(db: Db) {
       await lockExam(tx, param(req));
       const e = await ownExam(tx, param(req), req.user.id);
       check(e.status === "DRAFT", 409, "EXAM_NOT_DRAFT");
-      check(e.classes.length > 0, 400, "CLASS_REQUIRED");
-      check(
-        e.closeAt > new Date() && e.closeAt > e.openAt && e.durationMinutes > 0,
-        400,
-        "INVALID_SCHEDULE",
-      );
-      await materializeSources(tx, e, false);
+      await lockCatalog(tx, req.user.id);
+      await validatePublishedExam(tx, e.id, req.user.id, true);
       return tx.exam.update({
         where: { id: e.id },
         data: { status: "PUBLISHED", publishedAt: new Date() },

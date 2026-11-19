@@ -21,6 +21,41 @@ export async function validateArchive(
       ? `Nguồn câu hỏi đang thuộc Quiz “${quiz.title}”. Hãy bỏ câu khỏi Quiz hoặc lưu trữ Quiz trước. Các phòng đã bắt đầu vẫn giữ bản chụp.`
       : undefined,
   );
+  await validateAffectedExams(tx, teacherId, bankId, questionId);
+}
+
+// Question type/filter edits can invalidate the same sources as archive.
+export async function validateSourceEdit(
+  tx: Prisma.TransactionClient,
+  teacherId: string,
+  bankId: string,
+  questionId: string,
+) {
+  const quiz = await tx.liveQuiz.findFirst({
+    where: {
+      isArchived: false,
+      questions: { some: { question: { id: questionId, type: "ESSAY" } } },
+    },
+    select: { title: true },
+  });
+  check(
+    !quiz,
+    409,
+    "SOURCE_IN_USE",
+    quiz
+      ? `Không thể đổi sang tự luận vì câu hỏi đang thuộc Quiz “${quiz.title}”. Hãy bỏ câu khỏi Quiz trước.`
+      : undefined,
+  );
+  await validateAffectedExams(tx, teacherId, bankId, questionId);
+}
+
+async function validateAffectedExams(
+  tx: Prisma.TransactionClient,
+  teacherId: string,
+  bankId: string,
+  questionId?: string,
+) {
+  const source = questionId ? { id: questionId } : { bankId };
   const exams = await tx.exam.findMany({
     where: {
       teacherId,
@@ -45,7 +80,7 @@ export async function validateArchive(
       throw new AppError(
         409,
         "SOURCE_IN_USE",
-        `Không thể lưu trữ vì bài thi “${exam.title}” đang công bố sẽ thiếu câu hợp lệ. Hãy cập nhật hoặc lưu trữ bài thi trước. Lượt thi cũ được giữ nguyên.`,
+        `Không thể cập nhật nguồn vì bài thi “${exam.title}” đang công bố sẽ thiếu câu hợp lệ. Hãy cập nhật hoặc lưu trữ bài thi trước. Lượt thi cũ được giữ nguyên.`,
       );
     }
   }

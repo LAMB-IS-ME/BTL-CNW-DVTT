@@ -3,31 +3,37 @@ import { Router } from "express";
 import { z } from "zod";
 import { rateLimit } from "express-rate-limit";
 import type { Db } from "../../db/client.js";
+import type { Tx } from "../exams/service.js";
 import { allow } from "../../middleware/auth.js";
 import { param, check } from "../../utils/errors.js";
 import { pagination } from "../../utils/pagination.js";
 import { createRoom, roomState } from "./service.js";
-const schema = z.object({
-  title: z.string().trim().min(1).max(200),
-  descriptionMarkdown: z.string().max(20000).nullable().optional(),
-});
+import {
+  quizSchema,
+  quizQuestionsSchema,
+  quizConfigurationSchema,
+  lockQuiz,
+  ownQuiz,
+  replaceQuizQuestions,
+  validateQuizDefinition,
+} from "./configuration.js";
 export function quizRoutes(db: Db) {
   const r = Router();
   r.use(allow("TEACHER"));
-  const own = async (id: string, teacherId: string) => {
-    const q = await db.liveQuiz.findUnique({
-      where: { id },
-      include: {
-        questions: {
-          include: { question: { include: { options: true } } },
-          orderBy: { orderIndex: "asc" },
-        },
-        rooms: { orderBy: { createdAt: "desc" }, take: 20 },
-      },
+  const edit = async <T>(
+    id: string,
+    teacherId: string,
+    fn: (tx: Tx) => Promise<T>,
+  ) =>
+    db.$transaction(async (tx) => {
+      await lockQuiz(tx, id);
+      await lockCatalog(tx, teacherId);
+      const quiz = await ownQuiz(tx, id, teacherId);
+      check(!quiz.isArchived, 409, "QUIZ_ARCHIVED");
+      const result = await fn(tx);
+      await validateQuizDefinition(tx, id, teacherId);
+      return result;
     });
-    check(q && q.teacherId === teacherId, 404, "NOT_FOUND");
-    return q;
-  };
   r.get("/quizzes", async (req, res) => {
     const p = pagination(req.query);
     res.json({
@@ -42,69 +48,67 @@ export function quizRoutes(db: Db) {
   r.post("/quizzes", async (req, res) =>
     res.status(201).json({
       data: await db.liveQuiz.create({
-        data: { ...schema.parse(req.body), teacherId: req.user.id },
+        data: { ...quizSchema.parse(req.body), teacherId: req.user.id },
       }),
     }),
   );
   r.get("/quizzes/:id", async (req, res) =>
-    res.json({ data: await own(param(req), req.user.id) }),
+    res.json({ data: await ownQuiz(db, param(req), req.user.id) }),
   );
+  r.post("/quizzes/configuration", async (req, res) => {
+    const data = quizConfigurationSchema.parse(req.body);
+    const quiz = await db.$transaction(async (tx) => {
+      await lockCatalog(tx, req.user.id);
+      const created = await tx.liveQuiz.create({
+        data: { ...data.quiz, teacherId: req.user.id },
+      });
+      await replaceQuizQuestions(tx, created.id, req.user.id, data.questions);
+      return validateQuizDefinition(tx, created.id, req.user.id);
+    });
+    res.status(201).json({ data: quiz });
+  });
+  r.put("/quizzes/:id/configuration", async (req, res) => {
+    const data = quizConfigurationSchema.parse(req.body);
+    const quiz = await edit(param(req), req.user.id, async (tx) => {
+      await tx.liveQuiz.update({ where: { id: param(req) }, data: data.quiz });
+      await replaceQuizQuestions(tx, param(req), req.user.id, data.questions);
+      return ownQuiz(tx, param(req), req.user.id);
+    });
+    res.json({ data: quiz });
+  });
   r.patch("/quizzes/:id", async (req, res) => {
-    await own(param(req), req.user.id);
+    const data = quizSchema.parse(req.body);
     res.json({
-      data: await db.liveQuiz.update({
-        where: { id: param(req) },
-        data: schema.parse(req.body),
-      }),
+      data: await edit(param(req), req.user.id, (tx) =>
+        tx.liveQuiz.update({ where: { id: param(req) }, data }),
+      ),
     });
   });
   r.delete("/quizzes/:id", async (req, res) => {
-    await own(param(req), req.user.id);
-    await db.liveQuiz.update({
-      where: { id: param(req) },
-      data: { isArchived: true },
+    await db.$transaction(async (tx) => {
+      await lockQuiz(tx, param(req));
+      await lockCatalog(tx, req.user.id);
+      await ownQuiz(tx, param(req), req.user.id);
+      check(
+        (await tx.quizRoom.count({
+          where: { quizId: param(req), status: "LOBBY" },
+        })) === 0,
+        409,
+        "QUIZ_HAS_LOBBY",
+        "Quiz đang có phòng chờ. Hãy hoàn tất phòng trước khi lưu trữ Quiz.",
+      );
+      await tx.liveQuiz.update({
+        where: { id: param(req) },
+        data: { isArchived: true },
+      });
     });
     res.status(204).end();
   });
   r.put("/quizzes/:id/questions", async (req, res) => {
-    await own(param(req), req.user.id);
-    const { questions } = z
-      .object({
-        questions: z
-          .array(
-            z.object({
-              questionId: z.uuid(),
-              timeLimitSeconds: z.number().int().min(5).max(300),
-              basePoints: z.number().int().min(1).max(10000),
-            }),
-          )
-          .max(100),
-      })
-      .parse(req.body);
-    await db.$transaction(async (tx) => {
-      await tx.$queryRaw`SELECT id FROM "LiveQuiz" WHERE id=${param(req)}::uuid FOR UPDATE`;
-      await lockCatalog(tx, req.user.id);
-      check(
-        (await tx.question.count({
-          where: {
-            id: { in: [...new Set(questions.map((q) => q.questionId))] },
-            type: { not: "ESSAY" },
-            isArchived: false,
-            bank: { ownerTeacherId: req.user.id, isArchived: false },
-          },
-        })) === new Set(questions.map((q) => q.questionId)).size,
-        400,
-        "QUIZ_INVALID_QUESTIONS",
-      );
-      await tx.liveQuizQuestion.deleteMany({ where: { quizId: param(req) } });
-      await tx.liveQuizQuestion.createMany({
-        data: questions.map((q, orderIndex) => ({
-          ...q,
-          quizId: param(req),
-          orderIndex,
-        })),
-      });
-    });
+    const { questions } = quizQuestionsSchema.parse(req.body);
+    await edit(param(req), req.user.id, (tx) =>
+      replaceQuizQuestions(tx, param(req), req.user.id, questions),
+    );
     res.json({ data: { saved: true } });
   });
   r.post("/quizzes/:id/rooms", async (req, res) =>

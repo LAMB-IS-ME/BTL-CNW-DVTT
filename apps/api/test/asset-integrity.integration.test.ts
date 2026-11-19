@@ -378,7 +378,18 @@ it("rejects invalid assets at publish and Quiz start before writing published st
       },
     },
   });
-  const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
+  await expect(
+    createRoom(ctx.db, quiz.id, f.teacher.user.id),
+  ).rejects.toMatchObject({ code: "INVALID_ASSET_REFERENCE" });
+  expect(await ctx.db.quizRoom.count({ where: { quizId: quiz.id } })).toBe(0);
+  // Legacy rooms may predate the source guard; start must still reject them.
+  const room = await ctx.db.quizRoom.create({
+    data: {
+      quizId: quiz.id,
+      teacherId: f.teacher.user.id,
+      code: "legacy-" + crypto.randomUUID(),
+    },
+  });
   await joinRoom(ctx.db, room.id, f.student.user);
   await expect(
     startRoom(ctx.db, room.id, f.teacher.user),

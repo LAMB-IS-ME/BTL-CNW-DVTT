@@ -8,7 +8,7 @@ import { allow } from "../../middleware/auth.js";
 import { check, param } from "../../utils/errors.js";
 import { pagination } from "../../utils/pagination.js";
 import { lockCatalog } from "./lock.js";
-import { validateArchive } from "./lifecycle.js";
+import { validateArchive, validateSourceEdit } from "./lifecycle.js";
 const bankSchema = z.object({
   title: z.string().trim().min(1).max(150),
   subject: z.string().trim().max(150).nullable().optional(),
@@ -196,7 +196,7 @@ export function bankRoutes(db: Db) {
         const q = await ownQuestion(tx, param(req, "questionId"), req.user.id);
         check(!q.isArchived && !q.bank.isArchived, 409, "QUESTION_ARCHIVED");
         await validateAssets(tx, { ...data, options }, q.id);
-        return tx.question.update({
+        const updated = await tx.question.update({
           where: { id: q.id },
           data: {
             ...data,
@@ -207,6 +207,8 @@ export function bankRoutes(db: Db) {
           },
           include: { options: true },
         });
+        await validateSourceEdit(tx, req.user.id, q.bankId, q.id);
+        return updated;
       }),
     });
   });

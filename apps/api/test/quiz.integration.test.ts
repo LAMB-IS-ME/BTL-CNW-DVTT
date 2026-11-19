@@ -357,7 +357,18 @@ it("keeps ownership, join eligibility and progression guards on the real transpo
 it("does not leave a phantom online participant when the transport closes during a blocked join", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "Interrupted join" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "Interrupted join",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const created = await f.teacher.agent
     .post(`/api/v1/teacher/quizzes/${quiz.id}/rooms`)
@@ -424,7 +435,18 @@ it("does not leave a phantom online participant when the transport closes during
 it("serializes two near-simultaneous tab disconnects without duplicate offline events", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "Two tabs disconnect" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "Two tabs disconnect",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const created = await f.teacher.agent
     .post(`/api/v1/teacher/quizzes/${quiz.id}/rooms`)
@@ -479,7 +501,18 @@ it("serializes two near-simultaneous tab disconnects without duplicate offline e
 it("releases membership turns after validation failure and keeps duplicate join/leave idempotent", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "FIFO errors" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "FIFO errors",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
   const student = await connect(f.student.cookie);
@@ -517,7 +550,18 @@ it("releases membership turns after validation failure and keeps duplicate join/
 it("cancels queued membership on disconnect before middleware finishes and allows a new socket to join", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "Queued disconnect" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "Queued disconnect",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
   const student = await connect(f.student.cookie);
@@ -575,7 +619,18 @@ it("cancels queued membership on disconnect before middleware finishes and allow
 it("cancels membership when authorization rejects the socket without creating presence", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "Authorization failure" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "Authorization failure",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
   const student = await connect(f.student.cookie);
@@ -619,7 +674,18 @@ it("releases rejected membership turns at the existing middleware rate limit", a
 it("invalidates queued membership after a downstream middleware error and recovers on a new socket", async () => {
   const f = await examFixture(ctx);
   const quiz = await ctx.db.liveQuiz.create({
-    data: { teacherId: f.teacher.user.id, title: "Rejected pipeline" },
+    data: {
+      teacherId: f.teacher.user.id,
+      title: "Rejected pipeline",
+      questions: {
+        create: {
+          questionId: f.question.id,
+          orderIndex: 0,
+          timeLimitSeconds: 30,
+          basePoints: 100,
+        },
+      },
+    },
   });
   const room = await createRoom(ctx.db, quiz.id, f.teacher.user.id);
   const student = await connect(f.student.cookie);

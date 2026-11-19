@@ -10,7 +10,7 @@ import {
 } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import type { AttemptDto } from "@exam/shared";
+import type { AnswerWrite, AttemptDto } from "@exam/shared";
 import { AttemptPage } from "./attempts";
 import { AuthProvider } from "./auth";
 import { ApiFailure } from "../lib/api";
@@ -86,6 +86,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
@@ -643,4 +644,137 @@ it("security-denied local storage leaves P1 editing, autosave and the unsaved gu
   await waitFor(() =>
     expect(screen.getByRole("status").textContent).toBe("Đã lưu"),
   );
+});
+
+// Exercise autosave backoff without waiting for real retry timers.
+async function mountRetryTest() {
+  mount();
+  await screen.findByRole("radio", { name: "Alpha" });
+  vi.useFakeTimers({
+    toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval"],
+  });
+}
+async function advanceRetryTimers(ms: number) {
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(ms);
+  });
+}
+function chooseRetryAnswer(name: "Alpha" | "Beta") {
+  fireEvent.click(screen.getByRole("radio", { name }));
+}
+function retryWrites(): AnswerWrite[] {
+  return api.mock.calls
+    .filter(([, method]) => method === "PUT")
+    .map(([, , body]) => body);
+}
+
+it("retries the newest answer after an edit during backoff and acknowledges that edit", async () => {
+  let attempts = 0;
+  api.mockImplementation(async (_path: string, method = "GET") => {
+    if (method !== "PUT") return state;
+    if (++attempts === 1) throw new Error("Temporary PUT failure");
+    return { savedAt };
+  });
+  await mountRetryTest();
+  chooseRetryAnswer("Alpha");
+  await advanceRetryTimers(700);
+  expect(retryWrites()).toEqual([
+    {
+      selectedOptionIds: ["a"],
+      answerText: "",
+      expectedSavedAt: null,
+    },
+  ]);
+  chooseRetryAnswer("Beta");
+  expect(storedDrafts()[0].answer.selectedOptionIds).toEqual(["b"]);
+  await advanceRetryTimers(500);
+  expect(retryWrites()).toEqual([
+    { selectedOptionIds: ["a"], answerText: "", expectedSavedAt: null },
+    { selectedOptionIds: ["b"], answerText: "", expectedSavedAt: null },
+  ]);
+  expect(
+    (screen.getByRole("radio", { name: "Beta" }) as HTMLInputElement).checked,
+  ).toBe(true);
+  expect(screen.getByRole("status").textContent).toBe("Đã lưu");
+  expect(storedDrafts()).toHaveLength(0);
+  await advanceRetryTimers(1000);
+  expect(retryWrites()).toHaveLength(2);
+});
+
+it("refreshes the payload at each backoff while retaining the three-attempt limit", async () => {
+  api.mockImplementation(async (_path: string, method = "GET") => {
+    if (method !== "PUT") return state;
+    throw new Error("Still unavailable");
+  });
+  await mountRetryTest();
+  chooseRetryAnswer("Alpha");
+  await advanceRetryTimers(700);
+  chooseRetryAnswer("Beta");
+  await advanceRetryTimers(500);
+  chooseRetryAnswer("Alpha");
+  await advanceRetryTimers(1000);
+  expect(retryWrites().map((body) => body.selectedOptionIds)).toEqual([
+    ["a"],
+    ["b"],
+    ["a"],
+  ]);
+  expect(retryWrites().every((body) => body.expectedSavedAt === null)).toBe(
+    true,
+  );
+  expect(screen.getByRole("status").textContent).toBe("Lỗi lưu");
+  expect(storedDrafts()[0].answer.selectedOptionIds).toEqual(["a"]);
+  await advanceRetryTimers(2000);
+  expect(retryWrites()).toHaveLength(3);
+});
+
+it("keeps a newer edit while a retry ACK is in flight and saves it against the returned revision", async () => {
+  let acknowledge!: (value: { savedAt: string }) => void;
+  const retry = new Promise<{ savedAt: string }>((resolve) => {
+    acknowledge = resolve;
+  });
+  let attempts = 0;
+  const nextSavedAt = "2026-10-22T00:00:03.000Z";
+  api.mockImplementation(async (_path: string, method = "GET") => {
+    if (method !== "PUT") return state;
+    if (++attempts === 1) throw new Error("Temporary PUT failure");
+    if (attempts === 2) return retry;
+    return { savedAt: nextSavedAt };
+  });
+  await mountRetryTest();
+  chooseRetryAnswer("Alpha");
+  await advanceRetryTimers(700);
+  chooseRetryAnswer("Beta");
+  await advanceRetryTimers(500);
+  chooseRetryAnswer("Alpha");
+  await act(async () => {
+    acknowledge({ savedAt });
+  });
+  expect(retryWrites()).toEqual([
+    { selectedOptionIds: ["a"], answerText: "", expectedSavedAt: null },
+    { selectedOptionIds: ["b"], answerText: "", expectedSavedAt: null },
+    { selectedOptionIds: ["a"], answerText: "", expectedSavedAt: savedAt },
+  ]);
+  expect(screen.getByRole("status").textContent).toBe("Đã lưu");
+  expect(storedDrafts()).toHaveLength(0);
+});
+
+it("retries an unchanged answer without changing its optimistic concurrency baseline", async () => {
+  let attempts = 0;
+  api.mockImplementation(async (_path: string, method = "GET") => {
+    if (method !== "PUT") return state;
+    if (++attempts < 3) throw new Error("Temporary PUT failure");
+    return { savedAt };
+  });
+  await mountRetryTest();
+  chooseRetryAnswer("Alpha");
+  await advanceRetryTimers(2200);
+  expect(retryWrites()).toEqual(
+    Array(3).fill({
+      selectedOptionIds: ["a"],
+      answerText: "",
+      expectedSavedAt: null,
+    }),
+  );
+  expect(screen.getByRole("status").textContent).toBe("Đã lưu");
+  expect(storedDrafts()).toHaveLength(0);
 });
